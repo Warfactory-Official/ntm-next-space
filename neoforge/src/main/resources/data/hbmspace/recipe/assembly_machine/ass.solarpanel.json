@@ -1,0 +1,27 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 100,
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "#c:plates/stainless_steel"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbm:photo_panel"
+    },
+    {
+      "count": 2,
+      "ingredient": "#hbm:ingots/any_plastic"
+    },
+    {
+      "count": 8,
+      "ingredient": "#c:fine_wires/mingrade"
+    }
+  ],
+  "order": 110361,
+  "output_items": [
+    "hbmspace:machine_solar"
+  ],
+  "power": 100
+}

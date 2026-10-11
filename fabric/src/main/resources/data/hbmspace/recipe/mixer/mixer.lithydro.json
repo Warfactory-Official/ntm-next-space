@@ -1,0 +1,23 @@
+{
+  "type": "hbm:mixer",
+  "duration": 100,
+  "input_fluids": [
+    {
+      "type": "hbmspace:brine",
+      "amount": 125
+    }
+  ],
+  "input_items": [
+    {
+      "count": 3,
+      "ingredient": "hbm:powder_lithium"
+    }
+  ],
+  "order": 12293,
+  "output_fluids": [
+    {
+      "type": "hbmspace:lithydro",
+      "amount": 1000
+    }
+  ]
+}

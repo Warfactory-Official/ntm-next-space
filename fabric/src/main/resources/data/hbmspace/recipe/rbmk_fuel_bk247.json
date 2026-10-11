@@ -1,0 +1,17 @@
+{
+  "type": "hbm:crafting_shapeless",
+  "ingredients": [
+    "hbm:rbmk_fuel_empty",
+    "#hbm:billets/berkelium_247",
+    "#hbm:billets/berkelium_247",
+    "#hbm:billets/berkelium_247",
+    "#hbm:billets/berkelium_247",
+    "#hbm:billets/berkelium_247",
+    "#hbm:billets/berkelium_247",
+    "#hbm:billets/berkelium_247",
+    "#hbm:billets/berkelium_247"
+  ],
+  "result": {
+    "id": "hbmspace:rbmk_fuel_bk247"
+  }
+}

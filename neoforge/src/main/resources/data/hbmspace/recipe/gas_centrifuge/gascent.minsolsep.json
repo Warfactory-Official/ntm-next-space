@@ -1,0 +1,11 @@
+{
+  "type": "hbm:gas_centrifuge",
+  "consumed": 500,
+  "duration": 150,
+  "order": 1538,
+  "output_items": [
+    "hbmspace:crystal_cleaned"
+  ],
+  "power": 200,
+  "stage": "minsolsep"
+}

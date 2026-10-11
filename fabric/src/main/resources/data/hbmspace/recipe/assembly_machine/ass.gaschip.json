@@ -1,0 +1,21 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 50,
+  "input_items": [
+    {
+      "ingredient": "hbm:plate_polymer"
+    },
+    {
+      "ingredient": "hbmspace:circuit_gaas"
+    },
+    {
+      "ingredient": "#c:fine_wires/gold"
+    }
+  ],
+  "name": "ass.gasChip",
+  "order": 8961,
+  "output_items": [
+    "hbmspace:circuit_gaschip"
+  ],
+  "power": 250
+}

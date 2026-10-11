@@ -1,0 +1,18 @@
+{
+  "entries": [
+    {
+      "type": "hbm:radiation",
+      "level": 18.3
+    },
+    {
+      "type": "hbmspace:neutron",
+      "level": 0.45749998092651367
+    },
+    {
+      "type": "hbm:hot",
+      "level": 4.0
+    }
+  ],
+  "mutex": 1,
+  "targets": "#c:ingots/einsteinium_253"
+}

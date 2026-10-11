@@ -1,0 +1,19 @@
+{
+  "type": "hbm:crystallizer",
+  "duration": 600,
+  "input_fluids": [
+    {
+      "type": "hbm:nitric_acid",
+      "amount": 500
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "hbmspace:nickel_salts"
+    }
+  ],
+  "order": 68616,
+  "output_items": [
+    "hbmspace:crystal_nickel"
+  ]
+}

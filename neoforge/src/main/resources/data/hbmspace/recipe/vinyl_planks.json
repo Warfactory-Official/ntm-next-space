@@ -1,0 +1,10 @@
+{
+  "type": "hbm:crafting_shapeless",
+  "ingredients": [
+    "hbmspace:vinyl_log"
+  ],
+  "result": {
+    "count": 4,
+    "id": "hbmspace:vinyl_planks"
+  }
+}

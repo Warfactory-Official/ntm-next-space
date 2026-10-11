@@ -1,0 +1,25 @@
+{
+  "variants": {
+    "cell=core": {
+      "model": "hbmspace:block/machine_rocket_assembly"
+    },
+    "cell=down": {
+      "model": "hbmspace:block/machine_rocket_assembly_cell"
+    },
+    "cell=east": {
+      "model": "hbmspace:block/machine_rocket_assembly_cell"
+    },
+    "cell=north": {
+      "model": "hbmspace:block/machine_rocket_assembly_cell"
+    },
+    "cell=south": {
+      "model": "hbmspace:block/machine_rocket_assembly_cell"
+    },
+    "cell=up": {
+      "model": "hbmspace:block/machine_rocket_assembly_cell"
+    },
+    "cell=west": {
+      "model": "hbmspace:block/machine_rocket_assembly_cell"
+    }
+  }
+}

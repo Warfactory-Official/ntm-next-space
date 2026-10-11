@@ -1,0 +1,10 @@
+{
+  "type": "hbm:crafting_shapeless",
+  "ingredients": [
+    "hbmspace:bf_log"
+  ],
+  "result": {
+    "count": 9,
+    "id": "hbmspace:woodemium_briquette"
+  }
+}

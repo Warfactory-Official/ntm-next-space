@@ -1,0 +1,46 @@
+{
+  "type": "hbm:silex",
+  "fluid_consumed": 100,
+  "fluid_produced": 600,
+  "input_items": [
+    {
+      "components": {
+        "hbm:rbmk_pellet": {
+          "depletion": 2,
+          "xenon": true
+        }
+      },
+      "ingredient": "hbm:rbmk_pellet_hea242"
+    }
+  ],
+  "laser_strength": "xray",
+  "order": 42763,
+  "output_items": [
+    [
+      {
+        "data": {
+          "id": "hbm:nugget_am242"
+        },
+        "weight": 60
+      },
+      {
+        "data": {
+          "id": "hbmspace:nugget_bk247"
+        },
+        "weight": 1
+      },
+      {
+        "data": {
+          "id": "hbm:powder_xe135_tiny"
+        },
+        "weight": 3
+      },
+      {
+        "data": {
+          "id": "hbm:nuclear_waste_short_tiny_americium242"
+        },
+        "weight": 16
+      }
+    ]
+  ]
+}

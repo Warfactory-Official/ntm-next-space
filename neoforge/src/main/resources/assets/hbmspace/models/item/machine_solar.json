@@ -1,0 +1,182 @@
+{
+  "ambientocclusion": false,
+  "display": {
+    "firstperson_lefthand": {
+      "rotation": [
+        154.91621,
+        -4.530509,
+        177.88249
+      ],
+      "scale": [
+        0.14999999,
+        0.15,
+        0.14999999
+      ],
+      "translation": [
+        0.22127652,
+        2.574026,
+        2.5292032
+      ]
+    },
+    "firstperson_righthand": {
+      "rotation": [
+        154.91621,
+        -4.530509,
+        177.88249
+      ],
+      "scale": [
+        0.14999999,
+        0.15,
+        0.14999999
+      ],
+      "translation": [
+        0.22127652,
+        2.574026,
+        2.5292027
+      ]
+    },
+    "fixed": {
+      "rotation": [
+        -0.0,
+        -90.0,
+        0.0
+      ],
+      "scale": [
+        0.375,
+        0.375,
+        0.375
+      ],
+      "translation": [
+        6.23703E-4,
+        0.44000006,
+        0.5
+      ]
+    },
+    "ground": {
+      "rotation": [
+        -0.0,
+        90.0,
+        0.0
+      ],
+      "scale": [
+        0.1875,
+        0.1875,
+        0.1875
+      ],
+      "translation": [
+        -3.118515E-4,
+        -2.5,
+        0.0
+      ]
+    },
+    "gui": {
+      "rotation": [
+        -150.0,
+        -44.999996,
+        -180.0
+      ],
+      "scale": [
+        0.234375,
+        0.234375,
+        0.234375
+      ],
+      "translation": [
+        2.7644634E-4,
+        -0.37634045,
+        -7.0622606
+      ]
+    },
+    "head": {
+      "rotation": [
+        -0.0,
+        -50.000004,
+        154.99998
+      ],
+      "scale": [
+        0.6,
+        0.6,
+        0.6
+      ],
+      "translation": [
+        6.527984,
+        -16.695683,
+        7.778195
+      ]
+    },
+    "on_shelf": {
+      "rotation": [
+        0.0,
+        90.0,
+        0.0
+      ],
+      "scale": [
+        0.75,
+        0.75,
+        0.75
+      ],
+      "translation": [
+        -0.0012483597,
+        6.0,
+        0.0
+      ]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [
+        -164.50075,
+        11.346811,
+        165.04486
+      ],
+      "scale": [
+        0.14062499,
+        0.140625,
+        0.140625
+      ],
+      "translation": [
+        -0.129915,
+        1.9865214,
+        1.3570467
+      ]
+    },
+    "thirdperson_righthand": {
+      "rotation": [
+        -164.50075,
+        11.346811,
+        165.04486
+      ],
+      "scale": [
+        0.14062499,
+        0.140625,
+        0.140625
+      ],
+      "translation": [
+        -1.2897062,
+        1.7442368,
+        1.0483407
+      ]
+    }
+  },
+  "double_sided": [
+    "solar_panel",
+    "connector_front",
+    "connector_side",
+    "connector_top",
+    "connector_bottom"
+  ],
+  "gui_light": "side",
+  "loader": "hbm:obj",
+  "model": "hbmspace:models/machines/solar_panel.obj",
+  "offset_z": 1.04010105E-4,
+  "skins": {
+    "all": [
+      "connector_bottom",
+      "connector_front",
+      "connector_side",
+      "connector_top",
+      "solar_panel"
+    ]
+  },
+  "textures": {
+    "all": "hbmspace:block/models/machines/solar_panel",
+    "particle": "hbmspace:block/models/machines/solar_panel"
+  }
+}

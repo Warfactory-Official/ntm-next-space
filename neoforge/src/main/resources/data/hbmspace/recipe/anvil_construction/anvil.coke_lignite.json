@@ -1,0 +1,14 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "ingredient": "#c:dusts/lignite_coke"
+    }
+  ],
+  "order": 6146,
+  "output_items": [
+    "hbm:coke_lignite"
+  ],
+  "overlay": "smithing",
+  "tier": 3
+}

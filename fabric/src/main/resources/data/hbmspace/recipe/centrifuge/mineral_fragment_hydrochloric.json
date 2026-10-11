@@ -1,0 +1,23 @@
+{
+  "type": "hbm:centrifuge",
+  "duration": 200,
+  "input_items": [
+    {
+      "ingredient": "hbmspace:clump_hydrochloric"
+    }
+  ],
+  "order": 13829,
+  "output_items": [
+    {
+      "count": 4,
+      "id": "hbm:powder_zirconium"
+    },
+    {
+      "count": 2,
+      "id": "hbm:powder_neodymium"
+    },
+    "hbm:powder_niobium",
+    "hbm:powder_cobalt"
+  ],
+  "power": 200
+}

@@ -1,0 +1,9 @@
+{
+  "entries": [
+    {
+      "type": "hbm:radiation",
+      "level": 3.0
+    }
+  ],
+  "targets": "hbmspace:nuclear_waste_short_depleted_berkelium247"
+}

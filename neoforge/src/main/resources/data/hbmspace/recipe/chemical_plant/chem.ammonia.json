@@ -1,0 +1,22 @@
+{
+  "type": "hbm:chemical_plant",
+  "duration": 50,
+  "input_fluids": [
+    {
+      "type": "hbmspace:nitrogen",
+      "amount": 600
+    },
+    {
+      "type": "minecraft:water",
+      "amount": 1000
+    }
+  ],
+  "order": 22022,
+  "output_fluids": [
+    {
+      "type": "hbmspace:ammonia",
+      "amount": 800
+    }
+  ],
+  "power": 100
+}

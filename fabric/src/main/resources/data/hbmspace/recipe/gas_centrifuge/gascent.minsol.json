@@ -1,0 +1,28 @@
+{
+  "type": "hbm:gas_centrifuge",
+  "consumed": 500,
+  "duration": 150,
+  "feed": "hbmspace:minsol",
+  "icon": {
+    "components": {
+      "hbm:fluid_content": {
+        "type": "hbmspace:minsol",
+        "amount": 0
+      },
+      "minecraft:custom_model_data": {
+        "colors": [
+          -336022
+        ]
+      }
+    },
+    "id": "hbm:fluid_icon"
+  },
+  "next": "minsolsep",
+  "order": 1537,
+  "output_items": [
+    "hbm:powder_iron"
+  ],
+  "power": 200,
+  "produced": 500,
+  "stage": "minsol"
+}

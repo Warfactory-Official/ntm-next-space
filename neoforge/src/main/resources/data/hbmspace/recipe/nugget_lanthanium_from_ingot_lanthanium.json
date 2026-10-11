@@ -1,0 +1,10 @@
+{
+  "type": "hbm:crafting_shapeless",
+  "ingredients": [
+    "hbm:ingot_lanthanium"
+  ],
+  "result": {
+    "count": 9,
+    "id": "hbmspace:nugget_lanthanium"
+  }
+}

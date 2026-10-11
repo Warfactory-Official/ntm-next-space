@@ -1,0 +1,45 @@
+{
+  "type": "hbm:silex",
+  "fluid_consumed": 100,
+  "fluid_produced": 600,
+  "input_items": [
+    {
+      "components": {
+        "hbm:rbmk_pellet": {
+          "depletion": 3
+        }
+      },
+      "ingredient": "hbmspace:rbmk_pellet_hecm"
+    }
+  ],
+  "laser_strength": "xray",
+  "order": 55816,
+  "output_items": [
+    [
+      {
+        "data": {
+          "id": "hbmspace:nugget_cm245"
+        },
+        "weight": 40
+      },
+      {
+        "data": {
+          "id": "hbmspace:nugget_cm247"
+        },
+        "weight": 3
+      },
+      {
+        "data": {
+          "id": "hbmspace:nuclear_waste_short_tiny_curium244"
+        },
+        "weight": 27
+      },
+      {
+        "data": {
+          "id": "hbmspace:nuclear_waste_short_tiny_curium245"
+        },
+        "weight": 31
+      }
+    ]
+  ]
+}

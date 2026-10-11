@@ -1,0 +1,19 @@
+{
+  "type": "hbm:blast_furnace",
+  "duration": 400,
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/steel"
+    },
+    {
+      "ingredient": "#c:ingots/nickel_pure"
+    }
+  ],
+  "order": 4353,
+  "output_items": [
+    {
+      "count": 2,
+      "id": "hbmspace:ingot_stainless"
+    }
+  ]
+}

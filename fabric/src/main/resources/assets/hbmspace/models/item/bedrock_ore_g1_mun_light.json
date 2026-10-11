@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "hbmspace:item/bedrock_ore_base_mun_light",
+    "layer1": "hbm:item/bedrock_ore_overlay_roasted"
+  }
+}

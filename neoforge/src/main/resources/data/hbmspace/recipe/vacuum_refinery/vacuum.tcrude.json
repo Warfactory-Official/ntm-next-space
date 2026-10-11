@@ -1,0 +1,28 @@
+{
+  "type": "hbm:vacuum_refinery",
+  "input_fluids": [
+    {
+      "type": "hbmspace:tcrude",
+      "amount": 100
+    }
+  ],
+  "order": 257,
+  "output_fluids": [
+    {
+      "type": "hbmspace:halolight",
+      "amount": 40
+    },
+    {
+      "type": "hbmspace:chloromethane",
+      "amount": 25
+    },
+    {
+      "type": "hbmspace:hcl",
+      "amount": 20
+    },
+    {
+      "type": "hbmspace:hgas",
+      "amount": 15
+    }
+  ]
+}

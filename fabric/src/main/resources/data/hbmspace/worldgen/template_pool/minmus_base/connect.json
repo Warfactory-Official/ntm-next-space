@@ -1,0 +1,59 @@
+{
+  "elements": [
+    {
+      "element": {
+        "element_type": "hbm:legacy_piece",
+        "location": "hbmspace:minmus_base/connector-1",
+        "processors": "hbm:multiblock_assembly",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "hbm:legacy_piece",
+        "location": "hbmspace:minmus_base/connector-2",
+        "processors": "hbm:multiblock_assembly",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "hbm:legacy_piece",
+        "location": "hbmspace:minmus_base/connector-3",
+        "processors": "hbm:multiblock_assembly",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "hbm:legacy_piece",
+        "location": "hbmspace:minmus_base/connector-s",
+        "processors": "hbm:multiblock_assembly",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "hbm:legacy_piece",
+        "location": "hbmspace:minmus_base/connector-l",
+        "processors": "hbm:multiblock_assembly",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "hbm:legacy_piece",
+        "location": "hbmspace:minmus_base/connector-t",
+        "processors": "hbm:multiblock_assembly",
+        "projection": "rigid"
+      },
+      "weight": 1
+    }
+  ],
+  "fallback": "minecraft:empty"
+}

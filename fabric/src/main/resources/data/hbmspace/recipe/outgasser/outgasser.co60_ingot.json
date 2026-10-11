@@ -1,0 +1,13 @@
+{
+  "type": "hbm:outgasser",
+  "duration": 10000,
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/cobalt"
+    }
+  ],
+  "order": 1537,
+  "output_items": [
+    "hbm:ingot_co60"
+  ]
+}

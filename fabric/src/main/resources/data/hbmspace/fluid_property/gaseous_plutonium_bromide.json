@@ -1,0 +1,21 @@
+{
+  "type": "gaseous",
+  "color": "#4c4c4c",
+  "flags": [
+    "nocontainer",
+    "noid"
+  ],
+  "nfpa": {
+    "flame": 0,
+    "health": 0,
+    "react": 0
+  },
+  "symbol": "NONE",
+  "temperature": 2600,
+  "traits": {
+    "rocket": {
+      "isp": 2000,
+      "thrust": 700000
+    }
+  }
+}

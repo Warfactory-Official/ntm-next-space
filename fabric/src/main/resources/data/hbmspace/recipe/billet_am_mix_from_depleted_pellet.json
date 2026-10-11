@@ -1,0 +1,15 @@
+{
+  "type": "hbm:crafting_shapeless",
+  "ingredients": [
+    "hbmspace:pellet_rtg_depleted_americium"
+  ],
+  "input_state": {
+    "0": {
+      "preserve": "remainder"
+    }
+  },
+  "result": {
+    "count": 3,
+    "id": "hbm:billet_am_mix"
+  }
+}

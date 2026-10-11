@@ -1,0 +1,26 @@
+{
+  "type": "hbm:centrifuge",
+  "duration": 200,
+  "input_items": [
+    {
+      "ingredient": "hbmspace:crystal_nickel"
+    }
+  ],
+  "order": 45314,
+  "output_items": [
+    {
+      "count": 2,
+      "id": "hbmspace:powder_nickel"
+    },
+    {
+      "count": 2,
+      "id": "hbmspace:powder_nickel"
+    },
+    {
+      "count": 2,
+      "id": "hbm:powder_iron"
+    },
+    "hbm:powder_titanium"
+  ],
+  "power": 200
+}

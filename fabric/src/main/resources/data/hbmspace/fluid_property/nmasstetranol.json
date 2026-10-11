@@ -1,0 +1,35 @@
+{
+  "type": "liquid",
+  "color": "#f1db0f",
+  "containers": {
+    "canister": {
+      "color": "#f1db0f"
+    }
+  },
+  "nfpa": {
+    "flame": 3,
+    "health": 1,
+    "react": 0
+  },
+  "symbol": "NONE",
+  "temperature": 20,
+  "traits": {
+    "combustible": {
+      "energy": 2688000000000,
+      "grade": "HIGH"
+    },
+    "corrosive": {
+      "rating": 70
+    },
+    "flammable": {
+      "energy": 256000000000
+    },
+    "poison": {
+      "level": 0,
+      "withering": true
+    },
+    "ventradiation": {
+      "rad_per_mb": 0.01
+    }
+  }
+}

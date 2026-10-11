@@ -1,0 +1,14 @@
+{
+  "type": "liquid",
+  "color": "#b3c6d2",
+  "flags": [
+    "gaseous_art"
+  ],
+  "nfpa": {
+    "flame": 0,
+    "health": 1,
+    "react": 0
+  },
+  "symbol": "CRYOGENIC",
+  "temperature": -90
+}

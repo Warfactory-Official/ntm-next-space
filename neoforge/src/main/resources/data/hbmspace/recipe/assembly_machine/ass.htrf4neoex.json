@@ -1,0 +1,37 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "blueprint_pools_528": [
+    "528.gaschip"
+  ],
+  "duration": 1200,
+  "input_items": [
+    {
+      "count": 16,
+      "ingredient": "hbm:item_expensive_ferro_plating"
+    },
+    {
+      "count": 16,
+      "ingredient": "hbm:item_expensive_plastic"
+    },
+    {
+      "count": 16,
+      "ingredient": "hbmspace:item_expensive_stainless_beam"
+    },
+    {
+      "count": 64,
+      "ingredient": "hbmspace:circuit_gaschip"
+    }
+  ],
+  "name": "ass.htrf4neoEx",
+  "order": 110379,
+  "output_items": [
+    "hbmspace:machine_htrf4neo"
+  ],
+  "power": 100
+}

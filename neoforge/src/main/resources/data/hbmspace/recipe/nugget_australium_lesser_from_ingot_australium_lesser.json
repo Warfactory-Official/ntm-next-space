@@ -1,0 +1,10 @@
+{
+  "type": "hbm:crafting_shapeless",
+  "ingredients": [
+    "hbmspace:ingot_australium_lesser"
+  ],
+  "result": {
+    "count": 9,
+    "id": "hbm:nugget_australium_lesser"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "type": "hbm:centrifuge",
+  "duration": 200,
+  "input_items": [
+    {
+      "ingredient": "hbmspace:clump_peroxide"
+    }
+  ],
+  "order": 13825,
+  "output_items": [
+    {
+      "count": 4,
+      "id": "hbm:powder_niobium"
+    },
+    {
+      "count": 2,
+      "id": "hbm:powder_cobalt"
+    },
+    "hbm:powder_zirconium",
+    "hbm:powder_beryllium"
+  ],
+  "power": 200
+}

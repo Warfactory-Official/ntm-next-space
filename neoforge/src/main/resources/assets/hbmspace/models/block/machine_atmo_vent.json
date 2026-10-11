@@ -1,0 +1,23 @@
+{
+  "ambientocclusion": false,
+  "double_sided": [
+    "Body_Cylinder"
+  ],
+  "gui_light": "side",
+  "hidden": [
+    "Fan_Cylinder.001"
+  ],
+  "loader": "hbm:obj",
+  "model": "hbmspace:models/machines/atmo_vent.obj",
+  "offset_x": 0.5,
+  "offset_z": -0.5,
+  "skins": {
+    "all": [
+      "Body_Cylinder"
+    ]
+  },
+  "textures": {
+    "all": "hbmspace:block/models/machines/atmo_vent",
+    "particle": "hbm:block/concrete"
+  }
+}

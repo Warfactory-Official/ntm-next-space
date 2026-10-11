@@ -1,0 +1,11 @@
+{
+  "values": [
+    "hbmspace:plant_flower_strawberry",
+    "hbmspace:plant_flower_mint",
+    "hbmspace:crop_strawberry",
+    "hbmspace:crop_mint",
+    "hbmspace:crop_paraffin",
+    "hbmspace:crop_coffee",
+    "hbmspace:crop_tea"
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "!expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 2,
+      "ingredient": "#hbm:plates_cast/steel"
+    },
+    {
+      "count": 4,
+      "ingredient": "#hbm:plates_welded/titanium"
+    },
+    {
+      "count": 2,
+      "ingredient": "hbm:crate_iron"
+    },
+    {
+      "ingredient": "hbm:thruster_small"
+    },
+    {
+      "ingredient": "hbmspace:circuit_aero"
+    }
+  ],
+  "order": 110352,
+  "output_items": [
+    {
+      "count": 2,
+      "id": "hbmspace:transporter_rocket"
+    }
+  ],
+  "power": 100
+}

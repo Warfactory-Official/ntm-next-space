@@ -1,0 +1,18 @@
+{
+  "entries": [
+    {
+      "type": "hbm:radiation",
+      "level": 9.15
+    },
+    {
+      "type": "hbmspace:neutron",
+      "level": 0.22874999046325684
+    },
+    {
+      "type": "hbm:hot",
+      "level": 2.0
+    }
+  ],
+  "mutex": 1,
+  "targets": "#hbm:billets/einsteinium_253"
+}

@@ -1,0 +1,16 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "hbmspace:item/entity_siftereel_spawn_egg",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 6002238
+      },
+      {
+        "type": "minecraft:constant",
+        "value": 12628614
+      }
+    ]
+  }
+}

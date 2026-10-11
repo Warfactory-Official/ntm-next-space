@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "hbmspace:ore_gas_empty"
+    }
+  ],
+  "order": 5889,
+  "output_items": [
+    "minecraft:gravel"
+  ]
+}

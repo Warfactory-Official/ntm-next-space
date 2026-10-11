@@ -1,0 +1,13 @@
+{
+  "entries": [
+    {
+      "type": "hbm:radiation",
+      "level": 3.0
+    },
+    {
+      "type": "hbm:hot",
+      "level": 5.0
+    }
+  ],
+  "targets": "hbmspace:nuclear_waste_short_tiny_berkelium247"
+}

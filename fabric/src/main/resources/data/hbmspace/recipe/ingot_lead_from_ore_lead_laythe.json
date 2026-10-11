@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smelting",
+  "cookingtime": 200,
+  "experience": 3.0,
+  "ingredient": {
+    "fabric:type": "hbm:recipe_input",
+    "base": "hbmspace:ore_lead_laythe"
+  },
+  "result": {
+    "id": "hbm:ingot_lead"
+  }
+}

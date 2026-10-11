@@ -1,0 +1,12 @@
+{
+  "values": [
+    "hbm:schrabidic_fluid",
+    "hbm:flowing_schrabidic_fluid",
+    "hbmspace:mercury_fluid",
+    "hbmspace:flowing_mercury_fluid",
+    "hbmspace:bromine_fluid",
+    "hbmspace:flowing_bromine_fluid",
+    "hbmspace:ccl_fluid",
+    "hbmspace:flowing_ccl_fluid"
+  ]
+}

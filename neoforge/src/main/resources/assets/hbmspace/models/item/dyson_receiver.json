@@ -1,0 +1,175 @@
+{
+  "ambientocclusion": false,
+  "display": {
+    "firstperson_lefthand": {
+      "rotation": [
+        154.91621,
+        -4.5305085,
+        177.88249
+      ],
+      "scale": [
+        0.0825,
+        0.082499996,
+        0.0825
+      ],
+      "translation": [
+        -0.25715172,
+        11.798376,
+        -2.9392564
+      ]
+    },
+    "firstperson_righthand": {
+      "rotation": [
+        154.91621,
+        -4.5305085,
+        177.88249
+      ],
+      "scale": [
+        0.0825,
+        0.082499996,
+        0.0825
+      ],
+      "translation": [
+        -0.25715214,
+        11.798376,
+        -2.9392564
+      ]
+    },
+    "fixed": {
+      "rotation": [
+        -0.0,
+        -90.0,
+        0.0
+      ],
+      "scale": [
+        0.20625001,
+        0.20625001,
+        0.20625001
+      ],
+      "translation": [
+        -2.691018,
+        27.140001,
+        0.5
+      ]
+    },
+    "ground": {
+      "rotation": [
+        0.0,
+        90.0,
+        0.0
+      ],
+      "scale": [
+        0.103125006,
+        0.103125006,
+        0.103125006
+      ],
+      "translation": [
+        1.3455088,
+        10.850001,
+        -2.3841858E-7
+      ]
+    },
+    "gui": {
+      "rotation": [
+        -150.0,
+        -44.999996,
+        -180.0
+      ],
+      "scale": [
+        0.051562503,
+        0.0515625,
+        0.051562503
+      ],
+      "translation": [
+        -0.47570953,
+        1.2039915,
+        -6.6994762
+      ]
+    },
+    "head": {
+      "rotation": [
+        -0.0,
+        -50.000004,
+        154.99998
+      ],
+      "scale": [
+        0.33000004,
+        0.32999998,
+        0.33
+      ],
+      "translation": [
+        -8.376139,
+        -55.413143,
+        -3.283924
+      ]
+    },
+    "on_shelf": {
+      "rotation": [
+        0.0,
+        90.0,
+        0.0
+      ],
+      "scale": [
+        0.41250002,
+        0.41250002,
+        0.41250002
+      ],
+      "translation": [
+        5.382036,
+        59.400005,
+        0.0
+      ]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [
+        -164.50075,
+        11.346811,
+        165.04486
+      ],
+      "scale": [
+        0.07734374,
+        0.077343754,
+        0.07734375
+      ],
+      "translation": [
+        -2.464676,
+        11.708404,
+        2.4984915
+      ]
+    },
+    "thirdperson_righthand": {
+      "rotation": [
+        -164.50075,
+        11.346811,
+        165.04486
+      ],
+      "scale": [
+        0.07734374,
+        0.077343754,
+        0.07734375
+      ],
+      "translation": [
+        -3.6244674,
+        11.466119,
+        2.1897852
+      ]
+    }
+  },
+  "gui_light": "side",
+  "loader": "hbm:obj",
+  "model": "hbmspace:models/machines/dyson_receiver.obj",
+  "offset_y": -8.5,
+  "offset_z": -0.81545997,
+  "skins": {
+    "all": [
+      "DysonReceiver",
+      "Coil1",
+      "Coil2",
+      "Coil3"
+    ]
+  },
+  "textures": {
+    "all": "hbmspace:block/models/machines/dyson_receiver",
+    "particle": "hbmspace:block/models/machines/dyson_receiver"
+  }
+}

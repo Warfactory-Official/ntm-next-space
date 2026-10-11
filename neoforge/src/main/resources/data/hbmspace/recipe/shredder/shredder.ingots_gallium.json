@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/gallium"
+    }
+  ],
+  "order": 53003,
+  "output_items": [
+    "hbmspace:powder_gallium"
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "type": "liquid",
+  "color": "#35302e",
+  "nfpa": {
+    "flame": 2,
+    "health": 1,
+    "react": 0
+  },
+  "symbol": "NONE",
+  "temperature": 20,
+  "traits": {
+    "flammable": {
+      "energy": 50000
+    }
+  }
+}

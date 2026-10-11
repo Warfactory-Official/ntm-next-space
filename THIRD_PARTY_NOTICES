@@ -1,0 +1,21 @@
+Notices for files contained in this distribution
+==============================================
+
+NTM: Space was created by JamesH_2 and Mellow, with contributions from
+the NTM: Space community. It derives from Hbm's Nuclear Tech Mod by
+HbmMods (The Bobcat) and that project's contributors.
+
+NTM: Space upstream:
+https://github.com/JameH2/Hbm-s-Nuclear-Tech-GIT
+
+Hbm's Nuclear Tech Mod upstream:
+https://github.com/HbmMods/Hbm-s-Nuclear-Tech-GIT
+
+The Minecraft 26.2 addon port is by movblock.
+These sources and resources are distributed under LGPL-3.0-only.
+The full GNU GPL and LGPL texts accompany this distribution in LICENSE
+and LICENSE.LESSER. Java files carry their own SPDX attribution headers;
+resource attribution is recorded in REUSE.toml.
+
+The Gradle wrapper is by the Gradle authors and is distributed under
+Apache-2.0; see LICENSES/Apache-2.0.txt.

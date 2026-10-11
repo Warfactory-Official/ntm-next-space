@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "hbmspace:block/machine_radiator"
+    },
+    "facing=north": {
+      "model": "hbmspace:block/machine_radiator",
+      "y": 270
+    },
+    "facing=south": {
+      "model": "hbmspace:block/machine_radiator",
+      "y": 90
+    },
+    "facing=west": {
+      "model": "hbmspace:block/machine_radiator",
+      "y": 180
+    }
+  }
+}

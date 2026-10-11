@@ -1,0 +1,40 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "!expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "blueprint_pools_528": [
+    "528.aluminium"
+  ],
+  "duration": 400,
+  "input_items": [
+    {
+      "count": 2,
+      "ingredient": "#hbm:ingots/any_rubber"
+    },
+    {
+      "count": 8,
+      "ingredient": "#c:fine_wires/copper"
+    },
+    {
+      "count": 2,
+      "ingredient": "#hbm:plates_cast/steel"
+    },
+    {
+      "count": 2,
+      "ingredient": "hbm:crt_display"
+    },
+    {
+      "count": 2,
+      "ingredient": "hbm:circuit_basic"
+    }
+  ],
+  "order": 110358,
+  "output_items": [
+    "hbmspace:machine_drive_processor"
+  ],
+  "power": 100
+}

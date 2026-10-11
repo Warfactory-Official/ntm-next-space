@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "hbmspace:block/orbital_station_launcher",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "hbmspace:block/orbital_station_launcher"
+    },
+    "facing=south": {
+      "model": "hbmspace:block/orbital_station_launcher",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "hbmspace:block/orbital_station_launcher",
+      "y": 270
+    }
+  }
+}

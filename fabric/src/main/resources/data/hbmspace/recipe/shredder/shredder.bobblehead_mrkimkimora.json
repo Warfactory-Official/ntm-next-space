@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "hbmspace:bobblehead_mrkimkimora"
+    }
+  ],
+  "order": 51201,
+  "output_items": [
+    "hbm:scrap_plastic_board_blank"
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "type": "hbm:legacy_jigsaw",
+  "biomes": [
+    "hbmspace:minmus_hills",
+    "hbmspace:minmus_basins"
+  ],
+  "max_height": 128,
+  "min_height": 1,
+  "size": 20,
+  "spawn_overrides": {},
+  "start_pool": "hbmspace:minmus_base/start",
+  "step": "strongholds"
+}

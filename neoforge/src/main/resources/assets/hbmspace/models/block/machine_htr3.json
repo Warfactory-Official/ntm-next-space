@@ -1,0 +1,31 @@
+{
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "hidden": [
+    "CoverTop",
+    "CoverBottom",
+    "Piston",
+    "ShroudH",
+    "ShroudV",
+    "SuspensionTop",
+    "SuspensionBottom",
+    "Engine",
+    "ExhaustVacuum"
+  ],
+  "loader": "hbm:obj",
+  "model": "hbmspace:models/machines/htr3.obj",
+  "offset_y": -3.0,
+  "skins": {
+    "all": [
+      "PipeL1",
+      "Center",
+      "PipeL2",
+      "PipeR1",
+      "PipeR2"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/machines/lpw2",
+    "particle": "hbm:block/block_steel"
+  }
+}

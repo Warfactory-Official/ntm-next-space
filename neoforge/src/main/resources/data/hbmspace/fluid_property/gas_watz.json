@@ -1,0 +1,33 @@
+{
+  "type": "gaseous",
+  "color": "#86653e",
+  "flags": [
+    "nocontainer",
+    "noid"
+  ],
+  "nfpa": {
+    "flame": 0,
+    "health": 4,
+    "react": 3
+  },
+  "symbol": "ACID",
+  "temperature": 2500,
+  "traits": {
+    "coolable": {
+      "amount_produced": 1,
+      "amount_req": 1,
+      "cools_to": "hbm:watz_mud",
+      "efficiency": {},
+      "heat_energy": 300
+    },
+    "polluting": {
+      "release": {
+        "POISON": 5.0E-4
+      }
+    },
+    "rocket": {
+      "isp": 1200,
+      "thrust": 700000
+    }
+  }
+}

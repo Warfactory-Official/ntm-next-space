@@ -1,0 +1,10 @@
+{
+  "type": "hbm:material_distribution",
+  "materials": [
+    {
+      "amount": 288,
+      "material": "conglomerate"
+    }
+  ],
+  "targets": "#c:ores/conglomerate"
+}

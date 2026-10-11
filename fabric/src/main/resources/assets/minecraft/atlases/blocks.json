@@ -1,0 +1,84 @@
+{
+  "sources": [
+    {
+      "type": "minecraft:single",
+      "resource": "hbmspace:misc/space/kerbol"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbmspace:block/algae_film"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbmspace:block/models/bombs/blomb_tex"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbmspace:block/models/fusion/htrf4"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbmspace:block/models/machines/air_scrubber"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbmspace:block/models/machines/alkylation_unit"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbmspace:block/models/machines/atmo_vent"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbmspace:block/models/machines/chungus_destroyed"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbmspace:block/models/machines/condenser_damaged"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbmspace:block/models/machines/cryo_distiller"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbmspace:block/models/machines/dish_controller"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbmspace:block/models/machines/machine_atmo_tower"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbmspace:block/models/machines/milker"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbmspace:block/models/machines/outtake"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbmspace:block/models/machines/solar_panel"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbmspace:block/models/machines/spaceship_computer"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbmspace:block/models/machines/stardar"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbmspace:block/models/machines/transporter_pad"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbmspace:block/models/machines/vacuum_solderer"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbmspace:block/models/xenon_thruster"
+    }
+  ]
+}

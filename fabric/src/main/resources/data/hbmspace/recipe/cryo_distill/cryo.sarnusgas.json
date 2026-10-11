@@ -1,0 +1,28 @@
+{
+  "type": "hbmspace:cryo_distill",
+  "input_fluids": [
+    {
+      "type": "hbmspace:sarnusgas",
+      "amount": 100
+    }
+  ],
+  "order": 1280,
+  "output_fluids": [
+    {
+      "type": "hbm:hydrogen",
+      "amount": 45
+    },
+    {
+      "type": "hbm:helium3",
+      "amount": 35
+    },
+    {
+      "type": "hbm:gas",
+      "amount": 15
+    },
+    {
+      "type": "hbmspace:nitrogen",
+      "amount": 5
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "type": "hbmspace:alkylation",
+  "input_fluids": [
+    {
+      "type": "hbm:petroleum",
+      "amount": 100
+    },
+    {
+      "type": "hbm:sulfuric_acid",
+      "amount": 50
+    }
+  ],
+  "order": 768,
+  "output_fluids": [
+    {
+      "type": "hbm:lightoil",
+      "amount": 50
+    },
+    {
+      "type": "hbm:peroxide",
+      "amount": 20
+    }
+  ]
+}

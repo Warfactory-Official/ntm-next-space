@@ -1,0 +1,7 @@
+{
+  "parent": "hbmspace:block/celestial_ore",
+  "textures": {
+    "overlay": "hbmspace:block/ore_schrabidium",
+    "stone": "hbmspace:block/duna_rock"
+  }
+}

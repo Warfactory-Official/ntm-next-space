@@ -1,0 +1,17 @@
+{
+  "type": "hbm:crafting_shaped",
+  "key": {
+    "C": "#hbm:wires_dense/gold",
+    "D": "#c:ingots/desh",
+    "M": "hbm:motor",
+    "P": "#hbm:ingots/any_plastic"
+  },
+  "pattern": [
+    "PCP",
+    "DMD",
+    "PCP"
+  ],
+  "result": {
+    "id": "hbm:motor_desh"
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "type": "hbm:assembly_machine",
+  "blueprint_pools_528": [
+    "528.controller"
+  ],
+  "duration": 400,
+  "input_items": [
+    {
+      "count": 16,
+      "ingredient": "#c:plates/stainless_steel"
+    },
+    {
+      "count": 32,
+      "ingredient": "#c:fine_wires/mingrade"
+    },
+    {
+      "count": 2,
+      "ingredient": "hbmspace:ingot_hafnium"
+    },
+    {
+      "ingredient": "hbm:circuit_analog"
+    },
+    {
+      "ingredient": "hbmspace:billet_gaas"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbm:magnetron"
+    }
+  ],
+  "order": 110081,
+  "output_items": [
+    "hbmspace:nuke_antimatter"
+  ],
+  "power": 100
+}

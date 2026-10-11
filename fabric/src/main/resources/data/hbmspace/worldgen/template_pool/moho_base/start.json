@@ -1,0 +1,17 @@
+{
+  "elements": [
+    {
+      "element": {
+        "element_type": "hbm:legacy_start",
+        "height_offset": -11,
+        "location": "hbmspace:moho_base/moho-core",
+        "processors": "hbm:multiblock_assembly",
+        "projection": "rigid",
+        "range_limit": 64,
+        "size_limit": 64
+      },
+      "weight": 1
+    }
+  ],
+  "fallback": "minecraft:empty"
+}

@@ -1,0 +1,24 @@
+{
+  "type": "hbm:crucible",
+  "frequency": 2,
+  "icon": {
+    "id": "hbmspace:ingot_stainless"
+  },
+  "input_materials": [
+    {
+      "amount": 8,
+      "material": "steel"
+    },
+    {
+      "amount": 8,
+      "material": "nickel_pure"
+    }
+  ],
+  "order": 3074,
+  "output_materials": [
+    {
+      "amount": 16,
+      "material": "stainless_steel"
+    }
+  ]
+}

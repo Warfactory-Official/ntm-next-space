@@ -1,0 +1,9 @@
+{
+  "feature": "hbm:ore_australium",
+  "placement": [
+    {
+      "type": "minecraft:count",
+      "count": 0
+    }
+  ]
+}

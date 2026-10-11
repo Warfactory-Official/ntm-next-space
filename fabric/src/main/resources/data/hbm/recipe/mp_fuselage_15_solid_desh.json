@@ -1,0 +1,15 @@
+{
+  "type": "hbm:crafting_shaped",
+  "key": {
+    "C": "#c:ingots/desh",
+    "T": "hbm:mp_fuselage_15_solid"
+  },
+  "pattern": [
+    "CCC",
+    "CTC",
+    "CCC"
+  ],
+  "result": {
+    "id": "hbm:mp_fuselage_15_solid_desh"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "type": "hbm:crystallizer",
+  "duration": 300,
+  "input_fluids": [
+    {
+      "type": "hbm:schrabidic",
+      "amount": 1000
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "hbmspace:mineral_dust"
+    }
+  ],
+  "order": 68623,
+  "output_items": [
+    "hbmspace:clump_schrabidic"
+  ]
+}

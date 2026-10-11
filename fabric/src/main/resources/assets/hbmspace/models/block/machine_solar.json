@@ -1,0 +1,16 @@
+{
+  "fabric:type": "hbm:obj",
+  "parent": "hbmspace:block/machine_solar_base",
+  "hidden": [
+    "connector_bottom",
+    "connector_front",
+    "connector_side",
+    "connector_top"
+  ],
+  "model": "hbmspace:models/machines/solar_panel.obj",
+  "skins": {
+    "all": [
+      "solar_panel"
+    ]
+  }
+}

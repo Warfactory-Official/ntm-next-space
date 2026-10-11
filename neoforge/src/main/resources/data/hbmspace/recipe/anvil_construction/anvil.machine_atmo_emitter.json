@@ -1,0 +1,26 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "count": 6,
+      "ingredient": "#hbm:pipes/steel"
+    },
+    {
+      "count": 8,
+      "ingredient": "#hbm:plates_cast/stainless_steel"
+    },
+    {
+      "count": 4,
+      "ingredient": "#hbm:ingots/any_plastic"
+    },
+    {
+      "ingredient": "hbm:turbine_titanium"
+    }
+  ],
+  "order": 22019,
+  "output_items": [
+    "hbmspace:machine_atmo_emitter"
+  ],
+  "overlay": "construction",
+  "tier": 2
+}

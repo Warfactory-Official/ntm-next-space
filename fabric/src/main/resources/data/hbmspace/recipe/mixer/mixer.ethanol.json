@@ -1,0 +1,21 @@
+{
+  "type": "hbm:mixer",
+  "duration": 30,
+  "input_fluids": [
+    {
+      "type": "hbmspace:chloroethane",
+      "amount": 250
+    },
+    {
+      "type": "hbm:redmud",
+      "amount": 300
+    }
+  ],
+  "order": 11009,
+  "output_fluids": [
+    {
+      "type": "hbm:ethanol",
+      "amount": 450
+    }
+  ]
+}

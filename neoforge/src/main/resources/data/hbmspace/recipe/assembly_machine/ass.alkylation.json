@@ -1,0 +1,40 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "!expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "blueprint_pools_528": [
+    "528.stainless"
+  ],
+  "duration": 400,
+  "input_items": [
+    {
+      "count": 12,
+      "ingredient": "#c:plates/stainless_steel"
+    },
+    {
+      "count": 6,
+      "ingredient": "#hbm:shells/steel"
+    },
+    {
+      "count": 8,
+      "ingredient": "hbm:circuit_capacitor"
+    },
+    {
+      "count": 12,
+      "ingredient": "hbm:catalyst_clay"
+    },
+    {
+      "count": 8,
+      "ingredient": "hbm:coil_tungsten"
+    }
+  ],
+  "order": 110348,
+  "output_items": [
+    "hbmspace:machine_alkylation"
+  ],
+  "power": 100
+}

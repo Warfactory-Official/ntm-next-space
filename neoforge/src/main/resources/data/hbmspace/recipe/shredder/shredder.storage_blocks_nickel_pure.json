@@ -1,0 +1,15 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "#c:storage_blocks/nickel_pure"
+    }
+  ],
+  "order": 53001,
+  "output_items": [
+    {
+      "count": 9,
+      "id": "hbmspace:powder_nickel"
+    }
+  ]
+}

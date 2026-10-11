@@ -1,0 +1,40 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "enable_528_pressurized"
+    }
+  ],
+  "type": "hbm:chemical_plant",
+  "custom_localization": true,
+  "duration": 250,
+  "icon": {
+    "components": {
+      "hbm:fluid_content": {
+        "type": "hbmspace:hydrazine",
+        "amount": 1000
+      }
+    },
+    "id": "hbm:canister"
+  },
+  "input_fluids": [
+    {
+      "type": "hbm:nitric_acid",
+      "amount": 2000
+    },
+    {
+      "type": "hbmspace:ammonia",
+      "amount": 1000,
+      "pressure": 1
+    }
+  ],
+  "name": "chem.hydrazinePressurized",
+  "order": 22021,
+  "output_fluids": [
+    {
+      "type": "hbmspace:hydrazine",
+      "amount": 800
+    }
+  ],
+  "power": 1000
+}

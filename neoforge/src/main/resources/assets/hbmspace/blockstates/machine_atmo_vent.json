@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "hbmspace:block/machine_atmo_vent",
+      "y": 270
+    },
+    "facing=north": {
+      "model": "hbmspace:block/machine_atmo_vent",
+      "y": 180
+    },
+    "facing=south": {
+      "model": "hbmspace:block/machine_atmo_vent"
+    },
+    "facing=west": {
+      "model": "hbmspace:block/machine_atmo_vent",
+      "y": 90
+    }
+  }
+}

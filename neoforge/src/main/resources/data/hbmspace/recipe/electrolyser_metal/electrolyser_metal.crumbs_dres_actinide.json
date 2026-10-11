@@ -1,0 +1,20 @@
+{
+  "type": "hbm:electrolyser_metal",
+  "duration": 20,
+  "input_items": [
+    {
+      "components": {
+        "hbm:bedrock_ore": {
+          "type": "dres_actinide",
+          "grade": "crumbs"
+        }
+      },
+      "ingredient": "hbm:bedrock_ore"
+    }
+  ],
+  "order": 9020,
+  "output_material": {
+    "amount": 288,
+    "material": "uranium"
+  }
+}

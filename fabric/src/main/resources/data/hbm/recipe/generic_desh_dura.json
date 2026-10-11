@@ -1,0 +1,11 @@
+{
+  "type": "hbm:crafting_shapeless",
+  "ingredients": [
+    "#c:plates/gun_metal",
+    "#hbm:plates_cast/desh",
+    "hbm:ducttape"
+  ],
+  "result": {
+    "id": "hbm:weapon_mod_generic_desh_dura"
+  }
+}

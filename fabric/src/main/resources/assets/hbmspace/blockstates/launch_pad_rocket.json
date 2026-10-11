@@ -1,0 +1,40 @@
+{
+  "variants": {
+    "cell=backward": {
+      "model": "hbmspace:block/launch_pad_rocket_cell"
+    },
+    "cell=clockwise": {
+      "model": "hbmspace:block/launch_pad_rocket_cell"
+    },
+    "cell=core,facing=east": {
+      "model": "hbmspace:block/launch_pad_rocket"
+    },
+    "cell=core,facing=north": {
+      "model": "hbmspace:block/launch_pad_rocket",
+      "y": 270
+    },
+    "cell=core,facing=south": {
+      "model": "hbmspace:block/launch_pad_rocket",
+      "y": 90
+    },
+    "cell=core,facing=west": {
+      "model": "hbmspace:block/launch_pad_rocket",
+      "y": 180
+    },
+    "cell=counter": {
+      "model": "hbmspace:block/launch_pad_rocket_cell"
+    },
+    "cell=down": {
+      "model": "hbmspace:block/launch_pad_rocket_cell"
+    },
+    "cell=forward": {
+      "model": "hbmspace:block/launch_pad_rocket_cell"
+    },
+    "cell=ladder": {
+      "model": "hbmspace:block/launch_pad_rocket_cell"
+    },
+    "cell=ladder_clockwise": {
+      "model": "hbmspace:block/launch_pad_rocket_cell"
+    }
+  }
+}

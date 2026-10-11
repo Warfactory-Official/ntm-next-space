@@ -1,0 +1,6 @@
+{
+  "fabric:remove": [
+    "hbm:part_stock_workers_alloy"
+  ],
+  "values": []
+}

@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/pvc"
+    }
+  ],
+  "order": 52996,
+  "output_items": [
+    "hbmspace:powder_pvc"
+  ]
+}

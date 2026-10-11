@@ -1,0 +1,14 @@
+{
+  "entries": [
+    {
+      "type": "hbm:radiation",
+      "level": 44.5
+    },
+    {
+      "type": "hbm:hot",
+      "level": 2.0
+    }
+  ],
+  "mutex": 1,
+  "targets": "#hbm:billets/chinesium_989"
+}

@@ -1,0 +1,20 @@
+{
+  "type": "hbm:cracking_tower",
+  "input_fluids": [
+    {
+      "type": "hbmspace:elbowgrease",
+      "amount": 100
+    }
+  ],
+  "order": 2562,
+  "output_fluids": [
+    {
+      "type": "hbm:mercury",
+      "amount": 70
+    },
+    {
+      "type": "hbm:sourgas",
+      "amount": 50
+    }
+  ]
+}

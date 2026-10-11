@@ -1,0 +1,15 @@
+{
+  "type": "hbm:liquefaction",
+  "input_items": [
+    {
+      "ingredient": "hbm:ingot_osmiridium"
+    }
+  ],
+  "order": 9218,
+  "output_fluids": [
+    {
+      "type": "hbm:ethanol",
+      "amount": 24000
+    }
+  ]
+}

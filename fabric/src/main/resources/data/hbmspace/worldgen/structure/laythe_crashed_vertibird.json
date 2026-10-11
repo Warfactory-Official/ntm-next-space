@@ -1,0 +1,10 @@
+{
+  "type": "hbm:single_piece",
+  "biomes": [
+    "hbmspace:laythe_islands"
+  ],
+  "height_offset": -10,
+  "spawn_overrides": {},
+  "start_pool": "hbm:single/crashed_vertibird",
+  "step": "strongholds"
+}

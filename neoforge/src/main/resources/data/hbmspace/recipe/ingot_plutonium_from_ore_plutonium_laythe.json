@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smelting",
+  "cookingtime": 200,
+  "experience": 24.0,
+  "ingredient": {
+    "neoforge:ingredient_type": "hbm:recipe_input",
+    "base": "hbmspace:ore_plutonium_laythe"
+  },
+  "result": {
+    "id": "hbm:ingot_plutonium"
+  }
+}

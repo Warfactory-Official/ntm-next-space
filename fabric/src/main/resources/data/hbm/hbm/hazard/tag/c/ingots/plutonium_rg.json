@@ -1,0 +1,14 @@
+{
+  "entries": [
+    {
+      "type": "hbm:radiation",
+      "level": 6.25
+    },
+    {
+      "type": "hbmspace:neutron",
+      "level": 0.1041666641831398
+    }
+  ],
+  "mutex": 1,
+  "targets": "#c:ingots/plutonium_rg"
+}

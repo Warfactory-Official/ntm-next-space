@@ -1,0 +1,14 @@
+{
+  "entries": [
+    {
+      "type": "hbm:radiation",
+      "level": 89.0
+    },
+    {
+      "type": "hbm:hot",
+      "level": 4.0
+    }
+  ],
+  "mutex": 1,
+  "targets": "#c:plates/chinesium_989"
+}

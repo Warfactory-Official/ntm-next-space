@@ -1,0 +1,32 @@
+{
+  "type": "hbm:chemical_plant",
+  "duration": 150,
+  "input_fluids": [
+    {
+      "type": "hbmspace:cream",
+      "amount": 1000
+    }
+  ],
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "#c:foods/butter"
+    },
+    {
+      "count": 2,
+      "ingredient": "hbmspace:minmus_smooth"
+    },
+    {
+      "count": 2,
+      "ingredient": "hbmspace:minmus_stone"
+    }
+  ],
+  "order": 22032,
+  "output_items": [
+    {
+      "count": 4,
+      "id": "hbmspace:min_cream"
+    }
+  ],
+  "power": 100
+}

@@ -1,0 +1,13 @@
+{
+  "type": "hbm:outgasser",
+  "duration": 10000,
+  "input_items": [
+    {
+      "ingredient": "#c:dusts/bismuth"
+    }
+  ],
+  "order": 1542,
+  "output_items": [
+    "hbm:powder_polonium"
+  ]
+}

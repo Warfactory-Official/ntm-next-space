@@ -1,0 +1,18 @@
+{
+  "fabric:type": "hbm:obj",
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "hidden": [
+    "drive"
+  ],
+  "model": "hbmspace:models/machines/spaceship_computer.obj",
+  "skins": {
+    "all": [
+      "base"
+    ]
+  },
+  "textures": {
+    "all": "hbmspace:block/models/machines/spaceship_computer",
+    "particle": "hbm:block/block_steel"
+  }
+}

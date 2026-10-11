@@ -1,0 +1,16 @@
+{
+  "elements": [
+    {
+      "element": {
+        "element_type": "hbm:legacy_start",
+        "location": "hbmspace:dres_rbmk/core",
+        "processors": "hbmspace:dres_lab_tiles",
+        "projection": "rigid",
+        "range_limit": 64,
+        "size_limit": 128
+      },
+      "weight": 1
+    }
+  ],
+  "fallback": "minecraft:empty"
+}

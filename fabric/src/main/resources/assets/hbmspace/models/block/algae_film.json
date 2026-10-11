@@ -1,0 +1,15 @@
+{
+  "fabric:type": "hbm:obj",
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "model": "hbmspace:models/blocks/algae_film.obj",
+  "skins": {
+    "all": [
+      "algae_film"
+    ]
+  },
+  "textures": {
+    "all": "hbmspace:block/algae_film",
+    "particle": "hbmspace:block/algae_film"
+  }
+}

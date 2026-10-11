@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smelting",
+  "cookingtime": 200,
+  "experience": 4.0,
+  "ingredient": {
+    "fabric:type": "hbm:recipe_input",
+    "base": "hbmspace:ore_niobium_mun"
+  },
+  "result": {
+    "id": "hbm:ingot_niobium"
+  }
+}

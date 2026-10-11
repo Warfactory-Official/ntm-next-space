@@ -1,0 +1,172 @@
+{
+  "ambientocclusion": false,
+  "display": {
+    "firstperson_lefthand": {
+      "rotation": [
+        -25.083788,
+        4.530514,
+        2.117508
+      ],
+      "scale": [
+        0.1125,
+        0.1125,
+        0.1125
+      ],
+      "translation": [
+        1.2360072,
+        3.9960794,
+        1.7745008
+      ]
+    },
+    "firstperson_righthand": {
+      "rotation": [
+        -25.083788,
+        4.530514,
+        2.117508
+      ],
+      "scale": [
+        0.1125,
+        0.1125,
+        0.1125
+      ],
+      "translation": [
+        -0.90908957,
+        3.9960794,
+        1.9621725
+      ]
+    },
+    "fixed": {
+      "rotation": [
+        0.0,
+        89.99999,
+        0.0
+      ],
+      "scale": [
+        0.28125,
+        0.28125,
+        0.28125
+      ],
+      "translation": [
+        -1.9670124E-7,
+        4.3629484,
+        3.1916122
+      ]
+    },
+    "ground": {
+      "rotation": [
+        -0.0,
+        -89.99999,
+        0.0
+      ],
+      "scale": [
+        0.140625,
+        0.140625,
+        0.140625
+      ],
+      "translation": [
+        9.835062E-8,
+        -0.5385256,
+        -1.3458061
+      ]
+    },
+    "gui": {
+      "rotation": [
+        30.0,
+        44.999996,
+        -0.0
+      ],
+      "scale": [
+        0.12890625,
+        0.12890625,
+        0.12890625
+      ],
+      "translation": [
+        -0.16521984,
+        -0.20072094,
+        -6.7704067
+      ]
+    },
+    "head": {
+      "rotation": [
+        179.99998,
+        50.000008,
+        25.000013
+      ],
+      "scale": [
+        0.45000002,
+        0.45000002,
+        0.45000005
+      ],
+      "translation": [
+        2.3132696,
+        -20.564281,
+        2.7568462
+      ]
+    },
+    "on_shelf": {
+      "rotation": [
+        -0.0,
+        -89.99999,
+        0.0
+      ],
+      "scale": [
+        0.5625,
+        0.5625,
+        0.5625
+      ],
+      "translation": [
+        3.9340247E-7,
+        13.845898,
+        -5.3832245
+      ]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [
+        15.499248,
+        -11.346807,
+        14.95515
+      ],
+      "scale": [
+        0.105468735,
+        0.10546874,
+        0.10546875
+      ],
+      "translation": [
+        0.45401978,
+        3.5758681,
+        1.9191406
+      ]
+    },
+    "thirdperson_righthand": {
+      "rotation": [
+        15.499248,
+        -11.346807,
+        14.95515
+      ],
+      "scale": [
+        0.105468735,
+        0.10546874,
+        0.10546875
+      ],
+      "translation": [
+        -2.6179824,
+        2.9341142,
+        1.101455
+      ]
+    }
+  },
+  "gui_light": "side",
+  "loader": "hbm:obj",
+  "model": "hbmspace:models/machines/condenser_damaged.obj",
+  "offset_x": 0.09813601,
+  "offset_y": -1.038433,
+  "skins": {
+    "all": [
+      "Condenser"
+    ]
+  },
+  "textures": {
+    "all": "hbmspace:block/models/machines/condenser_damaged",
+    "particle": "hbmspace:block/models/machines/condenser_damaged"
+  }
+}

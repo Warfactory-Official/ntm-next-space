@@ -1,0 +1,15 @@
+{
+  "type": "hbm:crafting_shaped",
+  "key": {
+    "B": "#hbm:billets/beryllium",
+    "N": "#hbm:wires_dense/neodymium"
+  },
+  "pattern": [
+    "BBN",
+    "BNB",
+    "NBB"
+  ],
+  "result": {
+    "id": "hbmspace:beryllium_mirror"
+  }
+}

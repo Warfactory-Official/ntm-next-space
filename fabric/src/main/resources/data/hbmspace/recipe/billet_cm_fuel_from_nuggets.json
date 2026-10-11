@@ -1,0 +1,14 @@
+{
+  "type": "hbm:crafting_shapeless",
+  "ingredients": [
+    "hbmspace:nugget_cm_mix",
+    "hbmspace:nugget_cm_mix",
+    "#c:nuggets/uranium_238",
+    "#c:nuggets/uranium_238",
+    "#c:nuggets/uranium_238",
+    "#c:nuggets/uranium_238"
+  ],
+  "result": {
+    "id": "hbmspace:billet_cm_fuel"
+  }
+}

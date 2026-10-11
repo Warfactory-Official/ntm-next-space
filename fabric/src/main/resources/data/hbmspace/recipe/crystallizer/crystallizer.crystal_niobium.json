@@ -1,0 +1,20 @@
+{
+  "type": "hbm:crystallizer",
+  "duration": 600,
+  "input_fluids": [
+    {
+      "type": "hbm:sulfuric_acid",
+      "amount": 500
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "#c:ores/niobium"
+    }
+  ],
+  "order": 68611,
+  "output_items": [
+    "hbmspace:crystal_niobium"
+  ],
+  "productivity": 0.05
+}

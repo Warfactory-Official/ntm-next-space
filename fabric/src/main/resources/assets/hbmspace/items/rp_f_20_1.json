@@ -1,0 +1,42 @@
+{
+  "model": {
+    "type": "hbm:mesh",
+    "base": "hbmspace:item/rp_f_20_1_base",
+    "flat_shaded": true,
+    "mesh": "hbmspace:models/missile_parts/mp_f_20_1_usa.obj",
+    "pose_suffix": {
+      "gui": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    "skins": [
+      "hbmspace:textures/models/missile_parts/fuselages/mp_f_20_kerosene.png"
+    ],
+    "spin": {
+      "axis": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "divisor": 25,
+      "modulus": 360,
+      "rate": 1.0
+    }
+  },
+  "oversized_in_gui": true
+}

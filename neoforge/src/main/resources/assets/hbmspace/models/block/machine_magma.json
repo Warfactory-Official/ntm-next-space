@@ -1,0 +1,23 @@
+{
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "hidden": [
+    "Drillhead",
+    "Blades"
+  ],
+  "loader": "hbm:obj",
+  "model": "hbmspace:models/machines/magma_drill.obj",
+  "offset_y": -3.0,
+  "skins": {
+    "all": [
+      "Foundation",
+      "Drill",
+      "Pistons",
+      "Cables"
+    ]
+  },
+  "textures": {
+    "all": "hbmspace:block/models/machines/magma_drill",
+    "particle": "hbmspace:block/models/machines/magma_drill"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "type": "hbm:crafting_shapeless",
+  "ingredients": [
+    "#c:nuggets/curium_244",
+    "#c:nuggets/curium_244",
+    "#c:nuggets/curium_245",
+    "#c:nuggets/curium_245",
+    "#c:nuggets/curium_245",
+    "#c:nuggets/curium_245"
+  ],
+  "result": {
+    "id": "hbmspace:billet_cm_mix"
+  }
+}

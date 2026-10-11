@@ -1,0 +1,22 @@
+{
+  "type": "hbm:crafting_shapeless",
+  "ingredients": [
+    "#c:dusts/iron",
+    "#c:dusts/iron",
+    "#c:dusts/iron",
+    "#c:dusts/iron",
+    "#hbmspace:dusts/any_coal_coke",
+    "#hbmspace:dusts/any_coal_coke",
+    "#hbmspace:dusts/any_coal_coke",
+    "#hbmspace:dusts/any_coal_coke"
+  ],
+  "result": {
+    "components": {
+      "hbm:scrap": {
+        "amount": 288,
+        "material": 30
+      }
+    },
+    "id": "hbm:scraps"
+  }
+}

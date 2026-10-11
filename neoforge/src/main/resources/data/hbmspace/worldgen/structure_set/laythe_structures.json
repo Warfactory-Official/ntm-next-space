@@ -1,0 +1,26 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 996583974,
+    "separation": 4,
+    "spacing": 16
+  },
+  "structures": [
+    {
+      "structure": "hbmspace:meteor_dungeon_laythe",
+      "weight": 1
+    },
+    {
+      "structure": "hbmspace:laythe_nuke_sub",
+      "weight": 6
+    },
+    {
+      "structure": "hbmspace:laythe_vertibird",
+      "weight": 6
+    },
+    {
+      "structure": "hbmspace:laythe_crashed_vertibird",
+      "weight": 6
+    }
+  ]
+}

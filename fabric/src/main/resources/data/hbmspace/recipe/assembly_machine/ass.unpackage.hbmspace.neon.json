@@ -1,0 +1,40 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 40,
+  "icon": {
+    "components": {
+      "hbm:fluid_content": {
+        "type": "hbmspace:neon",
+        "amount": 32000
+      },
+      "minecraft:custom_model_data": {
+        "colors": [
+          -920064
+        ]
+      }
+    },
+    "id": "hbm:fluid_icon"
+  },
+  "input_items": [
+    {
+      "components": {
+        "hbm:fluid_content": {
+          "type": "hbmspace:neon",
+          "amount": 32000
+        }
+      },
+      "ingredient": "hbm:fluid_pack"
+    }
+  ],
+  "order": 179720,
+  "output_fluids": [
+    {
+      "type": "hbmspace:neon",
+      "amount": 32000
+    }
+  ],
+  "output_items": [
+    "hbm:fluid_pack"
+  ],
+  "power": 100
+}

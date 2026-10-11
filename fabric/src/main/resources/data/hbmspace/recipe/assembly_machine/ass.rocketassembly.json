@@ -1,0 +1,38 @@
+{
+  "type": "hbm:assembly_machine",
+  "blueprint_pools_528": [
+    "528.aluminium"
+  ],
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 8,
+      "ingredient": "#hbm:plates_cast/steel"
+    },
+    {
+      "count": 12,
+      "ingredient": "#hbm:pipes/steel"
+    },
+    {
+      "count": 16,
+      "ingredient": "#c:concretes"
+    },
+    {
+      "count": 8,
+      "ingredient": "#hbm:ingots/any_plastic"
+    },
+    {
+      "count": 64,
+      "ingredient": "hbm:steel_scaffold"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbm:circuit_basic"
+    }
+  ],
+  "order": 110363,
+  "output_items": [
+    "hbmspace:machine_rocket_assembly"
+  ],
+  "power": 100
+}

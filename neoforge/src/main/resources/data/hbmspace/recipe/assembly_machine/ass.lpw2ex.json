@@ -1,0 +1,38 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "duration": 600,
+  "input_items": [
+    {
+      "count": 8,
+      "ingredient": "hbm:item_expensive_heavy_frame"
+    },
+    {
+      "count": 8,
+      "ingredient": "#hbm:shells/titanium"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbm:motor_desh"
+    },
+    {
+      "count": 8,
+      "ingredient": "#hbm:ingots/any_hard_plastic"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbm:item_expensive_circuit"
+    }
+  ],
+  "name": "ass.lpw2Ex",
+  "order": 110375,
+  "output_items": [
+    "hbm:machine_lpw2"
+  ],
+  "power": 100
+}

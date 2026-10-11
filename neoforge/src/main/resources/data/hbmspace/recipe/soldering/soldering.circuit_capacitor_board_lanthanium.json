@@ -1,0 +1,32 @@
+{
+  "type": "hbm:soldering",
+  "duration": 200,
+  "input_fluids": [
+    {
+      "type": "hbm:peroxide",
+      "amount": 500
+    }
+  ],
+  "input_items": [
+    {
+      "count": 3,
+      "ingredient": "hbmspace:circuit_capacitor_lanthanium"
+    }
+  ],
+  "order": 3843,
+  "output_items": [
+    "hbm:circuit_capacitor_board"
+  ],
+  "pcb": [
+    {
+      "ingredient": "hbm:circuit_pcb"
+    }
+  ],
+  "power": 300,
+  "solder": [
+    {
+      "count": 3,
+      "ingredient": "#c:fine_wires/lead"
+    }
+  ]
+}

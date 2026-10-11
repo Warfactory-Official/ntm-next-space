@@ -1,0 +1,21 @@
+{
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "hidden": [
+    "Support",
+    "Level"
+  ],
+  "loader": "hbm:obj",
+  "model": "hbmspace:models/machines/rocket_assembly.obj",
+  "offset_y": -2.0,
+  "skins": {
+    "all": [
+      "Base"
+    ]
+  },
+  "smooth": false,
+  "textures": {
+    "all": "hbmspace:block/models/machines/rocket_assembly",
+    "particle": "hbm:block/machine_missile_assembly"
+  }
+}

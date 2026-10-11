@@ -1,0 +1,17 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/stainless_steel"
+    }
+  ],
+  "order": 52993,
+  "output_items": [
+    {
+      "count": 4,
+      "id": "hbmspace:deco_stainless"
+    }
+  ],
+  "overlay": "construction",
+  "tier": 1
+}

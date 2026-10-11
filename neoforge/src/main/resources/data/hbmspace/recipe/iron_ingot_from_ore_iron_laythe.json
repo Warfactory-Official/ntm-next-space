@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smelting",
+  "cookingtime": 200,
+  "experience": 0.7,
+  "ingredient": {
+    "neoforge:ingredient_type": "hbm:recipe_input",
+    "base": "hbmspace:ore_iron_laythe"
+  },
+  "result": {
+    "id": "minecraft:iron_ingot"
+  }
+}

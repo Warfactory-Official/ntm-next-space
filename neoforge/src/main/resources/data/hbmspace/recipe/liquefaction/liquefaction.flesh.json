@@ -1,0 +1,15 @@
+{
+  "type": "hbm:liquefaction",
+  "input_items": [
+    {
+      "ingredient": "hbmspace:flesh"
+    }
+  ],
+  "order": 9217,
+  "output_fluids": [
+    {
+      "type": "hbm:blood",
+      "amount": 100
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "values": [
+    "#c:nuggets/australium",
+    "#c:nuggets/ayerite",
+    "#c:nuggets/berkelium_247",
+    "#c:nuggets/californium_251",
+    "#c:nuggets/californium_252",
+    "#c:nuggets/chinesium_989",
+    "#c:nuggets/curium_242",
+    "#c:nuggets/curium_243",
+    "#c:nuggets/curium_244",
+    "#c:nuggets/curium_245",
+    "#c:nuggets/curium_246",
+    "#c:nuggets/curium_247",
+    "#c:nuggets/curium_fuel",
+    "#c:nuggets/curium_rg",
+    "#c:nuggets/desh",
+    "#c:nuggets/einsteinium_253",
+    "#c:nuggets/gallium",
+    "#c:nuggets/gallium_arsenide",
+    "#c:nuggets/hafnium",
+    "#c:nuggets/lanthanum",
+    "#c:nuggets/menthol",
+    "#c:nuggets/nickel_pure",
+    "#c:nuggets/tasmanite",
+    "#c:nuggets/workers_alloy",
+    "#c:nuggets/zinc"
+  ]
+}

@@ -1,0 +1,6 @@
+{
+  "allow_nether_portals": false,
+  "combat_pod_despawn": false,
+  "max_probe_distance": 32000,
+  "max_station_distance": 32000
+}

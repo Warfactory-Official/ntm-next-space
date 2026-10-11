@@ -1,0 +1,24 @@
+{
+  "type": "hbmspace:alkylation",
+  "input_fluids": [
+    {
+      "type": "hbm:xylene",
+      "amount": 100
+    },
+    {
+      "type": "hbmspace:ccl",
+      "amount": 60
+    }
+  ],
+  "order": 1024,
+  "output_fluids": [
+    {
+      "type": "hbm:reformgas",
+      "amount": 100
+    },
+    {
+      "type": "hbmspace:chloromethane",
+      "amount": 50
+    }
+  ]
+}

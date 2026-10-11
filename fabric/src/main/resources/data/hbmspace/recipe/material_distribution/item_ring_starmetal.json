@@ -1,0 +1,10 @@
+{
+  "type": "hbm:material_distribution",
+  "materials": [
+    {
+      "amount": 288,
+      "material": "starmetal"
+    }
+  ],
+  "targets": "hbm:ring_starmetal"
+}

@@ -1,0 +1,16 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "hbmspace:item/entity_depthsquid_spawn_egg",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 46303
+      },
+      {
+        "type": "minecraft:constant",
+        "value": 90245
+      }
+    ]
+  }
+}

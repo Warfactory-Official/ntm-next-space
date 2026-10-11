@@ -1,0 +1,14 @@
+{
+  "type": "hbm:crafting_shaped",
+  "key": {
+    "G": "minecraft:glass"
+  },
+  "pattern": [
+    "G G",
+    "GGG",
+    " G "
+  ],
+  "result": {
+    "id": "hbmspace:glass_empty"
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "!expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "blueprint_pools_528": [
+    "528.stainless"
+  ],
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 16,
+      "ingredient": "#c:plates/stainless_steel"
+    },
+    {
+      "ingredient": {
+        "neoforge:ingredient_type": "hbm:fluid_content",
+        "amount": 16000,
+        "fluid": "minecraft:water"
+      }
+    },
+    {
+      "count": 6,
+      "ingredient": "#hbm:pipes/steel"
+    },
+    {
+      "count": 8,
+      "ingredient": "#c:glass_blocks/colorless"
+    },
+    {
+      "count": 8,
+      "ingredient": "minecraft:dirt"
+    },
+    {
+      "count": 2,
+      "ingredient": "#hbm:ingots/any_plastic"
+    }
+  ],
+  "order": 110339,
+  "output_items": [
+    "hbmspace:hydrobay"
+  ],
+  "power": 100
+}

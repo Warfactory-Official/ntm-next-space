@@ -1,0 +1,13 @@
+{
+  "type": "hbm:solidification",
+  "input_fluids": [
+    {
+      "type": "hbmspace:aqueous_nickel",
+      "amount": 500
+    }
+  ],
+  "order": 1538,
+  "output_items": [
+    "hbmspace:nickel_salts"
+  ]
+}

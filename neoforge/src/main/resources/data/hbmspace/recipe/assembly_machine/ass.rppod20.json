@@ -1,0 +1,34 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "#hbm:shells/aluminum"
+    },
+    {
+      "count": 8,
+      "ingredient": "#c:plates/stainless_steel"
+    },
+    {
+      "count": 4,
+      "ingredient": "#c:ingots/fiberglass"
+    },
+    {
+      "count": 2,
+      "ingredient": "#hbm:ingots/any_plastic"
+    },
+    {
+      "ingredient": "hbmspace:circuit_avionics"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbm:thruster_small"
+    }
+  ],
+  "order": 110371,
+  "output_items": [
+    "hbmspace:rp_pod_20"
+  ],
+  "power": 100
+}

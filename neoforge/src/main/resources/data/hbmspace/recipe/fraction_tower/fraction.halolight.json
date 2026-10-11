@@ -1,0 +1,20 @@
+{
+  "type": "hbm:fraction_tower",
+  "input_fluids": [
+    {
+      "type": "hbmspace:halolight",
+      "amount": 100
+    }
+  ],
+  "order": 4611,
+  "output_fluids": [
+    {
+      "type": "hbm:phosgene",
+      "amount": 35
+    },
+    {
+      "type": "hbmspace:chloroethane",
+      "amount": 75
+    }
+  ]
+}

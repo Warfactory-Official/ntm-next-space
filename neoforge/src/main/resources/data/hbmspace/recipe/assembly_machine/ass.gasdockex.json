@@ -1,0 +1,32 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 2,
+      "ingredient": "hbm:item_expensive_steel_plating"
+    },
+    {
+      "count": 4,
+      "ingredient": "#hbm:ingots/any_rubber"
+    },
+    {
+      "ingredient": "hbm:thruster_small"
+    },
+    {
+      "ingredient": "hbmspace:item_expensive_avionics"
+    }
+  ],
+  "name": "ass.gasdockEx",
+  "order": 110355,
+  "output_items": [
+    "hbmspace:gas_dock"
+  ],
+  "power": 100
+}

@@ -1,0 +1,23 @@
+{
+  "ambientocclusion": false,
+  "double_sided": [
+    "Base"
+  ],
+  "gui_light": "side",
+  "hidden": [
+    "Fan"
+  ],
+  "loader": "hbm:obj",
+  "model": "hbmspace:models/machines/outtake.obj",
+  "offset_x": -0.5,
+  "offset_z": 0.5,
+  "skins": {
+    "all": [
+      "Base"
+    ]
+  },
+  "textures": {
+    "all": "hbmspace:block/models/machines/outtake",
+    "particle": "hbmspace:block/models/machines/outtake"
+  }
+}

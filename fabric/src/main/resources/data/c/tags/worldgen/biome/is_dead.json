@@ -1,0 +1,21 @@
+{
+  "values": [
+    "hbmspace:duna_hills",
+    "hbmspace:duna_lowlands",
+    "hbmspace:duna_plains",
+    "hbmspace:duna_polar",
+    "hbmspace:duna_polar_hills",
+    "hbmspace:eve_mountains",
+    "hbmspace:eve_ocean",
+    "hbmspace:eve_plains",
+    "hbmspace:eve_river",
+    "hbmspace:eve_seismic_plains",
+    "hbmspace:minmus_basins",
+    "hbmspace:minmus_hills",
+    "hbmspace:tekto_forest",
+    "hbmspace:tekto_halogen_hills",
+    "hbmspace:tekto_polyvinyl_plains",
+    "hbmspace:tekto_tetrachloride_river",
+    "hbmspace:tekto_vinyl_desert"
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "hbmspace:block/capacitor_complex_down"
+    },
+    "facing=east": {
+      "model": "hbmspace:block/capacitor_complex_east"
+    },
+    "facing=north": {
+      "model": "hbmspace:block/capacitor_complex_north"
+    },
+    "facing=south": {
+      "model": "hbmspace:block/capacitor_complex_south"
+    },
+    "facing=up": {
+      "model": "hbmspace:block/capacitor_complex"
+    },
+    "facing=west": {
+      "model": "hbmspace:block/capacitor_complex_west"
+    }
+  }
+}

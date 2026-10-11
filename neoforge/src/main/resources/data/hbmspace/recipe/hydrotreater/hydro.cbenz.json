@@ -1,0 +1,27 @@
+{
+  "type": "hbm:hydrotreater",
+  "duration": 2,
+  "input_fluids": [
+    {
+      "type": "hbmspace:cbenz",
+      "amount": 100
+    },
+    {
+      "type": "hbm:hydrogen",
+      "amount": 10,
+      "pressure": 1
+    }
+  ],
+  "order": 1282,
+  "output_fluids": [
+    {
+      "type": "hbm:xylene",
+      "amount": 50
+    },
+    {
+      "type": "hbm:chlorine",
+      "amount": 40
+    }
+  ],
+  "power": 20000
+}

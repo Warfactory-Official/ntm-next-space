@@ -1,0 +1,22 @@
+{
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "hidden": [
+    "ArmZN",
+    "ArmZP",
+    "ArmXP",
+    "ArmXN"
+  ],
+  "loader": "hbm:obj",
+  "model": "hbmspace:models/machines/docking_port.obj",
+  "offset_y": 1.0,
+  "skins": {
+    "all": [
+      "Port"
+    ]
+  },
+  "textures": {
+    "all": "hbmspace:block/models/machines/docking_port_launcher",
+    "particle": "hbm:block/block_steel"
+  }
+}

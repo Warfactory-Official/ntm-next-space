@@ -1,0 +1,176 @@
+{
+  "ambientocclusion": false,
+  "display": {
+    "firstperson_lefthand": {
+      "rotation": [
+        154.91621,
+        -4.5305095,
+        177.88249
+      ],
+      "scale": [
+        0.225,
+        0.225,
+        0.22499998
+      ],
+      "translation": [
+        0.13285816,
+        4.7490587,
+        1.5185525
+      ]
+    },
+    "firstperson_righthand": {
+      "rotation": [
+        154.91621,
+        -4.5305095,
+        177.88249
+      ],
+      "scale": [
+        0.225,
+        0.225,
+        0.22499998
+      ],
+      "translation": [
+        0.13285625,
+        4.7490587,
+        1.5185525
+      ]
+    },
+    "fixed": {
+      "rotation": [
+        -0.0,
+        -90.0,
+        0.0
+      ],
+      "scale": [
+        0.5625,
+        0.5625,
+        0.5625
+      ],
+      "translation": [
+        0.0,
+        6.4400005,
+        0.5
+      ]
+    },
+    "ground": {
+      "rotation": [
+        0.0,
+        90.0,
+        0.0
+      ],
+      "scale": [
+        0.28125,
+        0.28125,
+        0.28125
+      ],
+      "translation": [
+        0.0,
+        0.5,
+        0.0
+      ]
+    },
+    "gui": {
+      "rotation": [
+        -150.0,
+        -44.999996,
+        -180.0
+      ],
+      "scale": [
+        0.375,
+        0.375,
+        0.37500003
+      ],
+      "translation": [
+        4.7683716E-7,
+        -0.26794958,
+        -6.999999
+      ]
+    },
+    "head": {
+      "rotation": [
+        -0.0,
+        -50.000004,
+        154.99998
+      ],
+      "scale": [
+        0.90000004,
+        0.90000004,
+        0.90000004
+      ],
+      "translation": [
+        3.919342,
+        -25.396236,
+        4.670889
+      ]
+    },
+    "on_shelf": {
+      "rotation": [
+        0.0,
+        90.0,
+        0.0
+      ],
+      "scale": [
+        1.125,
+        1.125,
+        1.125
+      ],
+      "translation": [
+        0.0,
+        18.0,
+        0.0
+      ]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [
+        -164.50075,
+        11.34681,
+        165.04486
+      ],
+      "scale": [
+        0.21093747,
+        0.21093749,
+        0.2109375
+      ],
+      "translation": [
+        -0.69916415,
+        4.111845,
+        1.8276329
+      ]
+    },
+    "thirdperson_righthand": {
+      "rotation": [
+        -164.50075,
+        11.34681,
+        165.04486
+      ],
+      "scale": [
+        0.21093747,
+        0.21093749,
+        0.2109375
+      ],
+      "translation": [
+        -1.8589518,
+        3.8695617,
+        1.5189273
+      ]
+    }
+  },
+  "double_sided": [
+    "Base",
+    "Fan"
+  ],
+  "gui_light": "side",
+  "loader": "hbm:obj",
+  "model": "hbmspace:models/machines/air_scrubber.obj",
+  "offset_y": -0.5,
+  "skins": {
+    "all": [
+      "Base",
+      "Fan"
+    ]
+  },
+  "textures": {
+    "all": "hbmspace:block/models/machines/air_scrubber",
+    "particle": "hbmspace:block/models/machines/air_scrubber"
+  }
+}

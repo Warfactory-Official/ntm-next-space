@@ -1,0 +1,25 @@
+{
+  "type": "hbmspace:vacuum_circuit",
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 8,
+      "ingredient": "hbm:circuit_chip"
+    }
+  ],
+  "order": 0,
+  "output_items": [
+    "hbmspace:circuit_processt1"
+  ],
+  "pcb": [
+    {
+      "count": 2,
+      "ingredient": "hbm:circuit_pcb"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbm:circuit_capacitor"
+    }
+  ],
+  "power": 250
+}

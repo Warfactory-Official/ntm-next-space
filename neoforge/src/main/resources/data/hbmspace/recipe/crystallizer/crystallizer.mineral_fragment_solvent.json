@@ -1,0 +1,19 @@
+{
+  "type": "hbm:crystallizer",
+  "duration": 300,
+  "input_fluids": [
+    {
+      "type": "hbm:solvent",
+      "amount": 500
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "hbmspace:mineral_dust"
+    }
+  ],
+  "order": 68621,
+  "output_items": [
+    "hbmspace:clump_solvent"
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "ambientocclusion": false,
+  "elements": [
+    {
+      "faces": {
+        "north": {
+          "texture": "#vine",
+          "uv": [
+            16,
+            0,
+            0,
+            16
+          ]
+        },
+        "south": {
+          "texture": "#vine",
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ]
+        }
+      },
+      "from": [
+        0.0,
+        0.0,
+        0.8
+      ],
+      "shade": false,
+      "to": [
+        16.0,
+        16.0,
+        0.8
+      ]
+    }
+  ],
+  "textures": {
+    "particle": "hbmspace:block/vine",
+    "vine": "hbmspace:block/vine"
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "clock": "hbmspace:duna",
+  "period_ticks": 72889,
+  "tracks": {
+    "minecraft:gameplay/baby_villager_activity": {
+      "keyframes": [
+        {
+          "ticks": 30,
+          "value": "minecraft:idle"
+        },
+        {
+          "ticks": 9111,
+          "value": "minecraft:play"
+        },
+        {
+          "ticks": 18222,
+          "value": "minecraft:idle"
+        },
+        {
+          "ticks": 30370,
+          "value": "minecraft:play"
+        },
+        {
+          "ticks": 36445,
+          "value": "minecraft:rest"
+        }
+      ]
+    },
+    "minecraft:gameplay/villager_activity": {
+      "keyframes": [
+        {
+          "ticks": 30,
+          "value": "minecraft:idle"
+        },
+        {
+          "ticks": 6074,
+          "value": "minecraft:work"
+        },
+        {
+          "ticks": 27333,
+          "value": "minecraft:meet"
+        },
+        {
+          "ticks": 33407,
+          "value": "minecraft:idle"
+        },
+        {
+          "ticks": 36445,
+          "value": "minecraft:rest"
+        }
+      ]
+    }
+  }
+}

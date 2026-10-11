@@ -1,0 +1,48 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "!expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "blueprint_pools_528": [
+    "528.aluminium"
+  ],
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "hbm:motor"
+    },
+    {
+      "count": 16,
+      "ingredient": "#hbm:plates_cast/gold"
+    },
+    {
+      "count": 32,
+      "ingredient": "hbm:photo_panel"
+    },
+    {
+      "count": 32,
+      "ingredient": "hbm:magnetron"
+    },
+    {
+      "count": 16,
+      "ingredient": "#c:concretes"
+    },
+    {
+      "count": 8,
+      "ingredient": "hbm:steel_scaffold"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbm:circuit_basic"
+    }
+  ],
+  "order": 110356,
+  "output_items": [
+    "hbmspace:machine_stardar"
+  ],
+  "power": 100
+}

@@ -1,0 +1,45 @@
+{
+  "elements": [
+    {
+      "element": {
+        "element_type": "hbm:legacy_piece",
+        "height_offset": -14,
+        "location": "hbmspace:moho_base/moho-corner-lab",
+        "processors": "hbm:multiblock_assembly",
+        "projection": "rigid"
+      },
+      "weight": 2
+    },
+    {
+      "element": {
+        "element_type": "hbm:legacy_piece",
+        "height_offset": -17,
+        "location": "hbmspace:moho_base/moho-corner-heffer",
+        "processors": "hbm:multiblock_assembly",
+        "projection": "rigid"
+      },
+      "weight": 2
+    },
+    {
+      "element": {
+        "element_type": "hbm:legacy_piece",
+        "height_offset": -11,
+        "location": "hbmspace:moho_base/moho-corner-extension",
+        "processors": "hbm:multiblock_assembly",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "hbm:legacy_piece",
+        "height_offset": -11,
+        "location": "hbmspace:moho_base/moho-corner-empty",
+        "processors": "hbm:multiblock_assembly",
+        "projection": "rigid"
+      },
+      "weight": 1
+    }
+  ],
+  "fallback": "hbmspace:moho_base/fallback"
+}

@@ -1,0 +1,38 @@
+{
+  "type": "liquid",
+  "color": "#7a5542",
+  "flags": [
+    "viscous"
+  ],
+  "nfpa": {
+    "flame": 0,
+    "health": 0,
+    "react": 0
+  },
+  "symbol": "NONE",
+  "temperature": 200,
+  "traits": {
+    "corrosive": {
+      "rating": 65
+    },
+    "heatable": {
+      "efficiency": {
+        "PWR": 1.0
+      },
+      "steps": [
+        {
+          "amount_produced": 1,
+          "amount_req": 1,
+          "heat_req": 300,
+          "produces": "hbmspace:gaseous_thorium_bromide"
+        }
+      ]
+    },
+    "pwrmoderator": {
+      "multiplier": 1.5
+    },
+    "ventradiation": {
+      "rad_per_mb": 0.1
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "block.hbm.barrel_antimatter": "Магнитный контейнер для антиматерии",
+  "block.hbm.machine_orbus": "Тяжёлый магнитный контейнер для антиматерии",
+  "block.hbm.red_pylon": "Малый электрический столб",
+  "block.hbm.red_pylon_large": "ЛЭП",
+  "block.hbm.red_pylon_medium_steel": "Средний стальной электрический столб",
+  "block.hbm.red_pylon_medium_steel_transformer": "Средний стальной электрический столб с трансформатором",
+  "block.hbm.red_pylon_medium_wood": "Средний деревянный электрический столб",
+  "block.hbm.red_pylon_medium_wood_transformer": "Средний деревянный электрический столб с трансформатором",
+  "block.hbm.refueler": "Станция заправки",
+  "container.frackingTower": "Башня гидроразрыва пласта",
+  "container.orbus": "Тяжёлый магнитный контейнер для антиматерии",
+  "item.hbm.battery_sc.desc": "Радиовольтаический устройства не подходят для\nаккумуляторных разъемов! Выходная мощность может\nбыть нестабильной, и может возникнуть опасное\nискрение!",
+  "item.hbm.chunk_ore_moonstone": "Кусок лунного камня",
+  "item.hbm.detonator_de": "Взрывчатка смертинка",
+  "item.hbm.detonator_deadman": "Детонатор смертинка",
+  "item.hbm.radx.desc": "Даёт повышенное сопративление радиации на 0,2 (37%%) в течение 3-х минут."
+}

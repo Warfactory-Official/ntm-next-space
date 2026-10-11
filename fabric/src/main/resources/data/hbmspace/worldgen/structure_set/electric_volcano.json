@@ -1,0 +1,15 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "frequency": 0.001,
+    "salt": 413018,
+    "separation": 0,
+    "spacing": 1
+  },
+  "structures": [
+    {
+      "structure": "hbmspace:electric_volcano",
+      "weight": 1
+    }
+  ]
+}

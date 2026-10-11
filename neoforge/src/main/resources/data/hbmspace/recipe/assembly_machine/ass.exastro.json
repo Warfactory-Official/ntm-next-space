@@ -1,0 +1,38 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "!enable_528"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "duration": 2000,
+  "input_fluids": [
+    {
+      "type": "hbmspace:argon",
+      "amount": 1000
+    }
+  ],
+  "input_items": [
+    {
+      "count": 2,
+      "ingredient": "hbmspace:item_expensive_avionics"
+    },
+    {
+      "ingredient": "hbm:circuit_controller_advanced"
+    },
+    {
+      "count": 32,
+      "ingredient": "hbmspace:circuit_molychip"
+    },
+    {
+      "count": 16,
+      "ingredient": "hbmspace:circuit_gaschip"
+    }
+  ],
+  "order": 6404,
+  "output_items": [
+    "hbmspace:item_expensive_astro"
+  ],
+  "power": 100000
+}

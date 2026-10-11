@@ -1,0 +1,14 @@
+{
+  "entries": [
+    {
+      "type": "hbm:radiation",
+      "level": 2.0
+    },
+    {
+      "type": "hbmspace:neutron",
+      "level": 0.03999999910593033
+    }
+  ],
+  "mutex": 1,
+  "targets": "#c:ingots/curium_244"
+}

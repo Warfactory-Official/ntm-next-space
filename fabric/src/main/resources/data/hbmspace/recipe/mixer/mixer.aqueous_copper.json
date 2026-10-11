@@ -1,0 +1,22 @@
+{
+  "type": "hbm:mixer",
+  "duration": 80,
+  "input_fluids": [
+    {
+      "type": "hbmspace:brine",
+      "amount": 250
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "hbm:chunk_ore_malachite"
+    }
+  ],
+  "order": 12035,
+  "output_fluids": [
+    {
+      "type": "hbmspace:aqueous_copper",
+      "amount": 1000
+    }
+  ]
+}

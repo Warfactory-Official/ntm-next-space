@@ -1,0 +1,15 @@
+{
+  "elements": [
+    {
+      "element": {
+        "element_type": "hbm:legacy_piece",
+        "height_offset": -11,
+        "location": "hbmspace:moho_base/moho-snorkel",
+        "processors": "hbm:multiblock_assembly",
+        "projection": "rigid"
+      },
+      "weight": 1
+    }
+  ],
+  "fallback": "minecraft:empty"
+}

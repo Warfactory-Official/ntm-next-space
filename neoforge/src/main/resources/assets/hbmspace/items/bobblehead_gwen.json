@@ -1,0 +1,6 @@
+{
+  "model": {
+    "type": "hbm:bobble",
+    "base": "hbmspace:item/bobblehead_gwen_base"
+  }
+}

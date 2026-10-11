@@ -1,0 +1,23 @@
+{
+  "type": "hbm:crafting_shapeless",
+  "ingredients": [
+    "hbmspace:powder_coffee",
+    "minecraft:milk_bucket",
+    {
+      "neoforge:ingredient_type": "neoforge:components",
+      "components": {
+        "minecraft:potion_contents": "minecraft:water"
+      },
+      "items": "minecraft:potion"
+    },
+    "minecraft:sugar"
+  ],
+  "input_state": {
+    "1": {
+      "preserve": "remainder"
+    }
+  },
+  "result": {
+    "id": "hbm:coffee"
+  }
+}

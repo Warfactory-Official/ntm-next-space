@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "hbmspace:block/dyson_converter_anatmogenesis",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "hbmspace:block/dyson_converter_anatmogenesis"
+    },
+    "facing=south": {
+      "model": "hbmspace:block/dyson_converter_anatmogenesis",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "hbmspace:block/dyson_converter_anatmogenesis",
+      "y": 270
+    }
+  }
+}

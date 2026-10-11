@@ -1,0 +1,9 @@
+{
+  "feature": "hbm:ore_gneiss_lithium",
+  "placement": [
+    {
+      "type": "minecraft:count",
+      "count": 0
+    }
+  ]
+}

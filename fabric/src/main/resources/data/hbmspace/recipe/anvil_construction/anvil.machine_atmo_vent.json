@@ -1,0 +1,26 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "#hbm:shells/steel"
+    },
+    {
+      "count": 4,
+      "ingredient": "#c:plates/stainless_steel"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbm:concrete_smooth"
+    },
+    {
+      "ingredient": "hbm:turbine_titanium"
+    }
+  ],
+  "order": 22018,
+  "output_items": [
+    "hbmspace:machine_atmo_vent"
+  ],
+  "overlay": "construction",
+  "tier": 2
+}

@@ -1,0 +1,23 @@
+{
+  "type": "hbm:mixer",
+  "duration": 50,
+  "input_fluids": [
+    {
+      "type": "minecraft:water",
+      "amount": 500
+    }
+  ],
+  "input_items": [
+    {
+      "count": 2,
+      "ingredient": "hbmspace:tea_leaf"
+    }
+  ],
+  "order": 10243,
+  "output_fluids": [
+    {
+      "type": "hbmspace:tea",
+      "amount": 200
+    }
+  ]
+}

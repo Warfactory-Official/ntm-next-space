@@ -1,0 +1,20 @@
+{
+  "type": "hbm:crystallizer",
+  "duration": 600,
+  "input_fluids": [
+    {
+      "type": "hbmspace:hcl",
+      "amount": 500
+    }
+  ],
+  "input_items": [
+    {
+      "count": 64,
+      "ingredient": "hbmspace:leaf_rubber"
+    }
+  ],
+  "order": 68617,
+  "output_items": [
+    "hbm:ingot_rubber"
+  ]
+}

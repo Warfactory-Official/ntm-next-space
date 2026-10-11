@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/crop",
+  "textures": {
+    "crop": "hbmspace:block/plant_tall_laythe.laythe.lower"
+  }
+}

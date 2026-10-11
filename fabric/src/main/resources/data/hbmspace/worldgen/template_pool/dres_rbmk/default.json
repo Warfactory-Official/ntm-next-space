@@ -1,0 +1,41 @@
+{
+  "elements": [
+    {
+      "element": {
+        "element_type": "hbm:legacy_piece",
+        "location": "hbmspace:dres_rbmk/t",
+        "processors": "hbmspace:dres_lab_tiles",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "hbm:legacy_piece",
+        "location": "hbmspace:dres_rbmk/airlock",
+        "processors": "hbmspace:dres_lab_tiles",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "hbm:legacy_piece",
+        "location": "hbmspace:dres_rbmk/dome",
+        "processors": "hbmspace:dres_lab_tiles",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "hbm:legacy_piece",
+        "location": "hbmspace:dres_rbmk/pool",
+        "processors": "hbmspace:dres_lab_tiles",
+        "projection": "rigid"
+      },
+      "weight": 1
+    }
+  ],
+  "fallback": "hbmspace:dres_rbmk/inback"
+}

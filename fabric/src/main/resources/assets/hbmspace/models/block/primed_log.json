@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "hbmspace:block/primed_log_top",
+    "side": "hbmspace:block/primed_log_side"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "type": "hbm:crystallizer",
+  "duration": 600,
+  "input_fluids": [
+    {
+      "type": "hbm:peroxide",
+      "amount": 500
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "#c:ores/red_phosphorus"
+    }
+  ],
+  "order": 68609,
+  "output_items": [
+    "hbm:crystal_phosphorus"
+  ],
+  "productivity": 0.05
+}

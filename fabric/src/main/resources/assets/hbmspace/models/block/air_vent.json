@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "bottom": "hbm:block/vent_chlorine_seal_side",
+    "side": "hbm:block/vent_chlorine_seal_side",
+    "top": "hbm:block/vent_chlorine_seal_top"
+  }
+}

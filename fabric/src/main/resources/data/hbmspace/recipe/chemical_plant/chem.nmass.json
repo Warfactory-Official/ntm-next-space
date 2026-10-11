@@ -1,0 +1,34 @@
+{
+  "type": "hbm:chemical_plant",
+  "duration": 250,
+  "input_fluids": [
+    {
+      "type": "hbm:schrabidic",
+      "amount": 650
+    },
+    {
+      "type": "hbm:iongel",
+      "amount": 800
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "hbm:pellet_charged"
+    },
+    {
+      "ingredient": "hbm:ingot_euphemium"
+    }
+  ],
+  "order": 22028,
+  "output_fluids": [
+    {
+      "type": "hbmspace:nmass",
+      "amount": 1000
+    },
+    {
+      "type": "hbm:wastegas",
+      "amount": 2000
+    }
+  ],
+  "power": 10000
+}

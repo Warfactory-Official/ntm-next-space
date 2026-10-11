@@ -1,0 +1,12 @@
+{
+  "type": "hbm:crafting_shapeless",
+  "ingredients": [
+    "hbmspace:billet_cm_mix",
+    "hbmspace:billet_cm_mix",
+    "hbmspace:billet_cm_mix"
+  ],
+  "result": {
+    "count": 2,
+    "id": "hbmspace:ingot_cm_mix"
+  }
+}

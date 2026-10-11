@@ -1,0 +1,12 @@
+{
+  "type": "hbm:crafting_shapeless",
+  "ingredients": [
+    "hbmspace:billet_bk247",
+    "hbmspace:billet_bk247",
+    "hbmspace:billet_bk247",
+    "#c:plates/nickel_pure"
+  ],
+  "result": {
+    "id": "hbmspace:pellet_rtg_berkelium"
+  }
+}

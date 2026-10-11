@@ -1,0 +1,15 @@
+{
+  "fabric:type": "hbm:obj",
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "model": "hbmspace:models/machines/alkylation_unit.obj",
+  "skins": {
+    "all": [
+      "Cylinder"
+    ]
+  },
+  "textures": {
+    "all": "hbmspace:block/models/machines/alkylation_unit",
+    "particle": "hbmspace:block/models/machines/alkylation_unit"
+  }
+}

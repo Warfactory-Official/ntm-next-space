@@ -1,0 +1,20 @@
+{
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "hidden": [
+    "Exhaust"
+  ],
+  "loader": "hbm:obj",
+  "model": "hbmspace:models/xenon_thruster.obj",
+  "offset_y": -1.0,
+  "offset_z": -0.5,
+  "skins": {
+    "all": [
+      "Thruster"
+    ]
+  },
+  "textures": {
+    "all": "hbmspace:block/models/xenon_thruster",
+    "particle": "hbm:block/block_steel"
+  }
+}

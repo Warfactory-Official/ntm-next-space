@@ -1,0 +1,18 @@
+{
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "hidden": [
+    "Fan"
+  ],
+  "loader": "hbm:obj",
+  "model": "hbmspace:models/machines/air_scrubber.obj",
+  "skins": {
+    "all": [
+      "Base"
+    ]
+  },
+  "textures": {
+    "all": "hbmspace:block/models/machines/air_scrubber",
+    "particle": "hbmspace:block/models/machines/air_scrubber"
+  }
+}

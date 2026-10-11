@@ -1,0 +1,26 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "#hbm:plates_welded/steel"
+    },
+    {
+      "count": 16,
+      "ingredient": "#c:fine_wires/tungsten"
+    },
+    {
+      "ingredient": "hbm:turbine_titanium"
+    },
+    {
+      "count": 2,
+      "ingredient": "hbm:circuit_advanced"
+    }
+  ],
+  "order": 110360,
+  "output_items": [
+    "hbmspace:machine_vacuum_circuit"
+  ],
+  "power": 100
+}

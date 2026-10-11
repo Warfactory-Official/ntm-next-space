@@ -1,0 +1,7 @@
+{
+  "parent": "hbmspace:block/celestial_ore",
+  "textures": {
+    "overlay": "hbmspace:block/cluster_titanium",
+    "stone": "hbmspace:block/minmus_stone"
+  }
+}

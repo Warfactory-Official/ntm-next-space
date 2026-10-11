@@ -1,0 +1,20 @@
+{
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "loader": "hbm:obj",
+  "model": "hbmspace:models/plant_spike.obj",
+  "skins": {
+    "all": [
+      "cube",
+      "cube.001",
+      "cube.002",
+      "cube.003",
+      "cube.004",
+      "cube.005"
+    ]
+  },
+  "textures": {
+    "all": "hbmspace:block/rubber_tall.cact",
+    "particle": "hbmspace:block/rubber_tall.cact"
+  }
+}

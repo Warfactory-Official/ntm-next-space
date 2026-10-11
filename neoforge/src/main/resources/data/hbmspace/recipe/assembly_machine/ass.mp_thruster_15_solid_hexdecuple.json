@@ -1,0 +1,26 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 400,
+  "input_items": [
+    {
+      "ingredient": "hbm:seg_15"
+    },
+    {
+      "count": 6,
+      "ingredient": "#c:plates/steel"
+    },
+    {
+      "count": 12,
+      "ingredient": "#c:ingots/dura_steel"
+    },
+    {
+      "count": 6,
+      "ingredient": "hbm:coil_tungsten"
+    }
+  ],
+  "order": 110387,
+  "output_items": [
+    "hbm:mp_thruster_15_solid_hexdecuple"
+  ],
+  "power": 100
+}

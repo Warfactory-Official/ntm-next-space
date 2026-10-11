@@ -1,0 +1,20 @@
+{
+  "type": "hbm:crystallizer",
+  "duration": 600,
+  "input_fluids": [
+    {
+      "type": "hbm:nitric_acid",
+      "amount": 500
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "#c:ores/zinc"
+    }
+  ],
+  "order": 68610,
+  "output_items": [
+    "hbmspace:crystal_zinc"
+  ],
+  "productivity": 0.05
+}

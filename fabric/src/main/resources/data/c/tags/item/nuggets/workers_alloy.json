@@ -1,0 +1,6 @@
+{
+  "fabric:remove": [
+    "hbm:nugget_desh"
+  ],
+  "values": []
+}

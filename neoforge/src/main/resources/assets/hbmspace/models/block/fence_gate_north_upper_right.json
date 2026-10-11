@@ -1,0 +1,79 @@
+{
+  "ambientocclusion": false,
+  "elements": [
+    {
+      "faces": {
+        "down": {
+          "texture": "#lower",
+          "uv": [
+            0.0,
+            8.5,
+            16.0,
+            7.5
+          ]
+        },
+        "east": {
+          "texture": "#leaf",
+          "uv": [
+            8.5,
+            0.0,
+            7.5,
+            16.0
+          ]
+        },
+        "north": {
+          "texture": "#leaf",
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            16.0
+          ]
+        },
+        "south": {
+          "texture": "#leaf",
+          "uv": [
+            16.0,
+            0.0,
+            0.0,
+            16.0
+          ]
+        },
+        "up": {
+          "texture": "#lower",
+          "uv": [
+            0.0,
+            7.5,
+            16.0,
+            8.5
+          ]
+        },
+        "west": {
+          "texture": "#leaf",
+          "uv": [
+            8.5,
+            0.0,
+            7.5,
+            16.0
+          ]
+        }
+      },
+      "from": [
+        0.0,
+        0.0,
+        7.5
+      ],
+      "to": [
+        16.0,
+        16.0,
+        8.5
+      ]
+    }
+  ],
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "leaf": "hbmspace:block/fence_metal_upper",
+    "lower": "hbmspace:block/fence_metal_lower",
+    "particle": "hbmspace:block/fence_metal_lower"
+  }
+}

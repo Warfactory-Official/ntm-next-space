@@ -1,0 +1,32 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "!enable_528_pressurized"
+    }
+  ],
+  "type": "hbm:chemical_plant",
+  "duration": 100,
+  "input_fluids": [
+    {
+      "type": "hbm:unsaturateds",
+      "amount": 500
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "#c:dusts/sulfur"
+    },
+    {
+      "ingredient": "#c:dusts/zinc"
+    }
+  ],
+  "order": 10752,
+  "output_items": [
+    {
+      "count": 2,
+      "id": "hbm:ingot_rubber"
+    }
+  ],
+  "power": 200
+}

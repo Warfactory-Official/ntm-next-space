@@ -1,0 +1,29 @@
+{
+  "type": "hbm:centrifuge",
+  "duration": 200,
+  "input_items": [
+    {
+      "ingredient": "hbmspace:ingot_magma"
+    }
+  ],
+  "order": 13832,
+  "output_items": [
+    {
+      "count": 4,
+      "id": "hbmspace:bedrock_ore_fragment_gallium"
+    },
+    {
+      "count": 2,
+      "id": "hbmspace:bedrock_ore_fragment_arsenic"
+    },
+    {
+      "count": 2,
+      "id": "hbm:powder_meteorite_tiny"
+    },
+    {
+      "count": 3,
+      "id": "hbm:dust_tiny"
+    }
+  ],
+  "power": 200
+}

@@ -1,0 +1,18 @@
+{
+  "type": "hbm:magic",
+  "input_items": [
+    {
+      "ingredient": "hbmspace:ingot_gwenium"
+    },
+    {
+      "ingredient": "hbm:ingot_dineutronium"
+    },
+    {
+      "ingredient": "hbm:ingot_dineutronium"
+    }
+  ],
+  "order": 1537,
+  "output_items": [
+    "hbmspace:bobblehead_gwen"
+  ]
+}

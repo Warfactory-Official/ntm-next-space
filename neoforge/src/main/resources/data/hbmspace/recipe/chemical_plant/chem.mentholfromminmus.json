@@ -1,0 +1,29 @@
+{
+  "type": "hbm:chemical_plant",
+  "custom_localization": true,
+  "duration": 50,
+  "input_fluids": [
+    {
+      "type": "hbm:steam",
+      "amount": 350
+    },
+    {
+      "type": "hbm:sulfuric_acid",
+      "amount": 500
+    }
+  ],
+  "input_items": [
+    {
+      "count": 40,
+      "ingredient": "hbmspace:minmus_smooth"
+    }
+  ],
+  "order": 22035,
+  "output_items": [
+    {
+      "count": 15,
+      "id": "hbmspace:ingot_menthol"
+    }
+  ],
+  "power": 300
+}

@@ -1,0 +1,6 @@
+{
+  "remove": [
+    "hbm:plate_cast_workers_alloy"
+  ],
+  "values": []
+}

@@ -1,0 +1,23 @@
+{
+  "type": "hbm:centrifuge",
+  "duration": 200,
+  "input_items": [
+    {
+      "ingredient": "#c:ores/red_phosphorus"
+    }
+  ],
+  "order": 12801,
+  "output_items": [
+    {
+      "count": 2,
+      "id": "minecraft:blaze_powder"
+    },
+    {
+      "count": 2,
+      "id": "hbm:powder_fire"
+    },
+    "hbm:ingot_phosphorus",
+    "minecraft:gravel"
+  ],
+  "power": 200
+}

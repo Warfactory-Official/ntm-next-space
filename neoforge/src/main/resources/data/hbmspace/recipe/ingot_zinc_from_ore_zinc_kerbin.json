@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smelting",
+  "cookingtime": 200,
+  "experience": 2.5,
+  "ingredient": {
+    "neoforge:ingredient_type": "hbm:recipe_input",
+    "base": "hbmspace:ore_zinc_kerbin"
+  },
+  "result": {
+    "id": "hbmspace:ingot_zinc"
+  }
+}

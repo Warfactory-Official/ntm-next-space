@@ -1,0 +1,28 @@
+{
+  "type": "hbmspace:cryo_distill",
+  "input_fluids": [
+    {
+      "type": "hbmspace:dunaair",
+      "amount": 100
+    }
+  ],
+  "order": 1792,
+  "output_fluids": [
+    {
+      "type": "hbm:carbondioxide",
+      "amount": 70
+    },
+    {
+      "type": "hbmspace:nitrogen",
+      "amount": 15
+    },
+    {
+      "type": "hbmspace:argon",
+      "amount": 10
+    },
+    {
+      "type": "hbm:oxygen",
+      "amount": 5
+    }
+  ]
+}

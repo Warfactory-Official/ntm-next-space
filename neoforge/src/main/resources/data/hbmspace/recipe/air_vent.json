@@ -1,0 +1,17 @@
+{
+  "type": "hbm:crafting_shaped",
+  "key": {
+    "C": "hbm:tank_steel",
+    "D": "minecraft:dispenser",
+    "G": "minecraft:iron_bars",
+    "I": "#c:plates/iron"
+  },
+  "pattern": [
+    "IGI",
+    "ICI",
+    "IDI"
+  ],
+  "result": {
+    "id": "hbmspace:air_vent"
+  }
+}

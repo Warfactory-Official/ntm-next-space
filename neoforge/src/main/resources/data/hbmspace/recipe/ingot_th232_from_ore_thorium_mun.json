@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smelting",
+  "cookingtime": 200,
+  "experience": 3.0,
+  "ingredient": {
+    "neoforge:ingredient_type": "hbm:recipe_input",
+    "base": "hbmspace:ore_thorium_mun"
+  },
+  "result": {
+    "id": "hbm:ingot_th232"
+  }
+}

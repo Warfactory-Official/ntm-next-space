@@ -1,0 +1,10 @@
+{
+  "entries": [
+    {
+      "type": "hbm:radiation",
+      "level": 4.65
+    }
+  ],
+  "mutex": 1,
+  "targets": "#hbm:billets/curium_242"
+}

@@ -1,0 +1,20 @@
+{
+  "type": "hbm:fraction_tower",
+  "input_fluids": [
+    {
+      "type": "hbmspace:conglomera",
+      "amount": 100
+    }
+  ],
+  "order": 4609,
+  "output_fluids": [
+    {
+      "type": "hbmspace:brine",
+      "amount": 25
+    },
+    {
+      "type": "hbmspace:aqueous_nickel",
+      "amount": 75
+    }
+  ]
+}

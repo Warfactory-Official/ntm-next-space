@@ -1,0 +1,10 @@
+{
+  "type": "hbm:single_piece",
+  "biomes": [
+    "hbmspace:laythe_islands"
+  ],
+  "height_offset": -3,
+  "spawn_overrides": {},
+  "start_pool": "hbm:single/vertibird",
+  "step": "strongholds"
+}

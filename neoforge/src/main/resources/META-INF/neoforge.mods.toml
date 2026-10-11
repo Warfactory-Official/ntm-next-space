@@ -1,0 +1,39 @@
+modLoader = "javafml"
+loaderVersion = "[0,)"
+license = "LGPL-3.0-only"
+
+[[mods]]
+modId = "hbmspace"
+version = "${version}"
+displayName = "NTM: Space"
+iconFile = "hbmspace.png"
+iconBlur = true
+bannerFile = "hbmspace.png"
+description = "NTM: Space, ported to Minecraft 26.2 for Fabric and NeoForge as an NTM addon."
+authors = "JamesH_2 and Mellow, movblock"
+credits = "JamesH_2 and Mellow: creating NTM: Space. movblock: porting to 26.2."
+displayTest = "IGNORE_ALL_VERSION"
+
+[[mixins]]
+config = "hbmspace-common.mixins.json"
+
+[[dependencies.hbmspace]]
+modId = "hbm"
+type = "required"
+versionRange = "${hbm_range}"
+ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies.hbmspace]]
+modId = "minecraft"
+type = "required"
+versionRange = "[26.2,26.3)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.hbmspace]]
+modId = "crankshaft"
+type = "required"
+versionRange = "[1.5.5,)"
+ordering = "AFTER"
+side = "CLIENT"

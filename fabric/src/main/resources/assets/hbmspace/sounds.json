@@ -1,0 +1,406 @@
+{
+  "block.akita": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "hbmspace:block/akita",
+        "stream": false
+      }
+    ]
+  },
+  "block.dyson_beam": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "hbmspace:block/dyson_beam",
+        "stream": false
+      }
+    ]
+  },
+  "block.fencegate": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "hbmspace:block/fence_gate",
+        "stream": false
+      }
+    ]
+  },
+  "block.hatch_impact": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "hbmspace:misc/bombimpact",
+        "stream": false
+      }
+    ]
+  },
+  "block.hatch_open": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "hbmspace:misc/bomb_open",
+        "stream": false
+      }
+    ]
+  },
+  "block.miku": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "hbmspace:block/miku",
+        "stream": false
+      }
+    ]
+  },
+  "block.squeaky_pain": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "hbmspace:block/squeaky_pain",
+        "stream": false
+      }
+    ]
+  },
+  "block.teto": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "hbmspace:block/teto",
+        "stream": false
+      }
+    ]
+  },
+  "entity.beep": {
+    "category": "hostile",
+    "sounds": [
+      {
+        "name": "hbmspace:footsteps/deepbeep",
+        "stream": false
+      }
+    ]
+  },
+  "entity.rocket_fly_heavy": {
+    "category": "player",
+    "sounds": [
+      {
+        "name": "hbmspace:entity/rocket_fly_heavy",
+        "stream": false
+      }
+    ]
+  },
+  "entity.rocket_fly_light": {
+    "category": "player",
+    "sounds": [
+      {
+        "name": "hbmspace:entity/rocket_fly_light",
+        "stream": false
+      }
+    ]
+  },
+  "entity.rocket_ignition": {
+    "category": "player",
+    "sounds": [
+      {
+        "name": "hbmspace:entity/rocket_ignition",
+        "stream": false
+      }
+    ]
+  },
+  "entity.rocket_stage": {
+    "category": "player",
+    "sounds": [
+      {
+        "name": "hbmspace:entity/rocket_stage",
+        "stream": false
+      }
+    ]
+  },
+  "item.unpack_insert": {
+    "category": "player",
+    "sounds": [
+      {
+        "name": "hbm:tool/extract2",
+        "stream": false
+      }
+    ]
+  },
+  "item.unpack_remove": {
+    "category": "player",
+    "sounds": [
+      {
+        "name": "hbm:tool/extract1",
+        "stream": false
+      }
+    ]
+  },
+  "misc.htrfstart": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "hbmspace:misc/htrstart",
+        "stream": false
+      }
+    ]
+  },
+  "misc.stationhum": {
+    "category": "ambient",
+    "sounds": [
+      {
+        "name": "hbmspace:misc/stationhum",
+        "stream": false
+      }
+    ]
+  },
+  "misc.htrloop": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "hbmspace:misc/htrloop",
+        "stream": false
+      }
+    ]
+  },
+  "misc.htrstart": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "hbmspace:misc/htr3start",
+        "stream": false
+      }
+    ]
+  },
+  "misc.htrstop": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "hbmspace:misc/htrstop",
+        "stream": false
+      }
+    ]
+  },
+  "misc.lpwloop": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "hbmspace:misc/lpwloop",
+        "stream": false
+      }
+    ]
+  },
+  "misc.lpwstart": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "hbmspace:misc/lpw2start",
+        "stream": false
+      }
+    ]
+  },
+  "misc.lpwstop": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "hbmspace:misc/lpwstop",
+        "stream": false
+      }
+    ]
+  },
+  "misc.rumble": {
+    "category": "player",
+    "sounds": [
+      {
+        "name": "hbmspace:misc/rumble",
+        "stream": false
+      }
+    ]
+  },
+  "misc.spincharge": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "hbmspace:misc/spincharge",
+        "stream": false
+      }
+    ]
+  },
+  "misc.spinshot": {
+    "category": "block",
+    "sounds": [
+      "hbmspace:misc/spinshot1",
+      "hbmspace:misc/spinshot2"
+    ]
+  },
+  "music.game.space": {
+    "category": "music",
+    "sounds": [
+      {
+        "name": "hbmspace:music/space_break",
+        "stream": true
+      },
+      {
+        "name": "hbmspace:music/space_trill",
+        "stream": true
+      },
+      {
+        "name": "hbmspace:music/space_beat",
+        "stream": true
+      },
+      {
+        "name": "hbmspace:music/space_transcend",
+        "stream": true
+      },
+      {
+        "name": "hbmspace:music/space_calm",
+        "stream": true
+      },
+      {
+        "name": "hbmspace:music/space_koyaanis",
+        "stream": true
+      }
+    ]
+  },
+  "music.record_ethereal": {
+    "category": "record",
+    "sounds": [
+      {
+        "name": "hbmspace:music/record_ethereal",
+        "stream": true
+      }
+    ]
+  },
+  "music.record_god_speed": {
+    "category": "record",
+    "sounds": [
+      {
+        "name": "hbmspace:music/record_god_speed",
+        "stream": true
+      }
+    ]
+  },
+  "music.record_goop": {
+    "category": "record",
+    "sounds": [
+      {
+        "name": "hbmspace:music/record_goop",
+        "stream": true
+      }
+    ]
+  },
+  "player.plss_breathing": {
+    "category": "player",
+    "sounds": [
+      {
+        "name": "hbmspace:player/plss_breathing",
+        "stream": false
+      }
+    ]
+  },
+  "player.dash": {
+    "category": "player",
+    "sounds": [
+      {
+        "name": "hbmspace:player/dash",
+        "stream": false
+      }
+    ]
+  },
+  "player.dash_recharge": {
+    "category": "player",
+    "sounds": [
+      {
+        "name": "hbmspace:player/dash_recharge",
+        "stream": false
+      }
+    ]
+  },
+  "player.oil": {
+    "category": "player",
+    "sounds": [
+      {
+        "name": "hbmspace:player/oil",
+        "stream": false
+      }
+    ]
+  },
+  "step.morkite": {
+    "category": "player",
+    "sounds": [
+      {
+        "name": "hbmspace:mining/morkiteminingb_3",
+        "stream": false
+      },
+      {
+        "name": "hbmspace:mining/morkiteminingb_2",
+        "stream": false
+      },
+      {
+        "name": "hbmspace:mining/morkiteminingb_1",
+        "stream": false
+      }
+    ]
+  },
+  "entity.bfashoot": {
+    "category": "hostile",
+    "sounds": [
+      {
+        "name": "hbmspace:entity/bfa_shoot",
+        "stream": false
+      }
+    ]
+  },
+  "entity.bfatalk": {
+    "category": "hostile",
+    "sounds": [
+      {
+        "name": "hbmspace:entity/bfa_talk",
+        "stream": false
+      }
+    ]
+  },
+  "weapon.stingerlockon": {
+    "category": "hostile",
+    "sounds": [
+      {
+        "name": "hbmspace:weapon/stinger_lock_on",
+        "stream": false
+      }
+    ]
+  },
+  "alarm.ducc": {
+    "category": "record",
+    "sounds": [
+      {
+        "name": "hbmspace:alarm/ducc",
+        "stream": false
+      }
+    ]
+  },
+  "alarm.mama": {
+    "category": "record",
+    "sounds": [
+      {
+        "name": "hbmspace:alarm/mama",
+        "stream": false
+      }
+    ]
+  },
+  "alarm.ping": {
+    "category": "player",
+    "sounds": [
+      {
+        "name": "hbmspace:alarm/alarmping",
+        "stream": false
+      }
+    ]
+  },
+  "entity.jetloopbomb": {
+    "category": "player",
+    "sounds": [
+      {
+        "name": "hbmspace:entity/jetbomb2",
+        "stream": false
+      }
+    ]
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "ingredient": "#c:dusts/pet_coke"
+    }
+  ],
+  "order": 6147,
+  "output_items": [
+    "hbm:coke_petroleum"
+  ],
+  "overlay": "smithing",
+  "tier": 3
+}

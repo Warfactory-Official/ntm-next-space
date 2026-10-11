@@ -1,0 +1,45 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "blueprint_pools_528": [
+    "528.aluminium"
+  ],
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "hbm:motor"
+    },
+    {
+      "count": 16,
+      "ingredient": "#hbm:plates_cast/gold"
+    },
+    {
+      "count": 32,
+      "ingredient": "hbm:photo_panel"
+    },
+    {
+      "count": 32,
+      "ingredient": "hbm:magnetron"
+    },
+    {
+      "count": 2,
+      "ingredient": "hbm:item_expensive_heavy_frame"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbm:item_expensive_circuit"
+    }
+  ],
+  "name": "ass.stardarEx",
+  "order": 110357,
+  "output_items": [
+    "hbmspace:machine_stardar"
+  ],
+  "power": 100
+}

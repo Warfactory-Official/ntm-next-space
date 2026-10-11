@@ -1,0 +1,22 @@
+{
+  "type": "hbm:mixer",
+  "duration": 80,
+  "input_fluids": [
+    {
+      "type": "hbmspace:brine",
+      "amount": 250
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "#c:dusts/nickel"
+    }
+  ],
+  "order": 12034,
+  "output_fluids": [
+    {
+      "type": "hbmspace:aqueous_nickel",
+      "amount": 1000
+    }
+  ]
+}

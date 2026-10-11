@@ -1,0 +1,33 @@
+{
+  "type": "hbm:chemical_plant",
+  "custom_localization": true,
+  "duration": 250,
+  "icon": {
+    "components": {
+      "hbm:fluid_content": {
+        "type": "hbmspace:hydrazine",
+        "amount": 1000
+      }
+    },
+    "id": "hbm:canister"
+  },
+  "input_fluids": [
+    {
+      "type": "hbm:nitric_acid",
+      "amount": 2000
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "hbm:rag_piss"
+    }
+  ],
+  "order": 22042,
+  "output_fluids": [
+    {
+      "type": "hbmspace:hydrazine",
+      "amount": 800
+    }
+  ],
+  "power": 1000
+}

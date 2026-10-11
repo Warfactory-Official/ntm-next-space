@@ -1,0 +1,15 @@
+{
+  "fabric:type": "hbm:obj",
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "model": "hbmspace:models/machines/dyson_tu_converter.obj",
+  "skins": {
+    "all": [
+      "TU_Converter"
+    ]
+  },
+  "textures": {
+    "all": "hbmspace:block/models/machines/dyson_tu_converter",
+    "particle": "hbmspace:block/block_steel_machine"
+  }
+}

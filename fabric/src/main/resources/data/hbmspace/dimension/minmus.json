@@ -1,0 +1,14 @@
+{
+  "type": "hbmspace:minmus",
+  "generator": {
+    "type": "hbmspace:minmus",
+    "biome_source": {
+      "type": "hbmspace:celestial",
+      "biomes": [
+        "hbmspace:minmus_hills",
+        "hbmspace:minmus_basins"
+      ],
+      "layers": "hbmspace:minmus"
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "model": {
+    "type": "hbm:mesh",
+    "base": "hbmspace:item/core_angel_base",
+    "mesh": "hbmspace:models/mobs/balefire_angel.obj",
+    "part": "body",
+    "skins": [
+      "hbmspace:textures/entity/bfa_body.png"
+    ]
+  }
+}

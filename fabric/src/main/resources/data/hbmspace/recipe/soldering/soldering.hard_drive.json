@@ -1,0 +1,27 @@
+{
+  "type": "hbm:soldering",
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 2,
+      "ingredient": "hbm:circuit_chip"
+    }
+  ],
+  "order": 3842,
+  "output_items": [
+    "hbmspace:hard_drive"
+  ],
+  "pcb": [
+    {
+      "count": 16,
+      "ingredient": "hbm:circuit_pcb"
+    }
+  ],
+  "power": 250,
+  "solder": [
+    {
+      "count": 4,
+      "ingredient": "#c:fine_wires/mingrade"
+    }
+  ]
+}

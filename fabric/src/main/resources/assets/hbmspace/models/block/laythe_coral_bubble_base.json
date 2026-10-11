@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "coral": "hbmspace:block/laythe_coral.bubble",
+    "particle": "hbmspace:block/laythe_coral.bubble"
+  }
+}

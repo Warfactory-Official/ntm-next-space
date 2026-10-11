@@ -1,0 +1,16 @@
+{
+  "type": "hbm:crafting_shaped",
+  "key": {
+    "I": "hbm:plate_polymer",
+    "N": "#c:nuggets/lanthanum",
+    "W": "#c:fine_wires/aluminum"
+  },
+  "pattern": [
+    "I",
+    "N",
+    "W"
+  ],
+  "result": {
+    "id": "hbmspace:circuit_capacitor_lanthanium"
+  }
+}

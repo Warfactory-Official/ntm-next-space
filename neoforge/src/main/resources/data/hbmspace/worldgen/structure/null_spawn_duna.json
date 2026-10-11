@@ -1,0 +1,12 @@
+{
+  "type": "hbm:null_spawn",
+  "biomes": [
+    "hbmspace:duna_plains",
+    "hbmspace:duna_lowlands",
+    "hbmspace:duna_polar",
+    "hbmspace:duna_hills",
+    "hbmspace:duna_polar_hills"
+  ],
+  "spawn_overrides": {},
+  "step": "strongholds"
+}

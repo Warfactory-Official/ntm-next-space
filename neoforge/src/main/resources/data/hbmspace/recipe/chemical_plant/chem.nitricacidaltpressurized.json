@@ -1,0 +1,31 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "enable_528_pressurized"
+    }
+  ],
+  "type": "hbm:chemical_plant",
+  "custom_localization": true,
+  "duration": 50,
+  "input_fluids": [
+    {
+      "type": "minecraft:water",
+      "amount": 500
+    },
+    {
+      "type": "hbmspace:ammonia",
+      "amount": 1000,
+      "pressure": 1
+    }
+  ],
+  "name": "chem.nitricacidaltPressurized",
+  "order": 22041,
+  "output_fluids": [
+    {
+      "type": "hbm:nitric_acid",
+      "amount": 1000
+    }
+  ],
+  "power": 1000
+}

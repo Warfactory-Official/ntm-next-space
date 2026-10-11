@@ -1,0 +1,27 @@
+{
+  "type": "hbm:electrolyser_fluid",
+  "duration": 40,
+  "input_fluids": [
+    {
+      "type": "hbmspace:brine",
+      "amount": 400
+    }
+  ],
+  "order": 1281,
+  "output_fluids": [
+    {
+      "type": "hbm:hydrogen",
+      "amount": 200
+    },
+    {
+      "type": "hbm:oxygen",
+      "amount": 200
+    }
+  ],
+  "output_items": [
+    {
+      "count": 2,
+      "id": "hbm:powder_sodium"
+    }
+  ]
+}

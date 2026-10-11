@@ -1,0 +1,33 @@
+{
+  "processors": [
+    {
+      "processor_type": "minecraft:rule",
+      "rules": [
+        {
+          "block_entity_modifier": {
+            "type": "minecraft:append_static",
+            "data": {
+              "item": {
+                "count": 1,
+                "id": "hbmspace:divine_shard"
+              }
+            }
+          },
+          "input_predicate": {
+            "block": "hbm:pedestal",
+            "predicate_type": "minecraft:block_match"
+          },
+          "location_predicate": {
+            "predicate_type": "minecraft:always_true"
+          },
+          "output_state": {
+            "Name": "hbm:pedestal"
+          }
+        }
+      ]
+    },
+    {
+      "processor_type": "hbm:loot_pile"
+    }
+  ]
+}

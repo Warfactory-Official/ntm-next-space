@@ -1,0 +1,18 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "hbmspace:block/ike_regolith_0"
+      },
+      {
+        "model": "hbmspace:block/ike_regolith_1"
+      },
+      {
+        "model": "hbmspace:block/ike_regolith_2"
+      },
+      {
+        "model": "hbmspace:block/ike_regolith_3"
+      }
+    ]
+  }
+}

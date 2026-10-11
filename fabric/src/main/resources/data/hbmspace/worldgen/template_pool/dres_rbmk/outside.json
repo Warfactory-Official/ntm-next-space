@@ -1,0 +1,23 @@
+{
+  "elements": [
+    {
+      "element": {
+        "element_type": "hbm:legacy_piece",
+        "location": "hbmspace:dres_rbmk/balcony",
+        "processors": "hbmspace:dres_lab_tiles",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "hbm:legacy_piece",
+        "location": "hbmspace:dres_rbmk/pad",
+        "processors": "hbmspace:dres_lab_tiles",
+        "projection": "rigid"
+      },
+      "weight": 1
+    }
+  ],
+  "fallback": "hbmspace:dres_rbmk/outback"
+}

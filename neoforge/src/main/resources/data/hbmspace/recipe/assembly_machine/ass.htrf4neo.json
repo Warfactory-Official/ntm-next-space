@@ -1,0 +1,44 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "!expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "blueprint_pools_528": [
+    "528.gaschip"
+  ],
+  "duration": 1200,
+  "input_items": [
+    {
+      "count": 16,
+      "ingredient": "#hbm:plates_welded/any_resistant_alloy"
+    },
+    {
+      "count": 64,
+      "ingredient": "#hbm:plates_welded/copper"
+    },
+    {
+      "count": 64,
+      "ingredient": "#hbm:wires_dense/schrabidate"
+    },
+    {
+      "count": 16,
+      "ingredient": "#hbm:plates_welded/stainless_steel"
+    },
+    {
+      "count": 2,
+      "ingredient": "hbm:circuit_bismoid"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbmspace:circuit_gaschip"
+    }
+  ],
+  "order": 110378,
+  "output_items": [
+    "hbmspace:machine_htrf4neo"
+  ],
+  "power": 100
+}

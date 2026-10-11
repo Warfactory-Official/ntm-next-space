@@ -1,0 +1,28 @@
+{
+  "type": "hbmspace:cryo_distill",
+  "input_fluids": [
+    {
+      "type": "hbmspace:ngas",
+      "amount": 100
+    }
+  ],
+  "order": 768,
+  "output_fluids": [
+    {
+      "type": "hbm:gas",
+      "amount": 45
+    },
+    {
+      "type": "hbmspace:ammonia",
+      "amount": 25
+    },
+    {
+      "type": "hbm:unsaturateds",
+      "amount": 15
+    },
+    {
+      "type": "hbm:xenon",
+      "amount": 15
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "type": "hbm:mixer",
+  "duration": 50,
+  "input_fluids": [
+    {
+      "type": "hbmspace:hcl",
+      "amount": 300
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "hbmspace:scuttertail"
+    }
+  ],
+  "order": 11010,
+  "output_fluids": [
+    {
+      "type": "hbmspace:scutterblood",
+      "amount": 550
+    }
+  ]
+}

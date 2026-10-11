@@ -1,0 +1,10 @@
+{
+  "type": "hbm:crafting_shapeless",
+  "ingredients": [
+    "hbmspace:block_nickel"
+  ],
+  "result": {
+    "count": 9,
+    "id": "hbmspace:ingot_nickel"
+  }
+}

@@ -1,0 +1,187 @@
+{
+  "ambientocclusion": false,
+  "display": {
+    "firstperson_lefthand": {
+      "rotation": [
+        154.91621,
+        -4.530509,
+        177.88249
+      ],
+      "scale": [
+        0.074999996,
+        0.075,
+        0.074999996
+      ],
+      "translation": [
+        0.12842047,
+        5.3871174,
+        1.4678191
+      ]
+    },
+    "firstperson_righthand": {
+      "rotation": [
+        154.91621,
+        -4.530509,
+        177.88249
+      ],
+      "scale": [
+        0.074999996,
+        0.075,
+        0.074999996
+      ],
+      "translation": [
+        0.12841666,
+        5.3871174,
+        1.4678193
+      ]
+    },
+    "fixed": {
+      "rotation": [
+        -0.0,
+        -90.0,
+        0.0
+      ],
+      "scale": [
+        0.1875,
+        0.1875,
+        0.1875
+      ],
+      "translation": [
+        0.5587511,
+        7.939501,
+        0.5
+      ]
+    },
+    "ground": {
+      "rotation": [
+        0.0,
+        90.0,
+        0.0
+      ],
+      "scale": [
+        0.09375,
+        0.09375,
+        0.09375
+      ],
+      "translation": [
+        -0.27937555,
+        1.2497501,
+        0.0
+      ]
+    },
+    "gui": {
+      "rotation": [
+        -150.0,
+        -44.999996,
+        -180.0
+      ],
+      "scale": [
+        0.078125,
+        0.078125,
+        0.078125
+      ],
+      "translation": [
+        0.16462421,
+        -0.89170754,
+        -7.1700354
+      ]
+    },
+    "head": {
+      "rotation": [
+        -0.0,
+        -50.000004,
+        154.99998
+      ],
+      "scale": [
+        0.3,
+        0.3,
+        0.3
+      ],
+      "translation": [
+        3.9524343,
+        -27.57065,
+        3.3195078
+      ]
+    },
+    "on_shelf": {
+      "rotation": [
+        0.0,
+        90.0,
+        0.0
+      ],
+      "scale": [
+        0.375,
+        0.375,
+        0.375
+      ],
+      "translation": [
+        -1.1175027,
+        20.999,
+        0.0
+      ]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [
+        -164.50075,
+        11.346811,
+        165.04486
+      ],
+      "scale": [
+        0.07031249,
+        0.0703125,
+        0.0703125
+      ],
+      "translation": [
+        -0.88266164,
+        4.5880885,
+        2.1432602
+      ]
+    },
+    "thirdperson_righthand": {
+      "rotation": [
+        -164.50075,
+        11.346811,
+        165.04486
+      ],
+      "scale": [
+        0.07031249,
+        0.0703125,
+        0.0703125
+      ],
+      "translation": [
+        -2.0424526,
+        4.3458037,
+        1.8345546
+      ]
+    }
+  },
+  "gui_light": "side",
+  "hidden": [
+    "ExhaustVacuum"
+  ],
+  "loader": "hbm:obj",
+  "model": "hbmspace:models/machines/htr3.obj",
+  "offset_y": -2.9998336,
+  "offset_z": 0.18625045,
+  "skins": {
+    "all": [
+      "PipeL1",
+      "Center",
+      "PipeL2",
+      "PipeR1",
+      "PipeR2",
+      "CoverTop",
+      "CoverBottom",
+      "Piston",
+      "ShroudH",
+      "ShroudV",
+      "SuspensionTop",
+      "SuspensionBottom",
+      "Engine"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/machines/lpw2",
+    "particle": "hbm:block/models/machines/lpw2"
+  }
+}

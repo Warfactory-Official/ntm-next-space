@@ -1,0 +1,39 @@
+{
+  "ambientocclusion": false,
+  "double_sided": [
+    "Condenser"
+  ],
+  "groups": [
+    {
+      "matrix": [
+        -1.0,
+        0.0,
+        -8.742278E-8,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        8.742278E-8,
+        0.0,
+        -1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "parts": [
+        "Condenser"
+      ],
+      "texture": "all"
+    }
+  ],
+  "gui_light": "side",
+  "loader": "hbm:obj",
+  "model": "hbmspace:models/machines/condenser_damaged.obj",
+  "textures": {
+    "all": "hbmspace:block/models/machines/condenser_damaged",
+    "particle": "hbmspace:block/models/machines/condenser_damaged"
+  }
+}

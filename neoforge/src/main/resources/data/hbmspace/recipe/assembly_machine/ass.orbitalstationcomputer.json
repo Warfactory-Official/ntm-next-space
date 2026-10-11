@@ -1,0 +1,44 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "!expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "blueprint_pools_528": [
+    "528.stainless"
+  ],
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "#hbm:plates_cast/aluminum"
+    },
+    {
+      "count": 4,
+      "ingredient": "#c:plates/stainless_steel"
+    },
+    {
+      "count": 2,
+      "ingredient": "#hbm:ingots/any_hard_plastic"
+    },
+    {
+      "count": 4,
+      "ingredient": "#c:dusts/quartz"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbmspace:circuit_molychip"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbmspace:circuit_aero"
+    }
+  ],
+  "order": 110372,
+  "output_items": [
+    "hbmspace:orbital_station_computer"
+  ],
+  "power": 100
+}

@@ -1,0 +1,15 @@
+{
+  "type": "hbm:crafting_shaped",
+  "key": {
+    "G": "#c:ingots/graphite",
+    "I": "#c:ingots/curium_fuel"
+  },
+  "pattern": [
+    " I ",
+    "IGI",
+    " I "
+  ],
+  "result": {
+    "id": "hbmspace:watz_pellet_cmf"
+  }
+}

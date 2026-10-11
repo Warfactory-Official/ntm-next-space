@@ -1,0 +1,15 @@
+{
+  "type": "hbm:crafting_shaped",
+  "key": {
+    "#": "#c:rods/wooden",
+    "X": "#c:ingots/desh"
+  },
+  "pattern": [
+    "X",
+    "X",
+    "#"
+  ],
+  "result": {
+    "id": "hbm:desh_sword"
+  }
+}

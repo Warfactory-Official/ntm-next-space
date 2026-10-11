@@ -1,0 +1,20 @@
+{
+  "fabric:type": "hbm:obj",
+  "ambientocclusion": false,
+  "double_sided": [
+    "Cylinder.001"
+  ],
+  "gui_light": "side",
+  "model": "hbmspace:models/machines/atmo_tower.obj",
+  "offset_x": 0.5,
+  "offset_z": -0.5,
+  "skins": {
+    "all": [
+      "Cylinder.001"
+    ]
+  },
+  "textures": {
+    "all": "hbmspace:block/models/machines/machine_atmo_tower",
+    "particle": "hbm:block/concrete"
+  }
+}

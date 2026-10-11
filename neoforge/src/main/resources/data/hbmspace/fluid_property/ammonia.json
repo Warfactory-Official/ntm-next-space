@@ -1,0 +1,20 @@
+{
+  "type": "gaseous",
+  "color": "#00a0f7",
+  "nfpa": {
+    "flame": 0,
+    "health": 2,
+    "react": 1
+  },
+  "symbol": "ASPHYXIANT",
+  "temperature": 20,
+  "traits": {
+    "poison": {
+      "level": 4,
+      "withering": true
+    },
+    "terraformer": {
+      "target": "duna"
+    }
+  }
+}

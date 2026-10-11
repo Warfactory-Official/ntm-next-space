@@ -1,0 +1,22 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 996583977,
+    "separation": 4,
+    "spacing": 16
+  },
+  "structures": [
+    {
+      "structure": "hbmspace:meteor_dungeon_dres",
+      "weight": 1
+    },
+    {
+      "structure": "hbmspace:dres_rbmk",
+      "weight": 8
+    },
+    {
+      "structure": "hbmspace:null_spawn_dres",
+      "weight": 16
+    }
+  ]
+}

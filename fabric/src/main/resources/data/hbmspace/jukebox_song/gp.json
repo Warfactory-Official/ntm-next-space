@@ -1,0 +1,8 @@
+{
+  "comparator_output": 15,
+  "description": {
+    "translate": "jukebox_song.hbmspace.gp"
+  },
+  "length_in_seconds": 240.789,
+  "sound_event": "hbmspace:music.record_goop"
+}

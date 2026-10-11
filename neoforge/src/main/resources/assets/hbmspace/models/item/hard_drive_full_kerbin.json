@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "hbmspace:item/votv_f",
+    "layer1": "hbmspace:item/votv.kerbin"
+  }
+}

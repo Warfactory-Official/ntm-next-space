@@ -1,0 +1,11 @@
+{
+  "model": {
+    "type": "hbm:mesh",
+    "base": "hbmspace:item/sat_war_base",
+    "mesh": "hbmspace:models/railgun_main.obj",
+    "skins": [
+      "hbmspace:textures/models/railgun_main.png"
+    ],
+    "smooth": false
+  }
+}

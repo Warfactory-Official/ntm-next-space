@@ -1,0 +1,32 @@
+{
+  "type": "hbm:centrifuge",
+  "duration": 200,
+  "input_items": [
+    {
+      "components": {
+        "hbm:bedrock_ore": {
+          "type": "minmus_light",
+          "grade": "sulfuric_washed"
+        }
+      },
+      "ingredient": "hbm:bedrock_ore"
+    }
+  ],
+  "order": 37780,
+  "output_items": [
+    {
+      "count": 9,
+      "id": "hbm:bedrock_ore_fragment_titanium"
+    },
+    {
+      "components": {
+        "hbm:bedrock_ore": {
+          "type": "minmus_light",
+          "grade": "crumbs"
+        }
+      },
+      "id": "hbm:bedrock_ore"
+    }
+  ],
+  "power": 200
+}

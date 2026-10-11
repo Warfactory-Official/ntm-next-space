@@ -1,0 +1,31 @@
+{
+  "type": "hbm:chemical_plant",
+  "duration": 150,
+  "input_fluids": [
+    {
+      "type": "hbmspace:cream",
+      "amount": 1000
+    }
+  ],
+  "input_items": [
+    {
+      "count": 2,
+      "ingredient": "#c:foods/butter"
+    },
+    {
+      "ingredient": "minecraft:packed_ice"
+    },
+    {
+      "count": 4,
+      "ingredient": "#c:crops/strawberry"
+    }
+  ],
+  "order": 22031,
+  "output_items": [
+    {
+      "count": 4,
+      "id": "hbmspace:s_cream"
+    }
+  ],
+  "power": 100
+}

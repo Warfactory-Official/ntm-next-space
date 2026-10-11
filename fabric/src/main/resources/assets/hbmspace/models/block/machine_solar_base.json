@@ -1,0 +1,8 @@
+{
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "textures": {
+    "all": "hbmspace:block/models/machines/solar_panel",
+    "particle": "hbmspace:block/models/machines/solar_panel"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "entries": [
+    {
+      "type": "hbm:radiation",
+      "level": 2.8
+    },
+    {
+      "type": "hbmspace:neutron",
+      "level": 0.03500000014901161
+    }
+  ],
+  "mutex": 1,
+  "targets": "#hbm:billets/curium_243"
+}

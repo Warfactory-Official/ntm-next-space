@@ -1,0 +1,27 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": [
+        "hbmspace:ore_glowstone",
+        "hbmspace:ore_glowstone_kerbin",
+        "hbmspace:ore_glowstone_mun",
+        "hbmspace:ore_glowstone_minmus",
+        "hbmspace:ore_glowstone_duna",
+        "hbmspace:ore_glowstone_moho",
+        "hbmspace:ore_glowstone_dres",
+        "hbmspace:ore_glowstone_eve",
+        "hbmspace:ore_glowstone_ike",
+        "hbmspace:ore_glowstone_laythe",
+        "hbmspace:ore_glowstone_tekto"
+      ]
+    }
+  ],
+  "order": 770,
+  "output_items": [
+    {
+      "count": 4,
+      "id": "minecraft:glowstone_dust"
+    }
+  ]
+}

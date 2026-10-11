@@ -1,0 +1,23 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "count": 3,
+      "ingredient": "hbm:glass_quartz"
+    },
+    {
+      "count": 2,
+      "ingredient": "hbm:pill_herbal"
+    },
+    {
+      "count": 2,
+      "ingredient": "hbm:powder_magic"
+    }
+  ],
+  "order": 25857,
+  "output_items": [
+    "hbmspace:flask_infusion_nitan"
+  ],
+  "overlay": "construction",
+  "tier": 2
+}

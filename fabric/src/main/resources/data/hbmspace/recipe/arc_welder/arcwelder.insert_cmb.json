@@ -1,0 +1,24 @@
+{
+  "type": "hbm:arc_welder",
+  "duration": 600,
+  "input_fluids": [
+    {
+      "type": "hbmspace:neon",
+      "amount": 2000
+    }
+  ],
+  "input_items": [
+    {
+      "count": 2,
+      "ingredient": "#c:plates/cmbsteel"
+    },
+    {
+      "ingredient": "#c:ingots/uranium_238"
+    }
+  ],
+  "order": 10502,
+  "output_items": [
+    "hbmspace:insert_cmb"
+  ],
+  "power": 50000
+}

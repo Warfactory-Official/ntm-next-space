@@ -1,0 +1,9 @@
+{
+  "type": "hbm:crafting_shapeless",
+  "ingredients": [
+    "minecraft:clay_ball"
+  ],
+  "result": {
+    "id": "hbmspace:cmug_empty"
+  }
+}

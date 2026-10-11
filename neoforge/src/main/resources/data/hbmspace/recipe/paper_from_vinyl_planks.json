@@ -1,0 +1,13 @@
+{
+  "type": "hbm:crafting_shaped",
+  "key": {
+    "L": "hbmspace:vinyl_planks"
+  },
+  "pattern": [
+    "LL"
+  ],
+  "result": {
+    "count": 3,
+    "id": "minecraft:paper"
+  }
+}

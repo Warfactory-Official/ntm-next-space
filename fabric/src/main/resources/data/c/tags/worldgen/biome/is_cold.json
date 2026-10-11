@@ -1,0 +1,15 @@
+{
+  "values": [
+    "hbmspace:duna_hills",
+    "hbmspace:duna_lowlands",
+    "hbmspace:duna_plains",
+    "hbmspace:duna_polar",
+    "hbmspace:duna_polar_hills",
+    "hbmspace:laythe_coast",
+    "hbmspace:laythe_islands",
+    "hbmspace:laythe_ocean",
+    "hbmspace:laythe_polar",
+    "hbmspace:minmus_basins",
+    "hbmspace:minmus_hills"
+  ]
+}

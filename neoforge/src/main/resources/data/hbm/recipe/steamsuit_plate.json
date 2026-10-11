@@ -1,0 +1,23 @@
+{
+  "type": "hbm:crafting_shaped",
+  "key": {
+    "C": "#c:plates/copper",
+    "D": "#c:ingots/desh",
+    "F": "hbm:tank_steel",
+    "X": {
+      "neoforge:ingredient_type": "neoforge:components",
+      "components": {
+        "minecraft:damage": 0
+      },
+      "items": "hbm:steel_plate"
+    }
+  },
+  "pattern": [
+    "C C",
+    "DXD",
+    "CFC"
+  ],
+  "result": {
+    "id": "hbm:steamsuit_plate"
+  }
+}

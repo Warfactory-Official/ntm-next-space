@@ -1,0 +1,21 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "enable_528"
+    }
+  ],
+  "type": "hbm:annihilator",
+  "item": "hbmspace:circuit_gaschip",
+  "milestones": [
+    {
+      "amount": "512",
+      "payout": {
+        "components": {
+          "hbm:blueprint_pool": "528.gaschip"
+        },
+        "id": "hbm:blueprints"
+      }
+    }
+  ]
+}

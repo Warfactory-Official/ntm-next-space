@@ -1,0 +1,12 @@
+{
+  "type": "hbm:crafting_shapeless",
+  "ingredients": [
+    "#c:dusts/calcium",
+    "#c:dusts/red_phosphorus",
+    "hbmspace:ammonium_nitrate"
+  ],
+  "result": {
+    "count": 4,
+    "id": "hbm:powder_fertilizer"
+  }
+}

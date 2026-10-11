@@ -1,0 +1,31 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "!enable_528_pressurized"
+    }
+  ],
+  "type": "hbm:chemical_plant",
+  "custom_localization": true,
+  "duration": 200,
+  "input_fluids": [
+    {
+      "type": "hbm:peroxide",
+      "amount": 250
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "#hbm:ingots/any_plastic"
+    },
+    {
+      "count": 4,
+      "ingredient": "minecraft:string"
+    }
+  ],
+  "order": 22043,
+  "output_items": [
+    "minecraft:leather"
+  ],
+  "power": 500
+}

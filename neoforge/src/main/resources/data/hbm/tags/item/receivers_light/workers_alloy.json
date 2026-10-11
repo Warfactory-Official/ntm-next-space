@@ -1,0 +1,6 @@
+{
+  "remove": [
+    "hbm:part_receiver_light_workers_alloy"
+  ],
+  "values": []
+}

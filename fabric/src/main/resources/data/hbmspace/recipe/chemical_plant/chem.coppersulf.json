@@ -1,0 +1,42 @@
+{
+  "type": "hbm:chemical_plant",
+  "duration": 50,
+  "icon": {
+    "components": {
+      "hbm:fluid_content": {
+        "type": "hbmspace:coppersulfate",
+        "amount": 0
+      },
+      "minecraft:custom_model_data": {
+        "colors": [
+          -11147825
+        ]
+      }
+    },
+    "id": "hbm:fluid_icon"
+  },
+  "input_fluids": [
+    {
+      "type": "hbmspace:aqueous_copper",
+      "amount": 500
+    }
+  ],
+  "order": 22017,
+  "output_fluids": [
+    {
+      "type": "hbmspace:coppersulfate",
+      "amount": 200
+    }
+  ],
+  "output_items": [
+    {
+      "count": 2,
+      "id": "hbmspace:powder_nickel"
+    },
+    {
+      "count": 2,
+      "id": "hbm:powder_copper"
+    }
+  ],
+  "power": 100
+}

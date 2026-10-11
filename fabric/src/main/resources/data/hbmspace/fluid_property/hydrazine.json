@@ -1,0 +1,32 @@
+{
+  "type": "liquid",
+  "color": "#31517d",
+  "containers": {
+    "canister": {
+      "color": "#31517d"
+    }
+  },
+  "nfpa": {
+    "flame": 3,
+    "health": 2,
+    "react": 2
+  },
+  "symbol": "NONE",
+  "temperature": 20,
+  "traits": {
+    "combustible": {
+      "energy": 1250000,
+      "grade": "HIGH"
+    },
+    "corrosive": {
+      "rating": 30
+    },
+    "flammable": {
+      "energy": 500000
+    },
+    "rocket": {
+      "isp": 210,
+      "thrust": 600000
+    }
+  }
+}

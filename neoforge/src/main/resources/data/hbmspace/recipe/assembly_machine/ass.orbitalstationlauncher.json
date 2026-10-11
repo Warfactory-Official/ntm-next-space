@@ -1,0 +1,44 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "!expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "blueprint_pools_528": [
+    "528.stainless"
+  ],
+  "duration": 400,
+  "input_items": [
+    {
+      "count": 6,
+      "ingredient": "#hbm:plates_welded/titanium"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbm:motor"
+    },
+    {
+      "count": 8,
+      "ingredient": "#c:glass_blocks/colorless"
+    },
+    {
+      "count": 8,
+      "ingredient": "#hbm:ingots/any_plastic"
+    },
+    {
+      "count": 2,
+      "ingredient": "hbm:circuit_advanced"
+    },
+    {
+      "count": 4,
+      "ingredient": "#c:plates/stainless_steel"
+    }
+  ],
+  "order": 110367,
+  "output_items": [
+    "hbmspace:orbital_station_launcher"
+  ],
+  "power": 100
+}

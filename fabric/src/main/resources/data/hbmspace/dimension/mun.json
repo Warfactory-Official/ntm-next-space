@@ -1,0 +1,10 @@
+{
+  "type": "hbmspace:mun",
+  "generator": {
+    "type": "hbmspace:mun",
+    "biome_source": {
+      "type": "minecraft:fixed",
+      "biome": "hbmspace:mun"
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "type": "liquid",
+  "color": "#d99a02",
+  "flags": [
+    "delicious"
+  ],
+  "nfpa": {
+    "flame": 0,
+    "health": 0,
+    "react": 0
+  },
+  "shares": "#c:honey",
+  "symbol": "NONE",
+  "temperature": 20
+}

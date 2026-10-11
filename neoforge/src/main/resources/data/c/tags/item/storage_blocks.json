@@ -1,0 +1,12 @@
+{
+  "values": [
+    "#c:storage_blocks/australium",
+    "#c:storage_blocks/desh",
+    "#c:storage_blocks/lapis",
+    "#c:storage_blocks/nickel_pure",
+    "#c:storage_blocks/osmiridium",
+    "#c:storage_blocks/semtex",
+    "#c:storage_blocks/white_phosphorus",
+    "#c:storage_blocks/workers_alloy"
+  ]
+}

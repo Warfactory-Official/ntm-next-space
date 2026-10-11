@@ -1,0 +1,35 @@
+{
+  "type": "hbm:electrolyser_metal",
+  "duration": 20,
+  "input_items": [
+    {
+      "components": {
+        "hbm:bedrock_ore": {
+          "type": "tekto_plastic",
+          "grade": "primary_first"
+        }
+      },
+      "ingredient": "hbm:bedrock_ore"
+    }
+  ],
+  "order": 9067,
+  "output_items": [
+    {
+      "count": 64,
+      "id": "hbmspace:bedrock_ore_fragment_polymer"
+    },
+    {
+      "components": {
+        "hbm:bedrock_ore": {
+          "type": "tekto_plastic",
+          "grade": "crumbs"
+        }
+      },
+      "id": "hbm:bedrock_ore"
+    }
+  ],
+  "output_material": {
+    "amount": 144,
+    "material": "slag"
+  }
+}

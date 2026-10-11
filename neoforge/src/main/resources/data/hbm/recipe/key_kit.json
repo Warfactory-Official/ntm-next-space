@@ -1,0 +1,22 @@
+{
+  "type": "hbm:crafting_shaped",
+  "input_state": {
+    "T": {
+      "preserve": "remainder"
+    }
+  },
+  "key": {
+    "D": "#c:dusts/desh",
+    "K": "hbm:key",
+    "P": "#c:plates/gold",
+    "T": "#hbm:tools/screwdriver"
+  },
+  "pattern": [
+    "PKP",
+    "DTD",
+    "PKP"
+  ],
+  "result": {
+    "id": "hbm:key_kit"
+  }
+}

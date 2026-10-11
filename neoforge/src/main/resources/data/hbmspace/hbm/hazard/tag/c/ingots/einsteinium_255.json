@@ -1,0 +1,10 @@
+{
+  "entries": [
+    {
+      "type": "hbm:radiation",
+      "level": 19.3
+    }
+  ],
+  "mutex": 1,
+  "targets": "#c:ingots/einsteinium_255"
+}

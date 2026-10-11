@@ -1,0 +1,42 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "!expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "blueprint_pools_528": [
+    "528.gaschip"
+  ],
+  "duration": 400,
+  "input_items": [
+    {
+      "count": 8,
+      "ingredient": "hbm:steel_scaffold"
+    },
+    {
+      "count": 2,
+      "ingredient": "#hbm:plates_welded/tungsten"
+    },
+    {
+      "count": 32,
+      "ingredient": "#c:plates/steel"
+    },
+    {
+      "ingredient": "hbm:drill_titanium"
+    },
+    {
+      "ingredient": "hbm:motor_bismuth"
+    },
+    {
+      "count": 8,
+      "ingredient": "hbmspace:circuit_gaschip"
+    }
+  ],
+  "order": 110337,
+  "output_items": [
+    "hbmspace:machine_magma"
+  ],
+  "power": 100
+}

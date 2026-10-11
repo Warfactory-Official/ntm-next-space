@@ -1,0 +1,6 @@
+{
+  "remove": [
+    "hbm:part_grip_workers_alloy"
+  ],
+  "values": []
+}

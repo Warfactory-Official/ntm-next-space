@@ -1,0 +1,15 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "frequency": 2.5E-4,
+    "salt": 413017,
+    "separation": 0,
+    "spacing": 1
+  },
+  "structures": [
+    {
+      "structure": "hbmspace:ike_ancient_tomb",
+      "weight": 1
+    }
+  ]
+}

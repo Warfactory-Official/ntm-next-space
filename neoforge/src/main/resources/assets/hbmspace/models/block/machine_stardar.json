@@ -1,0 +1,21 @@
+{
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "hidden": [
+    "drive",
+    "pitch",
+    "rotation"
+  ],
+  "loader": "hbm:obj",
+  "model": "hbmspace:models/machines/stardar.obj",
+  "offset_y": -3.0,
+  "skins": {
+    "all": [
+      "base"
+    ]
+  },
+  "textures": {
+    "all": "hbmspace:block/models/machines/stardar",
+    "particle": "hbmspace:block/block_steel_machine"
+  }
+}

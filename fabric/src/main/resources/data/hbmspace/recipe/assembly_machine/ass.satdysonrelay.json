@@ -1,0 +1,39 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 600,
+  "input_items": [
+    {
+      "count": 24,
+      "ingredient": "#c:plates/saturnite"
+    },
+    {
+      "count": 2,
+      "ingredient": "hbm:motor_bismuth"
+    },
+    {
+      "count": 8,
+      "ingredient": "hbm:circuit_advanced"
+    },
+    {
+      "ingredient": "hbm:fluid_barrel",
+      "predicates": {
+        "hbm:fluid_content": "hbm:kerosene"
+      }
+    },
+    {
+      "ingredient": "hbm:thruster_small"
+    },
+    {
+      "count": 64,
+      "ingredient": "#hbm:wires_dense/bscco"
+    },
+    {
+      "ingredient": "hbm:battery_pack_battery_lithium"
+    }
+  ],
+  "order": 110083,
+  "output_items": [
+    "hbmspace:sat_dyson_relay"
+  ],
+  "power": 100
+}

@@ -1,0 +1,37 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 400,
+  "input_items": [
+    {
+      "ingredient": "hbm:seg_15"
+    },
+    {
+      "count": 8,
+      "ingredient": "hbm:plate_polymer"
+    },
+    {
+      "ingredient": "hbm:pwr_fuel"
+    },
+    {
+      "count": 8,
+      "ingredient": "#c:ingots/desh"
+    },
+    {
+      "count": 12,
+      "ingredient": "#c:plates/saturnite"
+    },
+    {
+      "count": 2,
+      "ingredient": "#hbm:plates_cast/copper"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbm:ingot_uranium_fuel"
+    }
+  ],
+  "order": 110390,
+  "output_items": [
+    "hbm:mp_thruster_15_balefire_short"
+  ],
+  "power": 100
+}

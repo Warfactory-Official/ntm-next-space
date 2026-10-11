@@ -1,0 +1,22 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 996583981,
+    "separation": 4,
+    "spacing": 16
+  },
+  "structures": [
+    {
+      "structure": "hbmspace:meteor_dungeon_mun",
+      "weight": 1
+    },
+    {
+      "structure": "hbmspace:mun_base",
+      "weight": 6
+    },
+    {
+      "structure": "hbmspace:null_spawn_mun",
+      "weight": 18
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "type": "hbm:liquefaction",
+  "input_items": [
+    {
+      "ingredient": "minecraft:packed_ice"
+    }
+  ],
+  "order": 4864,
+  "output_fluids": [
+    {
+      "type": "minecraft:water",
+      "amount": 2000
+    }
+  ]
+}

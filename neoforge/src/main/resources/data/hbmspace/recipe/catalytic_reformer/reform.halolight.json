@@ -1,0 +1,26 @@
+{
+  "type": "hbm:catalytic_reformer",
+  "duration": 1,
+  "input_fluids": [
+    {
+      "type": "hbmspace:halolight",
+      "amount": 100
+    }
+  ],
+  "order": 2049,
+  "output_fluids": [
+    {
+      "type": "hbm:unsaturateds",
+      "amount": 50
+    },
+    {
+      "type": "hbm:reformgas",
+      "amount": 35
+    },
+    {
+      "type": "hbmspace:hcl",
+      "amount": 10
+    }
+  ],
+  "power": 20000
+}

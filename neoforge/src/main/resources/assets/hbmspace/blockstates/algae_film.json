@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "hbmspace:block/algae_film",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "hbmspace:block/algae_film"
+    },
+    "facing=south": {
+      "model": "hbmspace:block/algae_film",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "hbmspace:block/algae_film",
+      "y": 270
+    }
+  }
+}

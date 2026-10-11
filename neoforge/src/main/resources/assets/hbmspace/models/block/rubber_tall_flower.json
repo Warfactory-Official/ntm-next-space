@@ -1,0 +1,50 @@
+{
+  "groups": [
+    {
+      "matrix": [
+        -1.0,
+        0.0,
+        -8.742278E-8,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        8.742278E-8,
+        0.0,
+        -1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "parts": [
+        "cube",
+        "cube.001",
+        "cube.002",
+        "cube.003",
+        "cube.004",
+        "cube.005"
+      ],
+      "texture": "rubber_tall.flower"
+    },
+    {
+      "parts": [
+        "cube",
+        "cube.001",
+        "cube.002",
+        "cube.003",
+        "cube.004",
+        "cube.005"
+      ],
+      "texture": "rubber_tall.flower"
+    }
+  ],
+  "loader": "hbm:obj",
+  "model": "hbmspace:models/plant_spike.obj",
+  "textures": {
+    "particle": "hbmspace:block/rubber_tall.flower",
+    "rubber_tall.flower": "hbmspace:block/rubber_tall.flower"
+  }
+}

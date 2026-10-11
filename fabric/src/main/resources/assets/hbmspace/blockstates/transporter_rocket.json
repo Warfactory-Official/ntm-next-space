@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "hbmspace:block/transporter_rocket"
+    },
+    "facing=north": {
+      "model": "hbmspace:block/transporter_rocket",
+      "y": 270
+    },
+    "facing=south": {
+      "model": "hbmspace:block/transporter_rocket",
+      "y": 90
+    },
+    "facing=west": {
+      "model": "hbmspace:block/transporter_rocket",
+      "y": 180
+    }
+  }
+}

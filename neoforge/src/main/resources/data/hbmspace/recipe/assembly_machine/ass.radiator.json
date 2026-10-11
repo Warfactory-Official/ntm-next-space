@@ -1,0 +1,27 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 400,
+  "input_items": [
+    {
+      "count": 6,
+      "ingredient": "#hbm:plates_cast/aluminum"
+    },
+    {
+      "count": 6,
+      "ingredient": "#c:plates/stainless_steel"
+    },
+    {
+      "count": 4,
+      "ingredient": "#hbm:pipes/copper"
+    },
+    {
+      "count": 3,
+      "ingredient": "hbm:thermo_element"
+    }
+  ],
+  "order": 110341,
+  "output_items": [
+    "hbmspace:machine_radiator"
+  ],
+  "power": 100
+}

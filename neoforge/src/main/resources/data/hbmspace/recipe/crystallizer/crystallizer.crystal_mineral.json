@@ -1,0 +1,32 @@
+{
+  "type": "hbm:crystallizer",
+  "duration": 600,
+  "input_fluids": [
+    {
+      "type": "hbm:peroxide",
+      "amount": 500
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": [
+        "hbmspace:ore_mineral",
+        "hbmspace:ore_mineral_kerbin",
+        "hbmspace:ore_mineral_mun",
+        "hbmspace:ore_mineral_minmus",
+        "hbmspace:ore_mineral_duna",
+        "hbmspace:ore_mineral_moho",
+        "hbmspace:ore_mineral_dres",
+        "hbmspace:ore_mineral_eve",
+        "hbmspace:ore_mineral_ike",
+        "hbmspace:ore_mineral_laythe",
+        "hbmspace:ore_mineral_tekto"
+      ]
+    }
+  ],
+  "order": 68612,
+  "output_items": [
+    "hbmspace:crystal_mineral"
+  ],
+  "productivity": 0.05
+}

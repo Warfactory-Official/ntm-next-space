@@ -1,0 +1,60 @@
+{
+  "elements": [
+    {
+      "element": {
+        "align_to_terrain": true,
+        "element_type": "hbm:legacy_piece",
+        "height_offset": -1,
+        "location": "hbmspace:mun_base/base",
+        "processors": "hbm:multiblock_assembly",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "align_to_terrain": true,
+        "element_type": "hbm:legacy_piece",
+        "height_offset": -1,
+        "location": "hbmspace:mun_base/flag",
+        "processors": "hbm:multiblock_assembly",
+        "projection": "rigid"
+      },
+      "weight": 2
+    },
+    {
+      "element": {
+        "align_to_terrain": true,
+        "element_type": "hbm:legacy_piece",
+        "height_offset": -1,
+        "location": "hbmspace:mun_base/panels",
+        "processors": "hbm:multiblock_assembly",
+        "projection": "rigid"
+      },
+      "weight": 6
+    },
+    {
+      "element": {
+        "align_to_terrain": true,
+        "element_type": "hbm:legacy_piece",
+        "height_offset": -1,
+        "location": "hbmspace:mun_base/stardar",
+        "processors": "hbm:multiblock_assembly",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "align_to_terrain": true,
+        "element_type": "hbm:legacy_piece",
+        "height_offset": -1,
+        "location": "hbmspace:mun_base/tanks",
+        "processors": "hbm:multiblock_assembly",
+        "projection": "rigid"
+      },
+      "weight": 6
+    }
+  ],
+  "fallback": "minecraft:empty"
+}

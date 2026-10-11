@@ -1,0 +1,19 @@
+{
+  "type": "liquid",
+  "color": "#675454",
+  "nfpa": {
+    "flame": 3,
+    "health": 1,
+    "react": 0
+  },
+  "symbol": "RADIATION",
+  "temperature": 20,
+  "traits": {
+    "corrosive": {
+      "rating": 10
+    },
+    "ventradiation": {
+      "rad_per_mb": 0.5
+    }
+  }
+}

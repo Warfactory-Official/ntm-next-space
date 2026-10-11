@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "hbm:bobblehead_peep"
+    }
+  ],
+  "order": 50436,
+  "output_items": [
+    "hbm:scrap_plastic_cpu_clock"
+  ]
+}

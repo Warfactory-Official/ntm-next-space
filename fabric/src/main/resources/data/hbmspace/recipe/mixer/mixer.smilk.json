@@ -1,0 +1,23 @@
+{
+  "type": "hbm:mixer",
+  "duration": 50,
+  "input_fluids": [
+    {
+      "type": "hbmspace:milk",
+      "amount": 500
+    }
+  ],
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "#c:crops/strawberry"
+    }
+  ],
+  "order": 10241,
+  "output_fluids": [
+    {
+      "type": "hbmspace:smilk",
+      "amount": 500
+    }
+  ]
+}

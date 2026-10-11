@@ -1,0 +1,21 @@
+{
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "hidden": [
+    "Tower_Base",
+    "Tower_Segment",
+    "Tower_Cap",
+    "Tower_Segment_Small"
+  ],
+  "loader": "hbm:obj",
+  "model": "hbmspace:models/machines/rocket_pad.obj",
+  "skins": {
+    "all": [
+      "Base"
+    ]
+  },
+  "textures": {
+    "all": "hbmspace:block/models/machines/rocket_pad",
+    "particle": "hbmspace:block/launch_pad"
+  }
+}

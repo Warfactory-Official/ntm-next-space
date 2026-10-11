@@ -1,0 +1,14 @@
+{
+  "entries": [
+    {
+      "type": "hbm:radiation",
+      "level": 1.4300000000000002
+    },
+    {
+      "type": "hbm:hot",
+      "level": 0.2
+    }
+  ],
+  "mutex": 1,
+  "targets": "#c:nuggets/californium_251"
+}

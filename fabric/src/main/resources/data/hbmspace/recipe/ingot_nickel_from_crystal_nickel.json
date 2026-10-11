@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:smelting",
+  "cookingtime": 200,
+  "experience": 2.0,
+  "ingredient": {
+    "fabric:type": "hbm:recipe_input",
+    "base": "hbmspace:crystal_nickel"
+  },
+  "result": {
+    "count": 2,
+    "id": "hbmspace:ingot_nickel"
+  }
+}

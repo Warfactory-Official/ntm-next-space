@@ -1,0 +1,13 @@
+{
+  "block.hbm.fissure_bomb": "Fissure bomb",
+  "block.hbm.moon_turf": "Mun Turf",
+  "desc.gui.nukeCustom.amat": "Caps at 350\n§o\"Antimatter, Balefire, whatever.\"",
+  "desc.gui.satlinker.chip": "The first slot will copy the satellite/chip's\nfrequency and paste it to the second slot.\nIf both items are satellites, it also copies\nsatellite settings.",
+  "desc.hbm.pneumatic_tube.line6": "Input air type can be changed with a fluid ID",
+  "item.hbm.heavy_component": "Heavy Component",
+  "item.hbm.missile.part.maxPayload": "Max. warhead mass",
+  "item.hbm.mp_thruster_20_kerosene": "Size 20 Kerosene Thruster",
+  "item.hbm.mp_thruster_20_kerosene_dual": "Size 20 Kerosene Twin Thrusters",
+  "item.hbm.mp_thruster_20_kerosene_triple": "Size 20 Kerosene Triple Thrusters",
+  "item.hbm.oil_detector.noOil": "No oil or gas detected."
+}

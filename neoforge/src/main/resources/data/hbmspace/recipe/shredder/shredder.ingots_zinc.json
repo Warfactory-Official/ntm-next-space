@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/zinc"
+    }
+  ],
+  "order": 53006,
+  "output_items": [
+    "hbmspace:powder_zinc"
+  ]
+}

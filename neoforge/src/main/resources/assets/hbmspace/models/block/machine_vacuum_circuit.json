@@ -1,0 +1,18 @@
+{
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "loader": "hbm:obj",
+  "model": "hbmspace:models/machines/vacuum_solderer.obj",
+  "skins": {
+    "all": [
+      "Base",
+      "Arm",
+      "Bit",
+      "Fan"
+    ]
+  },
+  "textures": {
+    "all": "hbmspace:block/models/machines/vacuum_solderer",
+    "particle": "hbmspace:block/models/machines/vacuum_solderer"
+  }
+}

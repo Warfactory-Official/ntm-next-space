@@ -1,0 +1,19 @@
+{
+  "type": "gaseous",
+  "color": "#d3cf9e",
+  "nfpa": {
+    "flame": 4,
+    "health": 2,
+    "react": 0
+  },
+  "symbol": "NONE",
+  "temperature": 20,
+  "traits": {
+    "corrosive": {
+      "rating": 15
+    },
+    "flammable": {
+      "energy": 50000
+    }
+  }
+}

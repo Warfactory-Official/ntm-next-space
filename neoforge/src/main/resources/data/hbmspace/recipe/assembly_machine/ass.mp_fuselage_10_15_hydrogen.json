@@ -1,0 +1,29 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 400,
+  "input_items": [
+    {
+      "ingredient": "hbm:seg_10"
+    },
+    {
+      "ingredient": "hbm:seg_15"
+    },
+    {
+      "count": 9,
+      "ingredient": "hbm:steel_scaffold"
+    },
+    {
+      "count": 36,
+      "ingredient": "#c:plates/titanium"
+    },
+    {
+      "count": 9,
+      "ingredient": "#c:plates/iron"
+    }
+  ],
+  "order": 110412,
+  "output_items": [
+    "hbm:mp_fuselage_10_15_hydrogen"
+  ],
+  "power": 100
+}

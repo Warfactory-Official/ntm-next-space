@@ -1,0 +1,9 @@
+{
+  "type": "hbm:null_spawn",
+  "biomes": [
+    "hbmspace:minmus_hills",
+    "hbmspace:minmus_basins"
+  ],
+  "spawn_overrides": {},
+  "step": "strongholds"
+}

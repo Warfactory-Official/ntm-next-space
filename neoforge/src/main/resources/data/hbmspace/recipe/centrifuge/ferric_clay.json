@@ -1,0 +1,17 @@
+{
+  "type": "hbm:centrifuge",
+  "duration": 200,
+  "input_items": [
+    {
+      "ingredient": "hbmspace:ferric_clay"
+    }
+  ],
+  "order": 13831,
+  "output_items": [
+    "minecraft:clay_ball",
+    "minecraft:clay_ball",
+    "hbm:powder_iron",
+    "hbm:powder_iron"
+  ],
+  "power": 200
+}

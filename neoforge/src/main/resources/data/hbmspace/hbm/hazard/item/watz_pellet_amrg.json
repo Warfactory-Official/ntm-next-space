@@ -1,0 +1,9 @@
+{
+  "entries": [
+    {
+      "type": "hbm:radiation",
+      "level": 36.0
+    }
+  ],
+  "targets": "hbmspace:watz_pellet_amrg"
+}

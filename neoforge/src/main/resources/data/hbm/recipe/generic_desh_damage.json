@@ -1,0 +1,13 @@
+{
+  "type": "hbm:crafting_shapeless",
+  "ingredients": [
+    "#hbm:gun_mechanisms/gun_metal",
+    "#hbm:plates_cast/desh",
+    "#hbm:plates_cast/desh",
+    "#hbm:plates_cast/desh",
+    "hbm:ducttape"
+  ],
+  "result": {
+    "id": "hbm:weapon_mod_generic_desh_damage"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "values": [
+    "#hbm:dusts/any_coke",
+    {
+      "id": "#c:dusts/coal",
+      "required": false
+    }
+  ]
+}

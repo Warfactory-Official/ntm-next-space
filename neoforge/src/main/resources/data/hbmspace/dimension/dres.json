@@ -1,0 +1,14 @@
+{
+  "type": "hbmspace:dres",
+  "generator": {
+    "type": "hbmspace:dres",
+    "biome_source": {
+      "type": "hbmspace:celestial",
+      "biomes": [
+        "hbmspace:dres_plains",
+        "hbmspace:dres_large_basins"
+      ],
+      "layers": "hbmspace:dres"
+    }
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "type": "hbm:chemical_plant",
+  "duration": 200,
+  "icon": {
+    "components": {
+      "hbm:fluid_content": {
+        "type": "hbmspace:thorium_bromide",
+        "amount": 0
+      },
+      "minecraft:custom_model_data": {
+        "colors": [
+          -8759998
+        ]
+      }
+    },
+    "id": "hbm:fluid_icon"
+  },
+  "input_fluids": [
+    {
+      "type": "hbm:hydrogen",
+      "amount": 4000
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "#hbm:billets/thorium"
+    },
+    {
+      "ingredient": "hbm:powder_bromine"
+    },
+    {
+      "ingredient": "#c:ingots/asbestos"
+    }
+  ],
+  "order": 22019,
+  "output_fluids": [
+    {
+      "type": "hbmspace:thorium_bromide",
+      "amount": 4000
+    }
+  ],
+  "power": 1000
+}

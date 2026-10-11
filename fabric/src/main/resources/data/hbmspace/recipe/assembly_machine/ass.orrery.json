@@ -1,0 +1,25 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 400,
+  "input_fluids": [
+    {
+      "type": "hbm:tritium",
+      "amount": 2000
+    }
+  ],
+  "input_items": [
+    {
+      "count": 16,
+      "ingredient": "#c:glass_blocks"
+    },
+    {
+      "count": 12,
+      "ingredient": "hbm:circuit_advanced"
+    }
+  ],
+  "order": 110364,
+  "output_items": [
+    "hbmspace:orrery"
+  ],
+  "power": 100
+}

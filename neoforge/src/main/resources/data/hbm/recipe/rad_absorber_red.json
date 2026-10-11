@@ -1,0 +1,16 @@
+{
+  "type": "hbm:crafting_shaped",
+  "key": {
+    "C": "#hbmspace:dusts/any_coal_coke",
+    "I": "#c:ingots/titanium",
+    "P": "hbm:rad_absorber"
+  },
+  "pattern": [
+    "ICI",
+    "CPC",
+    "ICI"
+  ],
+  "result": {
+    "id": "hbm:rad_absorber_red"
+  }
+}

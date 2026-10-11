@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "hbmspace:block/combat_drop"
+    }
+  }
+}

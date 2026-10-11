@@ -1,0 +1,137 @@
+{
+  "groups": [
+    {
+      "matrix": [
+        -1.0,
+        -8.742278E-8,
+        0.0,
+        0.0,
+        8.742278E-8,
+        -1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "parts": [
+        "Top"
+      ],
+      "texture": "top"
+    },
+    {
+      "matrix": [
+        -1.0,
+        -8.742278E-8,
+        0.0,
+        0.0,
+        8.742278E-8,
+        -1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "parts": [
+        "Side"
+      ],
+      "texture": "side"
+    },
+    {
+      "matrix": [
+        -1.0,
+        -8.742278E-8,
+        0.0,
+        0.0,
+        8.742278E-8,
+        -1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "parts": [
+        "Bottom"
+      ],
+      "texture": "bottom"
+    },
+    {
+      "matrix": [
+        -1.0,
+        -8.742278E-8,
+        0.0,
+        0.0,
+        8.742278E-8,
+        -1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "parts": [
+        "InnerTop"
+      ],
+      "texture": "inner_top"
+    },
+    {
+      "matrix": [
+        -1.0,
+        -8.742278E-8,
+        0.0,
+        0.0,
+        8.742278E-8,
+        -1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "parts": [
+        "InnerSide"
+      ],
+      "texture": "inner_side"
+    }
+  ],
+  "loader": "hbm:obj",
+  "model": "hbm:models/blocks/capacitor.obj",
+  "offset_x": 0.5,
+  "offset_y": 0.5,
+  "offset_z": 0.5,
+  "textures": {
+    "bottom": "hbmspace:block/capacitor_complex_bottom",
+    "inner_side": "hbmspace:block/capacitor_complex_inner_side",
+    "inner_top": "hbmspace:block/capacitor_complex_inner_top",
+    "particle": "hbm:block/block_cadmium",
+    "side": "hbmspace:block/capacitor_complex_side",
+    "top": "hbmspace:block/capacitor_complex_top"
+  }
+}

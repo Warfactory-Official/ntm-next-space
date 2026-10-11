@@ -1,0 +1,20 @@
+{
+  "type": "hbm:electrolyser_metal",
+  "duration": 20,
+  "input_items": [
+    {
+      "components": {
+        "hbm:bedrock_ore": {
+          "type": "tekto_actinide",
+          "grade": "crumbs"
+        }
+      },
+      "ingredient": "hbm:bedrock_ore"
+    }
+  ],
+  "order": 9064,
+  "output_material": {
+    "amount": 288,
+    "material": "uranium"
+  }
+}

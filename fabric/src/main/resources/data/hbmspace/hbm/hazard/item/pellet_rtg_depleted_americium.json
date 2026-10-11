@@ -1,0 +1,9 @@
+{
+  "entries": [
+    {
+      "type": "hbm:radiation",
+      "level": 13.5
+    }
+  ],
+  "targets": "hbmspace:pellet_rtg_depleted_americium"
+}

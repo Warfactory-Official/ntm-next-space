@@ -1,0 +1,38 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "duration": 400,
+  "input_items": [
+    {
+      "count": 8,
+      "ingredient": "hbm:item_expensive_lead_plating"
+    },
+    {
+      "count": 8,
+      "ingredient": "#hbm:plates_welded/tungsten"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbm:motor_bismuth"
+    },
+    {
+      "count": 8,
+      "ingredient": "#hbm:ingots/any_hard_plastic"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbm:item_expensive_circuit"
+    }
+  ],
+  "name": "ass.htr3Ex",
+  "order": 110377,
+  "output_items": [
+    "hbmspace:machine_htr3"
+  ],
+  "power": 100
+}

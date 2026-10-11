@@ -1,0 +1,20 @@
+{
+  "type": "hbmspace:alkylation",
+  "input_fluids": [
+    {
+      "type": "hbm:unsaturateds",
+      "amount": 100
+    }
+  ],
+  "order": 256,
+  "output_fluids": [
+    {
+      "type": "hbm:aromatics",
+      "amount": 70
+    },
+    {
+      "type": "hbm:petroleum",
+      "amount": 30
+    }
+  ]
+}

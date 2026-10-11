@@ -1,0 +1,26 @@
+{
+  "type": "gaseous",
+  "color": "#dcabf8",
+  "containers": {
+    "gastank": {
+      "bottle_color": "#8c21ff",
+      "label_color": "#ffffff"
+    }
+  },
+  "nfpa": {
+    "flame": 0,
+    "health": 4,
+    "react": 0
+  },
+  "symbol": "OXIDIZER",
+  "temperature": 20,
+  "traits": {
+    "corrosive": {
+      "rating": 25
+    },
+    "poison": {
+      "level": 1,
+      "withering": true
+    }
+  }
+}

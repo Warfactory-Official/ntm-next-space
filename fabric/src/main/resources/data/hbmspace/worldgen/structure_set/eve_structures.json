@@ -1,0 +1,18 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 996583978,
+    "separation": 4,
+    "spacing": 16
+  },
+  "structures": [
+    {
+      "structure": "hbmspace:meteor_dungeon_eve",
+      "weight": 1
+    },
+    {
+      "structure": "hbmspace:null_spawn_eve",
+      "weight": 24
+    }
+  ]
+}

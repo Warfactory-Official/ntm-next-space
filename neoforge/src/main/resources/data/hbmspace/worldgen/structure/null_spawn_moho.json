@@ -1,0 +1,11 @@
+{
+  "type": "hbm:null_spawn",
+  "biomes": [
+    "hbmspace:moho_crag",
+    "hbmspace:moho_basalt_deltas",
+    "hbmspace:moho_lava_sea",
+    "hbmspace:moho_plateau"
+  ],
+  "spawn_overrides": {},
+  "step": "strongholds"
+}

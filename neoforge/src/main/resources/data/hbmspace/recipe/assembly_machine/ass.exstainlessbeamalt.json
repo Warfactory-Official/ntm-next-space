@@ -1,0 +1,33 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 600,
+  "input_fluids": [
+    {
+      "type": "hbmspace:argon",
+      "amount": 1000
+    }
+  ],
+  "input_items": [
+    {
+      "count": 8,
+      "ingredient": "#hbm:plates_welded/stainless_steel"
+    },
+    {
+      "count": 8,
+      "ingredient": "#hbm:plates_cast/aluminum"
+    },
+    {
+      "count": 4,
+      "ingredient": "#hbm:plates_cast/titanium"
+    },
+    {
+      "count": 32,
+      "ingredient": "#c:bolts/steel"
+    }
+  ],
+  "order": 6402,
+  "output_items": [
+    "hbmspace:item_expensive_stainless_beam"
+  ],
+  "power": 20000
+}

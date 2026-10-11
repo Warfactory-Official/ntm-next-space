@@ -1,0 +1,36 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "blueprint_pools_528": [
+    "528.aluminium"
+  ],
+  "duration": 400,
+  "input_items": [
+    {
+      "count": 2,
+      "ingredient": "#hbm:ingots/any_rubber"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbm:item_expensive_steel_plating"
+    },
+    {
+      "count": 2,
+      "ingredient": "hbm:crt_display"
+    },
+    {
+      "ingredient": "hbm:item_expensive_circuit"
+    }
+  ],
+  "name": "ass.driveprocessorEx",
+  "order": 110359,
+  "output_items": [
+    "hbmspace:machine_drive_processor"
+  ],
+  "power": 100
+}

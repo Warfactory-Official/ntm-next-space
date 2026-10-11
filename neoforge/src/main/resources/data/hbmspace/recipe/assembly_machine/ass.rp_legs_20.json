@@ -1,0 +1,23 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 100,
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "#hbm:pipes/steel"
+    },
+    {
+      "count": 8,
+      "ingredient": "#c:plates/aluminum"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbm:motor"
+    }
+  ],
+  "order": 110425,
+  "output_items": [
+    "hbmspace:rp_l_20"
+  ],
+  "power": 100
+}

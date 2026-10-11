@@ -1,0 +1,22 @@
+{
+  "type": "hbm:mixer",
+  "duration": 20,
+  "input_fluids": [
+    {
+      "type": "hbm:radiosolvent",
+      "amount": 250
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "hbmspace:pvc_log"
+    }
+  ],
+  "order": 12289,
+  "output_fluids": [
+    {
+      "type": "hbmspace:vinyl",
+      "amount": 1000
+    }
+  ]
+}

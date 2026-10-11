@@ -1,0 +1,22 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 996583976,
+    "separation": 4,
+    "spacing": 16
+  },
+  "structures": [
+    {
+      "structure": "hbmspace:meteor_dungeon_moho",
+      "weight": 1
+    },
+    {
+      "structure": "hbmspace:moho_base",
+      "weight": 4
+    },
+    {
+      "structure": "hbmspace:null_spawn_moho",
+      "weight": 20
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 100,
+  "input_items": [
+    {
+      "ingredient": "hbmspace:nugget_hafnium"
+    },
+    {
+      "ingredient": "hbmspace:circuit_gaas"
+    },
+    {
+      "count": 2,
+      "ingredient": "#c:fine_wires/gold"
+    }
+  ],
+  "name": "ass.hfChip",
+  "order": 8962,
+  "output_items": [
+    "hbmspace:circuit_hfchip"
+  ],
+  "power": 2000
+}

@@ -1,0 +1,7 @@
+{
+  "parent": "hbmspace:block/celestial_ore",
+  "textures": {
+    "overlay": "hbmspace:block/ore_lithium",
+    "stone": "hbm:block/basalt"
+  }
+}

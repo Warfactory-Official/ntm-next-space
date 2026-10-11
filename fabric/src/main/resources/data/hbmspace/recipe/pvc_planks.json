@@ -1,0 +1,10 @@
+{
+  "type": "hbm:crafting_shapeless",
+  "ingredients": [
+    "hbmspace:pvc_log"
+  ],
+  "result": {
+    "count": 4,
+    "id": "hbmspace:pvc_planks"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "type": "hbm:soldering",
+  "duration": 300,
+  "input_items": [
+    {
+      "count": 3,
+      "ingredient": "hbm:circuit_chip"
+    }
+  ],
+  "order": 3841,
+  "output_items": [
+    "hbmspace:circuit_aero"
+  ],
+  "pcb": [
+    {
+      "ingredient": "hbm:circuit_advanced"
+    },
+    {
+      "count": 4,
+      "ingredient": "#c:ingots/rubber"
+    }
+  ],
+  "power": 1000,
+  "solder": [
+    {
+      "count": 4,
+      "ingredient": "#c:fine_wires/lead"
+    }
+  ]
+}

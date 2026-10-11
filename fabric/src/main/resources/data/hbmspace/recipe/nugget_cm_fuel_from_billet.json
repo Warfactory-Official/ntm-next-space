@@ -1,0 +1,10 @@
+{
+  "type": "hbm:crafting_shapeless",
+  "ingredients": [
+    "hbmspace:billet_cm_fuel"
+  ],
+  "result": {
+    "count": 6,
+    "id": "hbmspace:nugget_cm_fuel"
+  }
+}

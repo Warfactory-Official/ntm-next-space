@@ -1,0 +1,39 @@
+{
+  "processors": [
+    {
+      "marker": {
+        "Name": "hbm:tile_lab"
+      },
+      "options": [
+        {
+          "data": {
+            "Name": "hbm:tile_lab"
+          },
+          "weight": 8
+        },
+        {
+          "data": {
+            "Name": "hbm:tile_lab_cracked"
+          },
+          "weight": 1
+        },
+        {
+          "data": {
+            "Name": "hbm:tile_lab_broken"
+          },
+          "weight": 1
+        }
+      ],
+      "processor_type": "hbm:weighted_place"
+    },
+    {
+      "processor_type": "hbm:multiblock_assembly"
+    },
+    {
+      "processor_type": "hbm:duct_fluid"
+    },
+    {
+      "processor_type": "hbm:loot_pile"
+    }
+  ]
+}

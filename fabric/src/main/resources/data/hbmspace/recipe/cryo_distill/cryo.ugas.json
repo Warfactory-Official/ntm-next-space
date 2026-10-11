@@ -1,0 +1,28 @@
+{
+  "type": "hbmspace:cryo_distill",
+  "input_fluids": [
+    {
+      "type": "hbmspace:ugas",
+      "amount": 100
+    }
+  ],
+  "order": 1024,
+  "output_fluids": [
+    {
+      "type": "hbm:oxygen",
+      "amount": 45
+    },
+    {
+      "type": "hbmspace:nitrogen",
+      "amount": 25
+    },
+    {
+      "type": "hbmspace:methanol",
+      "amount": 15
+    },
+    {
+      "type": "hbm:aromatics",
+      "amount": 15
+    }
+  ]
+}

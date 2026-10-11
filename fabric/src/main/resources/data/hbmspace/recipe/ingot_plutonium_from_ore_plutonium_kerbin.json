@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smelting",
+  "cookingtime": 200,
+  "experience": 24.0,
+  "ingredient": {
+    "fabric:type": "hbm:recipe_input",
+    "base": "hbmspace:ore_plutonium_kerbin"
+  },
+  "result": {
+    "id": "hbm:ingot_plutonium"
+  }
+}

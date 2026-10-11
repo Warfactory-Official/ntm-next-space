@@ -1,0 +1,8 @@
+{
+  "type": "hbm:ancient_tomb",
+  "biomes": [
+    "hbmspace:ike"
+  ],
+  "spawn_overrides": {},
+  "step": "strongholds"
+}

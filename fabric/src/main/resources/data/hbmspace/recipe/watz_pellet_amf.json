@@ -1,0 +1,15 @@
+{
+  "type": "hbm:crafting_shaped",
+  "key": {
+    "G": "#c:ingots/graphite",
+    "I": "hbm:ingot_americium_fuel"
+  },
+  "pattern": [
+    " I ",
+    "IGI",
+    " I "
+  ],
+  "result": {
+    "id": "hbmspace:watz_pellet_amf"
+  }
+}

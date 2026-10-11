@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smelting",
+  "cookingtime": 200,
+  "experience": 2.0,
+  "ingredient": {
+    "neoforge:ingredient_type": "hbm:recipe_input",
+    "base": "hbmspace:ore_beryllium_kerbin"
+  },
+  "result": {
+    "id": "hbm:ingot_beryllium"
+  }
+}

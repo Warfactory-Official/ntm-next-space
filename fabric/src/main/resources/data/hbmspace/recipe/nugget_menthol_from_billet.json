@@ -1,0 +1,10 @@
+{
+  "type": "hbm:crafting_shapeless",
+  "ingredients": [
+    "hbmspace:billet_menthol"
+  ],
+  "result": {
+    "count": 6,
+    "id": "hbmspace:nugget_menthol"
+  }
+}

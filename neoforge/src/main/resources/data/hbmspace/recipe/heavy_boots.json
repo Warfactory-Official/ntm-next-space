@@ -1,0 +1,14 @@
+{
+  "type": "hbm:crafting_shaped",
+  "key": {
+    "L": "minecraft:leather",
+    "S": "#c:ingots/steel"
+  },
+  "pattern": [
+    "L L",
+    "S S"
+  ],
+  "result": {
+    "id": "hbmspace:heavy_boots"
+  }
+}

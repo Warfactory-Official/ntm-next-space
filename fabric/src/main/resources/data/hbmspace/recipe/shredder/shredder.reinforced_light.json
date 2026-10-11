@@ -1,0 +1,15 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "hbm:reinforced_light"
+    }
+  ],
+  "order": 769,
+  "output_items": [
+    {
+      "count": 4,
+      "id": "minecraft:glowstone_dust"
+    }
+  ]
+}

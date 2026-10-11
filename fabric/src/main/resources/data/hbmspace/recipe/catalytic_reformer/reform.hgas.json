@@ -1,0 +1,26 @@
+{
+  "type": "hbm:catalytic_reformer",
+  "duration": 1,
+  "input_fluids": [
+    {
+      "type": "hbmspace:hgas",
+      "amount": 100
+    }
+  ],
+  "order": 2050,
+  "output_fluids": [
+    {
+      "type": "hbm:aromatics",
+      "amount": 60
+    },
+    {
+      "type": "hbmspace:chloromethane",
+      "amount": 25
+    },
+    {
+      "type": "hbmspace:hcl",
+      "amount": 10
+    }
+  ],
+  "power": 20000
+}

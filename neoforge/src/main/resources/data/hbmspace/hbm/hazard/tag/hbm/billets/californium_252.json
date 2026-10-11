@@ -1,0 +1,18 @@
+{
+  "entries": [
+    {
+      "type": "hbm:radiation",
+      "level": 7.65
+    },
+    {
+      "type": "hbmspace:neutron",
+      "level": 1.5299999713897705
+    },
+    {
+      "type": "hbm:hot",
+      "level": 1.5
+    }
+  ],
+  "mutex": 1,
+  "targets": "#hbm:billets/californium_252"
+}

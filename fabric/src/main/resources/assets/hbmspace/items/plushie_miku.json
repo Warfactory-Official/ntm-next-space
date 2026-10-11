@@ -1,0 +1,6 @@
+{
+  "model": {
+    "type": "hbm:plushie",
+    "base": "hbmspace:item/plushie_miku_base"
+  }
+}

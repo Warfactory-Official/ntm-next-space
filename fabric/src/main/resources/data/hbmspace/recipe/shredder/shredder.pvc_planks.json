@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "hbmspace:pvc_planks"
+    }
+  ],
+  "order": 21766,
+  "output_items": [
+    "hbmspace:powder_pvc"
+  ]
+}

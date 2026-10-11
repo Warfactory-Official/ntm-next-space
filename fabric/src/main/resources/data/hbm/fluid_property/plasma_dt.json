@@ -1,0 +1,21 @@
+{
+  "type": "plasma",
+  "color": "#f7afde",
+  "flags": [
+    "nocontainer",
+    "noid"
+  ],
+  "nfpa": {
+    "flame": 4,
+    "health": 0,
+    "react": 0
+  },
+  "symbol": "RADIATION",
+  "temperature": 3250,
+  "traits": {
+    "rocket": {
+      "isp": 12000,
+      "thrust": 700000
+    }
+  }
+}

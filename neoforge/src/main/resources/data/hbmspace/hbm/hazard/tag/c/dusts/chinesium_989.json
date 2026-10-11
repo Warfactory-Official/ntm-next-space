@@ -1,0 +1,14 @@
+{
+  "entries": [
+    {
+      "type": "hbm:radiation",
+      "level": 267.0
+    },
+    {
+      "type": "hbm:hot",
+      "level": 12.0
+    }
+  ],
+  "mutex": 1,
+  "targets": "#c:dusts/chinesium_989"
+}

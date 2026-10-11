@@ -1,0 +1,17 @@
+{
+  "type": "gaseous",
+  "color": "#fd70d0",
+  "containers": {
+    "gastank": {
+      "bottle_color": "#fd70d0",
+      "label_color": "#303030"
+    }
+  },
+  "nfpa": {
+    "flame": 0,
+    "health": 0,
+    "react": 0
+  },
+  "symbol": "CRYOGENIC",
+  "temperature": 20
+}

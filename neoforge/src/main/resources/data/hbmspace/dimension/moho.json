@@ -1,0 +1,16 @@
+{
+  "type": "hbmspace:moho",
+  "generator": {
+    "type": "hbmspace:moho",
+    "biome_source": {
+      "type": "hbmspace:celestial",
+      "biomes": [
+        "hbmspace:moho_crag",
+        "hbmspace:moho_basalt_deltas",
+        "hbmspace:moho_lava_sea",
+        "hbmspace:moho_plateau"
+      ],
+      "layers": "hbmspace:moho"
+    }
+  }
+}

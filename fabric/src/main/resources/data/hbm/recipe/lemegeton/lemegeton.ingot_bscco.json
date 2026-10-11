@@ -1,0 +1,12 @@
+{
+  "type": "hbm:lemegeton",
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/desh"
+    }
+  ],
+  "order": 2304,
+  "output_items": [
+    "hbm:ingot_bscco"
+  ]
+}

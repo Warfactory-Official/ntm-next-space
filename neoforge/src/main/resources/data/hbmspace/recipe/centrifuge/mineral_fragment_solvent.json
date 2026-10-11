@@ -1,0 +1,23 @@
+{
+  "type": "hbm:centrifuge",
+  "duration": 200,
+  "input_items": [
+    {
+      "ingredient": "hbmspace:clump_solvent"
+    }
+  ],
+  "order": 13828,
+  "output_items": [
+    {
+      "count": 4,
+      "id": "hbm:powder_cobalt"
+    },
+    {
+      "count": 2,
+      "id": "hbmspace:powder_gallium"
+    },
+    "hbm:powder_niobium",
+    "hbm:powder_coltan"
+  ],
+  "power": 200
+}

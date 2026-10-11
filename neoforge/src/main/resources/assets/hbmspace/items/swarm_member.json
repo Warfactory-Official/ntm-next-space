@@ -1,0 +1,40 @@
+{
+  "model": {
+    "type": "hbm:mesh",
+    "base": "hbmspace:item/swarm_member_base",
+    "mesh": "hbmspace:models/dyson_swarm_satellite.obj",
+    "pose_suffix": {
+      "gui": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    "skins": [
+      "hbmspace:textures/models/dyson_swarm_satellite.png"
+    ],
+    "spin": {
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "divisor": 1,
+      "modulus": 7200,
+      "rate": -0.05
+    }
+  }
+}

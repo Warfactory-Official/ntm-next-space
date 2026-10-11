@@ -1,0 +1,16 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "hbmspace:item/entity_scuttlecrab_spawn_egg",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 15825233
+      },
+      {
+        "type": "minecraft:constant",
+        "value": 15588027
+      }
+    ]
+  }
+}

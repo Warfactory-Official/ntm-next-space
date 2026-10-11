@@ -1,0 +1,43 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "lbsm_simple_crafting"
+    }
+  ],
+  "type": "hbm:soldering",
+  "duration": 300,
+  "input_fluids": [
+    {
+      "type": "hbmspace:polythylene",
+      "amount": 250
+    }
+  ],
+  "input_items": [
+    {
+      "ingredient": "hbmspace:circuit_gaschip"
+    },
+    {
+      "count": 2,
+      "ingredient": "hbm:circuit_capacitor"
+    }
+  ],
+  "name": "soldering.circuit_advanced_gaschipLbsm",
+  "order": 3847,
+  "output_items": [
+    "hbm:circuit_advanced"
+  ],
+  "pcb": [
+    {
+      "count": 4,
+      "ingredient": "hbm:circuit_pcb"
+    }
+  ],
+  "power": 1000,
+  "solder": [
+    {
+      "count": 8,
+      "ingredient": "#c:fine_wires/lead"
+    }
+  ]
+}

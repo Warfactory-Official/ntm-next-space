@@ -1,0 +1,18 @@
+{
+  "elements": [
+    {
+      "element": {
+        "align_to_terrain": true,
+        "element_type": "hbm:legacy_start",
+        "height_offset": -1,
+        "location": "hbmspace:minmus_base/base",
+        "processors": "hbmspace:minmus_concrete",
+        "projection": "rigid",
+        "range_limit": 128,
+        "size_limit": 32
+      },
+      "weight": 1
+    }
+  ],
+  "fallback": "minecraft:empty"
+}

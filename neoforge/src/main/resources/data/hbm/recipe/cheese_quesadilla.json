@@ -1,0 +1,12 @@
+{
+  "type": "hbm:crafting_shapeless",
+  "ingredients": [
+    "#c:foods/cheese",
+    "#c:foods/cheese",
+    "minecraft:bread"
+  ],
+  "result": {
+    "count": 3,
+    "id": "hbm:cheese_quesadilla"
+  }
+}

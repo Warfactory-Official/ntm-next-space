@@ -1,0 +1,11 @@
+{
+  "type": "hbm:crafting_shapeless",
+  "ingredients": [
+    "hbmspace:ammonium_nitrate",
+    "#c:dusts/calcium"
+  ],
+  "result": {
+    "count": 8,
+    "id": "minecraft:bone_meal"
+  }
+}

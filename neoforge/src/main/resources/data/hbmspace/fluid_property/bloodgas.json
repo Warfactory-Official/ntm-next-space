@@ -1,0 +1,25 @@
+{
+  "type": "liquid",
+  "color": "#591000",
+  "containers": {
+    "canister": {
+      "color": "#591000"
+    }
+  },
+  "nfpa": {
+    "flame": 1,
+    "health": 3,
+    "react": 1
+  },
+  "symbol": "NONE",
+  "temperature": 20,
+  "traits": {
+    "combustible": {
+      "energy": 5120000,
+      "grade": "AERO"
+    },
+    "flammable": {
+      "energy": 2040000
+    }
+  }
+}

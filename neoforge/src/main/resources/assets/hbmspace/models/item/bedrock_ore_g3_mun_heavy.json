@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "hbmspace:item/bedrock_ore_primary_mun_heavy",
+    "layer1": "hbm:item/bedrock_ore_overlay_centrifuged"
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "!expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "blueprint_pools_528": [
+    "528.stainless"
+  ],
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 6,
+      "ingredient": "#c:plates/stainless_steel"
+    },
+    {
+      "count": 4,
+      "ingredient": "#c:dusts/calcium"
+    },
+    {
+      "count": 12,
+      "ingredient": "#c:dusts/lithium"
+    },
+    {
+      "ingredient": "hbm:motor"
+    },
+    {
+      "ingredient": "hbm:turbine_titanium"
+    }
+  ],
+  "order": 110346,
+  "output_items": [
+    "hbmspace:air_scrubber"
+  ],
+  "power": 100
+}

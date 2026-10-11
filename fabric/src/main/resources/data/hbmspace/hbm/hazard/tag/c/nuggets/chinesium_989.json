@@ -1,0 +1,14 @@
+{
+  "entries": [
+    {
+      "type": "hbm:radiation",
+      "level": 8.9
+    },
+    {
+      "type": "hbm:hot",
+      "level": 0.4
+    }
+  ],
+  "mutex": 1,
+  "targets": "#c:nuggets/chinesium_989"
+}

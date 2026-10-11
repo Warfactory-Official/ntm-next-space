@@ -1,0 +1,12 @@
+{
+  "type": "hbm:crafting_shapeless",
+  "ingredients": [
+    "hbmspace:billet_cf252",
+    "hbmspace:billet_cf252",
+    "hbmspace:billet_cf252",
+    "#c:plates/nickel_pure"
+  ],
+  "result": {
+    "id": "hbmspace:pellet_rtg_cf252"
+  }
+}

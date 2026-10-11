@@ -1,0 +1,34 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 8,
+      "ingredient": "hbm:rocket_fuel"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbm:thruster_small"
+    },
+    {
+      "ingredient": "hbmspace:circuit_aero"
+    },
+    {
+      "count": 16,
+      "ingredient": "#hbm:ingots/any_rubber"
+    },
+    {
+      "count": 4,
+      "ingredient": "#hbm:shells/aluminum"
+    },
+    {
+      "count": 12,
+      "ingredient": "#c:ingots/fiberglass"
+    }
+  ],
+  "order": 110424,
+  "output_items": [
+    "hbmspace:rp_c_20"
+  ],
+  "power": 100
+}

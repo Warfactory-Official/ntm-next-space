@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:chest",
+  "hbm:random_slots": true,
+  "pools": [
+    {
+      "entries": [
+        {
+          "type": "minecraft:loot_table",
+          "value": "hbm:chests/nuke_trash"
+        }
+      ],
+      "rolls": {
+        "type": "hbmspace:wand_loot_scaled",
+        "value": {
+          "type": "minecraft:uniform",
+          "max": 15.0,
+          "min": 12.0
+        }
+      }
+    }
+  ],
+  "random_sequence": "hbmspace:chests/nuke_trash_12_15"
+}

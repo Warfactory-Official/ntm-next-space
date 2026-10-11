@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:jigsaw",
+  "biomes": [
+    "hbmspace:tekto_polyvinyl_plains",
+    "hbmspace:tekto_halogen_hills",
+    "hbmspace:tekto_forest",
+    "hbmspace:tekto_vinyl_desert"
+  ],
+  "max_distance_from_center": 128,
+  "size": 20,
+  "spawn_overrides": {},
+  "start_height": {
+    "absolute": 33
+  },
+  "start_pool": "hbm:meteor/start",
+  "step": "strongholds",
+  "use_expansion_hack": false
+}

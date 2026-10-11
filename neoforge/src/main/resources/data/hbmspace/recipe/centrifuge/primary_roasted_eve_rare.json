@@ -1,0 +1,23 @@
+{
+  "type": "hbm:centrifuge",
+  "duration": 200,
+  "input_items": [
+    {
+      "components": {
+        "hbm:bedrock_ore": {
+          "type": "eve_rare",
+          "grade": "primary_roasted"
+        }
+      },
+      "ingredient": "hbm:bedrock_ore"
+    }
+  ],
+  "order": 38152,
+  "output_items": [
+    {
+      "count": 18,
+      "id": "hbm:bedrock_ore_fragment_niobium"
+    }
+  ],
+  "power": 200
+}

@@ -1,0 +1,15 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "count": 4,
+      "ingredient": "hbmspace:deco_stainless"
+    }
+  ],
+  "order": 52994,
+  "output_items": [
+    "hbmspace:ingot_stainless"
+  ],
+  "overlay": "recycling",
+  "tier": 1
+}

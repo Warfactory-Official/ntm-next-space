@@ -1,0 +1,23 @@
+{
+  "type": "hbm:centrifuge",
+  "duration": 200,
+  "input_items": [
+    {
+      "components": {
+        "hbm:bedrock_ore": {
+          "type": "kerbin_crystal",
+          "grade": "primary"
+        }
+      },
+      "ingredient": "hbm:bedrock_ore"
+    }
+  ],
+  "order": 37684,
+  "output_items": [
+    {
+      "count": 18,
+      "id": "hbm:bedrock_ore_fragment_redstone"
+    }
+  ],
+  "power": 200
+}

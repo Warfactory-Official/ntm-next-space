@@ -1,0 +1,16 @@
+{
+  "fabric:type": "hbm:obj",
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "model": "hbmspace:models/machines/cryo_distill.obj",
+  "offset_y": -2.0,
+  "skins": {
+    "all": [
+      "cryo_distill"
+    ]
+  },
+  "textures": {
+    "all": "hbmspace:block/models/machines/cryo_distiller",
+    "particle": "hbmspace:block/models/machines/cryo_distiller"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "hidden": [
+    "Coil1",
+    "Coil2",
+    "Coil3"
+  ],
+  "loader": "hbm:obj",
+  "model": "hbmspace:models/machines/dyson_receiver.obj",
+  "skins": {
+    "all": [
+      "DysonReceiver"
+    ]
+  },
+  "textures": {
+    "all": "hbmspace:block/models/machines/dyson_receiver",
+    "particle": "hbmspace:block/block_steel_machine"
+  }
+}

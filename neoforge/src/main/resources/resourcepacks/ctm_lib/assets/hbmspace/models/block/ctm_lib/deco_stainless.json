@@ -1,0 +1,6 @@
+{
+  "textures": {
+    "connected": "hbmspace:block/ctm_lib/deco_stainless_ct",
+    "particle": "hbmspace:block/deco_stainless"
+  }
+}

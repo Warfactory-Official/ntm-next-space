@@ -1,0 +1,18 @@
+{
+  "values": [
+    "hbmspace:eve_mountains",
+    "hbmspace:eve_ocean",
+    "hbmspace:eve_plains",
+    "hbmspace:eve_river",
+    "hbmspace:eve_seismic_plains",
+    "hbmspace:laythe_coast",
+    "hbmspace:laythe_islands",
+    "hbmspace:laythe_ocean",
+    "hbmspace:laythe_polar",
+    "hbmspace:tekto_forest",
+    "hbmspace:tekto_halogen_hills",
+    "hbmspace:tekto_polyvinyl_plains",
+    "hbmspace:tekto_tetrachloride_river",
+    "hbmspace:tekto_vinyl_desert"
+  ]
+}

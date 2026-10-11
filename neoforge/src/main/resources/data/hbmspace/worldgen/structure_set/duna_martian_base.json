@@ -1,0 +1,16 @@
+{
+  "placement": {
+    "type": "minecraft:concentric_rings",
+    "count": 1,
+    "distance": 0,
+    "preferred_biomes": [],
+    "salt": 0,
+    "spread": 1
+  },
+  "structures": [
+    {
+      "structure": "hbmspace:duna_martian_base",
+      "weight": 1
+    }
+  ]
+}

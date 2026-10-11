@@ -1,0 +1,6 @@
+{
+  "remove": [
+    "hbm:part_barrel_heavy_workers_alloy"
+  ],
+  "values": []
+}

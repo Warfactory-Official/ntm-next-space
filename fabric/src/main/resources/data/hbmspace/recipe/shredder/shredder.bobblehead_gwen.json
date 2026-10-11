@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "hbmspace:bobblehead_gwen"
+    }
+  ],
+  "order": 50433,
+  "output_items": [
+    "hbm:scrap_plastic_board_blank"
+  ]
+}

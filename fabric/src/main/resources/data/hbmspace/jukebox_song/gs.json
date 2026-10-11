@@ -1,0 +1,8 @@
+{
+  "comparator_output": 15,
+  "description": {
+    "translate": "jukebox_song.hbmspace.gs"
+  },
+  "length_in_seconds": 353.152,
+  "sound_event": "hbmspace:music.record_god_speed"
+}

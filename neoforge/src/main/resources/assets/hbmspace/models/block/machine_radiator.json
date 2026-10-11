@@ -1,0 +1,51 @@
+{
+  "ambientocclusion": false,
+  "groups": [
+    {
+      "matrix": [
+        0.0,
+        1.0,
+        0.0,
+        -0.5,
+        -1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "parts": [
+        "Base",
+        "PanelStart",
+        "Panel1",
+        "FrameStart",
+        "Frame5",
+        "FrameLast",
+        "Frame4",
+        "Frame3",
+        "Frame2",
+        "Frame1",
+        "Panel3",
+        "Panel5",
+        "Panel2",
+        "Panel4",
+        "PanelLast"
+      ],
+      "texture": "all"
+    }
+  ],
+  "gui_light": "side",
+  "loader": "hbm:obj",
+  "model": "hbmspace:models/machines/radiator.obj",
+  "offset_y": 0.5,
+  "textures": {
+    "all": "hbmspace:block/models/machines/radiator",
+    "particle": "hbmspace:block/models/machines/radiator"
+  }
+}

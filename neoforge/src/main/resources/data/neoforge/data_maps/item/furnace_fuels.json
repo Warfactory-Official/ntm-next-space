@@ -1,0 +1,13 @@
+{
+  "values": {
+    "hbmspace:powder_coke_coal": {
+      "burn_time": 3200
+    },
+    "hbmspace:powder_coke_lignite": {
+      "burn_time": 3200
+    },
+    "hbmspace:powder_coke_petroleum": {
+      "burn_time": 3200
+    }
+  }
+}

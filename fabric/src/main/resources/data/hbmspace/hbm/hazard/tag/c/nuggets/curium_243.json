@@ -1,0 +1,14 @@
+{
+  "entries": [
+    {
+      "type": "hbm:radiation",
+      "level": 0.5599999999999999
+    },
+    {
+      "type": "hbmspace:neutron",
+      "level": 0.007000000216066837
+    }
+  ],
+  "mutex": 1,
+  "targets": "#c:nuggets/curium_243"
+}

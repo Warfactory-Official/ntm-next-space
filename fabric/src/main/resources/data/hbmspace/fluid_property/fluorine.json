@@ -1,0 +1,23 @@
+{
+  "type": "gaseous",
+  "color": "#c5c539",
+  "nfpa": {
+    "flame": 4,
+    "health": 4,
+    "react": 4
+  },
+  "symbol": "OXIDIZER",
+  "temperature": 20,
+  "traits": {
+    "corrosive": {
+      "rating": 40
+    },
+    "flammable": {
+      "energy": 10000
+    },
+    "poison": {
+      "level": 1,
+      "withering": true
+    }
+  }
+}

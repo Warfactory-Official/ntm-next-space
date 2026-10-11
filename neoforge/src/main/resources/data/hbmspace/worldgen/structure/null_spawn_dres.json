@@ -1,0 +1,9 @@
+{
+  "type": "hbm:null_spawn",
+  "biomes": [
+    "hbmspace:dres_plains",
+    "hbmspace:dres_large_basins"
+  ],
+  "spawn_overrides": {},
+  "step": "strongholds"
+}

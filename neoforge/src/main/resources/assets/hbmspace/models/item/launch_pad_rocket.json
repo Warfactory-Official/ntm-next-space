@@ -1,0 +1,187 @@
+{
+  "ambientocclusion": false,
+  "display": {
+    "firstperson_lefthand": {
+      "rotation": [
+        154.91621,
+        -4.5305085,
+        177.88249
+      ],
+      "scale": [
+        0.0825,
+        0.082499996,
+        0.0825
+      ],
+      "translation": [
+        -0.77438754,
+        11.092314,
+        -1.2786299
+      ]
+    },
+    "firstperson_righthand": {
+      "rotation": [
+        154.91621,
+        -4.5305085,
+        177.88249
+      ],
+      "scale": [
+        0.0825,
+        0.082499996,
+        0.0825
+      ],
+      "translation": [
+        0.5405907,
+        11.092314,
+        -1.3936756
+      ]
+    },
+    "fixed": {
+      "rotation": [
+        -0.0,
+        -90.0,
+        0.0
+      ],
+      "scale": [
+        0.20625001,
+        0.20625001,
+        0.20625001
+      ],
+      "translation": [
+        0.20913267,
+        23.840002,
+        -1.1500001
+      ]
+    },
+    "ground": {
+      "rotation": [
+        0.0,
+        90.0,
+        0.0
+      ],
+      "scale": [
+        0.103125006,
+        0.103125006,
+        0.103125006
+      ],
+      "translation": [
+        -0.104566336,
+        9.2,
+        0.8249996
+      ]
+    },
+    "gui": {
+      "rotation": [
+        -150.0,
+        -44.999996,
+        -180.0
+      ],
+      "scale": [
+        0.04296875,
+        0.04296875,
+        0.04296875
+      ],
+      "translation": [
+        0.27387673,
+        1.1372186,
+        -6.433822
+      ]
+    },
+    "head": {
+      "rotation": [
+        -0.0,
+        -50.000004,
+        154.99998
+      ],
+      "scale": [
+        0.33000004,
+        0.32999998,
+        0.33
+      ],
+      "translation": [
+        -1.8492074,
+        -51.743557,
+        -2.7243652
+      ]
+    },
+    "on_shelf": {
+      "rotation": [
+        0.0,
+        90.0,
+        0.0
+      ],
+      "scale": [
+        0.41250002,
+        0.41250002,
+        0.41250002
+      ],
+      "translation": [
+        -0.41826534,
+        52.800003,
+        3.3000002
+      ]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [
+        -164.50075,
+        11.346811,
+        165.04486
+      ],
+      "scale": [
+        0.07734374,
+        0.077343754,
+        0.07734375
+      ],
+      "translation": [
+        -2.951645,
+        10.132127,
+        3.1110642
+      ]
+    },
+    "thirdperson_righthand": {
+      "rotation": [
+        -164.50075,
+        11.346811,
+        165.04486
+      ],
+      "scale": [
+        0.07734374,
+        0.077343754,
+        0.07734375
+      ],
+      "translation": [
+        -2.9392223,
+        10.134721,
+        3.1143706
+      ]
+    }
+  },
+  "double_sided": [
+    "Base",
+    "Tower_Base",
+    "Tower_Segment",
+    "Tower_Cap",
+    "Tower_Segment_Small"
+  ],
+  "gui_light": "side",
+  "loader": "hbm:obj",
+  "model": "hbmspace:models/machines/rocket_pad.obj",
+  "offset_x": 0.5,
+  "offset_y": -7.5,
+  "offset_z": 0.063373566,
+  "skins": {
+    "all": [
+      "Base"
+    ],
+    "overlay": [
+      "Tower_Base",
+      "Tower_Segment",
+      "Tower_Cap",
+      "Tower_Segment_Small"
+    ]
+  },
+  "textures": {
+    "all": "hbmspace:block/models/machines/rocket_pad",
+    "overlay": "hbmspace:block/models/machines/rocket_pad_support",
+    "particle": "hbmspace:block/models/machines/rocket_pad"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "hbmspace:item/entity_mob_flesh_creeper_spawn_egg",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 16711680
+      },
+      {
+        "type": "minecraft:constant",
+        "value": 14046007
+      }
+    ]
+  }
+}

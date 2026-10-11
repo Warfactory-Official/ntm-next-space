@@ -1,0 +1,43 @@
+{
+  "type": "liquid",
+  "color": "#86653e",
+  "flags": [
+    "viscous"
+  ],
+  "nfpa": {
+    "flame": 0,
+    "health": 4,
+    "react": 3
+  },
+  "symbol": "ACID",
+  "temperature": 20,
+  "traits": {
+    "corrosive": {
+      "rating": 60
+    },
+    "heatable": {
+      "efficiency": {
+        "PWR": 1.0
+      },
+      "steps": [
+        {
+          "amount_produced": 1,
+          "amount_req": 1,
+          "heat_req": 300,
+          "produces": "hbmspace:gas_watz"
+        }
+      ]
+    },
+    "polluting": {
+      "release": {
+        "POISON": 5.0E-4
+      }
+    },
+    "pwrmoderator": {
+      "multiplier": 1.4
+    },
+    "ventradiation": {
+      "rad_per_mb": 0.1
+    }
+  }
+}

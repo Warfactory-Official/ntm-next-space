@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/nickel_pure"
+    }
+  ],
+  "order": 52998,
+  "output_items": [
+    "hbmspace:powder_nickel"
+  ]
+}

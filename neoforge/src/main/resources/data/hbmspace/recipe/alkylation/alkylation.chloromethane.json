@@ -1,0 +1,20 @@
+{
+  "type": "hbmspace:alkylation",
+  "input_fluids": [
+    {
+      "type": "hbmspace:chloromethane",
+      "amount": 100
+    }
+  ],
+  "order": 0,
+  "output_fluids": [
+    {
+      "type": "hbm:unsaturateds",
+      "amount": 75
+    },
+    {
+      "type": "hbm:chlorine",
+      "amount": 25
+    }
+  ]
+}

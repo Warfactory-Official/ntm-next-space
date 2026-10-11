@@ -1,0 +1,19 @@
+{
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "hidden": [
+    "The_Thing_That_Rotates",
+    "Payload"
+  ],
+  "loader": "hbm:obj",
+  "model": "hbmspace:models/machines/dyson_spinlaunch.obj",
+  "skins": {
+    "all": [
+      "Launch"
+    ]
+  },
+  "textures": {
+    "all": "hbmspace:block/models/machines/dyson_spinlaunch",
+    "particle": "hbmspace:block/block_steel_machine"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "type": "hbm:crafting_shaped",
+  "key": {
+    "D": "#c:ingots/desh",
+    "S": "#hbm:ingots/any_plastic"
+  },
+  "pattern": [
+    " D",
+    "S ",
+    " S"
+  ],
+  "result": {
+    "id": "hbm:hand_drill_desh"
+  }
+}

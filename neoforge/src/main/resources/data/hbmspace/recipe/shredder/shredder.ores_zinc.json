@@ -1,0 +1,15 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "#c:ores/zinc"
+    }
+  ],
+  "order": 53007,
+  "output_items": [
+    {
+      "count": 2,
+      "id": "hbmspace:powder_zinc"
+    }
+  ]
+}

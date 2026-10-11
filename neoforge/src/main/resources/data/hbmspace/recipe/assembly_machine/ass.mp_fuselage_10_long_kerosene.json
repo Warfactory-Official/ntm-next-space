@@ -1,0 +1,27 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 400,
+  "input_items": [
+    {
+      "count": 2,
+      "ingredient": "hbm:seg_10"
+    },
+    {
+      "count": 6,
+      "ingredient": "hbm:steel_scaffold"
+    },
+    {
+      "count": 24,
+      "ingredient": "#c:plates/titanium"
+    },
+    {
+      "count": 6,
+      "ingredient": "#c:plates/steel"
+    }
+  ],
+  "order": 110408,
+  "output_items": [
+    "hbm:mp_fuselage_10_long_kerosene"
+  ],
+  "power": 100
+}

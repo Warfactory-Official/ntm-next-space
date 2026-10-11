@@ -1,0 +1,16 @@
+{
+  "type": "hbm:crafting_shaped",
+  "key": {
+    "C": "hbm:circuit_basic",
+    "P": "#c:plates/aluminum",
+    "S": "hbm:crt_display"
+  },
+  "pattern": [
+    "S",
+    "C",
+    "P"
+  ],
+  "result": {
+    "id": "hbmspace:transporter_linker"
+  }
+}

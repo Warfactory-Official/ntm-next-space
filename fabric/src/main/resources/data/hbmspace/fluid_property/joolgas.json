@@ -1,0 +1,17 @@
+{
+  "type": "gaseous",
+  "color": "#96b596",
+  "containers": {
+    "gastank": {
+      "bottle_color": "#78b878",
+      "label_color": "#ff8400"
+    }
+  },
+  "nfpa": {
+    "flame": 0,
+    "health": 0,
+    "react": 0
+  },
+  "symbol": "ASPHYXIANT",
+  "temperature": 20
+}

@@ -1,0 +1,22 @@
+{
+  "type": "hbm:crafting_shaped",
+  "key": {
+    "C": "#c:plates/copper",
+    "D": "#c:ingots/desh",
+    "X": {
+      "fabric:type": "fabric:components",
+      "base": "hbm:steel_legs",
+      "components": {
+        "minecraft:damage": 0
+      }
+    }
+  },
+  "pattern": [
+    "CCC",
+    "DXD",
+    "C C"
+  ],
+  "result": {
+    "id": "hbm:steamsuit_legs"
+  }
+}

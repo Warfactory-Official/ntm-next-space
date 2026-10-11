@@ -1,0 +1,18 @@
+{
+  "type": "hbm:crafting_shaped",
+  "key": {
+    "B": "hbm:egg_balefire",
+    "D": "#c:ingots/dineutronium",
+    "Q": "hbm:glass_quartz",
+    "S": "hbm:powder_spark_mix",
+    "Z": "hbmspace:powder_zinc"
+  },
+  "pattern": [
+    "QDQ",
+    "SBZ",
+    "QDQ"
+  ],
+  "result": {
+    "id": "hbm:laser_crystal_dnt"
+  }
+}

@@ -1,0 +1,158 @@
+{
+  "parent": "hbmspace:block/rubber_tall_cact_item",
+  "display": {
+    "firstperson_lefthand": {
+      "rotation": [
+        -0.0,
+        45.0,
+        0.0
+      ],
+      "scale": [
+        0.4,
+        0.4,
+        0.4
+      ],
+      "translation": [
+        -0.0,
+        3.2,
+        -4.7683716E-7
+      ]
+    },
+    "firstperson_righthand": {
+      "rotation": [
+        -0.0,
+        45.0,
+        -0.0
+      ],
+      "scale": [
+        0.4,
+        0.4,
+        0.4
+      ],
+      "translation": [
+        -4.7683716E-7,
+        3.2,
+        0.0
+      ]
+    },
+    "fixed": {
+      "rotation": [
+        0.0,
+        90.0,
+        0.0
+      ],
+      "scale": [
+        0.625,
+        0.625,
+        0.625
+      ],
+      "translation": [
+        0.0,
+        4.44,
+        0.5
+      ]
+    },
+    "ground": {
+      "rotation": [
+        -0.0,
+        0.0,
+        -0.0
+      ],
+      "scale": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "translation": [
+        0.0,
+        -2.0,
+        0.0
+      ]
+    },
+    "gui": {
+      "rotation": [
+        30.0,
+        -45.0,
+        -0.0
+      ],
+      "scale": [
+        0.625,
+        0.625,
+        0.625
+      ],
+      "translation": [
+        0.0,
+        4.330127,
+        2.5
+      ]
+    },
+    "head": {
+      "rotation": [
+        0.0,
+        90.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "translation": [
+        0.0,
+        8.0,
+        0.0
+      ]
+    },
+    "on_shelf": {
+      "rotation": [
+        -0.0,
+        -90.0,
+        0.0
+      ],
+      "scale": [
+        1.25,
+        1.25,
+        1.25
+      ],
+      "translation": [
+        0.0,
+        10.0,
+        0.0
+      ]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [
+        70.0,
+        -45.0,
+        0.0
+      ],
+      "scale": [
+        0.37499997,
+        0.37500003,
+        0.37499997
+      ],
+      "translation": [
+        1.8793864,
+        1.260016,
+        3.461866
+      ]
+    },
+    "thirdperson_righthand": {
+      "rotation": [
+        70.0,
+        -45.0,
+        -0.0
+      ],
+      "scale": [
+        0.37499997,
+        0.37500003,
+        0.37499997
+      ],
+      "translation": [
+        0.0,
+        3.0260613,
+        2.819078
+      ]
+    }
+  }
+}

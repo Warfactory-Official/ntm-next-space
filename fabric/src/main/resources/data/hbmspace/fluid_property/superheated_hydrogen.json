@@ -1,0 +1,28 @@
+{
+  "type": "gaseous",
+  "color": "#e39393",
+  "flags": [
+    "nocontainer",
+    "noid"
+  ],
+  "nfpa": {
+    "flame": 0,
+    "health": 0,
+    "react": 0
+  },
+  "symbol": "NONE",
+  "temperature": 2200,
+  "traits": {
+    "coolable": {
+      "amount_produced": 1,
+      "amount_req": 1,
+      "cools_to": "hbm:hydrogen",
+      "efficiency": {},
+      "heat_energy": 300
+    },
+    "rocket": {
+      "isp": 900,
+      "thrust": 700000
+    }
+  }
+}

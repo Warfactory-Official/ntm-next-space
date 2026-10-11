@@ -1,0 +1,28 @@
+{
+  "type": "hbmspace:cryo_distill",
+  "input_fluids": [
+    {
+      "type": "hbmspace:earthair",
+      "amount": 100
+    }
+  ],
+  "order": 0,
+  "output_fluids": [
+    {
+      "type": "hbmspace:nitrogen",
+      "amount": 60
+    },
+    {
+      "type": "hbm:oxygen",
+      "amount": 25
+    },
+    {
+      "type": "hbmspace:krypton",
+      "amount": 10
+    },
+    {
+      "type": "hbm:carbondioxide",
+      "amount": 5
+    }
+  ]
+}

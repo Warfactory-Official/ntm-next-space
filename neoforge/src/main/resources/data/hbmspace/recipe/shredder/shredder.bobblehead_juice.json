@@ -1,0 +1,12 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "hbmspace:bobblehead_juice"
+    }
+  ],
+  "order": 50434,
+  "output_items": [
+    "hbm:scrap_plastic_board_blank"
+  ]
+}

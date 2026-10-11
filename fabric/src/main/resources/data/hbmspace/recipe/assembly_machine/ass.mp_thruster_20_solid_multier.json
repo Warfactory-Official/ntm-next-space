@@ -1,0 +1,25 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 400,
+  "input_items": [
+    {
+      "ingredient": "hbm:seg_20"
+    },
+    {
+      "count": 16,
+      "ingredient": "hbm:coil_tungsten"
+    },
+    {
+      "count": 20,
+      "ingredient": "#c:ingots/dura_steel"
+    },
+    {
+      "ingredient": "#c:plates/steel"
+    }
+  ],
+  "order": 110404,
+  "output_items": [
+    "hbm:mp_thruster_20_solid_multier"
+  ],
+  "power": 100
+}

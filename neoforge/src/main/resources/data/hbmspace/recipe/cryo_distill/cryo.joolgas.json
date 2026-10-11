@@ -1,0 +1,28 @@
+{
+  "type": "hbmspace:cryo_distill",
+  "input_fluids": [
+    {
+      "type": "hbmspace:joolgas",
+      "amount": 100
+    }
+  ],
+  "order": 512,
+  "output_fluids": [
+    {
+      "type": "hbm:helium3",
+      "amount": 40
+    },
+    {
+      "type": "hbm:hydrogen",
+      "amount": 30
+    },
+    {
+      "type": "hbm:chlorine",
+      "amount": 20
+    },
+    {
+      "type": "hbmspace:neon",
+      "amount": 10
+    }
+  ]
+}

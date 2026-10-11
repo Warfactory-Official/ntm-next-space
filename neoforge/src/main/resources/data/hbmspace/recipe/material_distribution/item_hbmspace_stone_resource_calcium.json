@@ -1,0 +1,10 @@
+{
+  "type": "hbm:material_distribution",
+  "materials": [
+    {
+      "amount": 864,
+      "material": "flux"
+    }
+  ],
+  "targets": "hbmspace:stone_resource_calcium"
+}

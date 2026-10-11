@@ -1,0 +1,15 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "hbmspace:vinyl_log"
+    }
+  ],
+  "order": 21763,
+  "output_items": [
+    {
+      "count": 4,
+      "id": "hbmspace:powder_rubber"
+    }
+  ]
+}

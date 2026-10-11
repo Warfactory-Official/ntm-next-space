@@ -1,0 +1,13 @@
+{
+  "type": "hbm:solidification",
+  "input_fluids": [
+    {
+      "type": "hbmspace:vinyl",
+      "amount": 1000
+    }
+  ],
+  "order": 1539,
+  "output_items": [
+    "hbm:ingot_pvc"
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "model": {
+    "type": "minecraft:select",
+    "block_state_property": "damaged",
+    "cases": [
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/machine_condenser_powered_damaged"
+        },
+        "when": "true"
+      }
+    ],
+    "fallback": {
+      "type": "minecraft:model",
+      "model": "hbm:item/machine_condenser_powered_intact"
+    },
+    "property": "minecraft:block_state"
+  }
+}

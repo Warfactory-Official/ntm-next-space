@@ -1,0 +1,29 @@
+{
+  "type": "hbmspace:vacuum_circuit",
+  "duration": 800,
+  "input_items": [
+    {
+      "count": 48,
+      "ingredient": "hbmspace:circuit_gaschip"
+    },
+    {
+      "count": 16,
+      "ingredient": "hbmspace:circuit_hfchip"
+    }
+  ],
+  "order": 512,
+  "output_items": [
+    "hbmspace:circuit_processt3"
+  ],
+  "pcb": [
+    {
+      "count": 8,
+      "ingredient": "hbm:circuit_advanced"
+    },
+    {
+      "count": 64,
+      "ingredient": "hbmspace:circuit_capacitor_lanthanium"
+    }
+  ],
+  "power": 25000
+}

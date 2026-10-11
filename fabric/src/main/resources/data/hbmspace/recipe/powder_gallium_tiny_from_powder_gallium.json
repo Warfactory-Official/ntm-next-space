@@ -1,0 +1,10 @@
+{
+  "type": "hbm:crafting_shapeless",
+  "ingredients": [
+    "hbmspace:powder_gallium"
+  ],
+  "result": {
+    "count": 9,
+    "id": "hbmspace:powder_gallium_tiny"
+  }
+}

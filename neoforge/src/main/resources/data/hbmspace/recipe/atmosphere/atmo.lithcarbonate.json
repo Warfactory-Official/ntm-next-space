@@ -1,0 +1,20 @@
+{
+  "type": "hbmspace:atmosphere",
+  "input_fluids": [
+    {
+      "type": "hbmspace:lithydro",
+      "amount": 16000
+    },
+    {
+      "type": "hbmspace:dunaair",
+      "amount": 256000
+    }
+  ],
+  "order": 0,
+  "output_fluids": [
+    {
+      "type": "hbmspace:lithcarbonate",
+      "amount": 32000
+    }
+  ]
+}

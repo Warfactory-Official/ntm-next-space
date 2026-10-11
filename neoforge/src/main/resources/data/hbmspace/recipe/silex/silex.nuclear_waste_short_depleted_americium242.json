@@ -1,0 +1,40 @@
+{
+  "type": "hbm:silex",
+  "fluid_consumed": 100,
+  "fluid_produced": 900,
+  "input_items": [
+    {
+      "ingredient": "hbm:nuclear_waste_short_depleted_americium242"
+    }
+  ],
+  "laser_strength": "visible",
+  "order": 75012,
+  "output_items": [
+    [
+      {
+        "data": {
+          "id": "hbmspace:nugget_cm_mix"
+        },
+        "weight": 50
+      },
+      {
+        "data": {
+          "id": "hbm:nugget_pu239"
+        },
+        "weight": 20
+      },
+      {
+        "data": {
+          "id": "hbm:nuclear_waste_tiny"
+        },
+        "weight": 10
+      },
+      {
+        "data": {
+          "id": "hbmspace:nugget_cm242"
+        },
+        "weight": 20
+      }
+    ]
+  ]
+}

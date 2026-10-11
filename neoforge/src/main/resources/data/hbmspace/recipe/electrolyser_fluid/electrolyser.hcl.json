@@ -1,0 +1,21 @@
+{
+  "type": "hbm:electrolyser_fluid",
+  "duration": 40,
+  "input_fluids": [
+    {
+      "type": "hbmspace:hcl",
+      "amount": 1000
+    }
+  ],
+  "order": 1793,
+  "output_fluids": [
+    {
+      "type": "hbm:hydrogen",
+      "amount": 500
+    },
+    {
+      "type": "hbm:chlorine",
+      "amount": 500
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/crop",
+  "textures": {
+    "crop": "hbmspace:block/laythe_glowgrass"
+  }
+}

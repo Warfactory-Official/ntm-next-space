@@ -1,0 +1,19 @@
+{
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "hidden": [
+    "drive"
+  ],
+  "loader": "hbm:obj",
+  "model": "hbmspace:models/machines/dish_controller.obj",
+  "skins": {
+    "all": [
+      "dish_control",
+      "joystick"
+    ]
+  },
+  "textures": {
+    "all": "hbmspace:block/models/machines/dish_controller",
+    "particle": "hbmspace:block/models/machines/dish_controller"
+  }
+}

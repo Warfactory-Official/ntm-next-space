@@ -1,0 +1,10 @@
+{
+  "type": "hbmspace:ike",
+  "generator": {
+    "type": "hbmspace:ike",
+    "biome_source": {
+      "type": "minecraft:fixed",
+      "biome": "hbmspace:ike"
+    }
+  }
+}

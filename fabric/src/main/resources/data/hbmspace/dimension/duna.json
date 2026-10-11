@@ -1,0 +1,17 @@
+{
+  "type": "hbmspace:duna",
+  "generator": {
+    "type": "hbmspace:duna",
+    "biome_source": {
+      "type": "hbmspace:celestial",
+      "biomes": [
+        "hbmspace:duna_plains",
+        "hbmspace:duna_lowlands",
+        "hbmspace:duna_polar",
+        "hbmspace:duna_hills",
+        "hbmspace:duna_polar_hills"
+      ],
+      "layers": "hbmspace:duna"
+    }
+  }
+}

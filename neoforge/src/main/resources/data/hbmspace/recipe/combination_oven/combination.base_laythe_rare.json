@@ -1,0 +1,31 @@
+{
+  "type": "hbm:combination_oven",
+  "input_items": [
+    {
+      "components": {
+        "hbm:bedrock_ore": {
+          "type": "laythe_rare"
+        }
+      },
+      "ingredient": "hbm:bedrock_ore"
+    }
+  ],
+  "order": 13277,
+  "output_fluids": [
+    {
+      "type": "hbm:vitriol",
+      "amount": 50
+    }
+  ],
+  "output_items": [
+    {
+      "components": {
+        "hbm:bedrock_ore": {
+          "type": "laythe_rare",
+          "grade": "base_roasted"
+        }
+      },
+      "id": "hbm:bedrock_ore"
+    }
+  ]
+}

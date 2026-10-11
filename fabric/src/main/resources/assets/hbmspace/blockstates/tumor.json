@@ -1,0 +1,18 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "hbmspace:block/tumor_0"
+      },
+      {
+        "model": "hbmspace:block/tumor_1"
+      },
+      {
+        "model": "hbmspace:block/tumor_2"
+      },
+      {
+        "model": "hbmspace:block/tumor_3"
+      }
+    ]
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "count": 6,
+      "ingredient": "#minecraft:planks"
+    },
+    {
+      "count": 8,
+      "ingredient": "#c:plates/steel"
+    },
+    {
+      "ingredient": "hbm:circuit_analog"
+    },
+    {
+      "count": 8,
+      "ingredient": "hbm:circuit_vacuum_tube"
+    },
+    {
+      "ingredient": "hbm:pole_satellite_receiver"
+    }
+  ],
+  "order": 15105,
+  "output_items": [
+    "hbmspace:dish_control"
+  ],
+  "overlay": "construction",
+  "tier": 3
+}

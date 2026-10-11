@@ -1,0 +1,6 @@
+{
+  "fabric:remove": [
+    "hbm:block_desh"
+  ],
+  "values": []
+}

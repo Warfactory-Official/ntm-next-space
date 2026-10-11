@@ -1,0 +1,27 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "!expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "duration": 200,
+  "input_items": [
+    {
+      "ingredient": "hbmspace:orbital_station_port"
+    },
+    {
+      "count": 4,
+      "ingredient": "#hbm:plates_cast/aluminum"
+    },
+    {
+      "ingredient": "hbmspace:circuit_avionics"
+    }
+  ],
+  "order": 110369,
+  "output_items": [
+    "hbmspace:rp_sc_20"
+  ],
+  "power": 100
+}

@@ -1,0 +1,35 @@
+{
+  "elements": [
+    {
+      "element": {
+        "element_type": "hbm:legacy_piece",
+        "height_offset": -11,
+        "location": "hbmspace:moho_base/moho-room-tape",
+        "processors": "hbm:multiblock_assembly",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "hbm:legacy_piece",
+        "height_offset": -11,
+        "location": "hbmspace:moho_base/moho-room-reception",
+        "processors": "hbm:multiblock_assembly",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "hbm:legacy_piece",
+        "height_offset": -11,
+        "location": "hbmspace:moho_base/moho-room-kitchen",
+        "processors": "hbm:multiblock_assembly",
+        "projection": "rigid"
+      },
+      "weight": 1
+    }
+  ],
+  "fallback": "hbmspace:moho_base/room"
+}

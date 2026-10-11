@@ -1,0 +1,9 @@
+{
+  "entries": [
+    {
+      "type": "hbm:digamma",
+      "level": 1.0
+    }
+  ],
+  "targets": "hbmspace:powder_wd2004"
+}

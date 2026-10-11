@@ -1,0 +1,16 @@
+{
+  "type": "hbm:cyclotron",
+  "amat": 0,
+  "input_items": [
+    {
+      "ingredient": "hbm:block_euphemium"
+    },
+    {
+      "ingredient": "hbmspace:bf_log"
+    }
+  ],
+  "order": 8705,
+  "output_items": [
+    "hbmspace:eu_log"
+  ]
+}

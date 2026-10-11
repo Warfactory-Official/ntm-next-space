@@ -1,0 +1,21 @@
+{
+  "type": "hbm:arc_furnace",
+  "input_items": [
+    {
+      "components": {
+        "hbm:bedrock_ore": {
+          "type": "moho_heavy",
+          "grade": "solvent_washed"
+        }
+      },
+      "ingredient": "hbm:bedrock_ore"
+    }
+  ],
+  "order": 11721,
+  "output_materials": [
+    {
+      "amount": 144,
+      "material": "lead"
+    }
+  ]
+}

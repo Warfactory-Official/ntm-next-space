@@ -1,0 +1,11 @@
+{
+  "type": "hbm:single_piece",
+  "aquatic": true,
+  "biomes": [
+    "hbmspace:ike"
+  ],
+  "height_offset": -5,
+  "spawn_overrides": {},
+  "start_pool": "hbmspace:single/ike_artifact",
+  "step": "strongholds"
+}

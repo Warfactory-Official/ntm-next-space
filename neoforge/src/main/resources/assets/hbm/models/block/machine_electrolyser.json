@@ -1,0 +1,18 @@
+{
+  "ambientocclusion": false,
+  "double_sided": [
+    "Electrolyser"
+  ],
+  "gui_light": "side",
+  "loader": "hbm:obj",
+  "model": "hbmspace:models/machines/electrolyser_space.obj",
+  "skins": {
+    "all": [
+      "Electrolyser"
+    ]
+  },
+  "textures": {
+    "all": "hbm:block/models/machines/electrolyser",
+    "particle": "hbm:block/models/machines/electrolyser"
+  }
+}

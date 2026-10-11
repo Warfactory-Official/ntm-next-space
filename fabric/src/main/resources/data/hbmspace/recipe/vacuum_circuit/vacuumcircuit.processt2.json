@@ -1,0 +1,25 @@
+{
+  "type": "hbmspace:vacuum_circuit",
+  "duration": 400,
+  "input_items": [
+    {
+      "count": 16,
+      "ingredient": "hbmspace:circuit_gaschip"
+    }
+  ],
+  "order": 256,
+  "output_items": [
+    "hbmspace:circuit_processt2"
+  ],
+  "pcb": [
+    {
+      "count": 4,
+      "ingredient": "hbm:circuit_basic"
+    },
+    {
+      "count": 32,
+      "ingredient": "hbm:circuit_capacitor"
+    }
+  ],
+  "power": 1000
+}

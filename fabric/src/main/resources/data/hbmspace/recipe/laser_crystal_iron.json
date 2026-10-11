@@ -1,0 +1,17 @@
+{
+  "type": "hbm:crafting_shaped",
+  "key": {
+    "C": "hbm:crystal_iron",
+    "G": "#c:ingots/gallium_arsenide",
+    "Q": "hbm:glass_quartz",
+    "S": "hbm:egg_balefire_shard"
+  },
+  "pattern": [
+    "QGQ",
+    "CSC",
+    "QGQ"
+  ],
+  "result": {
+    "id": "hbmspace:laser_crystal_iron"
+  }
+}

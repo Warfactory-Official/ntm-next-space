@@ -1,0 +1,13 @@
+{
+  "type": "hbm:crafting_shapeless",
+  "ingredients": [
+    "#c:dusts/calcium",
+    "#minecraft:sand",
+    "minecraft:clay_ball",
+    "minecraft:clay_ball"
+  ],
+  "result": {
+    "count": 4,
+    "id": "hbm:powder_cement"
+  }
+}

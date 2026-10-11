@@ -1,0 +1,41 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "blueprint_pools_528": [
+    "528.stainless"
+  ],
+  "duration": 400,
+  "input_items": [
+    {
+      "count": 8,
+      "ingredient": "hbmspace:item_expensive_stainless_beam"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbm:motor"
+    },
+    {
+      "count": 8,
+      "ingredient": "#c:glass_blocks/colorless"
+    },
+    {
+      "count": 8,
+      "ingredient": "#hbm:ingots/any_plastic"
+    },
+    {
+      "count": 2,
+      "ingredient": "hbm:item_expensive_circuit"
+    }
+  ],
+  "name": "ass.orbitalstationportEx",
+  "order": 110366,
+  "output_items": [
+    "hbmspace:orbital_station_port"
+  ],
+  "power": 100
+}

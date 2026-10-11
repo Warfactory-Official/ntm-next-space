@@ -1,0 +1,31 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "!expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "duration": 200,
+  "input_items": [
+    {
+      "count": 5,
+      "ingredient": "#hbm:plates_welded/steel"
+    },
+    {
+      "count": 4,
+      "ingredient": "#hbm:ingots/any_rubber"
+    },
+    {
+      "ingredient": "hbm:thruster_small"
+    },
+    {
+      "ingredient": "hbmspace:circuit_avionics"
+    }
+  ],
+  "order": 110354,
+  "output_items": [
+    "hbmspace:gas_dock"
+  ],
+  "power": 100
+}

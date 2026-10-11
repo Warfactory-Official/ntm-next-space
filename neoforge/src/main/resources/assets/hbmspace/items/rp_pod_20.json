@@ -1,0 +1,42 @@
+{
+  "model": {
+    "type": "hbm:mesh",
+    "base": "hbmspace:item/rp_pod_20_base",
+    "flat_shaded": true,
+    "mesh": "hbmspace:models/missile_parts/rp_drop_pod.obj",
+    "pose_suffix": {
+      "gui": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    "skins": [
+      "hbmspace:textures/models/missile_parts/warheads/rp_drop_pod.png"
+    ],
+    "spin": {
+      "axis": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "divisor": 25,
+      "modulus": 360,
+      "rate": 1.0
+    }
+  },
+  "oversized_in_gui": true
+}

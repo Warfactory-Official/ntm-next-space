@@ -1,0 +1,18 @@
+{
+  "ambientocclusion": false,
+  "gui_light": "side",
+  "loader": "hbm:obj",
+  "model": "hbmspace:models/machines/chungus_destroyed.obj",
+  "offset_z": -3.0,
+  "skins": {
+    "all": [
+      "Blades",
+      "Body",
+      "Lever"
+    ]
+  },
+  "textures": {
+    "all": "hbmspace:block/models/machines/chungus_destroyed",
+    "particle": "hbmspace:block/models/machines/chungus_destroyed"
+  }
+}

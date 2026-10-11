@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "hbmspace:item/bedrock_ore_primary_eve_crystal",
+    "layer1": "hbm:item/bedrock_ore_overlay_rad"
+  }
+}

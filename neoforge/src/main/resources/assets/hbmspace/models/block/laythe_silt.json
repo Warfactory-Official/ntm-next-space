@@ -1,0 +1,6 @@
+{
+  "parent": "hbm:block/cube_all_tinted",
+  "textures": {
+    "all": "hbmspace:block/laythe_silt"
+  }
+}

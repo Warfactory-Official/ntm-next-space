@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:chest",
+  "hbm:random_slots": true,
+  "pools": [
+    {
+      "entries": [
+        {
+          "type": "minecraft:loot_table",
+          "value": "hbm:chests/oil_rig"
+        }
+      ],
+      "rolls": {
+        "type": "hbmspace:wand_loot_scaled",
+        "value": {
+          "type": "minecraft:uniform",
+          "max": 23.0,
+          "min": 6.0
+        }
+      }
+    }
+  ],
+  "random_sequence": "hbm:chests/oil_rig_6_23"
+}

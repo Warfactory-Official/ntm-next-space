@@ -1,0 +1,25 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 400,
+  "input_items": [
+    {
+      "ingredient": "hbm:seg_10"
+    },
+    {
+      "count": 4,
+      "ingredient": "#c:plates/steel"
+    },
+    {
+      "count": 12,
+      "ingredient": "#hbm:pipes/steel"
+    },
+    {
+      "ingredient": "hbm:arc_electrode_lanthanium"
+    }
+  ],
+  "order": 110382,
+  "output_items": [
+    "hbm:mp_thruster_10_xenon"
+  ],
+  "power": 100
+}

@@ -1,0 +1,22 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 996583980,
+    "separation": 4,
+    "spacing": 16
+  },
+  "structures": [
+    {
+      "structure": "hbmspace:meteor_dungeon_duna",
+      "weight": 1
+    },
+    {
+      "structure": "hbmspace:duna_comms",
+      "weight": 6
+    },
+    {
+      "structure": "hbmspace:null_spawn_duna",
+      "weight": 18
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "type": "hbm:centrifuge",
+  "duration": 200,
+  "input_items": [
+    {
+      "components": {
+        "hbm:bedrock_ore": {
+          "type": "kerbin_heavy",
+          "grade": "primary_nosolvent"
+        }
+      },
+      "ingredient": "hbm:bedrock_ore"
+    }
+  ],
+  "order": 37657,
+  "output_items": [
+    {
+      "count": 18,
+      "id": "hbm:bedrock_ore_fragment_tungsten"
+    },
+    {
+      "components": {
+        "hbm:bedrock_ore": {
+          "type": "kerbin_heavy",
+          "grade": "crumbs"
+        }
+      },
+      "id": "hbm:bedrock_ore"
+    }
+  ],
+  "power": 200
+}

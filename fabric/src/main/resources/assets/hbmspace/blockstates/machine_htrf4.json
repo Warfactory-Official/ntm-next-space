@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "hbmspace:block/machine_htrf4"
+    },
+    "facing=north": {
+      "model": "hbmspace:block/machine_htrf4",
+      "y": 270
+    },
+    "facing=south": {
+      "model": "hbmspace:block/machine_htrf4",
+      "y": 90
+    },
+    "facing=west": {
+      "model": "hbmspace:block/machine_htrf4",
+      "y": 180
+    }
+  }
+}

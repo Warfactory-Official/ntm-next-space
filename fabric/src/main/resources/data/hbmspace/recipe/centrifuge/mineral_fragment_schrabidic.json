@@ -1,0 +1,20 @@
+{
+  "type": "hbm:centrifuge",
+  "duration": 200,
+  "input_items": [
+    {
+      "ingredient": "hbmspace:clump_schrabidic"
+    }
+  ],
+  "order": 13830,
+  "output_items": [
+    "hbm:powder_co60",
+    "hbm:nugget_bismuth",
+    {
+      "count": 6,
+      "id": "hbm:powder_asbestos"
+    },
+    "hbm:nugget_technetium"
+  ],
+  "power": 200
+}

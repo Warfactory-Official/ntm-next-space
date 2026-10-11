@@ -1,0 +1,28 @@
+{
+  "type": "hbmspace:cryo_distill",
+  "input_fluids": [
+    {
+      "type": "hbmspace:eveair",
+      "amount": 100
+    }
+  ],
+  "order": 1536,
+  "output_fluids": [
+    {
+      "type": "hbmspace:kmno4",
+      "amount": 40
+    },
+    {
+      "type": "hbm:mercury",
+      "amount": 35
+    },
+    {
+      "type": "hbm:xenon",
+      "amount": 15
+    },
+    {
+      "type": "hbmspace:ammonia",
+      "amount": 10
+    }
+  ]
+}

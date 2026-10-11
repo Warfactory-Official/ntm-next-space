@@ -1,0 +1,15 @@
+{
+  "type": "hbm:crafting_shaped",
+  "key": {
+    "B": "hbmspace:blade_syngas",
+    "S": "#c:ingots/stainless_steel"
+  },
+  "pattern": [
+    "BBB",
+    "BSB",
+    "BBB"
+  ],
+  "result": {
+    "id": "hbmspace:turbine_syngas"
+  }
+}

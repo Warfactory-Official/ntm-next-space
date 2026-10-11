@@ -1,0 +1,10 @@
+{
+  "type": "hbm:crafting_shapeless",
+  "ingredients": [
+    "minecraft:clay_ball",
+    "hbm:powder_calcium"
+  ],
+  "result": {
+    "id": "hbmspace:teacup_empty"
+  }
+}

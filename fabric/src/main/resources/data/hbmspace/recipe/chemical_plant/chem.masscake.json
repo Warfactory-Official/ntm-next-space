@@ -1,0 +1,32 @@
+{
+  "type": "hbm:chemical_plant",
+  "duration": 200,
+  "input_fluids": [
+    {
+      "type": "hbmspace:cmilk",
+      "amount": 4000
+    },
+    {
+      "type": "hbmspace:cream",
+      "amount": 1000
+    }
+  ],
+  "input_items": [
+    {
+      "count": 8,
+      "ingredient": "minecraft:sugar"
+    },
+    {
+      "count": 4,
+      "ingredient": "minecraft:egg"
+    }
+  ],
+  "order": 22029,
+  "output_items": [
+    {
+      "count": 4,
+      "id": "minecraft:cake"
+    }
+  ],
+  "power": 100
+}

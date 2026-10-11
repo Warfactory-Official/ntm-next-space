@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "id": "hbmspace",
+  "version": "${version}",
+  "name": "NTM: Space",
+  "description": "NTM: Space, ported to Minecraft 26.2 for Fabric and NeoForge as an NTM addon.",
+  "authors": [
+    "JamesH_2 and Mellow - creating NTM: Space",
+    "movblock - porting to 26.2"
+  ],
+  "license": "LGPL-3.0-only",
+  "icon": "hbmspace.png",
+  "environment": "*",
+  "mixins": [
+    "hbmspace-common.mixins.json"
+  ],
+  "entrypoints": {
+    "hbm:addon": [
+      "com.hbmspace.fabric.HbmSpaceFabric"
+    ],
+    "client": [
+      "com.hbmspace.fabric.client.HbmSpaceFabricClient"
+    ]
+  },
+  "depends": {
+    "hbm": "${hbm_version}",
+    "minecraft": "~26.2"
+  },
+  "breaks": {
+    "crankshaft": "<1.5.5"
+  },
+  "custom": {
+    "fabric:resource_load_order": {
+      "after": "hbm"
+    }
+  }
+}

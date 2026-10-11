@@ -1,0 +1,30 @@
+{
+  "type": "hbm:fuel_pool",
+  "input_items": [
+    {
+      "components": {
+        "hbm:rbmk_fuel": {
+          "core": 100.0,
+          "hull": 50.0,
+          "xenon": 0.0,
+          "yield": 6000000.0
+        }
+      },
+      "ingredient": "hbmspace:rbmk_fuel_lecm"
+    }
+  ],
+  "order": 15873,
+  "output_items": [
+    {
+      "components": {
+        "hbm:rbmk_fuel": {
+          "core": 20.0,
+          "hull": 20.0,
+          "xenon": 0.0,
+          "yield": 6000000.0
+        }
+      },
+      "id": "hbmspace:rbmk_fuel_lecm"
+    }
+  ]
+}

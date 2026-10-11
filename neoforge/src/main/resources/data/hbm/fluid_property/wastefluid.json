@@ -1,0 +1,36 @@
+{
+  "type": "liquid",
+  "color": "#544400",
+  "flags": [
+    "nocontainer",
+    "viscous"
+  ],
+  "nfpa": {
+    "flame": 0,
+    "health": 2,
+    "react": 1
+  },
+  "symbol": "RADIATION",
+  "temperature": 20,
+  "traits": {
+    "heatable": {
+      "efficiency": {
+        "PWR": 1.0
+      },
+      "steps": [
+        {
+          "amount_produced": 1,
+          "amount_req": 1,
+          "heat_req": 300,
+          "produces": "hbm:wastegas"
+        }
+      ]
+    },
+    "pwrmoderator": {
+      "multiplier": 1.2
+    },
+    "ventradiation": {
+      "rad_per_mb": 0.5
+    }
+  }
+}

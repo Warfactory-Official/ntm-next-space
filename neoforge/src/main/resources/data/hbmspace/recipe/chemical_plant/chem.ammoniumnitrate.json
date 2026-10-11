@@ -1,0 +1,28 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "!enable_528_pressurized"
+    }
+  ],
+  "type": "hbm:chemical_plant",
+  "duration": 250,
+  "input_fluids": [
+    {
+      "type": "hbmspace:ammonia",
+      "amount": 500
+    },
+    {
+      "type": "hbmspace:nitrogen",
+      "amount": 1000
+    }
+  ],
+  "order": 22026,
+  "output_items": [
+    {
+      "count": 4,
+      "id": "hbmspace:ammonium_nitrate"
+    }
+  ],
+  "power": 1000
+}

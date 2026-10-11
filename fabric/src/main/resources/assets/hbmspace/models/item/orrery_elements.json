@@ -1,0 +1,77 @@
+{
+  "elements": [
+    {
+      "faces": {
+        "down": {
+          "texture": "#sun",
+          "uv": [
+            10,
+            6,
+            6,
+            10
+          ]
+        },
+        "east": {
+          "texture": "#sun",
+          "uv": [
+            6,
+            10,
+            10,
+            6
+          ]
+        },
+        "north": {
+          "texture": "#sun",
+          "uv": [
+            6,
+            10,
+            10,
+            6
+          ]
+        },
+        "south": {
+          "texture": "#sun",
+          "uv": [
+            6,
+            10,
+            10,
+            6
+          ]
+        },
+        "up": {
+          "texture": "#sun",
+          "uv": [
+            6,
+            10,
+            10,
+            6
+          ]
+        },
+        "west": {
+          "texture": "#sun",
+          "uv": [
+            6,
+            10,
+            10,
+            6
+          ]
+        }
+      },
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "shade": false,
+      "to": [
+        16,
+        16,
+        16
+      ]
+    }
+  ],
+  "textures": {
+    "particle": "hbmspace:block/block_steel_machine",
+    "sun": "hbmspace:misc/space/kerbol"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 400,
+  "input_items": [
+    {
+      "ingredient": "hbm:seg_20"
+    },
+    {
+      "ingredient": "#hbm:pipes/steel"
+    },
+    {
+      "count": 16,
+      "ingredient": "#c:ingots/tungsten"
+    },
+    {
+      "count": 12,
+      "ingredient": "#c:plates/steel"
+    },
+    {
+      "count": 6,
+      "ingredient": "#c:ingots/desh"
+    }
+  ],
+  "order": 110398,
+  "output_items": [
+    "hbmspace:mp_thruster_20_methalox_triple"
+  ],
+  "power": 100
+}

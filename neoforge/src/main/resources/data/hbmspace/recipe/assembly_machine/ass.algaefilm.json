@@ -1,0 +1,36 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "!expensive_mode"
+    }
+  ],
+  "type": "hbm:assembly_machine",
+  "duration": 100,
+  "input_items": [
+    {
+      "count": 8,
+      "ingredient": "#c:plates/aluminum"
+    },
+    {
+      "count": 16,
+      "ingredient": "hbmspace:saltleaf"
+    },
+    {
+      "ingredient": "hbm:fan"
+    },
+    {
+      "count": 4,
+      "ingredient": "hbm:steel_beam"
+    },
+    {
+      "count": 2,
+      "ingredient": "hbm:fence_metal"
+    }
+  ],
+  "order": 110344,
+  "output_items": [
+    "hbmspace:algae_film"
+  ],
+  "power": 100
+}

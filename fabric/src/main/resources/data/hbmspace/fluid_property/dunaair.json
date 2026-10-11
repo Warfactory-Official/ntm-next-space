@@ -1,0 +1,24 @@
+{
+  "type": "gaseous",
+  "color": "#d4704e",
+  "containers": {
+    "gastank": {
+      "bottle_color": "#cf5b34",
+      "label_color": "#ffffff"
+    }
+  },
+  "nfpa": {
+    "flame": 0,
+    "health": 3,
+    "react": 0
+  },
+  "symbol": "ASPHYXIANT",
+  "temperature": 20,
+  "traits": {
+    "polluting": {
+      "release": {
+        "POISON": 2.0000001E-5
+      }
+    }
+  }
+}

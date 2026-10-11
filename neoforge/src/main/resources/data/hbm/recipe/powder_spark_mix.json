@@ -1,0 +1,12 @@
+{
+  "type": "hbm:crafting_shapeless",
+  "ingredients": [
+    "#c:dusts/desh",
+    "#c:dusts/euphemium",
+    "hbm:powder_power"
+  ],
+  "result": {
+    "count": 3,
+    "id": "hbm:powder_spark_mix"
+  }
+}

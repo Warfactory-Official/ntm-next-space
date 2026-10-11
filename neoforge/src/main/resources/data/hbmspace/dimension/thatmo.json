@@ -1,0 +1,10 @@
+{
+  "type": "hbmspace:thatmo",
+  "generator": {
+    "type": "hbmspace:thatmo",
+    "biome_source": {
+      "type": "minecraft:fixed",
+      "biome": "hbmspace:thatmo"
+    }
+  }
+}

@@ -1,0 +1,174 @@
+{
+  "ambientocclusion": false,
+  "display": {
+    "firstperson_lefthand": {
+      "rotation": [
+        154.91621,
+        -4.530509,
+        177.88249
+      ],
+      "scale": [
+        0.037499998,
+        0.0375,
+        0.037499998
+      ],
+      "translation": [
+        0.077420056,
+        6.1026525,
+        0.8849096
+      ]
+    },
+    "firstperson_righthand": {
+      "rotation": [
+        154.91621,
+        -4.530509,
+        177.88249
+      ],
+      "scale": [
+        0.037499998,
+        0.0375,
+        0.037499998
+      ],
+      "translation": [
+        0.07741958,
+        6.1026525,
+        0.8849092
+      ]
+    },
+    "fixed": {
+      "rotation": [
+        -0.0,
+        -90.0,
+        0.0
+      ],
+      "scale": [
+        0.09375,
+        0.09375,
+        0.09375
+      ],
+      "translation": [
+        -0.01103878,
+        10.178961,
+        0.5
+      ]
+    },
+    "ground": {
+      "rotation": [
+        0.0,
+        90.0,
+        0.0
+      ],
+      "scale": [
+        0.046875,
+        0.046875,
+        0.046875
+      ],
+      "translation": [
+        0.00551939,
+        2.3694801,
+        0.0
+      ]
+    },
+    "gui": {
+      "rotation": [
+        -150.0,
+        -44.999996,
+        -180.0
+      ],
+      "scale": [
+        0.046875,
+        0.046875,
+        0.046875004
+      ],
+      "translation": [
+        -0.0039028525,
+        1.7860317,
+        -5.8186398
+      ]
+    },
+    "head": {
+      "rotation": [
+        -0.0,
+        -50.000004,
+        154.99998
+      ],
+      "scale": [
+        0.15,
+        0.15,
+        0.15
+      ],
+      "translation": [
+        2.2806864,
+        -30.818075,
+        2.7454934
+      ]
+    },
+    "on_shelf": {
+      "rotation": [
+        0.0,
+        90.0,
+        0.0
+      ],
+      "scale": [
+        0.1875,
+        0.1875,
+        0.1875
+      ],
+      "translation": [
+        0.022077084,
+        25.47792,
+        0.0
+      ]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [
+        -164.50075,
+        11.346811,
+        165.04486
+      ],
+      "scale": [
+        0.035156246,
+        0.03515625,
+        0.03515625
+      ],
+      "translation": [
+        -1.0531076,
+        5.437311,
+        2.1171107
+      ]
+    },
+    "thirdperson_righthand": {
+      "rotation": [
+        -164.50075,
+        11.346811,
+        165.04486
+      ],
+      "scale": [
+        0.035156246,
+        0.03515625,
+        0.03515625
+      ],
+      "translation": [
+        -2.2128985,
+        5.1950264,
+        1.8084054
+      ]
+    }
+  },
+  "gui_light": "side",
+  "loader": "hbm:obj",
+  "model": "hbmspace:models/machines/dyson_spinlaunch.obj",
+  "offset_y": -7.9926405,
+  "offset_z": -0.007359028,
+  "skins": {
+    "all": [
+      "Launch",
+      "The_Thing_That_Rotates",
+      "Payload"
+    ]
+  },
+  "textures": {
+    "all": "hbmspace:block/models/machines/dyson_spinlaunch",
+    "particle": "hbmspace:block/models/machines/dyson_spinlaunch"
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "type": "hbm:assembly_machine",
+  "duration": 200,
+  "input_items": [
+    {
+      "ingredient": "#hbm:plates_welded/tungsten"
+    },
+    {
+      "count": 2,
+      "ingredient": "#hbm:ingots/any_hard_plastic"
+    },
+    {
+      "ingredient": "hbmspace:beryllium_mirror"
+    },
+    {
+      "count": 2,
+      "ingredient": "#hbm:wires_dense/gold"
+    },
+    {
+      "count": 32,
+      "ingredient": "#c:fine_wires/mingrade"
+    },
+    {
+      "count": 4,
+      "ingredient": "#c:plates/stainless_steel"
+    },
+    {
+      "count": 2,
+      "ingredient": "hbm:circuit_capacitor_board"
+    },
+    {
+      "ingredient": "hbmspace:circuit_hfchip"
+    }
+  ],
+  "order": 110082,
+  "output_items": [
+    "hbmspace:swarm_member"
+  ],
+  "power": 100
+}

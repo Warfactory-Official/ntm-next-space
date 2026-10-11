@@ -1,0 +1,16 @@
+{
+  "type": "hbmspace:laythe",
+  "generator": {
+    "type": "hbmspace:laythe",
+    "biome_source": {
+      "type": "hbmspace:celestial",
+      "biomes": [
+        "hbmspace:laythe_islands",
+        "hbmspace:laythe_ocean",
+        "hbmspace:laythe_polar",
+        "hbmspace:laythe_coast"
+      ],
+      "layers": "hbmspace:laythe"
+    }
+  }
+}

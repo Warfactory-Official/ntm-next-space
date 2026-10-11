@@ -1,0 +1,17 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/zinc"
+    }
+  ],
+  "order": 5121,
+  "output_items": [
+    {
+      "count": 8,
+      "id": "hbmspace:wire_fine_zinc"
+    }
+  ],
+  "overlay": "smithing",
+  "tier": 4
+}

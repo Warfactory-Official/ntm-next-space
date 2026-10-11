@@ -1,0 +1,13 @@
+{
+  "type": "hbm:solidification",
+  "input_fluids": [
+    {
+      "type": "hbm:carbondioxide",
+      "amount": 1000
+    }
+  ],
+  "order": 1537,
+  "output_items": [
+    "hbmspace:dry_ice"
+  ]
+}

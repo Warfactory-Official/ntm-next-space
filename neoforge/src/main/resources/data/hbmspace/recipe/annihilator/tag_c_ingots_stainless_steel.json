@@ -1,0 +1,21 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "enable_528"
+    }
+  ],
+  "type": "hbm:annihilator",
+  "item": "#c:ingots/stainless_steel",
+  "milestones": [
+    {
+      "amount": "1024",
+      "payout": {
+        "components": {
+          "hbm:blueprint_pool": "528.stainless"
+        },
+        "id": "hbm:blueprints"
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": [
+        "hbmspace:ore_fire",
+        "hbmspace:ore_fire_kerbin",
+        "hbmspace:ore_fire_mun",
+        "hbmspace:ore_fire_minmus",
+        "hbmspace:ore_fire_duna",
+        "hbmspace:ore_fire_moho",
+        "hbmspace:ore_fire_dres",
+        "hbmspace:ore_fire_eve",
+        "hbmspace:ore_fire_ike",
+        "hbmspace:ore_fire_laythe",
+        "hbmspace:ore_fire_tekto"
+      ]
+    }
+  ],
+  "order": 2562,
+  "output_items": [
+    {
+      "count": 6,
+      "id": "hbm:powder_fire"
+    }
+  ]
+}

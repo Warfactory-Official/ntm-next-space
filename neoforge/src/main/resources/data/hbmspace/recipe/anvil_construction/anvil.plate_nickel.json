@@ -1,0 +1,14 @@
+{
+  "type": "hbm:anvil_construction",
+  "input_items": [
+    {
+      "ingredient": "#c:ingots/nickel_pure"
+    }
+  ],
+  "order": 513,
+  "output_items": [
+    "hbmspace:plate_nickel"
+  ],
+  "overlay": "smithing",
+  "tier": 3
+}

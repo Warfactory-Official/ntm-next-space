@@ -1,0 +1,30 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "hbm:flag",
+      "name": "enable_528"
+    }
+  ],
+  "type": "hbm:chemical_plant",
+  "custom_localization": true,
+  "duration": 100,
+  "input_fluids": [
+    {
+      "type": "hbmspace:vinyl",
+      "amount": 500
+    },
+    {
+      "type": "hbm:unsaturateds",
+      "amount": 400,
+      "pressure": 2
+    }
+  ],
+  "order": 11010,
+  "output_items": [
+    {
+      "count": 2,
+      "id": "hbm:ingot_rubber"
+    }
+  ],
+  "power": 400
+}
