@@ -1,20 +1,36 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbmspace.blocks;
 
 import com.hbm.items.CreativeContents.Tab;
 import com.hbm.items.CreativeContents;
 import com.hbm.items.DescBlockItem;
-import com.hbm.lib.Library;
 import com.hbm.registration.Reg;
+import com.hbm.util.RegistryUtil;
 import com.hbmspace.HbmSpace;
-import com.hbmspace.blocks.generic.BlockOrrery;
-import com.hbmspace.blocks.machine.MachineDysonConverterAnatmogenesis;
-import com.hbmspace.blocks.machine.MachineDysonConverterHE;
-import com.hbmspace.blocks.machine.MachineDysonConverterTU;
-import com.hbmspace.blocks.machine.MachineDysonLauncher;
-import com.hbmspace.blocks.machine.MachineDysonReceiver;
+import com.hbmspace.blocks.generic.OrreryBlock;
+import com.hbmspace.blocks.machine.DysonConverterAnatmogenesisBlock;
+import com.hbmspace.blocks.machine.DysonConverterHEBlock;
+import com.hbmspace.blocks.machine.DysonConverterTUBlock;
+import com.hbmspace.blocks.machine.DysonLauncherBlock;
+import com.hbmspace.blocks.machine.DysonReceiverBlock;
 import java.util.List;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
@@ -22,40 +38,36 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
 
 public final class SkyBlocksSpace {
-
-    private static final String STEEL_MACHINE = "hbmspace:block/block_steel_machine";
-
-    public static final Reg.Handle<MachineDysonLauncher> DYSON_LAUNCHER =
+    public static final Reg.Handle<DysonLauncherBlock> DYSON_LAUNCHER =
             HbmSpace.REG.blockItem(
                     "dyson_launcher",
-                    MachineDysonLauncher::new,
+                    DysonLauncherBlock::new,
                     SkyBlocksSpace::machine,
                     (block, props) -> new DescBlockItem(block, props, 2));
 
-    public static final Reg.Handle<MachineDysonReceiver> DYSON_RECEIVER =
+    public static final Reg.Handle<DysonReceiverBlock> DYSON_RECEIVER =
             HbmSpace.REG.blockItem(
                     "dyson_receiver",
-                    MachineDysonReceiver::new,
+                    DysonReceiverBlock::new,
                     SkyBlocksSpace::machine,
                     (block, props) -> new DescBlockItem(block, props, 2));
 
-    public static final Reg.Handle<MachineDysonConverterTU> DYSON_CONVERTER_TU =
+    public static final Reg.Handle<DysonConverterTUBlock> DYSON_CONVERTER_TU =
             HbmSpace.REG.blockItem(
-                    "dyson_converter_tu", MachineDysonConverterTU::new, SkyBlocksSpace::machine);
+                    "dyson_converter_tu", DysonConverterTUBlock::new, SkyBlocksSpace::machine);
 
-    public static final Reg.Handle<MachineDysonConverterHE> DYSON_CONVERTER_HE =
+    public static final Reg.Handle<DysonConverterHEBlock> DYSON_CONVERTER_HE =
             HbmSpace.REG.blockItem(
-                    "dyson_converter_he", MachineDysonConverterHE::new, SkyBlocksSpace::machine);
+                    "dyson_converter_he", DysonConverterHEBlock::new, SkyBlocksSpace::machine);
 
-    public static final Reg.Handle<MachineDysonConverterAnatmogenesis>
-            DYSON_CONVERTER_ANATMOGENESIS =
-                    HbmSpace.REG.blockItem(
-                            "dyson_converter_anatmogenesis",
-                            MachineDysonConverterAnatmogenesis::new,
-                            SkyBlocksSpace::machine);
+    public static final Reg.Handle<DysonConverterAnatmogenesisBlock> DYSON_CONVERTER_ANATMOGENESIS =
+            HbmSpace.REG.blockItem(
+                    "dyson_converter_anatmogenesis",
+                    DysonConverterAnatmogenesisBlock::new,
+                    SkyBlocksSpace::machine);
 
-    public static final Reg.Handle<BlockOrrery> ORRERY =
-            HbmSpace.REG.blockItem("orrery", BlockOrrery::new, SkyBlocksSpace::machine);
+    public static final Reg.Handle<OrreryBlock> ORRERY =
+            HbmSpace.REG.blockItem("orrery", OrreryBlock::new, SkyBlocksSpace::machine);
 
     static {
         for (ItemLike block :
@@ -67,7 +79,7 @@ public final class SkyBlocksSpace {
                         DYSON_CONVERTER_ANATMOGENESIS,
                         ORRERY)) {
             CreativeContents.insertBefore(
-                    Tab.MACHINES, Library.id("drone_patrol"), () -> new ItemStack(block));
+                    Tab.MACHINES, RegistryUtil.id("drone_patrol"), () -> new ItemStack(block));
         }
     }
 

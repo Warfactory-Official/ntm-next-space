@@ -1,0 +1,27 @@
+{
+  "type": "hbmspace:tilted_spire",
+  "biomes": [
+    "hbmspace:ike"
+  ],
+  "chance_high": 6,
+  "chance_low": 6,
+  "curve": false,
+  "max_point": 4.0,
+  "max_size": 16,
+  "max_tilt": 2.5,
+  "mid": 86,
+  "min_point": 0.5,
+  "min_size": 6,
+  "min_tilt": 0.2,
+  "noise": "hbmspace:spires",
+  "regolith": {
+    "Name": "hbmspace:ike_regolith"
+  },
+  "rock": {
+    "Name": "hbmspace:ike_stone"
+  },
+  "spawn_overrides": {},
+  "step": "lakes",
+  "terrain_adaptation": "none",
+  "threshold": 0.0
+}

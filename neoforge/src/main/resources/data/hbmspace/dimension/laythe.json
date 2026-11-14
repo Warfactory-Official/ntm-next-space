@@ -1,7 +1,7 @@
 {
   "type": "hbmspace:laythe",
   "generator": {
-    "type": "hbmspace:laythe",
+    "type": "minecraft:noise",
     "biome_source": {
       "type": "hbmspace:celestial",
       "biomes": [
@@ -9,8 +9,8 @@
         "hbmspace:laythe_ocean",
         "hbmspace:laythe_polar",
         "hbmspace:laythe_coast"
-      ],
-      "layers": "hbmspace:laythe"
-    }
+      ]
+    },
+    "settings": "hbmspace:laythe"
   }
 }

@@ -1,16 +1,32 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbmspace.compat.computercraft;
 
 import com.hbm.compat.computercraft.SnapshotPeripheral;
 import com.hbm.inventory.fluid.NTMFluids;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
-import com.hbmspace.blockentity.bomb.BlockEntityLaunchPadRocket;
+import com.hbmspace.blockentity.bomb.LaunchPadRocketBlockEntity;
 import com.hbmspace.dim.Target;
 import com.hbmspace.handler.RocketStruct;
-import com.hbmspace.items.ItemVOTVdrive;
-import com.hbmspace.items.weapon.ItemCustomRocket;
+import com.hbmspace.items.VOTVdriveItem;
+import com.hbmspace.items.weapon.CustomRocketItem;
 import dan200.computercraft.api.lua.LuaFunction;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +35,7 @@ import java.util.Objects;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.material.Fluid;
 
-public final class RocketPadPeripheral extends SnapshotPeripheral<BlockEntityLaunchPadRocket> {
+public final class RocketPadPeripheral extends SnapshotPeripheral<LaunchPadRocketBlockEntity> {
 
     private static final int POWER = 0;
     private static final int SOLID = 1;
@@ -31,12 +47,12 @@ public final class RocketPadPeripheral extends SnapshotPeripheral<BlockEntityLau
     private int[] maxes = new int[0];
     private Object[] fuel = new Object[0];
 
-    public RocketPadPeripheral(BlockEntityLaunchPadRocket pad) {
+    public RocketPadPeripheral(LaunchPadRocketBlockEntity pad) {
         super(pad, "ntm_rocket_pad", 3, 1);
     }
 
     @Override
-    protected void capture(BlockEntityLaunchPadRocket pad) {
+    protected void capture(LaunchPadRocketBlockEntity pad) {
         put(POWER, pad.power);
         put(SOLID, pad.solidLevel);
         put(SOLID_MAX, pad.solidMax);
@@ -79,46 +95,46 @@ public final class RocketPadPeripheral extends SnapshotPeripheral<BlockEntityLau
     }
 
     @LuaFunction
-    public final Object[] getEnergyInfo() {
-        return read(s -> new Object[] {s.longAt(POWER), BlockEntityLaunchPadRocket.MAX_POWER});
+    public Object[] getEnergyInfo() {
+        return read(s -> new Object[] {s.longAt(POWER), LaunchPadRocketBlockEntity.MAX_POWER});
     }
 
     @LuaFunction
-    public final Object[] getFuel() {
+    public Object[] getFuel() {
         return read(s -> (Object[]) Objects.requireNonNull(s.refAt(FUEL)));
     }
 
     @LuaFunction
-    public final Object[] getSolidFuel() {
+    public Object[] getSolidFuel() {
         return read(s -> new Object[] {s.intAt(SOLID), s.intAt(SOLID_MAX)});
     }
 
     @LuaFunction(mainThread = true)
-    public final Object[] canLaunch() {
+    public Object[] canLaunch() {
         return new Object[] {machine().canLaunch()};
     }
 
     @LuaFunction(mainThread = true)
-    public final Object[] getRocketStats() {
+    public Object[] getRocketStats() {
         RocketStruct rocket =
-                ItemCustomRocket.get(machine().getItem(BlockEntityLaunchPadRocket.SLOT_ROCKET));
+                CustomRocketItem.get(machine().getItem(LaunchPadRocketBlockEntity.SLOT_ROCKET));
         if (rocket == null) return new Object[] {null, ""};
         return new Object[] {rocket.stages.size(), rocket.getLaunchMass(), rocket.getHeight()};
     }
 
     @LuaFunction(mainThread = true)
-    public final Object[] launch() {
+    public Object[] launch() {
         machine().launch(null);
         return new Object[] {};
     }
 
     @LuaFunction(mainThread = true)
-    public final Object[] getDestination() {
-        BlockEntityLaunchPadRocket pad = machine();
-        ItemStack drive = pad.getItem(BlockEntityLaunchPadRocket.SLOT_DRIVE);
-        if (!(drive.getItem() instanceof ItemVOTVdrive))
+    public Object[] getDestination() {
+        LaunchPadRocketBlockEntity pad = machine();
+        ItemStack drive = pad.getItem(LaunchPadRocketBlockEntity.SLOT_DRIVE);
+        if (!(drive.getItem() instanceof VOTVdriveItem))
             return new Object[] {null, "No destination drive."};
-        Target target = ItemVOTVdrive.getTarget(drive, pad.getLevel());
+        Target target = VOTVdriveItem.getTarget(drive, pad.getLevel());
         if (target.body() != null)
             return new Object[] {target.body().name.toLowerCase(Locale.ROOT)};
         return new Object[] {null, "Drive has no destination."};

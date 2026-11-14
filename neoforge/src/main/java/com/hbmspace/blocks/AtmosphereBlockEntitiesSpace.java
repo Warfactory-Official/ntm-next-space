@@ -1,83 +1,99 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbmspace.blocks;
 
-import com.hbm.blockentity.BlockEntityMachineBase;
+import com.hbm.blockentity.BlockEntityTicks;
 import com.hbm.registration.Reg;
 import com.hbmspace.HbmSpace;
-import com.hbmspace.blockentity.machine.BlockEntityAirPump;
-import com.hbmspace.blockentity.machine.BlockEntityAirScrubber;
-import com.hbmspace.blockentity.machine.BlockEntityAtmoTower;
-import com.hbmspace.blockentity.machine.BlockEntityAtmosphereEditor;
-import com.hbmspace.blockentity.machine.BlockEntityAtmosphericCompressor;
-import com.hbmspace.blockentity.machine.BlockEntityAtmosphericEmitter;
+import com.hbmspace.blockentity.machine.AirPumpBlockEntity;
+import com.hbmspace.blockentity.machine.AirScrubberBlockEntity;
+import com.hbmspace.blockentity.machine.AtmoTowerBlockEntity;
+import com.hbmspace.blockentity.machine.AtmosphereEditorBlockEntity;
+import com.hbmspace.blockentity.machine.AtmosphericCompressorBlockEntity;
+import com.hbmspace.blockentity.machine.AtmosphericEmitterBlockEntity;
 import java.util.Set;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 
 public final class AtmosphereBlockEntitiesSpace {
 
-    public static final Reg.BeHandle<BlockEntityAirPump> AIR_PUMP =
-            HbmSpace.REG
-                    .be(
+    public static final Reg.BeHandle<AirPumpBlockEntity> AIR_PUMP =
+            (HbmSpace.REG.<AirPumpBlockEntity>be(
                             "air_vent",
                             () ->
                                     new BlockEntityType<>(
-                                            BlockEntityAirPump::new,
-                                            Set.of(AtmosphereBlocksSpace.AIR_VENT.get())))
-                    .ticks(BlockEntityMachineBase::tickClient, BlockEntityMachineBase::tickServer);
+                                            AirPumpBlockEntity::new,
+                                            Set.of(AtmosphereBlocksSpace.AIR_VENT.get()))))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
 
-    public static final Reg.BeHandle<BlockEntityAirScrubber> AIR_SCRUBBER =
-            HbmSpace.REG
-                    .be(
+    public static final Reg.BeHandle<AirScrubberBlockEntity> AIR_SCRUBBER =
+            (HbmSpace.REG.<AirScrubberBlockEntity>be(
                             "air_scrubber",
                             () ->
                                     new BlockEntityType<>(
-                                            BlockEntityAirScrubber::new,
-                                            Set.of(AtmosphereBlocksSpace.AIR_SCRUBBER.get())))
-                    .ticks(BlockEntityMachineBase::tickClient, BlockEntityMachineBase::tickServer);
+                                            AirScrubberBlockEntity::new,
+                                            Set.of(AtmosphereBlocksSpace.AIR_SCRUBBER.get()))))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
 
-    public static final Reg.BeHandle<BlockEntityAtmoTower> ATMO_TOWER =
-            HbmSpace.REG
-                    .be(
+    public static final Reg.BeHandle<AtmoTowerBlockEntity> ATMO_TOWER =
+            (HbmSpace.REG.<AtmoTowerBlockEntity>be(
                             "atmospheric_tower",
                             () ->
                                     new BlockEntityType<>(
-                                            BlockEntityAtmoTower::new,
-                                            Set.of(AtmosphereBlocksSpace.MACHINE_ATMO_TOWER.get())))
-                    .ticksServer(BlockEntityMachineBase::tickServer);
+                                            AtmoTowerBlockEntity::new,
+                                            Set.of(
+                                                    AtmosphereBlocksSpace.MACHINE_ATMO_TOWER
+                                                            .get()))))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
 
-    public static final Reg.BeHandle<BlockEntityAtmosphericCompressor> ATMOSPHERIC_COMPRESSOR =
-            HbmSpace.REG
-                    .be(
+    public static final Reg.BeHandle<AtmosphericCompressorBlockEntity> ATMOSPHERIC_COMPRESSOR =
+            (HbmSpace.REG.<AtmosphericCompressorBlockEntity>be(
                             "atmospheric_vent",
                             () ->
                                     new BlockEntityType<>(
-                                            BlockEntityAtmosphericCompressor::new,
-                                            Set.of(AtmosphereBlocksSpace.MACHINE_ATMO_VENT.get())))
-                    .ticks(BlockEntityMachineBase::tickClient, BlockEntityMachineBase::tickServer);
+                                            AtmosphericCompressorBlockEntity::new,
+                                            Set.of(AtmosphereBlocksSpace.MACHINE_ATMO_VENT.get()))))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
 
-    public static final Reg.BeHandle<BlockEntityAtmosphericEmitter> ATMOSPHERIC_EMITTER =
-            HbmSpace.REG
-                    .be(
+    public static final Reg.BeHandle<AtmosphericEmitterBlockEntity> ATMOSPHERIC_EMITTER =
+            (HbmSpace.REG.<AtmosphericEmitterBlockEntity>be(
                             "atmo_emitter",
                             () ->
                                     new BlockEntityType<>(
-                                            BlockEntityAtmosphericEmitter::new,
+                                            AtmosphericEmitterBlockEntity::new,
                                             Set.of(
                                                     AtmosphereBlocksSpace.MACHINE_ATMO_EMITTER
-                                                            .get())))
-                    .ticks(BlockEntityMachineBase::tickClient, BlockEntityMachineBase::tickServer);
+                                                            .get()))))
+                    .ticksServerAt(BlockEntityTicks.SERVER_WITH_SOUND)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
 
-    public static final Reg.BeHandle<BlockEntityAtmosphereEditor> ATMOSPHERE_EDITOR =
-            HbmSpace.REG
-                    .be(
+    public static final Reg.BeHandle<AtmosphereEditorBlockEntity> ATMOSPHERE_EDITOR =
+            (HbmSpace.REG.<AtmosphereEditorBlockEntity>be(
                             "atmosphere_editor",
                             () ->
                                     new BlockEntityType<>(
-                                            BlockEntityAtmosphereEditor::new,
-                                            Set.of(AtmosphereBlocksSpace.ATMOSPHERE_EDITOR.get())))
-                    .ticksServer(BlockEntityMachineBase::tickServer);
+                                            AtmosphereEditorBlockEntity::new,
+                                            Set.of(AtmosphereBlocksSpace.ATMOSPHERE_EDITOR.get()))))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
 
     private AtmosphereBlockEntitiesSpace() {}
 }

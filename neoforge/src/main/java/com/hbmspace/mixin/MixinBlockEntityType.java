@@ -1,13 +1,29 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbmspace.mixin;
 
 import com.hbm.blocks.ModBlockEntities;
-import com.hbm.blocks.machine.storage.MachineCapacitor;
-import com.hbmspace.blockentity.machine.BlockEntityChungusSpace;
-import com.hbmspace.blockentity.machine.BlockEntityCondenserPoweredSpace;
-import com.hbmspace.blockentity.machine.BlockEntityMachineLPW2Space;
+import com.hbm.blocks.machine.storage.CapacitorBlock;
+import com.hbmspace.blockentity.machine.ChungusSpaceBlockEntity;
+import com.hbmspace.blockentity.machine.CondenserPoweredSpaceBlockEntity;
+import com.hbmspace.blockentity.machine.LPW2SpaceBlockEntity;
 import com.hbmspace.blocks.CapacitorBlocksSpace;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -22,7 +38,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class MixinBlockEntityType {
     @Inject(method = "isValid", at = @At("HEAD"), cancellable = true)
     private void hbmspace$complexCapacitor(BlockState state, CallbackInfoReturnable<Boolean> cir) {
-        if (state.getBlock() instanceof MachineCapacitor
+        if (state.getBlock() instanceof CapacitorBlock
                 && (Object) this == ModBlockEntities.CAPACITOR.get()
                 && state.getBlock() == CapacitorBlocksSpace.CAPACITOR_COMPLEX.get()) {
             cir.setReturnValue(true);
@@ -33,7 +49,7 @@ public abstract class MixinBlockEntityType {
     private void hbmspace$lpw2Engine(
             BlockPos pos, BlockState state, CallbackInfoReturnable<BlockEntity> cir) {
         if ((Object) this == ModBlockEntities.LPW2.get()) {
-            cir.setReturnValue(new BlockEntityMachineLPW2Space(pos, state));
+            cir.setReturnValue(new LPW2SpaceBlockEntity(pos, state));
         }
     }
 
@@ -41,9 +57,9 @@ public abstract class MixinBlockEntityType {
     private void hbmspace$thermalDamage(
             BlockPos pos, BlockState state, CallbackInfoReturnable<BlockEntity> cir) {
         if ((Object) this == ModBlockEntities.CHUNGUS.get()) {
-            cir.setReturnValue(new BlockEntityChungusSpace(pos, state));
+            cir.setReturnValue(new ChungusSpaceBlockEntity(pos, state));
         } else if ((Object) this == ModBlockEntities.CONDENSER_POWERED.get()) {
-            cir.setReturnValue(new BlockEntityCondenserPoweredSpace(pos, state));
+            cir.setReturnValue(new CondenserPoweredSpaceBlockEntity(pos, state));
         }
     }
 }

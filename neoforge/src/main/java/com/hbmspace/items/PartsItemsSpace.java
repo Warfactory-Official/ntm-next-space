@@ -1,13 +1,29 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbmspace.items;
 
 import com.hbm.items.CreativeContents.Tab;
 import com.hbm.items.CreativeContents;
-import com.hbm.items.special.ItemCustomLore;
-import com.hbm.lib.Library;
+import com.hbm.items.special.CustomLoreItem;
 import com.hbm.registration.Reg;
+import com.hbm.util.RegistryUtil;
 import com.hbmspace.HbmSpace;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.food.FoodProperties;
@@ -31,16 +47,16 @@ public final class PartsItemsSpace {
     public static final Reg.Handle<Item> INGOT_CF252 = plain("ingot_cf252");
     public static final Reg.Handle<Item> INGOT_ES253 = plain("ingot_es253");
     public static final Reg.Handle<Item> INGOT_ES255 = plain("ingot_es255");
-    public static final Reg.Handle<ItemCustomLore> INGOT_TT =
+    public static final Reg.Handle<CustomLoreItem> INGOT_TT =
             lore("ingot_tt", "ingot_techtactium", Rarity.UNCOMMON);
-    public static final Reg.Handle<ItemCustomLore> INGOT_TTAS =
+    public static final Reg.Handle<CustomLoreItem> INGOT_TTAS =
             lore("ingot_ttas", "ingot_techtactium_as", Rarity.RARE);
-    public static final Reg.Handle<ItemCustomLore> INGOT_PALLADIUM =
+    public static final Reg.Handle<CustomLoreItem> INGOT_PALLADIUM =
             lore("ingot_palladium", "ingot_palladium", Rarity.COMMON);
     public static final Reg.Handle<Item> INGOT_MENTHOL = plain("ingot_menthol");
-    public static final Reg.Handle<ItemCustomLore> INGOT_CN989 =
+    public static final Reg.Handle<CustomLoreItem> INGOT_CN989 =
             lore("ingot_cn989", "ingot_cn989", Rarity.EPIC);
-    public static final Reg.Handle<ItemCustomLore> INGOT_GWENIUM =
+    public static final Reg.Handle<CustomLoreItem> INGOT_GWENIUM =
             lore("ingot_gwenium", "ingot_gwenium", Rarity.COMMON);
     public static final Reg.Handle<Item> BILLET_BK247 = plain("billet_bk247");
     public static final Reg.Handle<Item> BILLET_CM242 = plain("billet_cm242");
@@ -54,26 +70,26 @@ public final class PartsItemsSpace {
     public static final Reg.Handle<Item> BILLET_CF251 = plain("billet_cf251");
     public static final Reg.Handle<Item> BILLET_CF252 = plain("billet_cf252");
     public static final Reg.Handle<Item> BILLET_ES253 = plain("billet_es253");
-    public static final Reg.Handle<ItemCustomLore> BILLET_CN989 =
+    public static final Reg.Handle<CustomLoreItem> BILLET_CN989 =
             lore("billet_cn989", "billet_cn989", Rarity.EPIC);
     public static final Reg.Handle<Item> BILLET_MENTHOL = plain("billet_menthol");
     public static final Reg.Handle<Item> WOODEMIUM_BRIQUETTE =
             plain("woodemium_briquette", "briquette_woodemium");
-    public static final Reg.Handle<ItemCustomLore> POWDER_CN989 =
+    public static final Reg.Handle<CustomLoreItem> POWDER_CN989 =
             lore("powder_cn989", "powder_cn989", Rarity.EPIC);
-    public static final Reg.Handle<ItemCustomLore> POWDER_WD2004_TINY =
+    public static final Reg.Handle<CustomLoreItem> POWDER_WD2004_TINY =
             lore("powder_wd2004_tiny", "powder_wd2004_tiny", Rarity.EPIC);
-    public static final Reg.Handle<ItemCustomLore> POWDER_WD2004 =
+    public static final Reg.Handle<CustomLoreItem> POWDER_WD2004 =
             lore("powder_wd2004", "powder_wd2004", Rarity.EPIC);
     public static final Reg.Handle<Item> NICKEL_SALTS = plain("nickel_salts");
     public static final Reg.Handle<Item> AMMONIUM_NITRATE = plain("ammonium_nitrate");
     public static final Reg.Handle<Item> BALL_FERRIC_CLAY =
             plain("ball_ferric_clay", "ferric_clay");
-    public static final Reg.Handle<ItemCustomLore> CRYSTAL_MINERAL =
+    public static final Reg.Handle<CustomLoreItem> CRYSTAL_MINERAL =
             lore("crystal_mineral", "crystal_mineral", Rarity.COMMON);
-    public static final Reg.Handle<ItemCustomLore> CRYSTAL_CLEANED =
+    public static final Reg.Handle<CustomLoreItem> CRYSTAL_CLEANED =
             lore("crystal_cleaned", "crystal_mineralcf", Rarity.COMMON);
-    public static final Reg.Handle<ItemCustomLore> MINERAL_DUST =
+    public static final Reg.Handle<CustomLoreItem> MINERAL_DUST =
             lore("mineral_dust", "powder_mineral", Rarity.COMMON);
     public static final Reg.Handle<Item> CRYSTAL_NICKEL = plain("crystal_nickel");
     public static final Reg.Handle<Item> CRYSTAL_NIOBIUM = plain("crystal_niobium");
@@ -82,10 +98,10 @@ public final class PartsItemsSpace {
     public static final Reg.Handle<Item> FLESH_WAFER = food("flesh_wafer", "blood_wafer", 5, 0.6F);
     public static final Reg.Handle<Item> GRILLED_FLESH =
             food("grilled_flesh", "blood_patty", 6, 0.8F);
-    public static final Reg.Handle<ItemCustomLore> FLESH_BURGER =
+    public static final Reg.Handle<CustomLoreItem> FLESH_BURGER =
             HbmSpace.REG.item(
                     "flesh_burger",
-                    ItemCustomLore::new,
+                    CustomLoreItem::new,
                     () ->
                             new Item.Properties()
                                     .food(
@@ -93,9 +109,9 @@ public final class PartsItemsSpace {
                                                     .nutrition(7)
                                                     .saturationModifier(1.0F)
                                                     .build()));
-    public static final Reg.Handle<ItemCustomLore> STICK_PVC =
+    public static final Reg.Handle<CustomLoreItem> STICK_PVC =
             lore("stick_pvc", "stick_pvc", Rarity.COMMON);
-    public static final Reg.Handle<ItemCustomLore> STICK_VINYL =
+    public static final Reg.Handle<CustomLoreItem> STICK_VINYL =
             lore("stick_vinyl", "stick_vinyl", Rarity.COMMON);
     public static final Reg.Handle<Item> NUGGET_BK247 = plain("nugget_bk247");
     public static final Reg.Handle<Item> NUGGET_CM_MIX = plain("nugget_cm_mix");
@@ -109,10 +125,10 @@ public final class PartsItemsSpace {
     public static final Reg.Handle<Item> NUGGET_CF251 = plain("nugget_cf251");
     public static final Reg.Handle<Item> NUGGET_CF252 = plain("nugget_cf252");
     public static final Reg.Handle<Item> NUGGET_ES253 = plain("nugget_es253");
-    public static final Reg.Handle<ItemCustomLore> NUGGET_CN989 =
+    public static final Reg.Handle<CustomLoreItem> NUGGET_CN989 =
             lore("nugget_cn989", "nugget_cn989", Rarity.EPIC);
     public static final Reg.Handle<Item> NUGGET_MENTHOL = plain("nugget_menthol");
-    public static final Reg.Handle<ItemCustomLore> PLATE_CN989 =
+    public static final Reg.Handle<CustomLoreItem> PLATE_CN989 =
             lore("plate_cn989", "plate_cn989", Rarity.EPIC);
     public static final Reg.Handle<Item> RAG_BLOOD = plain("rag_blood");
     public static final Reg.Handle<Item> BERYLLIUM_MIRROR = plain("beryllium_mirror");
@@ -211,16 +227,16 @@ public final class PartsItemsSpace {
                                                 .build()));
     }
 
-    private static Reg.Handle<ItemCustomLore> lore(String name, String texture, Rarity rarity) {
-        Reg.Handle<ItemCustomLore> handle =
+    private static Reg.Handle<CustomLoreItem> lore(String name, String texture, Rarity rarity) {
+        Reg.Handle<CustomLoreItem> handle =
                 HbmSpace.REG.item(
-                        name, ItemCustomLore::new, () -> new Item.Properties().rarity(rarity));
+                        name, CustomLoreItem::new, () -> new Item.Properties().rarity(rarity));
         return texture.equals(name) ? handle : handle;
     }
 
     @SafeVarargs
     private static void after(String anchor, Reg.Handle<? extends Item>... entries) {
-        Identifier id = anchor.contains(":") ? Identifier.parse(anchor) : Library.id(anchor);
+        Identifier id = anchor.contains(":") ? Identifier.parse(anchor) : RegistryUtil.id(anchor);
         for (Reg.Handle<? extends Item> entry : entries) {
             CreativeContents.insertAfter(Tab.PARTS, id, () -> new ItemStack(entry.get()));
         }

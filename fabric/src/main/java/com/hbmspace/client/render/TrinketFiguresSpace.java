@@ -1,14 +1,30 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbmspace.client.render;
 
 import com.google.common.base.Suppliers;
 import com.hbm.client.model.Meshes;
 import com.hbm.client.render.BobbleFigures;
+import com.hbm.client.render.BobbleRenderer;
 import com.hbm.client.render.PlushieFigures;
-import com.hbm.client.render.RenderBobble;
-import com.hbm.client.render.RenderPlushie;
+import com.hbm.client.render.PlushieRenderer;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.HFRWavefrontObject;
 import com.hbmspace.HbmSpace;
@@ -38,21 +54,21 @@ public final class TrinketFiguresSpace {
 
         BobbleFigures.register(
                 BobbleTypeSpace.GWEN,
-                new RenderBobble.Figure(skin("gwen"), BobbleFigures.NO_POSE, null));
+                new BobbleRenderer.Figure(skin("gwen"), BobbleFigures.NO_POSE, null));
         BobbleFigures.register(
                 BobbleTypeSpace.JUICE,
-                new RenderBobble.Figure(skin("juicy_lad"), BobbleFigures.NO_POSE, null));
+                new BobbleRenderer.Figure(skin("juicy_lad"), BobbleFigures.NO_POSE, null));
         BobbleFigures.register(
                 BobbleTypeSpace.JAMESH_2,
-                new RenderBobble.Figure(skin("jamesh_2"), BobbleFigures.NO_POSE, null));
+                new BobbleRenderer.Figure(skin("jamesh_2"), BobbleFigures.NO_POSE, null));
         BobbleFigures.register(
                 BobbleTypeSpace.MRKIMKIMORA,
-                new RenderBobble.Figure(
+                new BobbleRenderer.Figure(
                         skin("mrkimkimora"),
                         BobbleFigures.NO_POSE,
                         Suppliers.memoize(
                                 () ->
-                                        new RenderBobble.Body(
+                                        new BobbleRenderer.Body(
                                                 ResourceManager.bobble,
                                                 ResourceManager.bobble.partId("MrKimkimora")))));
     }
@@ -67,21 +83,23 @@ public final class TrinketFiguresSpace {
 
     private record Vocaloid(
             Supplier<Model> model, float x, float y, float z, float itemX, float itemY, float itemZ)
-            implements RenderPlushie.Figure {
+            implements PlushieRenderer.Figure {
 
-        private static final RenderPlushie.Face CALM = new RenderPlushie.Face(Long.MIN_VALUE, 6);
-        private static final RenderPlushie.Face BLUSHING =
-                new RenderPlushie.Face(7, Long.MAX_VALUE);
+        private static final PlushieRenderer.Face CALM =
+                new PlushieRenderer.Face(Long.MIN_VALUE, 6);
+        private static final PlushieRenderer.Face BLUSHING =
+                new PlushieRenderer.Face(7, Long.MAX_VALUE);
 
-        record Model(HFRWavefrontObject mesh, RenderPlushie.Part skin, RenderPlushie.Part blush) {}
+        record Model(
+                HFRWavefrontObject mesh, PlushieRenderer.Part skin, PlushieRenderer.Part blush) {}
 
         static Supplier<Model> model(String name) {
             return Suppliers.memoize(
                     () ->
                             new Model(
                                     Meshes.load(id("models/trinkets/" + name + ".obj")),
-                                    new RenderPlushie.Part(skin(name), true),
-                                    new RenderPlushie.Part(skin(name + "_squished"), true)));
+                                    new PlushieRenderer.Part(skin(name), true),
+                                    new PlushieRenderer.Part(skin(name + "_squished"), true)));
         }
 
         @Override
@@ -96,7 +114,7 @@ public final class TrinketFiguresSpace {
         }
 
         @Override
-        public void visitParts(PoseStack poses, RenderPlushie.PartVisitor visitor) {
+        public void visitParts(PoseStack poses, PlushieRenderer.PartVisitor visitor) {
             Model built = model.get();
             for (int group = 0; group < built.mesh().groups.length; group++) {
                 visitor.accept(built.skin(), built.mesh(), group, CALM, poses);

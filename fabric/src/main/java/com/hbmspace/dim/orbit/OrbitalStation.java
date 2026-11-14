@@ -1,22 +1,53 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-FileCopyrightText: 2024-2026 George Paton
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: 2024-2026 George Paton
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) 2024-2026 George Paton. All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT: Space";
+ * - a modified version must not be named NTM NEXT: Space or presented as
+ *   the official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT: Space does not
+ * violate these additional terms, provided it is clearly distinguished from
+ * the official release and does not imply endorsement. Ports are encouraged
+ * to acknowledge NTM NEXT: Space as their upstream project and provide a
+ * link to it.
+ */
 
 package com.hbmspace.dim.orbit;
 
-import com.hbm.blocks.multiblock.MultiblockHandlerXR;
-import com.hbmspace.api.tile.IPropulsion;
-import com.hbmspace.blockentity.machine.BlockEntityOrbitalStation;
+import com.hbmspace.api.tile.PropulsionHandler;
+import com.hbmspace.blockentity.machine.OrbitalStationBlockEntity;
 import com.hbmspace.blocks.StationBlocksSpace;
 import com.hbmspace.dim.CelestialBody;
 import com.hbmspace.dim.SolarSystem.AstroMetric;
 import com.hbmspace.dim.SolarSystem;
 import com.hbmspace.dim.SolarSystemWorldSavedData;
 import com.hbmspace.dim.WorldProviderCelestial;
-import com.hbmspace.entity.missile.EntityRideableRocket.RocketState;
-import com.hbmspace.entity.missile.EntityRideableRocket;
-import com.hbmspace.items.ItemVOTVdrive.Destination;
+import com.hbmspace.entity.missile.RideableRocketEntity.RocketState;
+import com.hbmspace.entity.missile.RideableRocketEntity;
+import com.hbmspace.items.VOTVdriveItem.Destination;
+import com.hbmspace.util.SkyColumns;
 import io.netty.buffer.ByteBuf;
+import io.netty.handler.codec.DecoderException;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -64,11 +95,11 @@ public class OrbitalStation {
         ARRIVING,
     }
 
-    private @Nullable BlockEntityOrbitalStation mainPort;
-    private final LinkedHashMap<BlockPos, BlockEntityOrbitalStation> ports = new LinkedHashMap<>();
+    private @Nullable OrbitalStationBlockEntity mainPort;
+    private final LinkedHashMap<BlockPos, OrbitalStationBlockEntity> ports = new LinkedHashMap<>();
     private int portIndex = 0;
 
-    private final Set<IPropulsion> engines = new LinkedHashSet<>();
+    private final Set<PropulsionHandler> engines = new LinkedHashSet<>();
 
     public static OrbitalStation clientStation =
             new OrbitalStation(CelestialBody.getBody(Level.OVERWORLD));
@@ -141,7 +172,7 @@ public class OrbitalStation {
         boolean canTravel = true;
         errorsAt = new ArrayList<>();
 
-        for (IPropulsion engine : engines) {
+        for (PropulsionHandler engine : engines) {
             float massPortion = engine.getThrust() / totalThrust;
             if (!engine.canPerformBurn(Math.round(SHIP_MASS * massPortion), deltaV)) {
                 canTravel = false;
@@ -155,7 +186,7 @@ public class OrbitalStation {
 
     private float getTotalThrust() {
         float thrust = 0;
-        for (IPropulsion engine : engines) {
+        for (PropulsionHandler engine : engines) {
             thrust += engine.getThrust();
         }
         return thrust;
@@ -163,7 +194,7 @@ public class OrbitalStation {
 
     private int getLeaveTime() {
         int leaveTime = 20;
-        for (IPropulsion engine : engines) {
+        for (PropulsionHandler engine : engines) {
             int time = engine.startBurn();
             if (time > leaveTime) leaveTime = time;
         }
@@ -172,7 +203,7 @@ public class OrbitalStation {
 
     private int getArriveTime() {
         int arriveTime = 20;
-        for (IPropulsion engine : engines) {
+        for (PropulsionHandler engine : engines) {
             int time = engine.endBurn();
             if (time > arriveTime) arriveTime = time;
         }
@@ -209,8 +240,8 @@ public class OrbitalStation {
         if (!hasStation) return false;
         if (destination.body().getBody() != orbiting) return false;
 
-        for (BlockEntityOrbitalStation port : ports.values()) {
-            EntityRideableRocket rocket = port.getDocked();
+        for (OrbitalStationBlockEntity port : ports.values()) {
+            RideableRocketEntity rocket = port.getDocked();
 
             if (rocket == null || !rocket.isReusable()) continue;
 
@@ -225,31 +256,31 @@ public class OrbitalStation {
         return false;
     }
 
-    public static void addPropulsion(IPropulsion propulsion) {
+    public static void addPropulsion(PropulsionHandler propulsion) {
         BlockPos pos = propulsion.getBlockEntity().getBlockPos();
         getStationFromPosition(pos.getX(), pos.getZ()).engines.add(propulsion);
     }
 
-    public static void removePropulsion(IPropulsion propulsion) {
+    public static void removePropulsion(PropulsionHandler propulsion) {
         if (SolarSystemWorldSavedData.getIfLive() == null) return;
         BlockPos pos = propulsion.getBlockEntity().getBlockPos();
         getStationFromPosition(pos.getX(), pos.getZ()).engines.remove(propulsion);
     }
 
-    public void addPort(BlockEntityOrbitalStation port) {
+    public void addPort(OrbitalStationBlockEntity port) {
         ports.put(port.getBlockPos(), port);
         if (port.isCore()) mainPort = port;
     }
 
-    public void removePort(BlockEntityOrbitalStation port) {
+    public void removePort(OrbitalStationBlockEntity port) {
         ports.remove(port.getBlockPos());
     }
 
-    public @Nullable BlockEntityOrbitalStation getPort() {
+    public @Nullable OrbitalStationBlockEntity getPort() {
         if (ports.isEmpty()) return null;
 
         int index = 0;
-        for (BlockEntityOrbitalStation port : ports.values()) {
+        for (OrbitalStationBlockEntity port : ports.values()) {
             if (!port.hasDocked && !port.isReserved) {
                 portIndex = index;
                 return port;
@@ -263,7 +294,7 @@ public class OrbitalStation {
         return new ArrayList<>(ports.values()).get(portIndex);
     }
 
-    public static @Nullable BlockEntityOrbitalStation getPort(int x, int z) {
+    public static @Nullable OrbitalStationBlockEntity getPort(int x, int z) {
         return getStationFromPosition(x, z).getPort();
     }
 
@@ -310,8 +341,7 @@ public class OrbitalStation {
     private static boolean isInStation(Level level, BlockPos origin, BlockPos pos) {
         LevelChunk chunk = level.getChunkSource().getChunkNow(pos.getX() >> 4, pos.getZ() >> 4);
         if (chunk != null
-                && chunk.getSkyLightSources().getLowestSourceY(pos.getX() & 15, pos.getZ() & 15)
-                        > level.getMinY() + 1) {
+                && SkyColumns.lowestSourceY(chunk, pos.getX(), pos.getZ()) > level.getMinY() + 1) {
             return true;
         }
         return Math.abs(pos.getX() - origin.getX()) < 5 && Math.abs(pos.getZ() - origin.getZ()) < 5;
@@ -403,7 +433,11 @@ public class OrbitalStation {
         OrbitalStation station =
                 new OrbitalStation(CelestialBody.getBody(Utf8String.read(buf, Short.MAX_VALUE)));
         station.target = CelestialBody.getBody(Utf8String.read(buf, Short.MAX_VALUE));
-        station.state = StationState.values()[buf.readInt()];
+        int stateId = buf.readInt();
+        if (stateId < 0 || stateId >= StationState.values().length) {
+            throw new DecoderException("Invalid orbital station state: " + stateId);
+        }
+        station.state = StationState.values()[stateId];
         station.stateTimer = buf.readInt();
         station.maxStateTimer = buf.readInt();
         station.hasEngines = buf.readBoolean();
@@ -412,6 +446,9 @@ public class OrbitalStation {
         station.name = Utf8String.read(buf, Short.MAX_VALUE);
 
         int count = buf.readInt();
+        if (count < 0 || count > buf.readableBytes() / Long.BYTES) {
+            throw new DecoderException("Invalid orbital station error count: " + count);
+        }
         for (int i = 0; i < count; i++) {
             station.errorsAt.add(BlockPos.of(buf.readLong()));
         }
@@ -423,8 +460,7 @@ public class OrbitalStation {
         BlockPos core = new BlockPos(x, 127, z);
         if (level.getBlockState(core).is(StationBlocksSpace.ORBITAL_STATION.get())) return;
 
-        MultiblockHandlerXR.placeAssembled(
-                level, core, StationBlocksSpace.ORBITAL_STATION.get(), Direction.NORTH);
+        StationBlocksSpace.ORBITAL_STATION.get().placeAssembled(level, core, Direction.NORTH);
     }
 
     public static void addStation(int x, int z, CelestialBody body) {

@@ -1,0 +1,24 @@
+{
+  "type": "hbm:oil_bubble",
+  "biomes": [
+    "hbmspace:laythe_islands",
+    "hbmspace:laythe_ocean",
+    "hbmspace:laythe_polar",
+    "hbmspace:laythe_coast"
+  ],
+  "core": {
+    "Name": "hbmspace:ore_oil_laythe"
+  },
+  "fuzzy": false,
+  "max_size": 16,
+  "min_size": 8,
+  "min_y": 15,
+  "range_y": 25,
+  "replaceable": {
+    "block": "minecraft:stone",
+    "predicate_type": "minecraft:block_match"
+  },
+  "spawn_overrides": {},
+  "step": "raw_generation",
+  "terrain_adaptation": "none"
+}

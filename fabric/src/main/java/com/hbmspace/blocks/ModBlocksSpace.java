@@ -1,15 +1,31 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbmspace.blocks;
 
 import com.hbm.items.CreativeContents.Tab;
 import com.hbm.items.CreativeContents;
 import com.hbm.items.DescBlockItem;
-import com.hbm.lib.Library;
 import com.hbm.registration.Reg;
+import com.hbm.util.RegistryUtil;
 import com.hbmspace.HbmSpace;
-import com.hbmspace.blocks.machine.MachineMilkReformer;
+import com.hbmspace.blocks.machine.MilkReformerBlock;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.ColorRGBA;
 import net.minecraft.world.item.ItemStack;
@@ -107,24 +123,27 @@ public final class ModBlocksSpace {
                 .requiresCorrectToolForDrops();
     }
 
-    public static final Reg.Handle<MachineMilkReformer> MACHINE_MILK_REFORMER =
+    public static final Reg.Handle<MilkReformerBlock> MACHINE_MILK_REFORMER =
             HbmSpace.REG.blockItem(
                     "machine_milk_reformer",
-                    MachineMilkReformer::new,
+                    MilkReformerBlock::new,
                     () ->
                             BlockBehaviour.Properties.of()
+                                    .mapColor(MapColor.METAL)
                                     .strength(5.0F, 6.0F)
                                     .requiresCorrectToolForDrops()
                                     .noOcclusion());
 
     static {
         CreativeContents.insertAfter(
-                Tab.BLOCKS, Library.id("moon_turf"), () -> new ItemStack(MOON_ROCK.get()));
-        CreativeContents.insertAfter(
-                Tab.BLOCKS, Library.id("deco_asbestos"), () -> new ItemStack(DECO_STAINLESS.get()));
+                Tab.BLOCKS, RegistryUtil.id("moon_turf"), () -> new ItemStack(MOON_ROCK.get()));
         CreativeContents.insertAfter(
                 Tab.BLOCKS,
-                Library.id("stone_resource_bauxite"),
+                RegistryUtil.id("deco_asbestos"),
+                () -> new ItemStack(DECO_STAINLESS.get()));
+        CreativeContents.insertAfter(
+                Tab.BLOCKS,
+                RegistryUtil.id("stone_resource_bauxite"),
                 () -> new ItemStack(STONE_RESOURCE_CONGLOMERATE.get()));
         CreativeContents.insertAfter(
                 Tab.BLOCKS,
@@ -132,7 +151,7 @@ public final class ModBlocksSpace {
                 () -> new ItemStack(STONE_RESOURCE_CALCIUM.get()));
         CreativeContents.insertAfter(
                 Tab.MACHINES,
-                Library.id("machine_catalytic_reformer"),
+                RegistryUtil.id("machine_catalytic_reformer"),
                 () -> new ItemStack(MACHINE_MILK_REFORMER.get()));
     }
 

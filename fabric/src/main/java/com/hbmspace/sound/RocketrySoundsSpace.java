@@ -1,9 +1,25 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbmspace.sound;
 
-import com.hbm.registration.FabricRegistrar;
+import com.hbm.registration.Registrar;
 import com.hbm.registration.RegistryHandle;
 import com.hbmspace.HbmSpace;
 import net.minecraft.sounds.SoundEvent;
@@ -11,22 +27,22 @@ import net.minecraft.sounds.SoundEvent;
 public final class RocketrySoundsSpace {
 
     public static final RegistryHandle<SoundEvent> ROCKET_IGNITION =
-            FabricRegistrar.registerSound(HbmSpace.MOD_ID + ":entity.rocket_ignition");
+            Registrar.registerSound(HbmSpace.MOD_ID + ":entity.rocket_ignition");
     public static final RegistryHandle<SoundEvent> ROCKET_FLY_HEAVY =
-            FabricRegistrar.registerSound(HbmSpace.MOD_ID + ":entity.rocket_fly_heavy");
+            Registrar.registerSound(HbmSpace.MOD_ID + ":entity.rocket_fly_heavy");
     public static final RegistryHandle<SoundEvent> ROCKET_FLY_LIGHT =
-            FabricRegistrar.registerSound(HbmSpace.MOD_ID + ":entity.rocket_fly_light");
+            Registrar.registerSound(HbmSpace.MOD_ID + ":entity.rocket_fly_light");
     public static final RegistryHandle<SoundEvent> ROCKET_STAGE =
-            FabricRegistrar.registerSound(HbmSpace.MOD_ID + ":entity.rocket_stage");
+            Registrar.registerSound(HbmSpace.MOD_ID + ":entity.rocket_stage");
     public static final RegistryHandle<SoundEvent> HATCH_OPEN =
-            FabricRegistrar.registerSound(HbmSpace.MOD_ID + ":block.hatch_open");
+            Registrar.registerSound(HbmSpace.MOD_ID + ":block.hatch_open");
     public static final RegistryHandle<SoundEvent> HATCH_IMPACT =
-            FabricRegistrar.registerSound(HbmSpace.MOD_ID + ":block.hatch_impact");
+            Registrar.registerSound(HbmSpace.MOD_ID + ":block.hatch_impact");
 
     public static final RegistryHandle<SoundEvent> ITEM_UNPACK_REMOVE =
-            FabricRegistrar.registerSound(HbmSpace.MOD_ID + ":item.unpack_remove");
+            Registrar.registerSound(HbmSpace.MOD_ID + ":item.unpack_remove");
     public static final RegistryHandle<SoundEvent> ITEM_UNPACK_INSERT =
-            FabricRegistrar.registerSound(HbmSpace.MOD_ID + ":item.unpack_insert");
+            Registrar.registerSound(HbmSpace.MOD_ID + ":item.unpack_insert");
 
     private RocketrySoundsSpace() {}
 }

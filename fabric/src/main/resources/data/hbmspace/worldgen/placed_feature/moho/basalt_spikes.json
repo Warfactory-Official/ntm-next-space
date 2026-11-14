@@ -1,0 +1,12 @@
+{
+  "feature": {
+    "type": "hbmspace:basalt_spikes",
+    "config": {
+      "biomes": "hbmspace:moho_basalt_deltas",
+      "block": {
+        "Name": "hbm:basalt"
+      }
+    }
+  },
+  "placement": []
+}

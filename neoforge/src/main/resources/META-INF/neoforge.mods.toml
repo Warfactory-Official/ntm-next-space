@@ -5,13 +5,13 @@ license = "LGPL-3.0-only"
 [[mods]]
 modId = "hbmspace"
 version = "${version}"
-displayName = "NTM: Space"
+displayName = "NTM NEXT: Space"
 iconFile = "hbmspace.png"
 iconBlur = true
 bannerFile = "hbmspace.png"
-description = "NTM: Space, ported to Minecraft 26.2 for Fabric and NeoForge as an NTM addon."
+description = "NTM: Space, ported to Minecraft ${minecraft_version} for Fabric and NeoForge as an NTM addon."
 authors = "JamesH_2 and Mellow, movblock"
-credits = "JamesH_2 and Mellow: creating NTM: Space. movblock: porting to 26.2."
+credits = "JamesH_2 and Mellow: creating NTM: Space. movblock: porting to 26.2. Mr. Morgan: raw ore sprites and nickel, zinc, australium, niobium and lanthanium ore overlays."
 displayTest = "IGNORE_ALL_VERSION"
 
 [[mixins]]
@@ -27,7 +27,7 @@ side = "BOTH"
 [[dependencies.hbmspace]]
 modId = "minecraft"
 type = "required"
-versionRange = "[26.2,26.3)"
+versionRange = "[${minecraft_version},${minecraft_next_version})"
 ordering = "NONE"
 side = "BOTH"
 

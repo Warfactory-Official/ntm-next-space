@@ -1,23 +1,53 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-FileCopyrightText: 2021-2022 HbmMods (The Bobcat)
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: 2021-2022 HbmMods (The Bobcat)
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) 2021-2022 HbmMods (The Bobcat). All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT: Space";
+ * - a modified version must not be named NTM NEXT: Space or presented as
+ *   the official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT: Space does not
+ * violate these additional terms, provided it is clearly distinguished from
+ * the official release and does not imply endorsement. Ports are encouraged
+ * to acknowledge NTM NEXT: Space as their upstream project and provide a
+ * link to it.
+ */
 
 package com.hbmspace.entity.mob.siege;
 
-import com.hbm.inventory.material.MaterialShapes;
-import com.hbm.inventory.material.Mats;
-import com.hbm.inventory.material.NTMMaterial;
+import com.hbm.inventory.material.Material;
+import com.hbm.inventory.material.MaterialShape;
+import com.hbm.inventory.material.Materials;
 import com.hbm.items.MaterialShapeRoster;
 import com.hbm.items.ModItems;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Supplier;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
 
 public final class SiegeTier {
 
+    private static final SiegeTier[] BY_ID = new SiegeTier[100];
     private static final List<SiegeTier> REGISTRY = new ArrayList<>();
     public static final List<SiegeTier> TIERS = Collections.unmodifiableList(REGISTRY);
 
@@ -80,7 +110,7 @@ public final class SiegeTier {
     public static final SiegeTier SCHRAB =
             new SiegeTier(250, "schrab")
                     .drop(steel(), 32)
-                    .drop(ingot(Mats.MAT_COBALT), 2)
+                    .drop(ingot(Materials.COBALT), 2)
                     .drop(ModItems.CIRCUIT_ADVANCED, 3)
                     .dr(0.7F)
                     .dt(10F)
@@ -92,7 +122,7 @@ public final class SiegeTier {
                     .laser(0.1F, 2F, true);
     public static final SiegeTier DNT =
             new SiegeTier(500, "dnt")
-                    .drop(ingot(Mats.MAT_STAR), 1)
+                    .drop(ingot(Materials.STARMETAL), 1)
                     .dr(0.9F)
                     .dt(20F)
                     .nf()
@@ -122,24 +152,24 @@ public final class SiegeTier {
         this.health = baseHealth;
         this.name = name;
         REGISTRY.add(this);
+        BY_ID[id] = this;
     }
 
     public static SiegeTier byId(int id) {
-        return id >= 0 && id < REGISTRY.size() ? REGISTRY.get(id) : CLAY;
+        var tier = BY_ID[id];
+        return tier != null ? tier : CLAY;
     }
 
-    public List<ItemStack> drops() {
-        List<ItemStack> out = new ArrayList<>(drops.size());
-        for (Drop drop : drops) out.add(new ItemStack(drop.item().get(), drop.count()));
-        return out;
+    public List<Drop> drops() {
+        return Collections.unmodifiableList(drops);
     }
 
     private static Supplier<ItemLike> steel() {
-        return ingot(Mats.MAT_STEEL);
+        return ingot(Materials.STEEL);
     }
 
-    private static Supplier<ItemLike> ingot(NTMMaterial material) {
-        return () -> MaterialShapeRoster.require(MaterialShapes.INGOT, material);
+    private static Supplier<ItemLike> ingot(Material material) {
+        return () -> MaterialShapeRoster.require(MaterialShape.INGOT, material);
     }
 
     private SiegeTier drop(Supplier<? extends ItemLike> item, int count) {
@@ -189,5 +219,5 @@ public final class SiegeTier {
         return this;
     }
 
-    private record Drop(Supplier<? extends ItemLike> item, int count) {}
+    public record Drop(Supplier<? extends ItemLike> item, int count) {}
 }

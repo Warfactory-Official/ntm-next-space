@@ -1,6 +1,36 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-FileCopyrightText: 2024 George Paton
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: 2024 George Paton
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) 2024 George Paton. All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT: Space";
+ * - a modified version must not be named NTM NEXT: Space or presented as
+ *   the official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT: Space does not
+ * violate these additional terms, provided it is clearly distinguished from
+ * the official release and does not imply endorsement. Ports are encouraged
+ * to acknowledge NTM NEXT: Space as their upstream project and provide a
+ * link to it.
+ */
 
 package com.hbmspace.items.armor;
 
@@ -9,8 +39,9 @@ import com.hbm.handler.ArmorUtil;
 import com.hbm.items.ModItems;
 import com.hbm.items.armor.ModArmorItem.Suit;
 import com.hbm.items.armor.ModArmorItem;
+import com.hbm.packet.ClientEventConstants;
 import com.hbm.packet.PacketWire;
-import com.hbm.packet.toclient.PlayerInformPayload;
+import com.hbm.packet.layout.PlayerInformLayout;
 import com.hbm.sound.EntitySounds;
 import com.hbmspace.dim.trait.CBT_Atmosphere;
 import com.hbmspace.handler.atmosphere.ChunkAtmosphereManager;
@@ -67,7 +98,7 @@ public final class ArmorUtilSpace {
         }
 
         boolean isInWater = entity.getAirSupply() < entity.getMaxAirSupply();
-        ItemModOxy oxy = (ItemModOxy) tank.getItem();
+        ModOxyItem oxy = (ModOxyItem) tank.getItem();
         int fuel = oxy.getFuel(tank);
         boolean canBreatheTank = oxy.attemptBreathing(entity, tank, atmosphere, isInWater);
         if (oxy.getFuel(tank) != fuel) ArmorModHandler.applyMod(helmet, tank);
@@ -87,7 +118,7 @@ public final class ArmorUtilSpace {
         ItemStack helmet = player.getItemBySlot(EquipmentSlot.HEAD);
         if (ArmorModHandler.hasMods(helmet)) {
             ItemStack tankMod = ArmorModHandler.pryMod(helmet, ArmorModHandler.PLATE_ONLY);
-            if (!(tankMod.getItem() instanceof ItemModOxy)) return ItemStack.EMPTY;
+            if (!(tankMod.getItem() instanceof ModOxyItem)) return ItemStack.EMPTY;
 
             return tankMod;
         }
@@ -124,11 +155,9 @@ public final class ArmorUtilSpace {
 
                 if (stack.isEmpty()) continue;
 
-                if (rand.nextInt(2) == 0) {
-                    stack.setDamageValue(stack.getDamageValue() + 1);
-                }
+                if (rand.nextInt(2) == 0) ArmorUtil.damageSuit(player, slot, 1);
 
-                if (stack.getDamageValue() >= stack.getMaxDamage()
+                if (stack.isEmpty()
                         || !(stack.getItem() instanceof ModArmorItem armor)
                         || !armor.isEnabled(stack)) {
                     player.setItemSlot(slot, ItemStack.EMPTY);
@@ -146,10 +175,10 @@ public final class ArmorUtilSpace {
 
             if (isSealed && entity instanceof ServerPlayer serverPlayer) {
                 PacketWire.sendTo(
-                        new PlayerInformPayload(
+                        PlayerInformLayout.encode(
                                 Component.translatable("info.corrosion")
                                         .withStyle(ChatFormatting.RED),
-                                PlayerInformPayload.ID_GAS_HAZARD,
+                                ClientEventConstants.PLAYER_INFORM_ID_GAS_HAZARD,
                                 3_000),
                         serverPlayer);
             }

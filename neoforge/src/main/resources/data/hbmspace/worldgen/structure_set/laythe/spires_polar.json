@@ -1,0 +1,13 @@
+{
+  "placement": {
+    "type": "hbmspace:chunk_odds",
+    "frequency": 1.0,
+    "salt": 2110865774
+  },
+  "structures": [
+    {
+      "structure": "hbmspace:laythe/spires_polar",
+      "weight": 1
+    }
+  ]
+}

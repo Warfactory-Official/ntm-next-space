@@ -1,18 +1,35 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbmspace.inventory.material;
 
-import com.hbm.inventory.material.MaterialShapes;
-import com.hbm.inventory.material.Mats;
-import com.hbm.inventory.material.NTMMaterial;
+import com.hbm.inventory.material.Material;
+import com.hbm.inventory.material.MaterialRegistry;
+import com.hbm.inventory.material.MaterialShape;
+import com.hbm.inventory.material.Materials;
 import com.hbm.items.CreativeContents.Tab;
 import com.hbm.items.CreativeContents;
 import com.hbm.items.MaterialShapeRoster;
 import com.hbm.items.special.Autogen;
 import com.hbm.items.special.MaterialShapeItem;
-import com.hbm.lib.Library;
 import com.hbm.registration.RegistryHandle;
+import com.hbm.util.RegistryUtil;
 import com.hbmspace.HbmSpace;
 import java.util.function.Supplier;
 import net.minecraft.resources.Identifier;
@@ -20,17 +37,13 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 
-import static com.hbm.inventory.material.MaterialShapes.*;
-import static com.hbm.inventory.material.Mats.MAT_LANTHANIUM;
-import static com.hbm.inventory.material.Mats.MAT_MINGRADE;
-import static com.hbm.inventory.material.Mats.MAT_PVC;
-import static com.hbm.inventory.material.Mats.MAT_RUBBER;
+import static com.hbm.inventory.material.MaterialShape.*;
 import static com.hbmspace.inventory.material.MatsSpace.*;
 
 public final class MaterialShapeItemsSpace {
     static {
         named("ingot_titanium", INGOT, MAT_NICKEL);
-        named("ingot_red_copper", BILLET, MAT_MINGRADE);
+        named("ingot_red_copper", BILLET, Materials.MINGRADE);
         named("ingot_red_copper", INGOT, MAT_ZINC);
         named("ingot_tungsten", INGOT, MAT_GALLIUM);
         named("ingot_tungsten", INGOT, MAT_GAAS, Rarity.RARE);
@@ -43,24 +56,24 @@ public final class MaterialShapeItemsSpace {
         named("billet_gh336", BILLET, MAT_GAAS);
         named("powder_titanium", DUST, MAT_NICKEL);
         named("powder_copper", DUST, MAT_ZINC);
-        named("powder_copper", DUSTTINY, MAT_GALLIUM);
+        named("powder_copper", TINY_DUST, MAT_GALLIUM);
         named("powder_copper", DUST, MAT_GALLIUM);
-        named("powder_bakelite", DUST, MAT_RUBBER);
-        named("powder_bakelite", DUST, MAT_PVC);
+        named("powder_bakelite", DUST, Materials.RUBBER);
+        named("powder_bakelite", DUST, Materials.PVC);
         named("nugget_zirconium", NUGGET, MAT_NICKEL);
         named("nugget_zirconium", NUGGET, MAT_GAAS);
         named("nugget_zirconium", NUGGET, MAT_ZINC);
         named("nugget_zirconium", NUGGET, MAT_GALLIUM);
         named("nugget_osmiridium", NUGGET, MAT_HAFNIUM);
-        named("nugget_osmiridium", NUGGET, MAT_LANTHANIUM);
+        named("nugget_osmiridium", NUGGET, Materials.LANTHANUM);
         named("plate_titanium", PLATE, MAT_NICKEL);
         named("plate_steel", PLATE, MAT_STAINLESS);
 
         Autogen.register(HbmSpace.MOD_ID);
-        for (MaterialShapes shape : MaterialShapes.allShapes) {
-            if (shape.autogenItemPrefix == null) continue;
+        for (MaterialShape shape : MaterialShape.ALL) {
+            if (shape.itemPrefix() == null) continue;
             Identifier anchor = null;
-            for (NTMMaterial mat : Mats.orderedList) {
+            for (Material mat : MaterialRegistry.ordered()) {
                 RegistryHandle<MaterialShapeItem> handle = Autogen.handle(shape, mat);
                 if (handle == null) continue;
                 if (!handle.id().getNamespace().equals(HbmSpace.MOD_ID)) {
@@ -78,19 +91,19 @@ public final class MaterialShapeItemsSpace {
 
     private MaterialShapeItemsSpace() {}
 
-    private static void named(String anchor, MaterialShapes shape, NTMMaterial mat) {
+    private static void named(String anchor, MaterialShape shape, Material mat) {
         named(anchor, shape, mat, Item.Properties::new);
     }
 
-    private static void named(String anchor, MaterialShapes shape, NTMMaterial mat, Rarity rarity) {
+    private static void named(String anchor, MaterialShape shape, Material mat, Rarity rarity) {
         named(anchor, shape, mat, () -> new Item.Properties().rarity(rarity));
     }
 
     private static void named(
-            String anchor, MaterialShapes shape, NTMMaterial mat, Supplier<Item.Properties> props) {
+            String anchor, MaterialShape shape, Material mat, Supplier<Item.Properties> props) {
         RegistryHandle<MaterialShapeItem> handle =
                 MaterialShapeRoster.registerNamed(HbmSpace.MOD_ID, shape, mat, props);
         CreativeContents.insertAfter(
-                Tab.PARTS, Library.id(anchor), () -> new ItemStack(handle.get()));
+                Tab.PARTS, RegistryUtil.id(anchor), () -> new ItemStack(handle.get()));
     }
 }

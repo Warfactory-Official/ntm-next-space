@@ -1,16 +1,31 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbmspace.client.render.flywheel;
 
-import com.hbm.blocks.multiblock.BlockMultiblockCore;
-import com.hbm.client.render.flywheel.HbmDynamicBlockEntityVisual;
+import com.hbm.blocks.multiblock.MultiblockCoreBlock;
 import com.hbm.client.render.flywheel.MeshPart;
 import com.hbm.client.render.flywheel.PourVisual;
 import com.hbm.render.loader.HFRWavefrontObject;
-import com.hbmspace.blockentity.machine.BlockEntityMachineMagma.PourStream;
-import com.hbmspace.blockentity.machine.BlockEntityMachineMagma;
-import com.hbmspace.client.render.RenderMagma;
+import com.hbmspace.blockentity.machine.MagmaBlockEntity.PourStream;
+import com.hbmspace.blockentity.machine.MagmaBlockEntity;
+import com.hbmspace.client.render.MagmaRenderer;
 import dev.engine_room.flywheel.api.instance.Instance;
 import dev.engine_room.flywheel.api.material.CardinalLightingMode;
 import dev.engine_room.flywheel.api.material.Material;
@@ -23,6 +38,8 @@ import dev.engine_room.flywheel.lib.material.CutoutShaders;
 import dev.engine_room.flywheel.lib.material.LightShaders;
 import dev.engine_room.flywheel.lib.material.Materials;
 import dev.engine_room.flywheel.lib.material.SimpleMaterial;
+import dev.engine_room.flywheel.lib.visual.AbstractBoundedBlockEntityVisual;
+import dev.engine_room.flywheel.lib.visual.CulledDynamicVisual;
 import java.util.ArrayList;
 import java.util.function.Consumer;
 import net.minecraft.client.Minecraft;
@@ -35,8 +52,8 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.AABB;
 import org.joml.Matrix4f;
 
-public final class MagmaVisual extends HbmDynamicBlockEntityVisual<BlockEntityMachineMagma>
-        implements ShaderLightVisual {
+public final class MagmaVisual extends AbstractBoundedBlockEntityVisual<MagmaBlockEntity>
+        implements ShaderLightVisual, CulledDynamicVisual {
 
     private static final MeshPart LAVA =
             MeshPart.face(Direction.UP, MeshPart.litCutout(TextureAtlas.LOCATION_BLOCKS));
@@ -52,19 +69,20 @@ public final class MagmaVisual extends HbmDynamicBlockEntityVisual<BlockEntityMa
     private final AABB extent;
     private float lastRotation = Float.NaN;
     private float lastLavaHeight = Float.NaN;
+    private boolean initialized;
 
     public MagmaVisual(
             VisualizationContext context,
-            BlockEntityMachineMagma blockEntity,
+            MagmaBlockEntity blockEntity,
             float partialTick,
             MeshPart drillHeadMesh,
             MeshPart bladesMesh) {
         super(context, blockEntity, partialTick);
-        facing = BlockMultiblockCore.coreFacing(blockState);
+        facing = MultiblockCoreBlock.coreFacing(blockState);
         base.translation(0.5F, 0F, 0.5F)
-                .rotateY(RenderMagma.yaw(facing) * Mth.DEG_TO_RAD)
+                .rotateY(MagmaRenderer.yaw(facing) * Mth.DEG_TO_RAD)
                 .translate(0F, -3F, 0F);
-        extent = RenderMagma.extent(pos);
+        extent = MagmaRenderer.extent(pos);
         drillHead =
                 instancerProvider()
                         .instancer(InstanceTypes.TRANSFORMED, drillHeadMesh.model())
@@ -73,13 +91,15 @@ public final class MagmaVisual extends HbmDynamicBlockEntityVisual<BlockEntityMa
                 instancerProvider()
                         .instancer(InstanceTypes.TRANSFORMED, bladesMesh.model())
                         .createInstance();
+        drillHead.setVisible(false);
+        blades.setVisible(false);
         for (int i = 0; i < lava.length; i++) {
             lava[i] =
                     instancerProvider()
                             .instancer(AffineUvTransformedInstance.TYPE, LAVA.model())
                             .createInstance();
+            lava[i].setVisible(false);
         }
-        animate(partialTick);
     }
 
     public static MeshPart meshOf(HFRWavefrontObject mesh, String group, Identifier texture) {
@@ -96,8 +116,14 @@ public final class MagmaVisual extends HbmDynamicBlockEntityVisual<BlockEntityMa
     }
 
     @Override
-    protected void frame(Context context) {
+    public boolean doDistanceLimitThisFrame(Context context) {
+        return initialized && super.doDistanceLimitThisFrame(context);
+    }
+
+    @Override
+    public void frame(Context context) {
         animate(context.partialTick());
+        initialized = true;
     }
 
     private void animate(float partialTick) {
@@ -156,9 +182,9 @@ public final class MagmaVisual extends HbmDynamicBlockEntityVisual<BlockEntityMa
                             age,
                             0.625F,
                             0.625F,
-                            (float) (0.5D + facing.getStepX() * BlockEntityMachineMagma.SPOUT),
+                            (float) (0.5D + facing.getStepX() * MagmaBlockEntity.SPOUT),
                             1F,
-                            (float) (0.5D + facing.getStepZ() * BlockEntityMachineMagma.SPOUT));
+                            (float) (0.5D + facing.getStepZ() * MagmaBlockEntity.SPOUT));
         }
         while (pours.size() > used) pours.removeLast().delete();
     }
@@ -166,6 +192,7 @@ public final class MagmaVisual extends HbmDynamicBlockEntityVisual<BlockEntityMa
     private void place(TransformedInstance instance, Matrix4f partPose) {
         pose.translation(visualPos.getX(), visualPos.getY(), visualPos.getZ()).mul(partPose);
         instance.setTransform(pose).light(0).setChanged();
+        instance.setVisible(true);
     }
 
     @Override

@@ -1,9 +1,25 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbmspace.mixin;
 
-import com.hbm.blockentity.machine.BlockEntityStorageDrum;
+import com.hbm.blockentity.machine.StorageDrumBlockEntity;
 import com.hbmspace.hazard.NeutronExposureSpace;
 import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
@@ -12,7 +28,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(BlockEntityStorageDrum.class)
+@Mixin(StorageDrumBlockEntity.class)
 public abstract class MixinBlockEntityStorageDrum {
     @Redirect(
             method = "tickServer",
@@ -28,7 +44,7 @@ public abstract class MixinBlockEntityStorageDrum {
 
     @Inject(method = "tickServer", at = @At("TAIL"))
     private void hbmspace$sourceDecay(CallbackInfo ci) {
-        BlockEntityStorageDrum drum = (BlockEntityStorageDrum) (Object) this;
+        StorageDrumBlockEntity drum = (StorageDrumBlockEntity) (Object) this;
         for (int slot = 0; slot < drum.getContainerSize(); slot++) {
             ItemStack stack = drum.getItem(slot);
             float before = NeutronExposureSpace.activation(stack);

@@ -1,5 +1,21 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbmspace.dim.eve;
 
@@ -7,17 +23,13 @@ import com.hbm.inventory.fluid.FluidStackNTM;
 import com.hbmspace.blocks.TerrainBlocksSpace;
 import com.hbmspace.dim.CelestialBody;
 import com.hbmspace.dim.SpaceDimensions;
-import com.hbmspace.dim.WorldChunkManagerCelestial.BiomeGenLayers;
 import com.hbmspace.dim.WorldProviderCelestial;
-import com.hbmspace.dim.eve.genlayer.GenLayerEveBiomes;
-import com.hbmspace.dim.eve.genlayer.GenLayerEveRiverMix;
-import com.hbmspace.dim.legacy.layer.GenLayer;
-import com.hbmspace.dim.legacy.layer.GenLayerRiver;
-import com.hbmspace.dim.legacy.layer.GenLayerSmooth;
-import com.hbmspace.dim.legacy.layer.GenLayerVoronoiZoom;
-import com.hbmspace.dim.legacy.layer.GenLayerZoom;
+import com.hbmspace.dim.eve.biome.BiomeGenBaseEve;
 import com.hbmspace.inventory.fluid.FluidsSpace;
 import com.hbmspace.render.util.AtmosphereRenderUtil;
+import com.hbmspace.world.gen.layer.BiomeLayer;
+import com.hbmspace.world.gen.layer.BiomeLayers;
+import com.hbmspace.world.gen.layer.CelestialLayers;
 import net.minecraft.util.ARGB;
 import net.minecraft.world.attribute.EnvironmentAttributeSystem;
 import net.minecraft.world.attribute.EnvironmentAttributes;
@@ -67,24 +79,28 @@ public class WorldProviderEve extends WorldProviderCelestial {
         return Math.min(value + flash * 0.7F, 1.0F);
     }
 
-    public static BiomeGenLayers createBiomeGenerators(long seed) {
-        GenLayer biomes = new GenLayerEveBiomes(seed);
+    public static CelestialLayers.Stack layers(long seed) {
+        int ocean = BiomeGenBaseEve.eveOcean.biomeID;
+        BiomeLayer biomes =
+                BiomeLayers.pick(
+                        seed,
+                        0L,
+                        20,
+                        new int[] {BiomeGenBaseEve.eveSeismicPlains.biomeID},
+                        new int[] {
+                            BiomeGenBaseEve.evePlains.biomeID,
+                            ocean,
+                            BiomeGenBaseEve.eveMountains.biomeID
+                        });
 
-        biomes = new GenLayerZoom(1000L, biomes);
-        biomes = new GenLayerZoom(1001L, biomes);
-        biomes = new GenLayerZoom(1002L, biomes);
-        biomes = new GenLayerZoom(1003L, biomes);
-        biomes = new GenLayerZoom(1004L, biomes);
-        biomes = new GenLayerZoom(1005L, biomes);
+        for (long salt = 1000L; salt <= 1005L; salt++)
+            biomes = BiomeLayers.zoom(seed, salt, biomes);
 
-        GenLayer riverZoom = new GenLayerZoom(1000L, biomes);
-        GenLayer river = new GenLayerRiver(1001L, riverZoom);
-        GenLayer riverSmooth = new GenLayerSmooth(1000L, river);
+        BiomeLayer river = BiomeLayers.river(BiomeLayers.zoom(seed, 1000L, biomes));
+        river = BiomeLayers.smooth(seed, 1000L, river);
+        BiomeLayer smoothed = BiomeLayers.smooth(seed, 1000L, biomes);
 
-        GenLayer biomeSmooth = new GenLayerSmooth(1000L, biomes);
-        GenLayer riverMix = new GenLayerEveRiverMix(100L, biomeSmooth, riverSmooth);
-        GenLayer voronoiZoom = new GenLayerVoronoiZoom(10L, riverMix);
-
-        return new BiomeGenLayers(riverMix, voronoiZoom, seed);
+        return new CelestialLayers.Stack(
+                BiomeLayers.riverMix(smoothed, river, BiomeGenBaseEve.eveRiver.biomeID, ocean));
     }
 }

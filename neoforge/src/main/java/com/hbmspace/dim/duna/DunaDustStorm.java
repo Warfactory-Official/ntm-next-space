@@ -1,11 +1,43 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: 2024-2025 George Paton
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) 2024-2025 George Paton. All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT: Space";
+ * - a modified version must not be named NTM NEXT: Space or presented as
+ *   the official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT: Space does not
+ * violate these additional terms, provided it is clearly distinguished from
+ * the official release and does not imply endorsement. Ports are encouraged
+ * to acknowledge NTM NEXT: Space as their upstream project and provide a
+ * link to it.
+ */
 
 package com.hbmspace.dim.duna;
 
 import com.hbm.packet.PacketWire;
 import com.hbmspace.HbmSpace;
 import com.hbmspace.dim.SpaceDimensions;
+import com.hbmspace.packet.layout.SpaceDunaStorm;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.resources.Identifier;
@@ -51,14 +83,18 @@ public final class DunaDustStorm extends SavedData {
         return level.getDataStorage().computeIfAbsent(TYPE);
     }
 
+    public static void acceptSync(float intensity) {
+        clientIntensity = intensity;
+    }
+
     public static void sync(ServerPlayer player, ServerLevel level) {
         if (level.dimension() == SpaceDimensions.DUNA) {
-            PacketWire.sendTo(new DunaStormSyncPayload(get(level).intensity), player);
+            PacketWire.sendTo(SpaceDunaStorm.encode(get(level).intensity), player);
         }
     }
 
     static void broadcast(ServerLevel duna) {
-        PacketWire.sendToDimension(new DunaStormSyncPayload(get(duna).intensity), duna);
+        PacketWire.sendToDimension(SpaceDunaStorm.encode(get(duna).intensity), duna);
     }
 
     public boolean darkensDay() {

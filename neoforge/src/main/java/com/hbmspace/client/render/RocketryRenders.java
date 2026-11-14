@@ -1,22 +1,52 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-FileCopyrightText: 2024 George Paton
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: 2024 George Paton
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) 2024 George Paton. All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT: Space";
+ * - a modified version must not be named NTM NEXT: Space or presented as
+ *   the official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT: Space does not
+ * violate these additional terms, provided it is clearly distinguished from
+ * the official release and does not imply endorsement. Ports are encouraged
+ * to acknowledge NTM NEXT: Space as their upstream project and provide a
+ * link to it.
+ */
 
 package com.hbmspace.client.render;
 
 import com.google.common.base.Suppliers;
-import com.hbm.blocks.multiblock.BlockMultiblockCore;
+import com.hbm.blocks.multiblock.MultiblockCoreBlock;
 import com.hbm.client.ClientRegistry;
 import com.hbm.client.model.Meshes;
 import com.hbm.client.render.flywheel.MeshPart;
 import com.hbm.render.loader.HFRWavefrontObject;
 import com.hbm.util.Facing;
 import com.hbmspace.HbmSpace;
-import com.hbmspace.blockentity.bomb.BlockEntityCombatDropPod;
-import com.hbmspace.blockentity.bomb.BlockEntityLaunchPadRocket;
-import com.hbmspace.blockentity.machine.BlockEntityMachineDriveProcessor;
-import com.hbmspace.blockentity.machine.BlockEntityMachineRocketAssembly;
-import com.hbmspace.blockentity.machine.BlockEntityMachineStardar;
+import com.hbmspace.blockentity.bomb.CombatDropPodBlockEntity;
+import com.hbmspace.blockentity.bomb.LaunchPadRocketBlockEntity;
+import com.hbmspace.blockentity.machine.DriveProcessorBlockEntity;
+import com.hbmspace.blockentity.machine.RocketAssemblyBlockEntity;
+import com.hbmspace.blockentity.machine.StardarBlockEntity;
 import com.hbmspace.blocks.RocketryBlocksSpace;
 import com.hbmspace.client.render.flywheel.PosedPartsVisual;
 import com.hbmspace.client.render.flywheel.RocketHostVisual;
@@ -37,6 +67,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.phys.AABB;
 import org.joml.Matrix4f;
+import org.joml.Quaternionfc;
 import org.jspecify.annotations.Nullable;
 
 public final class RocketryRenders {
@@ -50,13 +81,13 @@ public final class RocketryRenders {
 
     public record PadSnapshot(Direction facing, int tower, @Nullable RocketStruct rocket) {}
 
-    public static final RocketHost<BlockEntityLaunchPadRocket, PadSnapshot> PAD =
+    public static final RocketHost<LaunchPadRocketBlockEntity, PadSnapshot> PAD =
             new RocketHost<>() {
                 @Override
-                public PadSnapshot snapshot(BlockEntityLaunchPadRocket pad) {
+                public PadSnapshot snapshot(LaunchPadRocketBlockEntity pad) {
                     RocketStruct rocket = pad.rocket;
                     return new PadSnapshot(
-                            pad.getBlockState().getValue(BlockMultiblockCore.FACING),
+                            pad.getBlockState().getValue(MultiblockCoreBlock.FACING),
                             pad.towerHeight(),
                             rocket == null ? null : rocket.copy());
                 }
@@ -66,7 +97,8 @@ public final class RocketryRenders {
                         PadSnapshot pad, RocketPronter pronter, PoseStack pose, PieceSink sink) {
                     pose.pushPose();
                     pose.translate(0.5F, 0F, 0.5F);
-                    pose.mulPose(Axis.YP.rotationDegrees(Facing.yaw(pad.facing(), 90)));
+                    pose.mulPose(
+                            (Quaternionfc) Axis.YP.rotationDegrees(Facing.yaw(pad.facing(), 90)));
 
                     if (pad.tower() >= 8) {
                         HFRWavefrontObject mesh = pronter.machine(ROCKET_PAD, false);
@@ -120,10 +152,10 @@ public final class RocketryRenders {
 
     public record VabSnapshot(RocketStruct rocket) {}
 
-    public static final RocketHost<BlockEntityMachineRocketAssembly, VabSnapshot> VAB =
+    public static final RocketHost<RocketAssemblyBlockEntity, VabSnapshot> VAB =
             new RocketHost<>() {
                 @Override
-                public VabSnapshot snapshot(BlockEntityMachineRocketAssembly vab) {
+                public VabSnapshot snapshot(RocketAssemblyBlockEntity vab) {
                     return new VabSnapshot(vab.rocket.copy());
                 }
 
@@ -201,10 +233,10 @@ public final class RocketryRenders {
         private static final HFRWavefrontObject DRIVE_PROCESSOR_MESH =
                 Meshes.load(space("models/machines/drive_processor.obj"));
 
-        private static final PosedParts<BlockEntityMachineDriveProcessor> DRIVE_PROCESSOR =
+        private static final PosedParts<DriveProcessorBlockEntity> DRIVE_PROCESSOR =
                 new PosedParts<>(
                         List.of(
-                                new PosedParts.Part<BlockEntityMachineDriveProcessor>(
+                                new PosedParts.Part<DriveProcessorBlockEntity>(
                                         DRIVE_PROCESSOR_MESH,
                                         "Drive",
                                         space("textures/block/models/machines/drive_processor.png"),
@@ -215,7 +247,7 @@ public final class RocketryRenders {
                                                             Facing.yaw(
                                                                             be.getBlockState()
                                                                                     .getValue(
-                                                                                            BlockMultiblockCore
+                                                                                            MultiblockCoreBlock
                                                                                                     .FACING),
                                                                             90)
                                                                     * Mth.DEG_TO_RAD);
@@ -232,10 +264,10 @@ public final class RocketryRenders {
         private static final float STARDAR_REACH =
                 reach(Objects.requireNonNull(STARDAR_MESH.boundsOfParts("rotation", "pitch")));
 
-        private static final PosedParts<BlockEntityMachineStardar> STARDAR_PARTS =
+        private static final PosedParts<StardarBlockEntity> STARDAR_PARTS =
                 new PosedParts<>(
                         List.of(
-                                new PosedParts.Part<BlockEntityMachineStardar>(
+                                new PosedParts.Part<StardarBlockEntity>(
                                         STARDAR_MESH,
                                         "rotation",
                                         STARDAR_TEX,
@@ -244,7 +276,7 @@ public final class RocketryRenders {
                                             dish(be, pt, out);
                                             return true;
                                         }),
-                                new PosedParts.Part<BlockEntityMachineStardar>(
+                                new PosedParts.Part<StardarBlockEntity>(
                                         Meshes.flatShaded(Meshes.load(STARDAR)),
                                         "pitch",
                                         STARDAR_TEX,
@@ -265,17 +297,17 @@ public final class RocketryRenders {
                         Parts::stardarBox);
 
         private static final HFRWavefrontObject COMBAT_POD_MESH =
-                Meshes.load(RenderCombatDropPod.MESH);
+                Meshes.load(CombatDropPodRenderer.MESH);
 
-        private static final PosedParts<BlockEntityCombatDropPod> COMBAT_POD =
+        private static final PosedParts<CombatDropPodBlockEntity> COMBAT_POD =
                 new PosedParts<>(
                         combatPod(), RocketryRenders::combatPodBox, RocketryRenders::combatPodBox);
 
-        private static List<PosedParts.Part<BlockEntityCombatDropPod>> combatPod() {
-            List<PosedParts.Part<BlockEntityCombatDropPod>> parts = new ArrayList<>();
-            for (int skin = 0; skin < RenderCombatDropPod.skinCount(); skin++) {
+        private static List<PosedParts.Part<CombatDropPodBlockEntity>> combatPod() {
+            List<PosedParts.Part<CombatDropPodBlockEntity>> parts = new ArrayList<>();
+            for (int skin = 0; skin < CombatDropPodRenderer.skinCount(); skin++) {
                 int shown = skin;
-                Identifier texture = RenderCombatDropPod.skinTexture(skin);
+                Identifier texture = CombatDropPodRenderer.skinTexture(skin);
                 parts.add(
                         new PosedParts.Part<>(
                                 COMBAT_POD_MESH,
@@ -290,7 +322,7 @@ public final class RocketryRenders {
                                                     (float) (open * 0.013),
                                                     (float) (open * 0.01))
                                             .rotateX((float) open * Mth.DEG_TO_RAD);
-                                    return RenderCombatDropPod.skinIndex(be.color) == shown;
+                                    return CombatDropPodRenderer.skinIndex(be.color) == shown;
                                 }));
                 parts.add(
                         new PosedParts.Part<>(
@@ -307,7 +339,7 @@ public final class RocketryRenders {
                                                     (float) (-open2 * 0.013),
                                                     (float) (-open * 0.01))
                                             .rotateX((float) open2 * Mth.DEG_TO_RAD);
-                                    return RenderCombatDropPod.skinIndex(be.color) == shown;
+                                    return CombatDropPodRenderer.skinIndex(be.color) == shown;
                                 }));
                 parts.add(
                         new PosedParts.Part<>(
@@ -317,13 +349,13 @@ public final class RocketryRenders {
                                 true,
                                 (be, pt, out) -> {
                                     pod(be, out);
-                                    return RenderCombatDropPod.skinIndex(be.color) == shown;
+                                    return CombatDropPodRenderer.skinIndex(be.color) == shown;
                                 }));
             }
             return parts;
         }
 
-        private static Matrix4f pod(BlockEntityCombatDropPod be, Matrix4f out) {
+        private static Matrix4f pod(CombatDropPodBlockEntity be, Matrix4f out) {
             float[] tilt = be.tilt();
             return out.translate(0.5F, 1.25F, 0.5F)
                     .rotateY(tilt[0] * Mth.DEG_TO_RAD)
@@ -331,7 +363,7 @@ public final class RocketryRenders {
                     .rotateZ(tilt[2] * Mth.DEG_TO_RAD);
         }
 
-        private static Matrix4f dish(BlockEntityMachineStardar be, float pt, Matrix4f out) {
+        private static Matrix4f dish(StardarBlockEntity be, float pt, Matrix4f out) {
             return out.translate(0.5F, -3F, 0.5F)
                     .rotateY(Mth.lerp(pt, be.prevDishYaw, be.dishYaw) * Mth.DEG_TO_RAD);
         }
@@ -385,18 +417,19 @@ public final class RocketryRenders {
             ClientRegistry.BlockEntityRendererRegistrar reg) {
         reg.accept(
                 RocketryBlocksSpace.LAUNCH_PAD_ROCKET_BE.get(),
-                context -> new RenderRocketHost<>(PAD));
+                context -> new RocketHostRenderer<>(PAD));
         reg.accept(
-                RocketryBlocksSpace.ROCKET_ASSEMBLY.get(), context -> new RenderRocketHost<>(VAB));
+                RocketryBlocksSpace.ROCKET_ASSEMBLY.get(),
+                context -> new RocketHostRenderer<>(VAB));
         reg.accept(
                 RocketryBlocksSpace.DRIVE_PROCESSOR_BE.get(),
-                context -> new RenderPosedParts<>(Parts.DRIVE_PROCESSOR));
+                context -> new PosedPartsRenderer<>(Parts.DRIVE_PROCESSOR));
         reg.accept(
                 RocketryBlocksSpace.STARDAR_BE.get(),
-                context -> new RenderPosedParts<>(Parts.STARDAR_PARTS));
+                context -> new PosedPartsRenderer<>(Parts.STARDAR_PARTS));
         reg.accept(
                 RocketryBlocksSpace.COMBAT_DROP_BE.get(),
-                context -> new RenderPosedParts<>(Parts.COMBAT_POD));
+                context -> new PosedPartsRenderer<>(Parts.COMBAT_POD));
     }
 
     public static void registerVisualizers() {

@@ -1,0 +1,42 @@
+{
+  "feature": {
+    "type": "minecraft:replace_single_block",
+    "config": {
+      "targets": [
+        {
+          "state": {
+            "Name": "hbm:stone_keyhole"
+          },
+          "target": {
+            "block": "hbmspace:dres_rock",
+            "predicate_type": "minecraft:block_match"
+          }
+        }
+      ]
+    }
+  },
+  "placement": [
+    {
+      "type": "minecraft:rarity_filter",
+      "chance": 4
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "minecraft:height_range",
+      "height": {
+        "type": "minecraft:uniform",
+        "max_inclusive": {
+          "absolute": 18
+        },
+        "min_inclusive": {
+          "absolute": 6
+        }
+      }
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

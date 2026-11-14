@@ -19,3 +19,6 @@ resource attribution is recorded in REUSE.toml.
 
 The Gradle wrapper is by the Gradle authors and is distributed under
 Apache-2.0; see LICENSES/Apache-2.0.txt.
+
+The raw nickel, zinc, australium, niobium and lanthanium item sprites and
+their ore block overlays are by Mr. Morgan, distributed under LGPL-3.0-only.

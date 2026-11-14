@@ -1,155 +1,167 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbmspace.blocks;
 
-import com.hbm.blockentity.BlockEntityMachineBase;
+import com.hbm.blockentity.BlockEntityTicks;
 import com.hbm.registration.Reg;
 import com.hbmspace.HbmSpace;
-import com.hbmspace.blockentity.machine.BlockEntityMachineGasDock;
-import com.hbmspace.blockentity.machine.BlockEntityMachineHTR3;
-import com.hbmspace.blockentity.machine.BlockEntityMachineHTRF4;
-import com.hbmspace.blockentity.machine.BlockEntityMachineHTRNeo;
-import com.hbmspace.blockentity.machine.BlockEntityMachineSolarPanel;
-import com.hbmspace.blockentity.machine.BlockEntityOrbitalStation;
-import com.hbmspace.blockentity.machine.BlockEntityOrbitalStationComputer;
-import com.hbmspace.blockentity.machine.BlockEntityOrbitalStationLauncher;
-import com.hbmspace.blockentity.machine.BlockEntityRadiator;
-import com.hbmspace.blockentity.machine.BlockEntityStationPropulsionCreative;
-import com.hbmspace.blockentity.machine.BlockEntityTransporterRocket;
-import com.hbmspace.blockentity.machine.BlockEntityXenonThruster;
+import com.hbmspace.blockentity.machine.GasDockBlockEntity;
+import com.hbmspace.blockentity.machine.HTR3BlockEntity;
+import com.hbmspace.blockentity.machine.HTRF4BlockEntity;
+import com.hbmspace.blockentity.machine.HTRNeoBlockEntity;
+import com.hbmspace.blockentity.machine.OrbitalStationBlockEntity;
+import com.hbmspace.blockentity.machine.OrbitalStationComputerBlockEntity;
+import com.hbmspace.blockentity.machine.OrbitalStationLauncherBlockEntity;
+import com.hbmspace.blockentity.machine.RadiatorBlockEntity;
+import com.hbmspace.blockentity.machine.SolarPanelBlockEntity;
+import com.hbmspace.blockentity.machine.StationPropulsionCreativeBlockEntity;
+import com.hbmspace.blockentity.machine.TransporterRocketBlockEntity;
+import com.hbmspace.blockentity.machine.XenonThrusterBlockEntity;
 import java.util.Set;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 
 public final class StationBlockEntitiesSpace {
 
-    public static final Reg.BeHandle<BlockEntityOrbitalStation> ORBITAL_STATION =
-            HbmSpace.REG
-                    .be(
+    public static final Reg.BeHandle<OrbitalStationBlockEntity> ORBITAL_STATION =
+            (HbmSpace.REG.<OrbitalStationBlockEntity>be(
                             "orbital_station",
                             () ->
                                     new BlockEntityType<>(
-                                            BlockEntityOrbitalStation::new,
+                                            OrbitalStationBlockEntity::new,
                                             Set.of(
                                                     StationBlocksSpace.ORBITAL_STATION.get(),
-                                                    StationBlocksSpace.ORBITAL_STATION_PORT.get())))
-                    .ticks(BlockEntityMachineBase::tickClient, BlockEntityMachineBase::tickServer);
+                                                    StationBlocksSpace.ORBITAL_STATION_PORT
+                                                            .get()))))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
 
-    public static final Reg.BeHandle<BlockEntityOrbitalStationLauncher> ORBITAL_STATION_LAUNCHER =
-            HbmSpace.REG
-                    .be(
+    public static final Reg.BeHandle<OrbitalStationLauncherBlockEntity> ORBITAL_STATION_LAUNCHER =
+            (HbmSpace.REG.<OrbitalStationLauncherBlockEntity>be(
                             "orbital_station_launcher",
                             () ->
                                     new BlockEntityType<>(
-                                            BlockEntityOrbitalStationLauncher::new,
+                                            OrbitalStationLauncherBlockEntity::new,
                                             Set.of(
                                                     StationBlocksSpace.ORBITAL_STATION_LAUNCHER
-                                                            .get())))
-                    .ticks(BlockEntityMachineBase::tickClient, BlockEntityMachineBase::tickServer);
+                                                            .get()))))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
 
-    public static final Reg.BeHandle<BlockEntityOrbitalStationComputer> ORBITAL_STATION_COMPUTER =
-            HbmSpace.REG
-                    .be(
+    public static final Reg.BeHandle<OrbitalStationComputerBlockEntity> ORBITAL_STATION_COMPUTER =
+            (HbmSpace.REG.<OrbitalStationComputerBlockEntity>be(
                             "orbital_station_computer",
                             () ->
                                     new BlockEntityType<>(
-                                            BlockEntityOrbitalStationComputer::new,
+                                            OrbitalStationComputerBlockEntity::new,
                                             Set.of(
                                                     StationBlocksSpace.ORBITAL_STATION_COMPUTER
-                                                            .get())))
-                    .ticksServer(BlockEntityMachineBase::tickServer);
+                                                            .get()))))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
 
-    public static final Reg.BeHandle<BlockEntityStationPropulsionCreative> PROPULSION_CREATIVE =
-            HbmSpace.REG
-                    .be(
-                            "propulsion_creative",
-                            () ->
-                                    new BlockEntityType<>(
-                                            BlockEntityStationPropulsionCreative::new,
-                                            Set.of(StationBlocksSpace.PROPULSION_CREATIVE.get())))
-                    .ticksServer(BlockEntityStationPropulsionCreative::tickServer);
+    public static final Reg.BeHandle<StationPropulsionCreativeBlockEntity> PROPULSION_CREATIVE =
+            (HbmSpace.REG.<StationPropulsionCreativeBlockEntity>be(
+                    "propulsion_creative",
+                    () ->
+                            new BlockEntityType<>(
+                                    StationPropulsionCreativeBlockEntity::new,
+                                    Set.of(StationBlocksSpace.PROPULSION_CREATIVE.get()))));
 
-    public static final Reg.BeHandle<BlockEntityMachineHTR3> HTR3 =
-            HbmSpace.REG
-                    .be(
+    public static final Reg.BeHandle<HTR3BlockEntity> HTR3 =
+            (HbmSpace.REG.<HTR3BlockEntity>be(
                             "machine_htr3",
                             () ->
                                     new BlockEntityType<>(
-                                            BlockEntityMachineHTR3::new,
-                                            Set.of(StationBlocksSpace.MACHINE_HTR3.get())))
-                    .ticks(BlockEntityMachineBase::tickClient, BlockEntityMachineBase::tickServer);
+                                            HTR3BlockEntity::new,
+                                            Set.of(StationBlocksSpace.MACHINE_HTR3.get()))))
+                    .ticksServerAt(BlockEntityTicks.SERVER_WITH_SOUND)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
 
-    public static final Reg.BeHandle<BlockEntityMachineHTRF4> HTRF4 =
-            HbmSpace.REG
-                    .be(
+    public static final Reg.BeHandle<HTRF4BlockEntity> HTRF4 =
+            (HbmSpace.REG.<HTRF4BlockEntity>be(
                             "machine_htrf4",
                             () ->
                                     new BlockEntityType<>(
-                                            BlockEntityMachineHTRF4::new,
-                                            Set.of(StationBlocksSpace.MACHINE_HTRF4.get())))
-                    .ticks(BlockEntityMachineBase::tickClient, BlockEntityMachineBase::tickServer);
+                                            HTRF4BlockEntity::new,
+                                            Set.of(StationBlocksSpace.MACHINE_HTRF4.get()))))
+                    .ticksServerAt(BlockEntityTicks.SERVER_WITH_SOUND)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
 
-    public static final Reg.BeHandle<BlockEntityMachineHTRNeo> HTRF4_NEO =
-            HbmSpace.REG
-                    .be(
+    public static final Reg.BeHandle<HTRNeoBlockEntity> HTRF4_NEO =
+            (HbmSpace.REG.<HTRNeoBlockEntity>be(
                             "machine_htrneo",
                             () ->
                                     new BlockEntityType<>(
-                                            BlockEntityMachineHTRNeo::new,
-                                            Set.of(StationBlocksSpace.MACHINE_HTRF4NEO.get())))
-                    .ticks(BlockEntityMachineBase::tickClient, BlockEntityMachineBase::tickServer);
+                                            HTRNeoBlockEntity::new,
+                                            Set.of(StationBlocksSpace.MACHINE_HTRF4NEO.get()))))
+                    .ticksServerAt(BlockEntityTicks.SERVER_WITH_SOUND)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
 
-    public static final Reg.BeHandle<BlockEntityXenonThruster> XENON_THRUSTER =
-            HbmSpace.REG
-                    .be(
+    public static final Reg.BeHandle<XenonThrusterBlockEntity> XENON_THRUSTER =
+            (HbmSpace.REG.<XenonThrusterBlockEntity>be(
                             "xenon_thruster",
                             () ->
                                     new BlockEntityType<>(
-                                            BlockEntityXenonThruster::new,
+                                            XenonThrusterBlockEntity::new,
                                             Set.of(
                                                     StationBlocksSpace.MACHINE_XENON_THRUSTER
-                                                            .get())))
-                    .ticks(BlockEntityMachineBase::tickClient, BlockEntityMachineBase::tickServer);
+                                                            .get()))))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
 
-    public static final Reg.BeHandle<BlockEntityTransporterRocket> TRANSPORTER_ROCKET =
-            HbmSpace.REG
-                    .be(
+    public static final Reg.BeHandle<TransporterRocketBlockEntity> TRANSPORTER_ROCKET =
+            (HbmSpace.REG.<TransporterRocketBlockEntity>be(
                             "transporter_rocket",
                             () ->
                                     new BlockEntityType<>(
-                                            BlockEntityTransporterRocket::new,
-                                            Set.of(StationBlocksSpace.TRANSPORTER_ROCKET.get())))
-                    .ticks(BlockEntityMachineBase::tickClient, BlockEntityMachineBase::tickServer);
+                                            TransporterRocketBlockEntity::new,
+                                            Set.of(StationBlocksSpace.TRANSPORTER_ROCKET.get()))))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
 
-    public static final Reg.BeHandle<BlockEntityMachineGasDock> GAS_DOCK =
-            HbmSpace.REG
-                    .be(
+    public static final Reg.BeHandle<GasDockBlockEntity> GAS_DOCK =
+            (HbmSpace.REG.<GasDockBlockEntity>be(
                             "gas_dock",
                             () ->
                                     new BlockEntityType<>(
-                                            BlockEntityMachineGasDock::new,
-                                            Set.of(StationBlocksSpace.GAS_DOCK.get())))
-                    .ticks(BlockEntityMachineBase::tickClient, BlockEntityMachineBase::tickServer);
+                                            GasDockBlockEntity::new,
+                                            Set.of(StationBlocksSpace.GAS_DOCK.get()))))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
 
-    public static final Reg.BeHandle<BlockEntityMachineSolarPanel> SOLAR_PANEL =
-            HbmSpace.REG
-                    .be(
+    public static final Reg.BeHandle<SolarPanelBlockEntity> SOLAR_PANEL =
+            (HbmSpace.REG.<SolarPanelBlockEntity>be(
                             "machine_solar",
                             () ->
                                     new BlockEntityType<>(
-                                            BlockEntityMachineSolarPanel::new,
-                                            Set.of(StationBlocksSpace.MACHINE_SOLAR.get())))
-                    .ticksServer(BlockEntityMachineBase::tickServer);
+                                            SolarPanelBlockEntity::new,
+                                            Set.of(StationBlocksSpace.MACHINE_SOLAR.get()))))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
 
-    public static final Reg.BeHandle<BlockEntityRadiator> RADIATOR =
-            HbmSpace.REG
-                    .be(
+    public static final Reg.BeHandle<RadiatorBlockEntity> RADIATOR =
+            (HbmSpace.REG.<RadiatorBlockEntity>be(
                             "machine_radiator",
                             () ->
                                     new BlockEntityType<>(
-                                            BlockEntityRadiator::new,
-                                            Set.of(StationBlocksSpace.MACHINE_RADIATOR.get())))
-                    .ticksServer(BlockEntityMachineBase::tickServer);
+                                            RadiatorBlockEntity::new,
+                                            Set.of(StationBlocksSpace.MACHINE_RADIATOR.get()))))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
 
     private StationBlockEntitiesSpace() {}
 }

@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:entity",
+  "pools": [
+    {
+      "entries": [
+        {
+          "type": "minecraft:loot_table",
+          "value": "minecraft:entities/squid"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "hbmspace:entities/entity_depthsquid"
+}

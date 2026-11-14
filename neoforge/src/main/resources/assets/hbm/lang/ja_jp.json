@@ -1,0 +1,12 @@
+{
+  "block.hbm.fissure_bomb": "核分裂爆弾",
+  "block.hbm.moon_turf": "ムンの泥土",
+  "desc.gui.nukeCustom.amat": "Caps at 350\n§o\"Antimatter, Balefire, whatever.\"",
+  "desc.hbm.pneumatic_tube.line6": "流体識別を使用して入力空気の種類を変更出来る",
+  "item.hbm.heavy_component": "重部品",
+  "item.hbm.missile.part.maxPayload": "弾頭最大質量",
+  "item.hbm.mp_thruster_20_kerosene": "サイズ20 ケロシンロケットエンジン",
+  "item.hbm.mp_thruster_20_kerosene_dual": "サイズ20 ケロシンニ連ロケットエンジン",
+  "item.hbm.mp_thruster_20_kerosene_triple": "サイズ20 ケロシン三連ロケットエンジン",
+  "item.hbm.oil_detector.noOil": "原油田やガス田は検出されていない"
+}

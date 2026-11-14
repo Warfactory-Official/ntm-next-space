@@ -1,17 +1,33 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbmspace.client.render;
 
 import com.google.common.base.Suppliers;
-import com.hbm.blocks.multiblock.BlockMultiblockCore;
+import com.hbm.blocks.multiblock.MultiblockCoreBlock;
 import com.hbm.client.ClientRegistry;
 import com.hbm.client.model.Meshes;
 import com.hbm.client.render.flywheel.MeshPart;
 import com.hbm.render.loader.HFRWavefrontObject;
 import com.hbm.util.Facing;
 import com.hbmspace.HbmSpace;
-import com.hbmspace.blockentity.machine.BlockEntityDishControl;
+import com.hbmspace.blockentity.machine.DishControlBlockEntity;
 import com.hbmspace.blocks.IndustryBlockEntitiesSpace;
 import com.hbmspace.client.render.PosedParts.Part;
 import com.hbmspace.client.render.flywheel.HydroponicVisual;
@@ -50,10 +66,10 @@ public final class IndustryRenders {
                 Identifier.fromNamespaceAndPath(
                         HbmSpace.MOD_ID, "textures/block/models/machines/hydroponic.png");
 
-        private static final PosedParts<BlockEntityDishControl> DISH_CONTROL =
+        private static final PosedParts<DishControlBlockEntity> DISH_CONTROL =
                 new PosedParts<>(
                         List.of(
-                                new Part<BlockEntityDishControl>(
+                                new Part<DishControlBlockEntity>(
                                         DISH_CONTROLLER,
                                         "drive",
                                         DISH_CONTROLLER_TEX,
@@ -65,7 +81,7 @@ public final class IndustryRenders {
                                                                     * Facing.yaw(
                                                                             be.getBlockState()
                                                                                     .getValue(
-                                                                                            BlockMultiblockCore
+                                                                                            MultiblockCoreBlock
                                                                                                     .FACING),
                                                                             90));
                                             return be.starDarHasDisk;
@@ -90,14 +106,14 @@ public final class IndustryRenders {
             ClientRegistry.BlockEntityRendererRegistrar reg) {
         reg.accept(
                 IndustryBlockEntitiesSpace.DISH_CONTROL.get(),
-                context -> new RenderPosedParts<>(Parts.DISH_CONTROL));
-        reg.accept(IndustryBlockEntitiesSpace.VACUUM_CIRCUIT.get(), RenderVacuumCircuit::new);
+                context -> new PosedPartsRenderer<>(Parts.DISH_CONTROL));
+        reg.accept(IndustryBlockEntitiesSpace.VACUUM_CIRCUIT.get(), VacuumCircuitRenderer::new);
         reg.accept(
                 IndustryBlockEntitiesSpace.MAGMA.get(),
-                context -> new RenderMagma(Parts.MAGMA_DRILL, Parts.MAGMA_DRILL_TEX));
+                context -> new MagmaRenderer(Parts.MAGMA_DRILL, Parts.MAGMA_DRILL_TEX));
         reg.accept(
                 IndustryBlockEntitiesSpace.HYDROBAY.get(),
-                context -> new RenderHydroponic(Parts.HYDROPONIC, Parts.HYDROPONIC_TEX));
+                context -> new HydroponicRenderer(Parts.HYDROPONIC, Parts.HYDROPONIC_TEX));
     }
 
     public static void registerVisualizers() {

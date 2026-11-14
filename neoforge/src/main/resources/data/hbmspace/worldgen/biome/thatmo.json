@@ -2,7 +2,10 @@
   "attributes": {
     "minecraft:visual/sky_color": "#879bff"
   },
-  "carvers": [],
+  "carvers": [
+    "hbmspace:thatmo/caves",
+    "hbmspace:thatmo/ravine"
+  ],
   "creature_spawn_probability": 0.1,
   "downfall": 0.0,
   "effects": {
@@ -11,14 +14,55 @@
   "features": [
     [],
     [],
+    [
+      "hbmspace:thatmo/stratum_hematite",
+      "hbmspace:thatmo/stratum_bauxite",
+      "hbmspace:thatmo/stratum_malachite"
+    ],
     [],
     [],
     [],
+    [
+      "hbmspace:thatmo/celestial/ore_iron",
+      "hbmspace:thatmo/celestial/ore_gold",
+      "hbmspace:thatmo/celestial/ore_redstone",
+      "hbmspace:thatmo/celestial/ore_diamond",
+      "hbmspace:thatmo/celestial/ore_alexandrite",
+      "hbmspace:thatmo/celestial/deposit_iron",
+      "hbmspace:thatmo/celestial/deposit_titanium",
+      "hbmspace:thatmo/celestial/deposit_tungsten",
+      "hbmspace:thatmo/celestial/deposit_cinnabar",
+      "hbmspace:thatmo/celestial/deposit_zirconium",
+      "hbmspace:thatmo/celestial/deposit_borax",
+      "hbmspace:thatmo/celestial/ore_uranium",
+      "hbmspace:thatmo/celestial/ore_thorium",
+      "hbmspace:thatmo/celestial/ore_titanium",
+      "hbmspace:thatmo/celestial/ore_sulfur",
+      "hbmspace:thatmo/celestial/ore_aluminium",
+      "hbmspace:thatmo/celestial/ore_copper",
+      "hbmspace:thatmo/celestial/ore_nickel",
+      "hbmspace:thatmo/celestial/ore_zinc",
+      "hbmspace:thatmo/celestial/ore_fluorite",
+      "hbmspace:thatmo/celestial/ore_niter",
+      "hbmspace:thatmo/celestial/ore_tungsten",
+      "hbmspace:thatmo/celestial/ore_lead",
+      "hbmspace:thatmo/celestial/ore_beryllium",
+      "hbmspace:thatmo/celestial/ore_rare",
+      "hbmspace:thatmo/celestial/ore_cinnebar",
+      "hbmspace:thatmo/celestial/ore_cobalt",
+      "hbmspace:thatmo/celestial/cluster_iron",
+      "hbmspace:thatmo/celestial/cluster_titanium",
+      "hbmspace:thatmo/celestial/cluster_aluminium",
+      "hbmspace:thatmo/celestial/cluster_copper",
+      "hbmspace:thatmo/celestial/ore_limestone",
+      "hbmspace:thatmo/celestial/keyhole",
+      "hbmspace:thatmo/celestial/bedrock_ore"
+    ],
     [],
     [],
-    [],
-    [],
-    [],
+    [
+      "hbm:meteorite"
+    ],
     []
   ],
   "has_precipitation": false,

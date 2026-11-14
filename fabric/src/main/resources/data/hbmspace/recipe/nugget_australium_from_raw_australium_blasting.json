@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:blasting",
+  "cookingtime": 100,
+  "experience": 2.5,
+  "ingredient": {
+    "fabric:type": "hbm:recipe_input",
+    "base": "hbmspace:raw_australium"
+  },
+  "result": {
+    "id": "hbm:nugget_australium"
+  }
+}

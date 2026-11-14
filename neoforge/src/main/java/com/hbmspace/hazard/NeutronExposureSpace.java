@@ -1,19 +1,53 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: 2024 George Paton
+ * SPDX-FileCopyrightText: 2023 JamesH_2
+ * SPDX-FileCopyrightText: 2023 Pu-238
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) 2024 George Paton. All rights reserved.
+ * Copyright (C) 2023 JamesH_2. All rights reserved.
+ * Copyright (C) 2023 Pu-238. All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT: Space";
+ * - a modified version must not be named NTM NEXT: Space or presented as
+ *   the official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT: Space does not
+ * violate these additional terms, provided it is clearly distinguished from
+ * the official release and does not imply endorsement. Ports are encouraged
+ * to acknowledge NTM NEXT: Space as their upstream project and provide a
+ * link to it.
+ */
 
 package com.hbmspace.hazard;
 
 import com.hbm.data.RadiationData;
-import com.hbm.extprop.HbmLivingProps;
-import com.hbm.handler.ArmorUtil;
+import com.hbm.extprop.LivingHazards;
 import com.hbm.hazard.HazardEntry;
 import com.hbm.hazard.HazardRegistry;
 import com.hbm.hazard.HazardSystem;
-import com.hbm.hazard.transformer.IHazardTransformer;
+import com.hbm.hazard.transformer.HazardTransformer;
 import com.hbm.items.ModDataComponents;
-import com.hbm.util.ChunkUtil;
 import com.hbm.util.ContaminationUtil.ContaminationType;
 import com.hbm.util.ContaminationUtil;
+import com.hbm.util.SectionAccess;
 import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.Identifier;
@@ -35,7 +69,7 @@ public final class NeutronExposureSpace {
         HazardRegistry.registerType(
                 Identifier.fromNamespaceAndPath("hbmspace", "neutron"), NEUTRON);
         HazardSystem.addTransformer(
-                new IHazardTransformer() {
+                new HazardTransformer() {
                     @Override
                     public boolean readsLiveStorage() {
                         return true;
@@ -90,33 +124,18 @@ public final class NeutronExposureSpace {
 
     public static boolean contaminate(LivingEntity entity, ContaminationType type, double amount) {
         if (entity == null || entity.level().isClientSide() || !enabled()) return false;
-        HbmLivingProps.setRadEnv(entity, HbmLivingProps.getRadEnv(entity) + amount * 10D);
+        LivingHazards.setFieldThisSecond(
+                entity, LivingHazards.fieldThisSecond(entity) + amount * 10D);
         if (entity instanceof Player player) {
-            if (player.isSpectator()) return false;
-            boolean protectedFrom =
-                    switch (type) {
-                        case FARADAY -> ArmorUtil.checkForFaraday(player);
-                        case HAZMAT -> ArmorUtil.checkForHazmat(player);
-                        case HAZMAT2 -> ArmorUtil.checkForHaz2(player);
-                        case DIGAMMA ->
-                                ArmorUtil.checkForDigamma(player)
-                                        || ArmorUtil.checkForDigamma2(player);
-                        case DIGAMMA2 -> ArmorUtil.checkForDigamma2(player);
-                        default -> false;
-                    };
-            if (protectedFrom
-                    || player.isCreative()
-                            && type != ContaminationType.NONE
-                            && type != ContaminationType.DIGAMMA2
-                    || player.tickCount < 200) return false;
+            if (player.isSpectator()
+                    || type.protects(player)
+                    || type.spares(player)
+                    || player.tickCount < 200) {
+                return false;
+            }
         }
-        float dose =
-                (float)
-                        (amount
-                                * (type == ContaminationType.RAD_BYPASS
-                                        ? 1D
-                                        : ContaminationUtil.calculateRadiationMod(entity)));
-        HbmLivingProps props = HbmLivingProps.getData(entity);
+        float dose = (float) (amount * type.radiationMod(entity));
+        LivingHazards props = LivingHazards.getOrCreate(entity);
         props.neutron = Math.max(0F, (float) props.neutron + dose);
         return true;
     }
@@ -124,7 +143,7 @@ public final class NeutronExposureSpace {
     public static void tick(LivingEntity entity) {
         if (entity.level().isClientSide() || !enabled() || ContaminationUtil.isRadImmune(entity))
             return;
-        HbmLivingProps props = HbmLivingProps.peek(entity);
+        LivingHazards props = LivingHazards.getIfPresent(entity);
         if (props == null) return;
         float activation = (float) props.neutron;
         if (activation > 0F) {
@@ -140,14 +159,14 @@ public final class NeutronExposureSpace {
 
     public static void decon(LivingEntity entity) {
         if (enabled()) {
-            float activation = (float) HbmLivingProps.getNeutron(entity);
+            float activation = (float) LivingHazards.neutron(entity);
             if (activation > 0F) {
                 ContaminationUtil.contaminate(
                         entity,
                         ContaminationUtil.HazardType.RADIATION,
                         ContaminationType.RAD_BYPASS,
                         activation / 20F);
-                HbmLivingProps.setNeutron(entity, activation * 0.899916F);
+                LivingHazards.setNeutron(entity, activation * 0.899916F);
             }
         }
         if (entity instanceof Player player) decayInventory(player, 0.899916F);
@@ -157,6 +176,7 @@ public final class NeutronExposureSpace {
         if (!enabled()) return;
         double x = source.getX() + 0.5D, y = source.getY() + 0.5D, z = source.getZ() + 0.5D;
         BlockPos.MutableBlockPos cell = new BlockPos.MutableBlockPos();
+        var reader = new SectionAccess.LoadedReader(level);
         for (LivingEntity entity :
                 level.getEntitiesOfClass(
                         LivingEntity.class, new AABB(x, y, z, x, y, z).inflate(25D))) {
@@ -167,7 +187,7 @@ public final class NeutronExposureSpace {
             boolean loaded = true;
             for (int step = 1; step < length; step++) {
                 cell.set(x + direction.x * step, y + direction.y * step, z + direction.z * step);
-                BlockState state = ChunkUtil.blockStateIfLoaded(level, cell);
+                BlockState state = reader.read(cell);
                 if (state == null) {
                     loaded = false;
                     break;

@@ -1,45 +1,65 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-FileCopyrightText: 2024-2026 George Paton
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: 2024-2026 George Paton
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) 2024-2026 George Paton. All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT: Space";
+ * - a modified version must not be named NTM NEXT: Space or presented as
+ *   the official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT: Space does not
+ * violate these additional terms, provided it is clearly distinguished from
+ * the official release and does not imply endorsement. Ports are encouraged
+ * to acknowledge NTM NEXT: Space as their upstream project and provide a
+ * link to it.
+ */
 
 package com.hbmspace.dim;
 
-import com.hbm.api.entity.LivingHooks;
 import com.hbm.api.entity.PlayerRespawns;
+import com.hbm.packet.ClientEventConstants;
 import com.hbm.packet.PacketWire;
-import com.hbm.packet.PayloadHandlerThread;
-import com.hbm.packet.toclient.PlayerInformPayload;
-import com.hbm.platform.NeoForgeNetwork;
-import com.hbm.platform.NeoForgeServerEvents;
-import com.hbm.registration.NeoForgeRegistrar;
+import com.hbm.packet.layout.PlayerInformLayout;
+import com.hbm.platform.ServerEvents;
 import com.hbmspace.data.SpaceData;
-import com.hbmspace.dim.dres.ChunkProviderDres;
-import com.hbmspace.dim.dres.WorldGeneratorDres;
 import com.hbmspace.dim.dres.WorldProviderDres;
-import com.hbmspace.dim.duna.ChunkProviderDuna;
-import com.hbmspace.dim.duna.WorldGeneratorDuna;
 import com.hbmspace.dim.duna.WorldProviderDuna;
-import com.hbmspace.dim.ike.ChunkProviderIke;
-import com.hbmspace.dim.ike.WorldGeneratorIke;
 import com.hbmspace.dim.ike.WorldProviderIke;
-import com.hbmspace.dim.minmus.ChunkProviderMinmus;
-import com.hbmspace.dim.minmus.WorldGeneratorMinmus;
 import com.hbmspace.dim.minmus.WorldProviderMinmus;
-import com.hbmspace.dim.moho.ChunkProviderMoho;
-import com.hbmspace.dim.moho.WorldGeneratorMoho;
 import com.hbmspace.dim.moho.WorldProviderMoho;
-import com.hbmspace.dim.moon.ChunkProviderMoon;
-import com.hbmspace.dim.moon.WorldGeneratorMoon;
 import com.hbmspace.dim.moon.WorldProviderMoon;
 import com.hbmspace.dim.orbit.OrbitalStation;
 import com.hbmspace.dim.trait.CBT_Invasion;
 import com.hbmspace.dim.trait.CBT_War;
 import com.hbmspace.dim.trait.CBT_Weather;
 import com.hbmspace.dim.trait.CelestialBodyTrait;
-import com.hbmspace.entity.missile.EntityRideableRocket;
+import com.hbmspace.entity.missile.RideableRocketEntity;
+import com.hbmspace.packet.layout.SpaceSolarSystem;
 import com.hbmspace.util.AstronomyUtil;
+import com.hbmspace.world.gen.Terrace;
+import com.hbmspace.world.gen.layer.CelestialLayers;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
@@ -50,70 +70,61 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.entity.EntityLeaveLevelEvent;
+import net.neoforged.neoforge.event.level.LevelEvent;
 
 public final class CelestialHandler {
 
     static {
-        NeoForgeRegistrar.registerBiomeSource(
-                "hbmspace:celestial", WorldChunkManagerCelestial.CODEC);
-
         WorldProviderCelestial.register(new WorldProviderEarth());
         WorldProviderCelestial.register(new WorldProviderMoon());
-        SpaceChunkGenerators.register("hbmspace:mun", ChunkProviderMoon.CODEC);
-        WorldGeneratorCelestial.register(1, SpaceDimensions.MUN, new WorldGeneratorMoon());
 
         WorldProviderCelestial.register(new WorldProviderMinmus());
-        WorldChunkManagerCelestial.register(
-                SpaceDimensions.MINMUS.identifier(), WorldProviderMinmus::createBiomeGenerators);
-        SpaceChunkGenerators.register("hbmspace:minmus", ChunkProviderMinmus.CODEC);
-        WorldGeneratorCelestial.register(1, SpaceDimensions.MINMUS, new WorldGeneratorMinmus());
+        CelestialLayers.register(SpaceDimensions.MINMUS.identifier(), WorldProviderMinmus::layers);
 
         WorldProviderCelestial.register(new WorldProviderDres());
-        WorldChunkManagerCelestial.register(
-                SpaceDimensions.DRES.identifier(), WorldProviderDres::createBiomeGenerators);
-        SpaceChunkGenerators.register("hbmspace:dres", ChunkProviderDres.CODEC);
-        WorldGeneratorCelestial.register(1, SpaceDimensions.DRES, new WorldGeneratorDres());
+        CelestialLayers.register(SpaceDimensions.DRES.identifier(), WorldProviderDres::layers);
 
         WorldProviderCelestial.register(new WorldProviderMoho());
-        WorldChunkManagerCelestial.register(
-                SpaceDimensions.MOHO.identifier(), WorldProviderMoho::createBiomeGenerators);
-        SpaceChunkGenerators.register("hbmspace:moho", ChunkProviderMoho.CODEC);
-        WorldGeneratorCelestial.register(1, SpaceDimensions.MOHO, new WorldGeneratorMoho());
+        CelestialLayers.register(SpaceDimensions.MOHO.identifier(), WorldProviderMoho::layers);
 
         WorldProviderCelestial.register(new WorldProviderIke());
-        SpaceChunkGenerators.register("hbmspace:ike", ChunkProviderIke.CODEC);
-        WorldGeneratorCelestial.register(1, SpaceDimensions.IKE, new WorldGeneratorIke());
 
         WorldProviderCelestial.register(new WorldProviderDuna());
-        WorldChunkManagerCelestial.register(
-                SpaceDimensions.DUNA.identifier(), WorldProviderDuna::createBiomeGenerators);
-        SpaceChunkGenerators.register("hbmspace:duna", ChunkProviderDuna.CODEC);
-        WorldGeneratorCelestial.register(1, SpaceDimensions.DUNA, new WorldGeneratorDuna());
+        CelestialLayers.register(SpaceDimensions.DUNA.identifier(), WorldProviderDuna::layers);
+        Terrace.register(SpaceDimensions.DUNA.identifier(), WorldProviderDuna::terrace);
 
-        NeoForgeServerEvents.onLevelLoad(
+        final Consumer<ServerLevel> callback =
                 level -> {
                     if (level.dimension() == Level.OVERWORLD)
                         SolarSystemWorldSavedData.publish(level.getServer());
+                };
+        NeoForge.EVENT_BUS.addListener(
+                (LevelEvent.Load event) -> {
+                    if (event.getLevel() instanceof ServerLevel level2) callback.accept(level2);
                 });
-        NeoForgeServerEvents.onServerStopping(
+        final Consumer<MinecraftServer> callback2 =
                 server -> {
                     SolarSystemWorldSavedData.onServerStopping();
-                    CelestialTeleporter.onServerStopping();
                     AstronomyUtil.TIME_MULTIPLIER = 1;
+                };
+        ServerEvents.STOPPING.add(callback2);
+        final Consumer<MinecraftServer> callback3 = CelestialHandler::onServerTickStart;
+        ServerEvents.TICK_PRE.add(callback3);
+        final Consumer<MinecraftServer> callback4 = CelestialHandler::onServerTickEnd;
+        ServerEvents.TICK_POST.add(callback4);
+        final BiConsumer<Entity, ServerLevel> callback5 = SpaceGravity::onLoad;
+        ServerEvents.ENTITY_LOAD.add(callback5);
+        final BiConsumer<Entity, ServerLevel> callback6 = CBT_Invasion::onEntityUnload;
+        NeoForge.EVENT_BUS.addListener(
+                (EntityLeaveLevelEvent event2) -> {
+                    if (event2.getLevel() instanceof ServerLevel level3)
+                        callback6.accept(event2.getEntity(), level3);
                 });
-        NeoForgeServerEvents.onServerTickPre(CelestialHandler::onServerTickStart);
-        NeoForgeServerEvents.onServerTickPost(CelestialHandler::onServerTickEnd);
-        LivingHooks.onTick(SpaceGravity::onLivingUpdate);
         PlayerRespawns.register(WorldProviderCelestial::respawn);
         WorldTypeTeleport.register();
         CityLights.register();
-
-        NeoForgeNetwork.clientbound.add(
-                new NeoForgeNetwork.Registration<>(
-                        SolarSystemSyncPayload.TYPE,
-                        SolarSystemSyncPayload.STREAM_CODEC,
-                        SolarSystemSyncPayload::handle,
-                        PayloadHandlerThread.MAIN));
     }
 
     private CelestialHandler() {}
@@ -150,16 +161,14 @@ public final class CelestialHandler {
     private static void onServerTickStart(MinecraftServer server) {
         ServerLevel orbit = server.getLevel(SpaceDimensions.ORBIT);
         if (orbit != null) {
-            for (ServerPlayer player : orbit.players()) {
-                if (!(player.getVehicle() instanceof EntityRideableRocket))
+            for (ServerPlayer player : List.copyOf(orbit.players())) {
+                if (!player.isSpectator() && !(player.getVehicle() instanceof RideableRocketEntity))
                     checkOrbitalGrid(player);
             }
         }
     }
 
     private static void onServerTickEnd(MinecraftServer server) {
-        CelestialTeleporter.runQueuedTeleports(server);
-
         if (server.tickRateManager().runsNormally() && server.overworld().getGameTime() % 20 == 0) {
             for (CelestialBody body : CelestialBody.getLandableBodies()) {
                 var traits = body.getTraits();
@@ -179,7 +188,7 @@ public final class CelestialHandler {
             SolarSystemWorldSavedData solarSystem = SolarSystemWorldSavedData.get(server);
             for (ServerPlayer player : server.getPlayerList().getPlayers()) {
                 PacketWire.sendTo(
-                        SolarSystemSyncPayload.of(solarSystem, player.level().dimension()), player);
+                        SpaceSolarSystem.encode(solarSystem, player.level().dimension()), player);
             }
         }
     }
@@ -196,10 +205,10 @@ public final class CelestialHandler {
 
         if (rx < minWarning || rx > maxWarning || rz < minWarning || rz > maxWarning) {
             PacketWire.sendTo(
-                    new PlayerInformPayload(
+                    PlayerInformLayout.encode(
                             Component.translatable("info.orbitfall").withStyle(ChatFormatting.RED),
-                            PlayerInformPayload.ID_GAS_HAZARD,
-                            3000),
+                            ClientEventConstants.PLAYER_INFORM_ID_GAS_HAZARD,
+                            3_000),
                     player);
         }
 

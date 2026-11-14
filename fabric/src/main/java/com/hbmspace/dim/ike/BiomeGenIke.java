@@ -1,20 +1,45 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-FileCopyrightText: 2024 George Paton
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: 2024-2025 George Paton
+ * SPDX-FileCopyrightText: 2023 JamesH_2
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) 2024-2025 George Paton. All rights reserved.
+ * Copyright (C) 2023 JamesH_2. All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT: Space";
+ * - a modified version must not be named NTM NEXT: Space or presented as
+ *   the official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT: Space does not
+ * violate these additional terms, provided it is clearly distinguished from
+ * the official release and does not imply endorsement. Ports are encouraged
+ * to acknowledge NTM NEXT: Space as their upstream project and provide a
+ * link to it.
+ */
 
 package com.hbmspace.dim.ike;
 
 import com.hbmspace.HbmSpace;
-import com.hbmspace.blocks.ModBlocksSpace;
 import com.hbmspace.blocks.TerrainBlocksSpace;
-import com.hbmspace.dim.BiomeDecoratorCelestial;
 import com.hbmspace.dim.BiomeGenBaseCelestial;
-import com.hbmspace.dim.legacy.LegacyWorld;
-import java.util.Random;
 import net.minecraft.resources.Identifier;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.BlockState;
 
 public class BiomeGenIke extends BiomeGenBaseCelestial {
 
@@ -24,78 +49,8 @@ public class BiomeGenIke extends BiomeGenBaseCelestial {
         super(Identifier.fromNamespaceAndPath(HbmSpace.MOD_ID, "ike"), 93);
         this.setBiomeName("Ike");
 
-        BiomeDecoratorCelestial decorator =
-                new BiomeDecoratorCelestial(ModBlocksSpace.IKE_STONE.get());
-        decorator.lakeChancePerChunk = 8;
-        decorator.lakeBlock = TerrainBlocksSpace.BROMINE_BLOCK.get().defaultBlockState();
-        decorator.generateLakes = false;
-        this.theBiomeDecorator = decorator;
-
         this.setHeight(new Height(0.325F, 0.05F));
         this.topBlock = TerrainBlocksSpace.IKE_REGOLITH.get();
         this.fillerBlock = TerrainBlocksSpace.IKE_REGOLITH.get();
-    }
-
-    @Override
-    public void genTerrainBlocks(
-            LegacyWorld world, Random rand, BlockState[] blocks, int x, int z, double noise) {
-        Block stone = ModBlocksSpace.IKE_STONE.get();
-        BlockState block = this.topBlock.defaultBlockState();
-        BlockState block1 = this.fillerBlock.defaultBlockState();
-        int k = -1;
-        int l = (int) (noise / 8.0D + 8.0D + rand.nextDouble() * 0.50D);
-        int i1 = x & 15;
-        int j1 = z & 15;
-        int k1 = blocks.length / 256;
-
-        for (int l1 = 255; l1 >= 0; --l1) {
-            int i2 = (j1 * 16 + i1) * k1 + l1;
-
-            if (l1 <= rand.nextInt(5)) {
-                blocks[i2] = Blocks.BEDROCK.defaultBlockState();
-            } else {
-                BlockState block2 = blocks[i2];
-
-                if (block2 != null && !block2.isAir()) {
-                    if (block2.getBlock() == stone) {
-                        if (k == -1) {
-                            if (l <= 0) {
-                                block = null;
-                                block1 = stone.defaultBlockState();
-                            } else if (l1 >= 59 && l1 <= 64) {
-                                block = this.topBlock.defaultBlockState();
-                                block1 = this.fillerBlock.defaultBlockState();
-                            }
-
-                            if (l1 < 63 && (block == null || block.isAir())) {
-                                block = this.topBlock.defaultBlockState();
-                            }
-
-                            k = l;
-
-                            if (l1 >= 62) {
-                                blocks[i2] = block;
-                            } else if (l1 < 56 - l) {
-                                block = null;
-                                block1 = stone.defaultBlockState();
-                                blocks[i2] = Blocks.GRAVEL.defaultBlockState();
-                            } else {
-                                blocks[i2] = block1;
-                            }
-                        } else if (k > 0) {
-                            --k;
-                            blocks[i2] = block1;
-
-                            if (k == 0 && block1.getBlock() == Blocks.SAND) {
-                                k = rand.nextInt(4) + Math.max(0, l1 - 63);
-                                block1 = Blocks.SANDSTONE.defaultBlockState();
-                            }
-                        }
-                    }
-                } else {
-                    k = -1;
-                }
-            }
-        }
     }
 }

@@ -15,5 +15,8 @@
   "textures": {
     "all": "hbmspace:block/models/machines/dish_controller",
     "particle": "hbmspace:block/models/machines/dish_controller"
-  }
+  },
+  "tiled": [
+    "dish_control"
+  ]
 }

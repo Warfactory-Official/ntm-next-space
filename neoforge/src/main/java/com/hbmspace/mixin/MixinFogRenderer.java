@@ -1,12 +1,28 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbmspace.mixin;
 
 import com.hbm.api.client.ShaderPacks;
+import com.hbm.platform.Platform;
 import com.hbmspace.client.fog.SodiumFogBridge;
 import com.hbmspace.client.fog.TerrainExpFog;
-import com.hbmspace.client.fog.TerrainFogPayload;
 import com.hbmspace.client.fog.TerrainFogWriter;
 import com.hbmspace.client.sky.CelestialFogTint;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
@@ -14,6 +30,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.mojang.blaze3d.buffers.GpuBufferSlice;
 import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import net.minecraft.client.Camera;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -21,7 +38,6 @@ import net.minecraft.client.renderer.fog.FogData;
 import net.minecraft.client.renderer.fog.FogRenderer;
 import net.minecraft.client.renderer.fog.environment.DarknessFogEnvironment;
 import net.minecraft.client.renderer.fog.environment.FogEnvironment;
-import net.neoforged.fml.ModList;
 import org.joml.Vector4f;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -75,7 +91,8 @@ public abstract class MixinFogRenderer implements TerrainFogWriter {
             float darkenWorld,
             ClientLevel level) {
         float density = ShaderPacks.inUse() ? 0F : CelestialFogTint.density(level, camera);
-        ((TerrainFogPayload) data).hbmspace$payload(density, TerrainExpFog.flags(density, false));
+        ((com.hbmspace.client.fog.TerrainFogPayload) (data))
+                .hbmspace$payload(density, TerrainExpFog.flags(density, false));
         return data;
     }
 
@@ -95,11 +112,13 @@ public abstract class MixinFogRenderer implements TerrainFogWriter {
             DeltaTracker delta,
             Operation<Void> original) {
         original.call(environment, data, camera, level, renderDistance, delta);
-        TerrainFogPayload payload = (TerrainFogPayload) data;
-        payload.hbmspace$payload(
-                payload.hbmspace$density(),
-                TerrainExpFog.flags(
-                        payload.hbmspace$density(), environment instanceof DarknessFogEnvironment));
+        ((com.hbmspace.client.fog.TerrainFogPayload) (data))
+                .hbmspace$payload(
+                        ((com.hbmspace.client.fog.TerrainFogPayload) (data)).hbmspace$density(),
+                        TerrainExpFog.flags(
+                                ((com.hbmspace.client.fog.TerrainFogPayload) (data))
+                                        .hbmspace$density(),
+                                environment instanceof DarknessFogEnvironment));
     }
 
     @Inject(method = "setupFog", at = @At("RETURN"), order = 1100)
@@ -110,16 +129,21 @@ public abstract class MixinFogRenderer implements TerrainFogWriter {
             float darkenWorld,
             ClientLevel level,
             CallbackInfoReturnable<FogData> cir) {
-        if (ModList.get().isLoaded("sodium")) {
+        if (Platform.isModLoaded("sodium")) {
             SodiumFogBridge.captureStored((FogRenderer) (Object) this, cir.getReturnValue());
         }
     }
 
     @Inject(method = "updateBuffer(Lnet/minecraft/client/renderer/fog/FogData;)V", at = @At("HEAD"))
     private void hbmspace$captureWriter(FogData data, CallbackInfo ci) {
-        TerrainFogPayload payload = (TerrainFogPayload) data;
-        hbmspace$writtenDensity = fogEnabled ? payload.hbmspace$density() : 0F;
-        hbmspace$writtenFlags = fogEnabled ? payload.hbmspace$flags() : 0;
+        hbmspace$writtenDensity =
+                fogEnabled
+                        ? ((com.hbmspace.client.fog.TerrainFogPayload) (data)).hbmspace$density()
+                        : 0F;
+        hbmspace$writtenFlags =
+                fogEnabled
+                        ? ((com.hbmspace.client.fog.TerrainFogPayload) (data)).hbmspace$flags()
+                        : 0;
     }
 
     @Inject(method = "<clinit>", at = @At("TAIL"))
@@ -142,7 +166,7 @@ public abstract class MixinFogRenderer implements TerrainFogWriter {
             float skyEnd,
             float cloudEnd,
             CallbackInfo ci) {
-        bytes.order(java.nio.ByteOrder.nativeOrder())
+        bytes.order(ByteOrder.nativeOrder())
                 .putFloat(offset + TerrainExpFog.NATIVE_PREFIX, hbmspace$writtenDensity)
                 .putInt(offset + TerrainExpFog.NATIVE_PREFIX + 4, hbmspace$writtenFlags);
         bytes.position(offset + TerrainExpFog.NATIVE_SIZE);

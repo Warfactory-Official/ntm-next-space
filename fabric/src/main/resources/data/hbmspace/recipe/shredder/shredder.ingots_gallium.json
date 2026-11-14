@@ -5,7 +5,7 @@
       "ingredient": "#c:ingots/gallium"
     }
   ],
-  "order": 53003,
+  "order": 53010,
   "output_items": [
     "hbmspace:powder_gallium"
   ]

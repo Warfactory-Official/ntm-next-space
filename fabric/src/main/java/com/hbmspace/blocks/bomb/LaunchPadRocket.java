@@ -1,28 +1,60 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: 2024 George Paton
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) 2024 George Paton. All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT: Space";
+ * - a modified version must not be named NTM NEXT: Space or presented as
+ *   the official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT: Space does not
+ * violate these additional terms, provided it is clearly distinguished from
+ * the official release and does not imply endorsement. Ports are encouraged
+ * to acknowledge NTM NEXT: Space as their upstream project and provide a
+ * link to it.
+ */
 
 package com.hbmspace.blocks.bomb;
 
 import com.hbm.blocks.ClimbBox;
-import com.hbm.blocks.ITickingBlock;
-import com.hbm.blocks.multiblock.BlockMultiblockCore;
-import com.hbm.blocks.multiblock.MultiblockHandlerXR;
+import com.hbm.blocks.TickingEntityBlock;
+import com.hbm.blocks.multiblock.MultiblockCoreBlock;
 import com.hbm.blocks.multiblock.MultiblockMaskTable;
 import com.hbm.blocks.multiblock.MultiblockSurface;
-import com.hbm.capability.ICapabilityBlock;
+import com.hbm.capability.CapabilityBlock;
 import com.hbm.capability.MachineCaps;
-import com.hbm.interfaces.ILookOverlay;
+import com.hbm.interfaces.LookOverlay;
+import com.hbm.interfaces.LookOverlayProvider;
 import com.hbm.inventory.fluid.NTMFluidProperties;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import com.hbm.items.ModItems;
-import com.hbm.util.BobMathUtil;
-import com.hbmspace.blockentity.bomb.BlockEntityLaunchPadRocket;
+import com.hbm.platform.Platform;
+import com.hbm.util.Blink;
+import com.hbm.util.BlockReadBounds;
+import com.hbm.util.Facing;
+import com.hbmspace.blockentity.bomb.LaunchPadRocketBlockEntity;
 import com.hbmspace.blocks.RocketryBlocksSpace;
 import com.hbmspace.dim.CelestialBody;
 import java.util.List;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
-import mov.movblock.tenon.strip.api.DropSafe;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -47,72 +79,48 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jspecify.annotations.Nullable;
 
-public class LaunchPadRocket extends BlockMultiblockCore
-        implements ITickingBlock, ILookOverlay, ICapabilityBlock, ClimbBox {
+public class LaunchPadRocket extends MultiblockCoreBlock
+        implements TickingEntityBlock, LookOverlayProvider, CapabilityBlock, ClimbBox {
 
-    public static final EnumProperty<Cell> CELL = EnumProperty.create("cell", Cell.class);
-
-    private static final int[] DIMENSIONS = {2, 0, 7, 6, 6, 6};
-    private static final int[] BODY = {2, 0, 6, 6, 4, 4};
-    private static final int[] BODY_BACK = {2, 0, 4, 0, 6, 6};
-    private static final int[] BODY_FRONT = {2, 0, 0, 4, 6, 6};
-    private static final int OFFSET = 6;
+    public static final EnumProperty<Part> PART = EnumProperty.create("part", Part.class);
 
     private static final int[][] TOWER = {
         {2, -4}, {2, -5}, {2, -6}, {3, -4}, {4, -4}, {3, -6}, {4, -6}
     };
+    private static final int[][] WALKWAY = walkway();
+    private static final int TOWER_BASE = 3;
     private static final int LADDER_X = 2;
     private static final int SIDE_LADDER_X = 6;
     private static final int LADDER_Z = -5;
-    private static final AABB LADDER = new AABB(0.75, 0, 0.25, 1.25, 1, 0.75);
+    private static final AABB[] LADDER = new AABB[4];
+
+    static {
+        for (Direction facing : Direction.Plane.HORIZONTAL) {
+            LADDER[facing.get2DDataValue()] =
+                    Facing.rotateAabb(new AABB(-0.75, 0, -0.25, -0.25, 1, 0.25), facing)
+                            .move(0.5, 0, 0.5);
+        }
+    }
 
     public LaunchPadRocket(Properties properties) {
         super(properties);
-        registerDefaultState(defaultBlockState().setValue(CELL, Cell.CORE));
+        registerDefaultState(defaultBlockState().setValue(PART, Part.CORE));
+    }
+
+    private static int[][] walkway() {
+        int[][] cells = new int[19][];
+        cells[0] = new int[] {2, -3};
+        int i = 1;
+        for (int k = 1; k <= 6; k++) {
+            for (int x = -1; x <= 1; x++) cells[i++] = new int[] {x, -k};
+        }
+        return cells;
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder);
-        builder.add(CELL);
-    }
-
-    @Override
-    public int[] getDimensions() {
-        return DIMENSIONS;
-    }
-
-    @Override
-    public int getOffset() {
-        return OFFSET;
-    }
-
-    @Override
-    protected void visitCells(BlockPos core, Direction facing, CellVisitor visitor) {
-        MultiblockHandlerXR.visitBox(core, BODY, facing, visitor);
-        MultiblockHandlerXR.visitBox(core.relative(facing, -2), BODY_BACK, facing, visitor);
-        MultiblockHandlerXR.visitBox(core.relative(facing, 2), BODY_FRONT, facing, visitor);
-        int face = 1 << facing.getOpposite().get3DDataValue();
-        visitInputs(core, facing, pos -> visitor.cell(pos, face));
-    }
-
-    @Override
-    protected void visitPassiveCells(BlockPos core, Direction facing, PassiveCellVisitor visitor) {
-        visitInputs(
-                core,
-                facing,
-                pos ->
-                        visitor.passiveCell(
-                                pos,
-                                MASK_ALL,
-                                PASSIVE_POWER_IN | PASSIVE_FLUID_IN | PASSIVE_ITEMS));
-    }
-
-    private static void visitInputs(BlockPos core, Direction facing, Consumer<BlockPos> input) {
-        for (int or = 1; or < 5; or++) {
-            for (int oy = 0; oy < 3; oy++) input.accept(at(core, facing, or, oy, -7));
-        }
-        input.accept(at(core, facing, -3, 0, -7));
+        builder.add(PART);
     }
 
     private static BlockPos at(BlockPos core, Direction facing, int lx, int ly, int lz) {
@@ -134,22 +142,22 @@ public class LaunchPadRocket extends BlockMultiblockCore
 
     @Override
     public boolean isCellState(BlockState state) {
-        return state.getValue(CELL) != Cell.CORE;
+        return state.getValue(PART) != Part.CORE;
     }
 
     @Override
     protected void visitPlacedCells(
-            LevelAccessor level, BlockPos core, Direction facing, CellVisitor visitor) {
-        visitCells(core, facing, visitor);
-        if (level.getBlockEntity(core) instanceof BlockEntityLaunchPadRocket pad) {
+            LevelAccessor level, BlockPos core, Direction facing, FootprintVisitor visitor) {
+        footprint(facing).visit(core, visitor);
+        if (level.getBlockEntity(core) instanceof LaunchPadRocketBlockEntity pad) {
             visitTower(core, facing, pad.towerHeight(), level.getMaxY(), visitor);
         }
     }
 
     @Override
     protected void visitTeardownCells(
-            LevelAccessor level, BlockPos core, Direction facing, CellVisitor visitor) {
-        visitCells(core, facing, visitor);
+            LevelAccessor level, BlockPos core, Direction facing, FootprintVisitor visitor) {
+        footprint(facing).visit(core, visitor);
         for (int height = 9; height + 2 <= level.getMaxY() - core.getY(); height++) {
             visitWalkway(core, facing, height, level.getMaxY(), visitor);
         }
@@ -157,111 +165,101 @@ public class LaunchPadRocket extends BlockMultiblockCore
     }
 
     public static void visitTower(
-            BlockPos core, Direction facing, int height, int maxY, CellVisitor visitor) {
+            BlockPos core, Direction facing, int height, int maxY, FootprintVisitor visitor) {
         if (height <= 8) return;
-        for (int oy = 3; oy < height + 3 && core.getY() + oy <= maxY; oy++) {
-            for (int[] column : TOWER)
-                visitor.cell(at(core, facing, column[0], oy, column[1]), MASK_NONE);
+        for (int oy = TOWER_BASE; oy < height + 3 && core.getY() + oy <= maxY; oy++) {
+            for (int[] column : TOWER) visitor.cell(at(core, facing, column[0], oy, column[1]));
         }
         visitWalkway(core, facing, height, maxY, visitor);
     }
 
     private static void visitWalkway(
-            BlockPos core, Direction facing, int height, int maxY, CellVisitor visitor) {
+            BlockPos core, Direction facing, int height, int maxY, FootprintVisitor visitor) {
         int oy = height + 2;
         if (core.getY() + oy > maxY) return;
-        visitor.cell(at(core, facing, 2, oy, -3), MASK_NONE);
-        for (int k = 1; k <= 6; k++) {
-            for (int x = -1; x <= 1; x++) visitor.cell(at(core, facing, x, oy, -k), MASK_NONE);
-        }
+        for (int[] cell : WALKWAY) visitor.cell(at(core, facing, cell[0], oy, cell[1]));
     }
 
-    @Override
-    protected BlockState cellStateFor(int lx, int ly, int lz, Direction facing, int shapeId) {
-        return defaultBlockState().setValue(FACING, facing).setValue(CELL, chain(lx, ly, lz));
+    private static boolean inTower(int lx, int ly, int lz, int height) {
+        if (height <= 8 || ly < TOWER_BASE || ly > height + 2) return false;
+        return contains(TOWER, lx, lz) || ly == height + 2 && contains(WALKWAY, lx, lz);
     }
 
-    private static Cell chain(int x, int y, int z) {
-        if (y >= 3) {
-            if (isTower(x, z)) return x == LADDER_X && z == LADDER_Z ? Cell.LADDER : Cell.DOWN;
-            if (z != -4) return z < -4 ? Cell.FORWARD : Cell.BACKWARD;
-            return Cell.COUNTER;
-        }
-        if (x == SIDE_LADDER_X && z == LADDER_Z) return y > 0 ? Cell.LADDER : Cell.LADDER_CLOCKWISE;
-        if (y > 0) return Cell.DOWN;
-        if (z == -7) return Cell.FORWARD;
-        if (x != 0) return x > 0 ? Cell.CLOCKWISE : Cell.COUNTER;
-        return z > 0 ? Cell.BACKWARD : Cell.FORWARD;
-    }
-
-    private static boolean isTower(int x, int z) {
-        for (int[] column : TOWER) {
-            if (column[0] == x && column[1] == z) return true;
+    private static boolean contains(int[][] cells, int lx, int lz) {
+        for (int[] cell : cells) {
+            if (cell[0] == lx && cell[1] == lz) return true;
         }
         return false;
     }
 
     @Override
+    protected BlockState cellStateFor(int lx, int ly, int lz, Direction facing, int shapeId) {
+        boolean ladder = lz == LADDER_Z && lx == (ly >= TOWER_BASE ? LADDER_X : SIDE_LADDER_X);
+        return defaultBlockState()
+                .setValue(FACING, facing)
+                .setValue(PART, ladder ? Part.LADDER : Part.CELL);
+    }
+
+    @Override
     public @Nullable BlockPos findClientCore(BlockGetter level, BlockPos cell) {
-        BlockPos.MutableBlockPos pos = cell.mutable();
-        for (int steps = 0; steps <= level.getHeight() + 4 * OFFSET; steps++) {
-            if (!canReadWithoutLoading(level, pos)) return null;
-            BlockState state = level.getBlockState(pos);
-            if (!state.is(this)) return null;
-            Cell chain = state.getValue(CELL);
-            if (chain == Cell.CORE) return pos.immutable();
-            pos.move(chain.step(state.getValue(FACING)));
+        Direction facing = level.getBlockState(cell).getValue(FACING);
+        BlockPos.MutableBlockPos ladder = new BlockPos.MutableBlockPos();
+        for (int[][] layer : new int[][][] {TOWER, WALKWAY}) {
+            for (int[] xz : layer) {
+                int lx = LADDER_X - xz[0], lz = LADDER_Z - xz[1];
+                ladder.setWithOffset(
+                        cell,
+                        MultiblockMaskTable.worldX(lx, 0, lz, facing),
+                        0,
+                        MultiblockMaskTable.worldZ(lx, 0, lz, facing));
+                if (!isLadder(level, ladder)) continue;
+                int foot = ladder.getY();
+                while (isLadder(level, ladder.setY(foot - 1))) foot--;
+                BlockPos core =
+                        new BlockPos(
+                                ladder.getX()
+                                        - MultiblockMaskTable.worldX(LADDER_X, 0, LADDER_Z, facing),
+                                foot - TOWER_BASE,
+                                ladder.getZ()
+                                        - MultiblockMaskTable.worldZ(
+                                                LADDER_X, 0, LADDER_Z, facing));
+                if (MultiblockSurface.coreClaims(level, core, cell)) return core;
+            }
         }
         return null;
     }
 
+    private boolean isLadder(BlockGetter level, BlockPos pos) {
+        if (!BlockReadBounds.canRead(level, pos) || !canReadWithoutLoading(level, pos))
+            return false;
+        BlockState state = level.getBlockState(pos);
+        return state.is(this) && state.getValue(PART) == Part.LADDER;
+    }
+
     @Override
     public boolean claimsCell(BlockGetter level, BlockPos core, BlockPos cell, Direction facing) {
-        return core.equals(findClientCore(level, cell));
+        if (super.claimsCell(level, core, cell, facing)) return true;
+        int dx = cell.getX() - core.getX(),
+                dy = cell.getY() - core.getY(),
+                dz = cell.getZ() - core.getZ();
+        return level.getBlockEntity(core) instanceof LaunchPadRocketBlockEntity pad
+                && inTower(
+                        MultiblockMaskTable.localX(dx, dy, dz, facing),
+                        dy,
+                        MultiblockMaskTable.localZ(dx, dy, dz, facing),
+                        pad.towerHeight());
     }
 
     @Override
     public @Nullable AABB climbBox(BlockState state) {
-        if (!state.getValue(CELL).ladder) return null;
-        Direction facing = state.getValue(FACING);
-        double x0 = rotatedX(LADDER.minX, LADDER.minZ, facing),
-                z0 = rotatedZ(LADDER.minX, LADDER.minZ, facing);
-        double x1 = rotatedX(LADDER.maxX, LADDER.maxZ, facing),
-                z1 = rotatedZ(LADDER.maxX, LADDER.maxZ, facing);
-        return new AABB(
-                Math.min(x0, x1),
-                LADDER.minY,
-                Math.min(z0, z1),
-                Math.max(x0, x1),
-                LADDER.maxY,
-                Math.max(z0, z1));
-    }
-
-    private static double rotatedX(double x, double z, Direction facing) {
-        double lx = x - 0.5, lz = z - 0.5;
-        return 0.5
-                + switch (facing) {
-                    case WEST -> -lz;
-                    case NORTH -> -lx;
-                    case EAST -> lz;
-                    default -> lx;
-                };
-    }
-
-    private static double rotatedZ(double x, double z, Direction facing) {
-        double lx = x - 0.5, lz = z - 0.5;
-        return 0.5
-                + switch (facing) {
-                    case WEST -> lx;
-                    case NORTH -> -lz;
-                    case EAST -> -lx;
-                    default -> lz;
-                };
+        return state.getValue(PART) == Part.LADDER
+                ? LADDER[state.getValue(FACING).get2DDataValue()]
+                : null;
     }
 
     @Override
     public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return isCellState(state) ? null : new BlockEntityLaunchPadRocket(pos, state);
+        return isCellState(state) ? null : new LaunchPadRocketBlockEntity(pos, state);
     }
 
     private static @Nullable BlockPos core(Level level, BlockPos pos) {
@@ -302,7 +300,7 @@ public class LaunchPadRocket extends BlockMultiblockCore
         if (isCellState(state)
                 && level instanceof ServerLevel server
                 && !player.preventsBlockDrops()
-                && player.hasCorrectToolForDrops(state)) {
+                && Platform.canHarvestBlock(level, pos, state, player)) {
             BlockPos core = core(level, pos);
             if (core != null) {
                 Block.dropResources(
@@ -349,29 +347,29 @@ public class LaunchPadRocket extends BlockMultiblockCore
     }
 
     @Override
-    public void buildLookOverlay(Level level, BlockPos pos, LookInfo info) {
+    public void buildLookOverlay(Level level, BlockPos pos, LookOverlay info) {
         Component title = Component.translatable(getDescriptionId());
         if (CelestialBody.inOrbit(level)) {
-            info.title(title, 0xFFFF00, 0x404000);
-            info.line(
+            info.title(title);
+            info.row(
                     Component.literal("! ! ! ")
                             .append(Component.translatable("atmosphere.yesOrbit"))
                             .append(" ! ! !"),
-                    BobMathUtil.getBlink() ? 0xFF0000 : 0xFFFF00);
+                    Blink.lit() ? 0xFF0000 : 0xFFFF00);
             return;
         }
 
         BlockPos core = core(level, pos);
-        if (core == null || !(level.getBlockEntity(core) instanceof BlockEntityLaunchPadRocket pad))
+        if (core == null || !(level.getBlockEntity(core) instanceof LaunchPadRocketBlockEntity pad))
             return;
         if (pad.rocket == null) return;
         if (pos.getY() - core.getY() > 2) return;
 
-        info.line(Component.translatable("overlay.hbmspace.launchPadRocket.fuels"));
-        int before = info.size();
+        info.row(Component.translatable("overlay.hbmspace.launchPadRocket.fuels"));
+        int before = info.rowCount();
         for (FluidTankNTM tank : pad.tanks) {
             if (tank.getTankType() == null) continue;
-            info.line(
+            info.row(
                     Component.literal("-> ")
                             .withStyle(ChatFormatting.GREEN)
                             .append(
@@ -384,7 +382,7 @@ public class LaunchPadRocket extends BlockMultiblockCore
                                             .withStyle(ChatFormatting.WHITE)));
         }
         if (pad.solidMax > 0) {
-            info.line(
+            info.row(
                     Component.literal("-> ")
                             .withStyle(ChatFormatting.GREEN)
                             .append(
@@ -398,55 +396,25 @@ public class LaunchPadRocket extends BlockMultiblockCore
                                                     pad.solidMax)
                                             .withStyle(ChatFormatting.WHITE)));
         }
-        if (info.size() == before) return;
+        if (info.rowCount() == before) return;
 
-        info.title(title, 0xFFFF00, 0x404000);
+        info.title(title);
     }
 
-    public enum Cell implements StringRepresentable {
-        CORE("core", Turn.NONE, false),
-        DOWN("down", Turn.DOWN, false),
-        FORWARD("forward", Turn.FORWARD, false),
-        BACKWARD("backward", Turn.BACKWARD, false),
-        CLOCKWISE("clockwise", Turn.CLOCKWISE, false),
-        COUNTER("counter", Turn.COUNTER, false),
-        LADDER("ladder", Turn.DOWN, true),
-        LADDER_CLOCKWISE("ladder_clockwise", Turn.CLOCKWISE, true);
+    public enum Part implements StringRepresentable {
+        CORE("core"),
+        CELL("cell"),
+        LADDER("ladder");
 
         private final String name;
-        private final Turn turn;
-        public final boolean ladder;
 
-        Cell(String name, Turn turn, boolean ladder) {
+        Part(String name) {
             this.name = name;
-            this.turn = turn;
-            this.ladder = ladder;
         }
 
-        public Direction step(Direction facing) {
-            return switch (turn) {
-                case DOWN -> Direction.DOWN;
-                case FORWARD -> facing;
-                case BACKWARD -> facing.getOpposite();
-                case CLOCKWISE -> facing.getClockWise();
-                case COUNTER -> facing.getCounterClockWise();
-                case NONE -> throw new IllegalStateException("the core takes no step");
-            };
-        }
-
-        @DropSafe
         @Override
         public String getSerializedName() {
             return name;
         }
-    }
-
-    private enum Turn {
-        NONE,
-        DOWN,
-        FORWARD,
-        BACKWARD,
-        CLOCKWISE,
-        COUNTER
     }
 }

@@ -1,11 +1,27 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbmspace.data;
 
 import com.hbm.data.DataGroup;
 import com.hbm.data.DataGroups;
-import com.hbm.registration.NeoForgeRegistrar;
+import com.hbm.registration.Registrar;
 import com.hbmspace.HbmSpace;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,74 +56,6 @@ public final class SpaceData {
     public static final DataGroups.Param<Boolean> ENABLE_MUN_COWS =
             MOBS.bool("enable_mun_cows", true);
     public static final DataGroups.Param<Boolean> SERVER_SAFETY = MOBS.bool("server_safety", false);
-
-    private static final DataGroups.Group OREGEN = group("oregen");
-    public static final DataGroups.Param<Integer> DUNA_OIL_SPAWN =
-            OREGEN.positive("duna_oil_spawn", 100);
-    public static final DataGroups.Param<Integer> EVE_GAS_SPAWN =
-            OREGEN.positive("eve_gas_spawn", 100);
-    public static final DataGroups.Param<Integer> LAYTHE_OIL_SPAWN =
-            OREGEN.positive("laythe_oil_spawn", 100);
-    public static final DataGroups.Param<Integer> MUN_BRINE_SPAWN =
-            OREGEN.positive("mun_brine_spawn", 100);
-    public static final DataGroups.Param<Integer> MINMUS_BRINE_SPAWN =
-            OREGEN.positive("minmus_brine_spawn", 100);
-    public static final DataGroups.Param<Integer> IKE_BRINE_SPAWN =
-            OREGEN.positive("ike_brine_spawn", 100);
-    public static final DataGroups.Param<Integer> TEKTO_OIL_SPAWN =
-            OREGEN.positive("tekto_oil_spawn", 100);
-    public static final DataGroups.Param<Integer> TEKTO_BEDROCK_OIL_SPAWN =
-            OREGEN.positive("tekto_bedrock_oil_spawn", 200);
-
-    public static final DataGroups.Param<Integer> URANIUM_SPAWN =
-            OREGEN.integer("uranium_spawn", 7);
-    public static final DataGroups.Param<Integer> TITANIUM_SPAWN =
-            OREGEN.integer("titanium_spawn", 8);
-    public static final DataGroups.Param<Integer> SULFUR_SPAWN = OREGEN.integer("sulfur_spawn", 5);
-    public static final DataGroups.Param<Integer> ALUMINIUM_SPAWN =
-            OREGEN.integer("aluminium_spawn", 7);
-    public static final DataGroups.Param<Integer> COPPER_SPAWN = OREGEN.integer("copper_spawn", 12);
-    public static final DataGroups.Param<Integer> FLUORITE_SPAWN =
-            OREGEN.integer("fluorite_spawn", 6);
-    public static final DataGroups.Param<Integer> NITER_SPAWN = OREGEN.integer("niter_spawn", 6);
-    public static final DataGroups.Param<Integer> TUNGSTEN_SPAWN =
-            OREGEN.integer("tungsten_spawn", 10);
-    public static final DataGroups.Param<Integer> LEAD_SPAWN = OREGEN.integer("lead_spawn", 6);
-    public static final DataGroups.Param<Integer> BERYLLIUM_SPAWN =
-            OREGEN.integer("beryllium_spawn", 6);
-    public static final DataGroups.Param<Integer> THORIUM_SPAWN =
-            OREGEN.integer("thorium_spawn", 7);
-    public static final DataGroups.Param<Integer> ASBESTOS_SPAWN =
-            OREGEN.integer("asbestos_spawn", 2);
-    public static final DataGroups.Param<Integer> LITHIUM_SPAWN =
-            OREGEN.integer("lithium_spawn", 6);
-    public static final DataGroups.Param<Integer> RARE_SPAWN = OREGEN.integer("rare_spawn", 6);
-    public static final DataGroups.Param<Integer> CINNEBAR_SPAWN =
-            OREGEN.integer("cinnebar_spawn", 1);
-    public static final DataGroups.Param<Integer> COBALT_SPAWN = OREGEN.integer("cobalt_spawn", 2);
-    public static final DataGroups.Param<Integer> ALEXANDRITE_SPAWN =
-            OREGEN.integer("alexandrite_spawn", 100);
-    public static final DataGroups.Param<Integer> NICKEL_SPAWN = OREGEN.integer("nickel_spawn", 12);
-    public static final DataGroups.Param<Integer> ZINC_SPAWN = OREGEN.integer("zinc_spawn", 8);
-    public static final DataGroups.Param<Integer> MINERAL_SPAWN =
-            OREGEN.integer("mineral_spawn", 4);
-    public static final DataGroups.Param<Integer> IRON_CLUSTER_SPAWN =
-            OREGEN.integer("iron_cluster_spawn", 4);
-    public static final DataGroups.Param<Integer> TITANIUM_CLUSTER_SPAWN =
-            OREGEN.integer("titanium_cluster_spawn", 2);
-    public static final DataGroups.Param<Integer> ALUMINIUM_CLUSTER_SPAWN =
-            OREGEN.integer("aluminium_cluster_spawn", 3);
-    public static final DataGroups.Param<Integer> COPPER_CLUSTER_SPAWN =
-            OREGEN.integer("copper_cluster_spawn", 4);
-    public static final DataGroups.Param<Integer> LIMESTONE_SPAWN =
-            OREGEN.integer("limestone_spawn", 1);
-    public static final DataGroups.Param<Integer> NETHER_PHOSPHORUS_SPAWN =
-            OREGEN.integer("nether_phosphorus_spawn", 24);
-    public static final DataGroups.Param<Integer> COLTAN_RATE = OREGEN.integer("coltan_rate", 2);
-    public static final DataGroups.Param<Integer> DRES_IRON_SPAWN =
-            OREGEN.integer("dres_iron_spawn", 12);
-
-    public static final int IRON_SPAWN = 9;
 
     private static final DataGroups.Group RESERVES = group("reserves");
     public static final DataGroups.Param<Integer> BEDROCK_OIL_PER_DEPOSIT =
@@ -185,8 +133,12 @@ public final class SpaceData {
     public static final DataGroups.Param<Integer> RADIATOR_OUTPUT_TANK_SIZE =
             RADIATOR.integer("output_tank_capacity", 500);
 
+    private static final DataGroups.Group MACHINES = group("machines");
+    public static final DataGroups.Param<Boolean> UNAVOIDABLE_GRAVITY =
+            MACHINES.bool("unavoidable_gravity", true);
+
     static {
-        NeoForgeRegistrar.registerSyncedDataPackRegistry(REGISTRY, DataGroup.CODEC);
+        Registrar.registerSyncedDataPackRegistry(REGISTRY, DataGroup.CODEC);
         DataGroups.addon(SpaceData::applyDataPack);
     }
 

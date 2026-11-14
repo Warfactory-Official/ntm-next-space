@@ -1,0 +1,19 @@
+{
+  "type": "hbm:sellafield_crater",
+  "biomes": [
+    "hbmspace:dres_plains",
+    "hbmspace:dres_large_basins"
+  ],
+  "exponent": 4,
+  "max_size": 128,
+  "min_size": 96,
+  "regolith": {
+    "Name": "hbmspace:dres_rock"
+  },
+  "rock": {
+    "Name": "hbmspace:dres_rock"
+  },
+  "spawn_overrides": {},
+  "step": "lakes",
+  "terrain_adaptation": "none"
+}

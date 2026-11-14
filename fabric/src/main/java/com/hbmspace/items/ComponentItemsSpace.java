@@ -1,29 +1,44 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbmspace.items;
 
 import com.hbm.handler.FuelHandler;
 import com.hbm.items.CreativeContents.Tab;
 import com.hbm.items.CreativeContents;
-import com.hbm.items.ItemExpensive;
+import com.hbm.items.ExpensiveItem;
 import com.hbm.items.ModItems;
-import com.hbm.items.machine.EnumCokeType;
-import com.hbm.lib.Library;
+import com.hbm.items.variant.CokeType;
 import com.hbm.registration.ItemFamily;
 import com.hbm.registration.Reg;
+import com.hbm.util.RegistryUtil;
 import com.hbmspace.HbmSpace;
-import com.hbmspace.items.special.ItemMineralOreSpace;
+import com.hbmspace.items.special.MineralOreSpaceItem;
 import java.util.Locale;
-import mov.movblock.tenon.strip.api.DropSafe;
 import net.minecraft.resources.Identifier;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
-import static com.hbm.inventory.OreDictManager.COALCOKE;
-import static com.hbm.inventory.OreDictManager.LIGCOKE;
-import static com.hbm.inventory.OreDictManager.PETCOKE;
+import static com.hbm.inventory.material.MaterialTagRegistry.COALCOKE;
+import static com.hbm.inventory.material.MaterialTagRegistry.LIGCOKE;
+import static com.hbm.inventory.material.MaterialTagRegistry.PETCOKE;
 import static com.hbmspace.inventory.OreDictManagerSpace.PENTLANDITE;
 
 public final class ComponentItemsSpace {
@@ -46,29 +61,28 @@ public final class ComponentItemsSpace {
                             (props, type) -> new Item(props),
                             Item.Properties::new)
                     .joins(ModItems.CHUNK_ORE);
-    public static final ItemFamily<ExpensiveType, ItemExpensive> ITEM_EXPENSIVE =
+    public static final ItemFamily<ExpensiveType, ExpensiveItem> ITEM_EXPENSIVE =
             HbmSpace.REG
                     .family(
                             "item_expensive",
                             ExpensiveType.class,
-                            (props, type) -> new ItemExpensive(props),
+                            (props, type) -> new ExpensiveItem(props),
                             Item.Properties::new)
                     .joins(ModItems.ITEM_EXPENSIVE);
-    public static final ItemFamily<EnumCokeType, Item> POWDER_COKE =
+    public static final ItemFamily<CokeType, Item> POWDER_COKE =
             HbmSpace.REG.family(
                     "powder_coke",
-                    EnumCokeType.class,
+                    CokeType.class,
                     (props, type) -> new Item(props),
                     Item.Properties::new);
-    public static final ItemFamily<ItemMineralOreSpace.Clump, ItemMineralOreSpace> CLUMP =
+    public static final ItemFamily<MineralOreSpaceItem.Clump, MineralOreSpaceItem> CLUMP =
             HbmSpace.REG.family(
-                    ItemMineralOreSpace.Clump.class,
+                    MineralOreSpaceItem.Clump.class,
                     clump -> "clump_" + clump.name().toLowerCase(Locale.ROOT),
-                    (props, clump) -> new ItemMineralOreSpace(props, clump),
+                    (props, clump) -> new MineralOreSpaceItem(props, clump),
                     Item.Properties::new);
 
-    @DropSafe
-    private static TagKey<Item> cokeDust(EnumCokeType type) {
+    private static TagKey<Item> cokeDust(CokeType type) {
         return switch (type) {
             case COAL -> COALCOKE.dust();
             case LIGNITE -> LIGCOKE.dust();
@@ -95,10 +109,10 @@ public final class ComponentItemsSpace {
                 ITEM_EXPENSIVE.handle(ExpensiveType.ASTRO));
         after(
                 "coke_petroleum",
-                POWDER_COKE.handle(EnumCokeType.COAL),
-                POWDER_COKE.handle(EnumCokeType.LIGNITE),
-                POWDER_COKE.handle(EnumCokeType.PETROLEUM));
-        for (ItemMineralOreSpace.Clump clump : ItemMineralOreSpace.Clump.values()) {
+                POWDER_COKE.handle(CokeType.COAL),
+                POWDER_COKE.handle(CokeType.LIGNITE),
+                POWDER_COKE.handle(CokeType.PETROLEUM));
+        for (MineralOreSpaceItem.Clump clump : MineralOreSpaceItem.Clump.values()) {
             CreativeContents.insertAfter(
                     Tab.PARTS,
                     Identifier.fromNamespaceAndPath(HbmSpace.MOD_ID, "mineral_dust"),
@@ -106,7 +120,7 @@ public final class ComponentItemsSpace {
         }
         FuelHandler.addon(
                 out -> {
-                    for (EnumCokeType type : EnumCokeType.values())
+                    for (CokeType type : CokeType.values())
                         out.accept(POWDER_COKE.get(type), 200 * 16);
                 });
     }
@@ -121,7 +135,7 @@ public final class ComponentItemsSpace {
     private static void after(String anchor, Reg.Handle<? extends Item>... entries) {
         for (Reg.Handle<? extends Item> entry : entries) {
             CreativeContents.insertAfter(
-                    Tab.PARTS, Library.id(anchor), () -> new ItemStack(entry.get()));
+                    Tab.PARTS, RegistryUtil.id(anchor), () -> new ItemStack(entry.get()));
         }
     }
 

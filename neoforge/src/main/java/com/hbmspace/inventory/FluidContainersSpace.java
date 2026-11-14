@@ -1,5 +1,21 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbmspace.inventory;
 
@@ -9,17 +25,12 @@ import com.hbm.config.BalanceConfig;
 import com.hbm.inventory.fluid.NTMFluids;
 import com.hbm.items.ModItems;
 import com.hbmspace.blocks.ModBlocksSpace;
-import com.hbmspace.blocks.TerrainBlocksSpace;
 import com.hbmspace.blocks.ore.CelestialOre;
 import com.hbmspace.dim.SolarSystem.Body;
 import com.hbmspace.inventory.fluid.FluidsSpace;
 import com.hbmspace.items.FoodItemsSpace;
-import com.hbmspace.items.TerrainItemsSpace;
 import java.util.function.IntSupplier;
 import java.util.function.Supplier;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.Identifier;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.material.Fluid;
@@ -60,32 +71,6 @@ public final class FluidContainersSpace {
     }
 
     private FluidContainersSpace() {}
-
-    public static ItemStack filledBucket(@Nullable Fluid content) {
-        if (content == NTMFluids.MERCURY
-                || content == TerrainBlocksSpace.MERCURY_FLUID.source().get()) {
-            return new ItemStack(TerrainItemsSpace.BUCKET_MERCURY.get());
-        }
-        if (content == FluidsSpace.bromine()
-                || content == TerrainBlocksSpace.BROMINE_FLUID.source().get()) {
-            return new ItemStack(TerrainItemsSpace.BUCKET_BROMINE.get());
-        }
-        if (content == FluidsSpace.ccl()
-                || content == TerrainBlocksSpace.CCL_FLUID.source().get()) {
-            return new ItemStack(TerrainItemsSpace.BUCKET_CCL.get());
-        }
-        if (content != null && (content == FluidsSpace.milk() || content == NativeMilk.VALUE)) {
-            return new ItemStack(Items.MILK_BUCKET);
-        }
-        return ItemStack.EMPTY;
-    }
-
-    private static final class NativeMilk {
-        private static final @Nullable Fluid VALUE =
-                BuiltInRegistries.FLUID
-                        .getOptional(Identifier.withDefaultNamespace("milk"))
-                        .orElse(null);
-    }
 
     private static void row(
             Supplier<? extends ItemLike> full,

@@ -1,0 +1,78 @@
+{
+  "feature": {
+    "type": "minecraft:random_selector",
+    "config": {
+      "default": {
+        "feature": {
+          "type": "minecraft:no_op",
+          "config": {}
+        },
+        "placement": []
+      },
+      "features": [
+        {
+          "chance": 0.1,
+          "feature": {
+            "feature": {
+              "type": "hbm:bedrock_ore",
+              "config": {
+                "auto": true,
+                "depth_rock": {
+                  "Name": "hbm:stone_depth"
+                },
+                "entries": [],
+                "host": {
+                  "block": "hbmspace:dres_rock",
+                  "predicate_type": "minecraft:block_match"
+                }
+              }
+            },
+            "placement": []
+          }
+        },
+        {
+          "chance": 0.33333334,
+          "feature": {
+            "feature": {
+              "type": "hbm:bedrock_ore",
+              "config": {
+                "auto": false,
+                "depth_rock": {
+                  "Name": "hbm:stone_depth"
+                },
+                "entries": [
+                  {
+                    "color": 11206655,
+                    "count": 32,
+                    "item": "minecraft:packed_ice",
+                    "tier": 1,
+                    "weight": 1
+                  }
+                ],
+                "host": {
+                  "block": "minecraft:stone",
+                  "predicate_type": "minecraft:block_match"
+                }
+              }
+            },
+            "placement": []
+          }
+        }
+      ]
+    }
+  },
+  "placement": [
+    {
+      "type": "minecraft:random_offset",
+      "xz_spread": {
+        "type": "minecraft:uniform",
+        "max_inclusive": 9,
+        "min_inclusive": 8
+      },
+      "y_spread": 0
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

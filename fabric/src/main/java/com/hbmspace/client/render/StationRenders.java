@@ -1,23 +1,53 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-FileCopyrightText: 2025 George Paton
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: 2025 George Paton
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) 2025 George Paton. All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT: Space";
+ * - a modified version must not be named NTM NEXT: Space or presented as
+ *   the official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT: Space does not
+ * violate these additional terms, provided it is clearly distinguished from
+ * the official release and does not imply endorsement. Ports are encouraged
+ * to acknowledge NTM NEXT: Space as their upstream project and provide a
+ * link to it.
+ */
 
 package com.hbmspace.client.render;
 
 import com.google.common.base.Suppliers;
-import com.hbm.blocks.machine.BlockMachineHorizontal;
-import com.hbm.blocks.multiblock.BlockMultiblockCore;
+import com.hbm.blocks.machine.HorizontalMachineBlock;
+import com.hbm.blocks.multiblock.MultiblockCoreBlock;
 import com.hbm.client.ClientRegistry;
 import com.hbm.client.render.flywheel.MeshPart;
 import com.hbm.main.ResourceManager;
-import com.hbm.util.BobMathUtil;
 import com.hbm.util.Facing;
-import com.hbmspace.blockentity.machine.BlockEntityMachineGasDock;
-import com.hbmspace.blockentity.machine.BlockEntityMachineHTR3;
-import com.hbmspace.blockentity.machine.BlockEntityOrbitalStation;
-import com.hbmspace.blockentity.machine.BlockEntityOrbitalStationComputer;
-import com.hbmspace.blockentity.machine.BlockEntityOrbitalStationLauncher;
-import com.hbmspace.blockentity.machine.BlockEntityTransporterRocket;
+import com.hbm.util.NtmMath;
+import com.hbmspace.blockentity.machine.GasDockBlockEntity;
+import com.hbmspace.blockentity.machine.HTR3BlockEntity;
+import com.hbmspace.blockentity.machine.OrbitalStationBlockEntity;
+import com.hbmspace.blockentity.machine.OrbitalStationComputerBlockEntity;
+import com.hbmspace.blockentity.machine.OrbitalStationLauncherBlockEntity;
+import com.hbmspace.blockentity.machine.TransporterRocketBlockEntity;
 import com.hbmspace.blocks.StationBlockEntitiesSpace;
 import com.hbmspace.client.render.PosedParts.Part;
 import com.hbmspace.client.render.flywheel.HTRNeoVisual;
@@ -38,6 +68,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.phys.AABB;
 import org.joml.Matrix4f;
+import org.joml.Quaternionfc;
 
 public final class StationRenders {
 
@@ -45,28 +76,28 @@ public final class StationRenders {
 
     private static final class Parts {
 
-        private static final PosedParts<BlockEntityOrbitalStation> STATION =
+        private static final PosedParts<OrbitalStationBlockEntity> STATION =
                 new PosedParts<>(
                         stationArms(
                                 StationModels.docking_port_tex,
-                                (BlockEntityOrbitalStation be, float pt) ->
+                                (OrbitalStationBlockEntity be, float pt) ->
                                         be.prevRot + (be.rot - be.prevRot) * pt),
                         StationRenders::stationBox,
                         StationRenders::stationBox);
 
-        private static final PosedParts<BlockEntityOrbitalStationLauncher> LAUNCHER =
+        private static final PosedParts<OrbitalStationLauncherBlockEntity> LAUNCHER =
                 new PosedParts<>(
                         stationArms(
                                 StationModels.docking_port_launcher_tex,
-                                (BlockEntityOrbitalStationLauncher be, float pt) ->
+                                (OrbitalStationLauncherBlockEntity be, float pt) ->
                                         be.prevRot + (be.rot - be.prevRot) * pt),
                         StationRenders::stationBox,
                         StationRenders::stationBox);
 
-        private static final PosedParts<BlockEntityOrbitalStationComputer> COMPUTER =
+        private static final PosedParts<OrbitalStationComputerBlockEntity> COMPUTER =
                 new PosedParts<>(
                         List.of(
-                                new Part<BlockEntityOrbitalStationComputer>(
+                                new Part<OrbitalStationComputerBlockEntity>(
                                         StationModels.orbital_computer,
                                         "drive",
                                         StationModels.orbital_computer_tex,
@@ -77,7 +108,7 @@ public final class StationRenders {
                                                             Facing.yaw(
                                                                             be.getBlockState()
                                                                                     .getValue(
-                                                                                            BlockMachineHorizontal
+                                                                                            HorizontalMachineBlock
                                                                                                     .FACING),
                                                                             0)
                                                                     * DEG);
@@ -86,10 +117,10 @@ public final class StationRenders {
                         StationRenders::blockBox,
                         StationRenders::blockBox);
 
-        private static final PosedParts<BlockEntityTransporterRocket> TRANSPORTER =
+        private static final PosedParts<TransporterRocketBlockEntity> TRANSPORTER =
                 new PosedParts<>(
                         List.of(
-                                new Part<BlockEntityTransporterRocket>(
+                                new Part<TransporterRocketBlockEntity>(
                                         StationModels.transporter_pad,
                                         "pipe",
                                         StationModels.transporter_pad_tex,
@@ -104,7 +135,7 @@ public final class StationRenders {
                                                     .translate(0F, -0.75F, 0.75F);
                                             return true;
                                         }),
-                                new Part<BlockEntityTransporterRocket>(
+                                new Part<TransporterRocketBlockEntity>(
                                         ResourceManager.miner_rocket,
                                         "Cylinder",
                                         StationModels.miner_rocket_tex,
@@ -137,10 +168,10 @@ public final class StationRenders {
                                         pos.getY() + 204,
                                         pos.getZ() + 3));
 
-        private static final PosedParts<BlockEntityMachineGasDock> GAS_DOCK =
+        private static final PosedParts<GasDockBlockEntity> GAS_DOCK =
                 new PosedParts<>(
                         List.of(
-                                new Part<BlockEntityMachineGasDock>(
+                                new Part<GasDockBlockEntity>(
                                         ResourceManager.miner_rocket,
                                         "Cylinder",
                                         StationModels.gas_rocket_tex,
@@ -153,9 +184,9 @@ public final class StationRenders {
                                             return be.launchTicks < 100;
                                         })),
                         StationRenders::gasDockBox,
-                        StationRenders::gasDockBox);
+                        pos -> gasDockBox(pos).expandTowards(0, 103, 0));
 
-        private static final PosedParts<BlockEntityMachineHTR3> HTR3 =
+        private static final PosedParts<HTR3BlockEntity> HTR3 =
                 new PosedParts<>(htr3Parts(), StationRenders::htr3Box, StationRenders::htr3Box);
     }
 
@@ -183,7 +214,7 @@ public final class StationRenders {
                                                 Facing.yaw(
                                                                 be.getBlockState()
                                                                         .getValue(
-                                                                                BlockMultiblockCore
+                                                                                MultiblockCoreBlock
                                                                                         .FACING),
                                                                 0)
                                                         * DEG)
@@ -197,14 +228,14 @@ public final class StationRenders {
         return arms;
     }
 
-    private static Matrix4f padBase(BlockEntityTransporterRocket be, Matrix4f out) {
+    private static Matrix4f padBase(TransporterRocketBlockEntity be, Matrix4f out) {
         return out.translate(0.5F, 0F, 0.5F)
                 .rotateY(
-                        Facing.yaw(be.getBlockState().getValue(BlockMultiblockCore.FACING), 90)
+                        Facing.yaw(be.getBlockState().getValue(MultiblockCoreBlock.FACING), 90)
                                 * DEG);
     }
 
-    private static float pipeEngage(BlockEntityTransporterRocket pad, float interp) {
+    private static float pipeEngage(TransporterRocketBlockEntity pad, float interp) {
         if (pad.launchTicks >= 0) return !pad.hasRocket ? (pad.launchTicks + interp) * 0.25F : 1.0F;
         return 1 - (-pad.launchTicks - 1 + interp) * 0.25F;
     }
@@ -215,7 +246,7 @@ public final class StationRenders {
 
     private record Htr3Timeline(double sway, double h, double v, double piston, double cover) {
 
-        static Htr3Timeline of(BlockEntityMachineHTR3 be, float pt) {
+        static Htr3Timeline of(HTR3BlockEntity be, float pt) {
             double t = be.lastTime + (be.time - be.lastTime) * pt;
 
             double swayTimer = (t / 3D) % (Math.PI * 4);
@@ -231,7 +262,7 @@ public final class StationRenders {
             double v = (Math.sin(bellTimer) + Math.sin(bellTimer * 1.5D)) / 1.90596D;
 
             double pistonTimer = (t / 5D) % (Math.PI * 2);
-            double piston = BobMathUtil.sps(pistonTimer);
+            double piston = NtmMath.flatSine(pistonTimer);
 
             double coverTimer = (t / 5D) % (Math.PI * 4);
             double cover =
@@ -246,8 +277,8 @@ public final class StationRenders {
         void apply(Htr3Timeline timeline, Matrix4f out);
     }
 
-    private static Part<BlockEntityMachineHTR3> htr3(String group, Htr3Pose pose) {
-        return new Part<BlockEntityMachineHTR3>(
+    private static Part<HTR3BlockEntity> htr3(String group, Htr3Pose pose) {
+        return new Part<HTR3BlockEntity>(
                 StationModels.htr3,
                 group,
                 ResourceManager.lpw2_tex,
@@ -257,7 +288,7 @@ public final class StationRenders {
                             .rotateY(
                                     Facing.yaw(
                                                     be.getBlockState()
-                                                            .getValue(BlockMultiblockCore.FACING),
+                                                            .getValue(MultiblockCoreBlock.FACING),
                                                     90)
                                             * DEG);
                     pose.apply(Htr3Timeline.of(be, pt), out);
@@ -265,7 +296,7 @@ public final class StationRenders {
                 });
     }
 
-    private static List<Part<BlockEntityMachineHTR3>> htr3Parts() {
+    private static List<Part<HTR3BlockEntity>> htr3Parts() {
         double shroud = 0.125D;
         double magnitude = 2D;
         return List.of(
@@ -311,7 +342,7 @@ public final class StationRenders {
 
     public static void launcherRocketOrigin(PoseStack pose, float yaw, RocketStruct rocket) {
         pose.translate(0.5F, 1.0F, 0.5F);
-        pose.mulPose(Axis.YP.rotationDegrees(yaw));
+        pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(yaw));
         pose.translate(0, -rocket.getHeight() - 0.5, 0);
     }
 
@@ -353,22 +384,22 @@ public final class StationRenders {
             ClientRegistry.BlockEntityRendererRegistrar reg) {
         reg.accept(
                 StationBlockEntitiesSpace.ORBITAL_STATION.get(),
-                context -> new RenderPosedParts<>(Parts.STATION));
+                context -> new PosedPartsRenderer<>(Parts.STATION));
         reg.accept(
                 StationBlockEntitiesSpace.ORBITAL_STATION_COMPUTER.get(),
-                context -> new RenderPosedParts<>(Parts.COMPUTER));
+                context -> new PosedPartsRenderer<>(Parts.COMPUTER));
         reg.accept(
                 StationBlockEntitiesSpace.TRANSPORTER_ROCKET.get(),
-                context -> new RenderPosedParts<>(Parts.TRANSPORTER));
+                context -> new PosedPartsRenderer<>(Parts.TRANSPORTER));
         reg.accept(
                 StationBlockEntitiesSpace.GAS_DOCK.get(),
-                context -> new RenderPosedParts<>(Parts.GAS_DOCK));
+                context -> new PosedPartsRenderer<>(Parts.GAS_DOCK));
         reg.accept(
                 StationBlockEntitiesSpace.HTR3.get(),
-                context -> new RenderPosedParts<>(Parts.HTR3));
+                context -> new PosedPartsRenderer<>(Parts.HTR3));
         reg.accept(
                 StationBlockEntitiesSpace.ORBITAL_STATION_LAUNCHER.get(),
-                context -> new RenderStationLauncher(Parts.LAUNCHER));
+                context -> new StationLauncherRenderer(Parts.LAUNCHER));
     }
 
     public static void registerVisualizers() {

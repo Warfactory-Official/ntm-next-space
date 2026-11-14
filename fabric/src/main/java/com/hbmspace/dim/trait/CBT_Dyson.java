@@ -1,11 +1,42 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-FileCopyrightText: 2024-2025 George Paton
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: 2024-2025 George Paton
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) 2024-2025 George Paton. All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT: Space";
+ * - a modified version must not be named NTM NEXT: Space or presented as
+ *   the official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT: Space does not
+ * violate these additional terms, provided it is clearly distinguished from
+ * the official release and does not imply endorsement. Ports are encouraged
+ * to acknowledge NTM NEXT: Space as their upstream project and provide a
+ * link to it.
+ */
 
 package com.hbmspace.dim.trait;
 
 import com.hbmspace.dim.CelestialBody;
 import io.netty.buffer.ByteBuf;
+import io.netty.handler.codec.DecoderException;
 import java.util.HashMap;
 import java.util.Map;
 import net.minecraft.nbt.CompoundTag;
@@ -114,9 +145,9 @@ public class CBT_Dyson extends CelestialBodyTrait {
 
     @Override
     public void writeToBytes(ByteBuf buf) {
-        buf.writeInt(swarms.size() * 2);
+        buf.writeInt(swarms.size());
         for (Map.Entry<Integer, Swarm> entry : swarms.entrySet()) {
-            buf.writeShort(entry.getKey());
+            buf.writeInt(entry.getKey());
             buf.writeInt(entry.getValue().members);
         }
     }
@@ -124,9 +155,12 @@ public class CBT_Dyson extends CelestialBodyTrait {
     @Override
     public void readFromBytes(ByteBuf buf) {
         int count = buf.readInt();
-        swarms = new HashMap<>();
-        for (int i = 0; i < count; i += 2) {
-            int id = buf.readShort();
+        if (count < 0 || count > buf.readableBytes() / (Integer.BYTES * 2)) {
+            throw new DecoderException("Invalid Dyson swarm count: " + count);
+        }
+        swarms = new HashMap<>(Math.min(count, 65_536));
+        for (int i = 0; i < count; i++) {
+            int id = buf.readInt();
             int members = buf.readInt();
             swarms.put(id, new Swarm(members));
         }

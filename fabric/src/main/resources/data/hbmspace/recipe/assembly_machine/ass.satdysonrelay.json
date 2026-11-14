@@ -28,7 +28,10 @@
       "ingredient": "#hbm:wires_dense/bscco"
     },
     {
-      "ingredient": "hbm:battery_pack_battery_lithium"
+      "ingredient": "hbm:battery_pack_battery_lithium",
+      "predicates": {
+        "hbm:consume_component": "hbm:battery_charge"
+      }
     }
   ],
   "order": 110083,

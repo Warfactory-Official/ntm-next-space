@@ -1,13 +1,28 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbmspace.mixin;
 
-import com.hbm.blockentity.machine.BlockEntityMachineTeleporter;
-import com.hbm.blocks.machine.MachineTeleporter;
+import com.hbm.blockentity.travel.TeleporterBlockEntity;
+import com.hbm.blocks.machine.TeleporterBlock;
 import com.hbm.capability.MachineCaps;
-import com.hbm.interfaces.ILookOverlay.LookInfo;
-import com.hbmspace.blockentity.machine.SpaceTeleporterTank;
+import com.hbm.interfaces.LookOverlay;
 import java.util.Locale;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -19,7 +34,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(MachineTeleporter.class)
+@Mixin(TeleporterBlock.class)
 public abstract class MixinMachineTeleporter {
 
     @Inject(method = "caps", at = @At("RETURN"), cancellable = true)
@@ -29,37 +44,38 @@ public abstract class MixinMachineTeleporter {
 
     @Inject(method = "buildLookOverlay", at = @At("HEAD"), cancellable = true)
     private void hbmspace$crossingFuelLine(
-            Level level, BlockPos pos, LookInfo info, CallbackInfo ci) {
-        if (!(level.getBlockEntity(pos) instanceof BlockEntityMachineTeleporter tele)
+            Level level, BlockPos pos, LookOverlay info, CallbackInfo ci) {
+        if (!(level.getBlockEntity(pos) instanceof TeleporterBlockEntity tele)
                 || tele.target == null
                 || level.dimension().equals(tele.target.dimension())) return;
 
-        info.title(((MachineTeleporter) (Object) this).getName().getString(), 0xFFFF00, 0x404000);
-        info.line(
-                (tele.power >= BlockEntityMachineTeleporter.CONSUMPTION
-                                ? ChatFormatting.GREEN
-                                : ChatFormatting.RED)
-                        + String.format(Locale.US, "%,d", tele.power)
-                        + " / "
-                        + String.format(Locale.US, "%,d", BlockEntityMachineTeleporter.MAX_POWER));
-        var tank = ((SpaceTeleporterTank) tele).hbmspace$tank();
-        info.line(
-                Component.translatable("block.hbmspace.nmass").getString()
-                        + ": "
-                        + tank.getFill()
-                        + "/"
-                        + tank.getMaxFill()
-                        + "mB");
-        info.line(
-                "Destination: "
-                        + tele.target.pos().getX()
-                        + " / "
-                        + tele.target.pos().getY()
-                        + " / "
-                        + tele.target.pos().getZ()
-                        + " (D: "
-                        + tele.target.dimension().identifier()
-                        + ")");
+        info.title(((TeleporterBlock) (Object) this).getName());
+        info.row(
+                Component.literal(
+                                String.format(Locale.ROOT, "%,d", tele.power)
+                                        + " / "
+                                        + String.format(
+                                                Locale.ROOT,
+                                                "%,d",
+                                                TeleporterBlockEntity.MAX_POWER))
+                        .withStyle(
+                                tele.power >= TeleporterBlockEntity.CONSUMPTION
+                                        ? ChatFormatting.GREEN
+                                        : ChatFormatting.RED));
+        var tank = ((com.hbmspace.blockentity.machine.SpaceTeleporterTank) (tele)).hbmspace$tank();
+        info.row(
+                Component.translatable(
+                        "overlay.hbm.tank",
+                        Component.translatable("block.hbmspace.nmass"),
+                        tank.getFill(),
+                        tank.getMaxFill()));
+        info.row(
+                Component.translatable(
+                        "overlay.hbm.destination",
+                        tele.target.pos().getX(),
+                        tele.target.pos().getY(),
+                        tele.target.pos().getZ(),
+                        tele.target.dimension().identifier().toString()));
         ci.cancel();
     }
 }

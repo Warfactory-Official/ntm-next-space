@@ -1,0 +1,46 @@
+{
+  "feature": {
+    "type": "hbmspace:ttree",
+    "config": {
+      "leaves": {
+        "Name": "hbmspace:pet_leaves",
+        "Properties": {
+          "distance": "7",
+          "persistent": "false",
+          "waterlogged": "false"
+        }
+      },
+      "log": {
+        "Name": "hbmspace:vinyl_log",
+        "Properties": {
+          "axis": "y"
+        }
+      },
+      "offset": 2,
+      "smallest": 4,
+      "tallest": 5,
+      "vines": false,
+      "xz": 3,
+      "y": 2
+    }
+  },
+  "placement": [
+    {
+      "type": "minecraft:count",
+      "count": 2
+    },
+    {
+      "type": "minecraft:rarity_filter",
+      "chance": 8
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "hbm:light_blocking_height"
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

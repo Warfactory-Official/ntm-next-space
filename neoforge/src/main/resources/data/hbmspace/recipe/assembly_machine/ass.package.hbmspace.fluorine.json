@@ -3,7 +3,7 @@
   "duration": 40,
   "input_fluids": [
     {
-      "type": "hbmspace:fluorine",
+      "type": "hbm:fluorine",
       "amount": 32000
     }
   ],
@@ -20,7 +20,7 @@
     {
       "components": {
         "hbm:fluid_content": {
-          "type": "hbmspace:fluorine",
+          "type": "hbm:fluorine",
           "amount": 32000
         }
       },

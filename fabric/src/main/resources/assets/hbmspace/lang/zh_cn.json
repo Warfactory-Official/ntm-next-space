@@ -785,6 +785,7 @@
   "block.hbmspace.vinyl_sand": "乙烯沙",
   "block.hbmspace.vinyl_vine": "乙烯基藤蔓",
   "body.kerbin": "地球",
+  "chat.hbmspace.loaded": "已加载由 JamesH2 与 Mellow 开发、movblock 移植至 Minecraft %2$s 的 NTM: Space（移植版本 %1$s，适配 NTM NEXT %3$s）！\n也来看看我们的 1.20.1–26.1 移植版：%4$s 和 %5$s！",
   "chem.bloodfuel": "血液燃料生产",
   "chem.bloodfuelPressurized": "血液燃料生产",
   "chem.hydrapiss": "尿素生产联氨",

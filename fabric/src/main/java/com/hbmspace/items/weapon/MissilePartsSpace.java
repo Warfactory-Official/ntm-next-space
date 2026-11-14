@@ -1,20 +1,36 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbmspace.items.weapon;
 
 import com.hbm.items.CreativeContents.Tab;
 import com.hbm.items.CreativeContents;
-import com.hbm.items.weapon.ItemCustomMissilePart.FuelType;
-import com.hbm.items.weapon.ItemCustomMissilePart.PartSize;
-import com.hbm.items.weapon.ItemCustomMissilePart;
-import com.hbm.lib.Library;
+import com.hbm.items.weapon.CustomMissilePartItem.FuelType;
+import com.hbm.items.weapon.CustomMissilePartItem.PartSize;
+import com.hbm.items.weapon.CustomMissilePartItem;
 import com.hbm.registration.ItemFamily;
 import com.hbm.registration.Reg;
+import com.hbm.util.RegistryUtil;
 import com.hbmspace.HbmSpace;
 import com.hbmspace.dim.SolarSystem;
-import com.hbmspace.items.ItemVOTVdrive;
 import com.hbmspace.items.ModDataComponentsSpace;
+import com.hbmspace.items.VOTVdriveItem;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Supplier;
@@ -45,7 +61,7 @@ public final class MissilePartsSpace {
                     meshOf(SPACE + "rp_landing_capsule"),
                     meshOf(SPACE + "rp_drop_pod"));
 
-    public static final Reg.Handle<ItemCustomMissilePart> MP_THRUSTER_10_HYDRAZINE =
+    public static final Reg.Handle<CustomMissilePartItem> MP_THRUSTER_10_HYDRAZINE =
             part(
                     "mp_thruster_10_hydrazine",
                     "mp_thruster",
@@ -57,7 +73,7 @@ public final class MissilePartsSpace {
                     p ->
                             p.makeThruster(MissileKindsSpace.HYDRAZINE, 1F, 1.5F, PartSize.SIZE_10)
                                     .setHealth(15F));
-    public static final Reg.Handle<ItemCustomMissilePart> MP_THRUSTER_20_METHALOX =
+    public static final Reg.Handle<CustomMissilePartItem> MP_THRUSTER_20_METHALOX =
             part(
                     "mp_thruster_20_methalox",
                     "mp_thruster",
@@ -69,7 +85,7 @@ public final class MissilePartsSpace {
                     p ->
                             p.makeThruster(MissileKindsSpace.METHALOX, 1F, 100F, PartSize.SIZE_20)
                                     .setHealth(30F));
-    public static final Reg.Handle<ItemCustomMissilePart> MP_THRUSTER_20_METHALOX_DUAL =
+    public static final Reg.Handle<CustomMissilePartItem> MP_THRUSTER_20_METHALOX_DUAL =
             part(
                     "mp_thruster_20_methalox_dual",
                     "mp_thruster",
@@ -81,7 +97,7 @@ public final class MissilePartsSpace {
                     p ->
                             p.makeThruster(MissileKindsSpace.METHALOX, 1F, 100F, PartSize.SIZE_20)
                                     .setHealth(30F));
-    public static final Reg.Handle<ItemCustomMissilePart> MP_THRUSTER_20_METHALOX_TRIPLE =
+    public static final Reg.Handle<CustomMissilePartItem> MP_THRUSTER_20_METHALOX_TRIPLE =
             part(
                     "mp_thruster_20_methalox_triple",
                     "mp_thruster",
@@ -93,7 +109,7 @@ public final class MissilePartsSpace {
                     p ->
                             p.makeThruster(MissileKindsSpace.METHALOX, 1F, 100F, PartSize.SIZE_20)
                                     .setHealth(30F));
-    public static final Reg.Handle<ItemCustomMissilePart> MP_THRUSTER_20_HYDROGEN =
+    public static final Reg.Handle<CustomMissilePartItem> MP_THRUSTER_20_HYDROGEN =
             part(
                     "mp_thruster_20_hydrogen",
                     "mp_thruster",
@@ -105,7 +121,7 @@ public final class MissilePartsSpace {
                     p ->
                             p.makeThruster(FuelType.HYDROGEN, 1F, 100F, PartSize.SIZE_20)
                                     .setHealth(30F));
-    public static final Reg.Handle<ItemCustomMissilePart> MP_THRUSTER_20_HYDROGEN_DUAL =
+    public static final Reg.Handle<CustomMissilePartItem> MP_THRUSTER_20_HYDROGEN_DUAL =
             part(
                     "mp_thruster_20_hydrogen_dual",
                     "mp_thruster",
@@ -117,7 +133,7 @@ public final class MissilePartsSpace {
                     p ->
                             p.makeThruster(FuelType.HYDROGEN, 1F, 100F, PartSize.SIZE_20)
                                     .setHealth(30F));
-    public static final Reg.Handle<ItemCustomMissilePart> MP_THRUSTER_20_HYDROGEN_TRIPLE =
+    public static final Reg.Handle<CustomMissilePartItem> MP_THRUSTER_20_HYDROGEN_TRIPLE =
             part(
                     "mp_thruster_20_hydrogen_triple",
                     "mp_thruster",
@@ -129,7 +145,7 @@ public final class MissilePartsSpace {
                     p ->
                             p.makeThruster(FuelType.HYDROGEN, 1F, 100F, PartSize.SIZE_20)
                                     .setHealth(30F));
-    public static final Reg.Handle<ItemCustomMissilePart> MP_THRUSTER_20_HYDRAZINE =
+    public static final Reg.Handle<CustomMissilePartItem> MP_THRUSTER_20_HYDRAZINE =
             part(
                     "mp_thruster_20_hydrazine",
                     "mp_thruster",
@@ -142,7 +158,7 @@ public final class MissilePartsSpace {
                             p.makeThruster(MissileKindsSpace.HYDRAZINE, 1F, 100F, PartSize.SIZE_20)
                                     .setHealth(35F));
 
-    public static final Reg.Handle<ItemCustomMissilePart> MP_FUSELAGE_10_HYDRAZINE =
+    public static final Reg.Handle<CustomMissilePartItem> MP_FUSELAGE_10_HYDRAZINE =
             part(
                     "mp_fuselage_10_hydrazine",
                     "mp_fuselage",
@@ -159,7 +175,7 @@ public final class MissilePartsSpace {
                                             PartSize.SIZE_10)
                                     .setHealth(25F));
 
-    public static final Reg.Handle<ItemCustomMissilePart> RP_FUSELAGE_20_12 =
+    public static final Reg.Handle<CustomMissilePartItem> RP_FUSELAGE_20_12 =
             part(
                     "rp_f_20_12",
                     "mp_fuselage",
@@ -174,7 +190,7 @@ public final class MissilePartsSpace {
                                     64_000F,
                                     PartSize.SIZE_20,
                                     PartSize.SIZE_20));
-    public static final Reg.Handle<ItemCustomMissilePart> RP_FUSELAGE_20_6 =
+    public static final Reg.Handle<CustomMissilePartItem> RP_FUSELAGE_20_6 =
             part(
                     "rp_f_20_6",
                     "mp_fuselage",
@@ -189,7 +205,7 @@ public final class MissilePartsSpace {
                                     32_000F,
                                     PartSize.SIZE_20,
                                     PartSize.SIZE_20));
-    public static final Reg.Handle<ItemCustomMissilePart> RP_FUSELAGE_20_3 =
+    public static final Reg.Handle<CustomMissilePartItem> RP_FUSELAGE_20_3 =
             part(
                     "rp_f_20_3",
                     "mp_fuselage",
@@ -204,7 +220,7 @@ public final class MissilePartsSpace {
                                     16_000F,
                                     PartSize.SIZE_20,
                                     PartSize.SIZE_20));
-    public static final Reg.Handle<ItemCustomMissilePart> RP_FUSELAGE_20_1 =
+    public static final Reg.Handle<CustomMissilePartItem> RP_FUSELAGE_20_1 =
             part(
                     "rp_f_20_1",
                     "mp_fuselage",
@@ -219,7 +235,7 @@ public final class MissilePartsSpace {
                                     6_000F,
                                     PartSize.SIZE_20,
                                     PartSize.SIZE_20));
-    public static final Reg.Handle<ItemCustomMissilePart> RP_FUSELAGE_20_12_HYDRAZINE =
+    public static final Reg.Handle<CustomMissilePartItem> RP_FUSELAGE_20_12_HYDRAZINE =
             part(
                     "mp_fuselage_20_hydrazine",
                     "mp_fuselage",
@@ -235,7 +251,7 @@ public final class MissilePartsSpace {
                                             PartSize.SIZE_20,
                                             PartSize.SIZE_20)
                                     .setHealth(25F));
-    public static final Reg.Handle<ItemCustomMissilePart> RP_LEGS_20 =
+    public static final Reg.Handle<CustomMissilePartItem> RP_LEGS_20 =
             part(
                     "rp_l_20",
                     "mp_fuselage",
@@ -245,7 +261,7 @@ public final class MissilePartsSpace {
                     3F,
                     false,
                     p -> p.makeStability(0F, PartSize.SIZE_20));
-    public static final Reg.Handle<ItemCustomMissilePart> RP_CAPSULE_20 =
+    public static final Reg.Handle<CustomMissilePartItem> RP_CAPSULE_20 =
             part(
                     "rp_c_20",
                     "mp_warhead",
@@ -255,7 +271,7 @@ public final class MissilePartsSpace {
                     2.25F,
                     false,
                     p -> p.makeWarhead(MissileKindsSpace.APOLLO, 15F, 8F, PartSize.SIZE_20));
-    public static final Reg.Handle<ItemCustomMissilePart> RP_STATION_CORE_20 =
+    public static final Reg.Handle<CustomMissilePartItem> RP_STATION_CORE_20 =
             part(
                     "rp_sc_20",
                     "mp_warhead",
@@ -265,7 +281,7 @@ public final class MissilePartsSpace {
                     5F,
                     false,
                     p -> p.makeWarhead(MissileKindsSpace.SATELLITE, 15F, 64F, PartSize.SIZE_20));
-    public static final Reg.Handle<ItemCustomMissilePart> RP_POD_20 =
+    public static final Reg.Handle<CustomMissilePartItem> RP_POD_20 =
             part(
                     "rp_pod_20",
                     "mp_warhead",
@@ -276,26 +292,26 @@ public final class MissilePartsSpace {
                     false,
                     p -> p.makeWarhead(MissileKindsSpace.APOLLO, 15F, 4F, PartSize.SIZE_20));
 
-    public static final Reg.Handle<ItemCustomRocket> ROCKET_CUSTOM =
+    public static final Reg.Handle<CustomRocketItem> ROCKET_CUSTOM =
             HbmSpace.REG.item(
                     "rocket_custom",
-                    ItemCustomRocket::new,
+                    CustomRocketItem::new,
                     () -> new Item.Properties().stacksTo(1));
 
     public static final Reg.Handle<Item> HARD_DRIVE =
             HbmSpace.REG.item("hard_drive", Item::new, Item.Properties::new);
 
-    public static final ItemFamily<SolarSystem.Body, ItemVOTVdrive> HARD_DRIVE_FULL =
+    public static final ItemFamily<SolarSystem.Body, VOTVdriveItem> HARD_DRIVE_FULL =
             HbmSpace.REG.family(
                     "hard_drive_full",
                     SolarSystem.Body.class,
-                    ItemVOTVdrive::new,
+                    VOTVdriveItem::new,
                     () -> new Item.Properties().stacksTo(1));
 
     static {
-        Identifier after = Library.id("mp_thruster_10_solid");
+        Identifier after = RegistryUtil.id("mp_thruster_10_solid");
         CreativeContents.insertAfter(Tab.MISSILES, after, stack(MP_THRUSTER_10_HYDRAZINE));
-        after = Library.id("mp_thruster_20_kerosene_triple");
+        after = RegistryUtil.id("mp_thruster_20_kerosene_triple");
         CreativeContents.insertAfter(Tab.MISSILES, after, stack(MP_THRUSTER_20_METHALOX));
         CreativeContents.insertAfter(Tab.MISSILES, after, stack(MP_THRUSTER_20_METHALOX_DUAL));
         CreativeContents.insertAfter(Tab.MISSILES, after, stack(MP_THRUSTER_20_METHALOX_TRIPLE));
@@ -304,11 +320,13 @@ public final class MissilePartsSpace {
         CreativeContents.insertAfter(Tab.MISSILES, after, stack(MP_THRUSTER_20_HYDROGEN_TRIPLE));
         CreativeContents.insertAfter(
                 Tab.MISSILES,
-                Library.id("mp_thruster_20_solid_multier"),
+                RegistryUtil.id("mp_thruster_20_solid_multier"),
                 stack(MP_THRUSTER_20_HYDRAZINE));
         CreativeContents.insertAfter(
-                Tab.MISSILES, Library.id("mp_fuselage_10_solid"), stack(MP_FUSELAGE_10_HYDRAZINE));
-        after = Library.id("mp_c_5");
+                Tab.MISSILES,
+                RegistryUtil.id("mp_fuselage_10_solid"),
+                stack(MP_FUSELAGE_10_HYDRAZINE));
+        after = RegistryUtil.id("mp_c_5");
         CreativeContents.insertAfter(Tab.MISSILES, after, stack(RP_FUSELAGE_20_12));
         CreativeContents.insertAfter(Tab.MISSILES, after, stack(RP_FUSELAGE_20_6));
         CreativeContents.insertAfter(Tab.MISSILES, after, stack(RP_FUSELAGE_20_3));
@@ -318,16 +336,17 @@ public final class MissilePartsSpace {
         CreativeContents.insertAfter(Tab.MISSILES, after, stack(RP_CAPSULE_20));
         CreativeContents.insertAfter(Tab.MISSILES, after, stack(RP_STATION_CORE_20));
         CreativeContents.insertAfter(Tab.MISSILES, after, stack(RP_POD_20));
-        CreativeContents.insertAfter(Tab.PARTS, Library.id("part_grip_pvc"), stack(HARD_DRIVE));
+        CreativeContents.insertAfter(
+                Tab.PARTS, RegistryUtil.id("part_grip_pvc"), stack(HARD_DRIVE));
         for (SolarSystem.Body body : SolarSystem.Body.values()) {
             CreativeContents.insertBefore(
                     Tab.CONTROL,
-                    Library.id("pellet_rtg_radium"),
+                    RegistryUtil.id("pellet_rtg_radium"),
                     () -> {
                         ItemStack stack = HARD_DRIVE_FULL.stack(body);
                         stack.set(
                                 ModDataComponentsSpace.DRIVE.get(),
-                                new ItemVOTVdrive.Data(
+                                new VOTVdriveItem.Data(
                                         1, 0, Optional.empty(), true, false, "", "", false));
                         return stack;
                     });
@@ -336,7 +355,7 @@ public final class MissilePartsSpace {
 
     private MissilePartsSpace() {}
 
-    private static Reg.Handle<ItemCustomMissilePart> part(
+    private static Reg.Handle<CustomMissilePartItem> part(
             String name,
             String particle,
             String mesh,
@@ -344,13 +363,13 @@ public final class MissilePartsSpace {
             float height,
             float guiHeight,
             boolean stacks,
-            UnaryOperator<ItemCustomMissilePart> build) {
+            UnaryOperator<CustomMissilePartItem> build) {
         Identifier meshId = meshOf(mesh);
-        Reg.Handle<ItemCustomMissilePart> h =
+        Reg.Handle<CustomMissilePartItem> h =
                 HbmSpace.REG.item(
                         name,
                         props ->
-                                build.apply(new ItemCustomMissilePart(props))
+                                build.apply(new CustomMissilePartItem(props))
                                         .setAssembly(
                                                 height, guiHeight, meshId, Identifier.parse(skin)),
                         stacks ? Item.Properties::new : () -> new Item.Properties().stacksTo(1));

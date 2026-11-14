@@ -1,26 +1,33 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-FileCopyrightText: 2024-2025 George Paton
-// SPDX-FileCopyrightText: 2023 Pu-238
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbmspace.dim.dres;
 
 import com.hbm.inventory.fluid.FluidStackNTM;
 import com.hbm.inventory.fluid.NTMFluids;
 import com.hbmspace.blocks.ModBlocksSpace;
-import com.hbmspace.dim.BiomeGenBaseCelestial;
-import com.hbmspace.dim.GenLayerBorder;
-import com.hbmspace.dim.GenLayerCelestialBiomes;
-import com.hbmspace.dim.GenLayerDiversify;
 import com.hbmspace.dim.SpaceDimensions;
-import com.hbmspace.dim.WorldChunkManagerCelestial.BiomeGenLayers;
 import com.hbmspace.dim.WorldProviderCelestial;
 import com.hbmspace.dim.dres.biome.BiomeGenBaseDres;
-import com.hbmspace.dim.legacy.layer.GenLayer;
-import com.hbmspace.dim.legacy.layer.GenLayerFuzzyZoom;
-import com.hbmspace.dim.legacy.layer.GenLayerSmooth;
-import com.hbmspace.dim.legacy.layer.GenLayerVoronoiZoom;
-import com.hbmspace.dim.legacy.layer.GenLayerZoom;
+import com.hbmspace.world.gen.layer.BiomeLayer;
+import com.hbmspace.world.gen.layer.BiomeLayers;
+import com.hbmspace.world.gen.layer.CelestialLayers;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class WorldProviderDres extends WorldProviderCelestial {
@@ -39,26 +46,23 @@ public class WorldProviderDres extends WorldProviderCelestial {
         return new FluidStackNTM(NTMFluids.NITRIC_ACID, 500);
     }
 
-    public static BiomeGenLayers createBiomeGenerators(long seed) {
-        BiomeGenBaseCelestial canyon = BiomeGenBaseDres.dresCanyon;
-        BiomeGenBaseCelestial plains = BiomeGenBaseDres.dresPlains;
-        GenLayer biomes = new GenLayerCelestialBiomes(seed, canyon, plains);
+    public static CelestialLayers.Stack layers(long seed) {
+        int canyon = BiomeGenBaseDres.dresCanyon.biomeID;
+        int plains = BiomeGenBaseDres.dresPlains.biomeID;
+        BiomeLayer biomes = BiomeLayers.pick(seed, 0L, canyon, plains);
 
-        biomes = new GenLayerFuzzyZoom(2000L, biomes);
-        biomes = new GenLayerZoom(2001L, biomes);
-        biomes = new GenLayerDiversify(1000L, biomes, 2, canyon, plains);
-        biomes = new GenLayerZoom(1000L, biomes);
-        biomes = new GenLayerDiversify(1001L, biomes, 2, canyon, plains);
-        biomes = new GenLayerZoom(1001L, biomes);
-        biomes = new GenLayerBorder(3000L, biomes, canyon, plains, canyon);
-        biomes = new GenLayerZoom(1003L, biomes);
-        biomes = new GenLayerSmooth(700L, biomes);
-        biomes = new GenLayerBorder(200L, biomes, plains, canyon, plains);
+        biomes = BiomeLayers.fuzzyZoom(seed, 2000L, biomes);
+        biomes = BiomeLayers.zoom(seed, 2001L, biomes);
+        biomes = BiomeLayers.diversify(seed, 1000L, biomes, 2, canyon, plains);
+        biomes = BiomeLayers.zoom(seed, 1000L, biomes);
+        biomes = BiomeLayers.diversify(seed, 1001L, biomes, 2, canyon, plains);
+        biomes = BiomeLayers.zoom(seed, 1001L, biomes);
+        biomes = BiomeLayers.border(biomes, canyon, plains, canyon);
+        biomes = BiomeLayers.zoom(seed, 1003L, biomes);
+        biomes = BiomeLayers.smooth(seed, 700L, biomes);
+        biomes = BiomeLayers.border(biomes, plains, canyon, plains);
+        biomes = BiomeLayers.zoom(seed, 1006L, biomes);
 
-        biomes = new GenLayerZoom(1006L, biomes);
-
-        GenLayer genLayerVoronoiZoom = new GenLayerVoronoiZoom(10L, biomes);
-
-        return new BiomeGenLayers(biomes, genLayerVoronoiZoom, seed);
+        return new CelestialLayers.Stack(biomes);
     }
 }

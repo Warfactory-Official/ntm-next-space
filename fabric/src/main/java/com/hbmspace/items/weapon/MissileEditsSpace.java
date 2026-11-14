@@ -1,19 +1,56 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: 2025 Bufka2011
+ * SPDX-FileCopyrightText: 2025 George Paton
+ * SPDX-FileCopyrightText: 2024 HbmMods (The Bobcat)
+ * SPDX-FileCopyrightText: 2025 RealSilverMoon
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) 2025 Bufka2011. All rights reserved.
+ * Copyright (C) 2025 George Paton. All rights reserved.
+ * Copyright (C) 2024 HbmMods (The Bobcat). All rights reserved.
+ * Copyright (C) 2025 RealSilverMoon. All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT: Space";
+ * - a modified version must not be named NTM NEXT: Space or presented as
+ *   the official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT: Space does not
+ * violate these additional terms, provided it is clearly distinguished from
+ * the official release and does not imply endorsement. Ports are encouraged
+ * to acknowledge NTM NEXT: Space as their upstream project and provide a
+ * link to it.
+ */
 
 package com.hbmspace.items.weapon;
 
-import com.hbm.blockentity.bomb.BlockEntityCompactLauncher.AddonFuel;
-import com.hbm.blockentity.bomb.BlockEntityCompactLauncher;
+import com.hbm.blockentity.ordnance.launch.CompactLauncherBlockEntity.FuelAssociation;
+import com.hbm.blockentity.ordnance.launch.CompactLauncherBlockEntity;
 import com.hbm.handler.MissileStruct;
 import com.hbm.items.ModItems;
-import com.hbm.items.weapon.ItemCustomMissile;
-import com.hbm.items.weapon.ItemCustomMissilePart.FuelType;
-import com.hbm.items.weapon.ItemCustomMissilePart.PartSize;
-import com.hbm.items.weapon.ItemCustomMissilePart.PartType;
-import com.hbm.items.weapon.ItemCustomMissilePart;
-import com.hbm.registration.FabricRegistrar;
+import com.hbm.items.weapon.CustomMissileItem;
+import com.hbm.items.weapon.CustomMissilePartItem.FuelType;
+import com.hbm.items.weapon.CustomMissilePartItem.PartSize;
+import com.hbm.items.weapon.CustomMissilePartItem.PartType;
+import com.hbm.items.weapon.CustomMissilePartItem;
 import com.hbm.registration.Reg;
+import com.hbm.registration.Registrar;
 import com.hbm.registration.RegistryHandle;
 import com.hbmspace.HbmSpace;
 import com.hbmspace.handler.RocketPart;
@@ -27,7 +64,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
 import org.jspecify.annotations.Nullable;
 
-import static com.hbm.items.weapon.ItemCustomMissilePart.stat;
+import static com.hbm.items.weapon.CustomMissilePartItem.stat;
 
 public final class MissileEditsSpace {
     public static final float KEROSENE_20_HEIGHT = 2F;
@@ -36,31 +73,31 @@ public final class MissileEditsSpace {
     private MissileEditsSpace() {}
 
     public static void install() {
-        ItemCustomMissilePart.DESCRIBE.install(HbmSpace.MOD_ID, MissileEditsSpace::describe);
-        ItemCustomMissile.DESCRIBE.install(HbmSpace.MOD_ID, MissileEditsSpace::describeMissile);
-        ItemCustomMissilePart.VERTEX_NORMAL_MESHES.install(
+        CustomMissilePartItem.DESCRIBE.install(HbmSpace.MOD_ID, MissileEditsSpace::describe);
+        CustomMissileItem.DESCRIBE.install(HbmSpace.MOD_ID, MissileEditsSpace::describeMissile);
+        CustomMissilePartItem.VERTEX_NORMAL_MESHES.install(
                 HbmSpace.MOD_ID, MissilePartsSpace.VERTEX_NORMAL_MESHES);
         Reg.afterRegistration(
                 ModItems.MP_THRUSTER_20_KEROSENE,
                 part ->
                         part.setAssembly(
                                 KEROSENE_20_HEIGHT, KEROSENE_20_GUI_HEIGHT, part.mesh, part.skin));
-        BlockEntityCompactLauncher.addFuel(
-                new AddonFuel(MissileKindsSpace.HYDRAZINE, FluidsSpace::hydrazine, null));
+        CompactLauncherBlockEntity.registerFuelAssociation(
+                new FuelAssociation(MissileKindsSpace.HYDRAZINE, FluidsSpace::hydrazine, null));
 
         for (RegistryHandle<? extends Item> handle : ModItems.MISSILE_ALL) {
-            FabricRegistrar.modifyDefaultComponents(
+            Registrar.modifyDefaultComponents(
                     handle,
                     components -> {
                         if (stacks(handle.get())) components.set(DataComponents.MAX_STACK_SIZE, 64);
-                        if (handle.get() instanceof ItemCustomMissilePart part && restyled(part)) {
+                        if (handle.get() instanceof CustomMissilePartItem part && restyled(part)) {
                             components.set(DataComponents.ITEM_MODEL, restyle(handle.id()));
                         }
                     });
         }
     }
 
-    public static boolean restyled(ItemCustomMissilePart part) {
+    public static boolean restyled(CustomMissilePartItem part) {
         return part.type == PartType.FUSELAGE || part == ModItems.MP_THRUSTER_20_KEROSENE.get();
     }
 
@@ -69,14 +106,14 @@ public final class MissileEditsSpace {
     }
 
     private static boolean stacks(Item item) {
-        if (!(item instanceof ItemCustomMissilePart part)) return false;
+        if (!(item instanceof CustomMissilePartItem part)) return false;
         return part.type == PartType.THRUSTER
                 || part.type == PartType.FUSELAGE
                 || item == ModItems.MP_WARHEAD_15_NUCLEAR_SHARK.get()
                 || item == ModItems.MP_WARHEAD_15_NUCLEAR_MIMI.get();
     }
 
-    static void describe(ItemCustomMissilePart part, Consumer<Component> adder) {
+    static void describe(CustomMissilePartItem part, Consumer<Component> adder) {
         if (part == MissilePartsSpace.RP_POD_20.get()) return;
 
         if (part.title() != null) {
@@ -145,29 +182,29 @@ public final class MissileEditsSpace {
     }
 
     static void describeMissile(
-            MissileStruct parts, @Nullable ItemCustomMissilePart chip, Consumer<Component> adder) {
-        ItemCustomMissilePart warhead = parts.warhead();
-        ItemCustomMissilePart fuselage = parts.fuselage();
+            MissileStruct parts, @Nullable CustomMissilePartItem chip, Consumer<Component> adder) {
+        CustomMissilePartItem warhead = parts.warhead();
+        CustomMissilePartItem fuselage = parts.fuselage();
         if (warhead != null) {
-            adder.accept(ItemCustomMissile.stat("warhead", warhead.warheadType().getDisplay()));
+            adder.accept(CustomMissileItem.stat("warhead", warhead.warheadType().getDisplay()));
             adder.accept(
-                    ItemCustomMissile.stat(
+                    CustomMissileItem.stat(
                             "strength",
                             Component.literal(String.valueOf(warhead.warheadStrength()))));
         }
         if (fuselage != null) {
-            adder.accept(ItemCustomMissile.stat("fuelType", fuelName(fuselage.fuelType())));
+            adder.accept(CustomMissileItem.stat("fuelType", fuelName(fuselage.fuelType())));
             adder.accept(
-                    ItemCustomMissile.stat(
+                    CustomMissileItem.stat(
                             "fuelAmount", Component.literal((int) fuselage.fuelAmount() + "l")));
         }
 
         adder.accept(
-                ItemCustomMissile.stat(
+                CustomMissileItem.stat(
                         "chipInaccuracy",
                         Component.literal((chip != null ? chip.inaccuracy() * 100 : 100F) + "%")));
         adder.accept(
-                ItemCustomMissile.stat(
+                CustomMissileItem.stat(
                         "finInaccuracy",
                         Component.literal(
                                 parts.fins() != null
@@ -175,7 +212,7 @@ public final class MissileEditsSpace {
                                         : "100%")));
         if (fuselage != null) {
             adder.accept(
-                    ItemCustomMissile.stat(
+                    CustomMissileItem.stat(
                             "size",
                             fuselage.top
                                     .getDisplay()
@@ -189,7 +226,7 @@ public final class MissileEditsSpace {
         if (fuselage != null) health += fuselage.health;
         if (parts.thruster() != null) health += parts.thruster().health;
         if (parts.fins() != null) health += parts.fins().health;
-        adder.accept(ItemCustomMissile.stat("health", Component.literal(health + "HP")));
+        adder.accept(CustomMissileItem.stat("health", Component.literal(health + "HP")));
     }
 
     public static void describeSatellite(int mass, Consumer<Component> adder) {

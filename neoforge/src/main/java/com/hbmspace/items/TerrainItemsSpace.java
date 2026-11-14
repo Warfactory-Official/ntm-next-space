@@ -1,15 +1,31 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbmspace.items;
 
 import com.hbm.blocks.fluid.ClassicFluid;
 import com.hbm.items.CreativeContents.Tab;
 import com.hbm.items.CreativeContents;
-import com.hbm.lib.Library;
 import com.hbm.registration.Reg;
+import com.hbm.util.RegistryUtil;
 import com.hbmspace.HbmSpace;
-import com.hbmspace.blocks.BlockCrop;
+import com.hbmspace.blocks.CropBlock;
 import com.hbmspace.blocks.FloraBlocksSpace;
 import com.hbmspace.blocks.TerrainBlocksSpace;
 import java.util.List;
@@ -78,18 +94,18 @@ public final class TerrainItemsSpace {
                 List.of(SCUTTERTAIL, SALTLEAF, LEAF_RUBBER, LEAF_PET)) {
             CreativeContents.insertAfter(
                     Tab.PARTS,
-                    Library.id("plant_item_mustardwillow"),
+                    RegistryUtil.id("plant_item_mustardwillow"),
                     () -> new ItemStack(item.get()));
         }
         for (Reg.Handle<? extends Item> item :
                 List.of(STRAWBERRY, MINT_LEAVES, TEASEEDS, TEA_LEAF, BEAN_RAW, PARAFFIN_SEEDS)) {
             CreativeContents.insertAfter(
-                    Tab.CONSUMABLES, Library.id("bdcl"), () -> new ItemStack(item.get()));
+                    Tab.CONSUMABLES, RegistryUtil.id("bdcl"), () -> new ItemStack(item.get()));
         }
         for (Reg.Handle<? extends Item> item :
                 List.of(BUCKET_MERCURY, BUCKET_BROMINE, BUCKET_CCL)) {
             CreativeContents.insertBefore(
-                    Tab.BLOCKS, Library.id("door_metal"), () -> new ItemStack(item.get()));
+                    Tab.BLOCKS, RegistryUtil.id("door_metal"), () -> new ItemStack(item.get()));
         }
     }
 
@@ -105,7 +121,7 @@ public final class TerrainItemsSpace {
     }
 
     private static Reg.Handle<BlockItem> seedFood(
-            String name, Supplier<BlockCrop> crop, int nutrition, float saturation, String icon) {
+            String name, Supplier<CropBlock> crop, int nutrition, float saturation, String icon) {
         return HbmSpace.REG.<BlockItem>item(
                 name,
                 props -> new SeedFoodBlockItem(crop.get(), props),

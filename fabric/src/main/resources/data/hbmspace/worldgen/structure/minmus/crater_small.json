@@ -1,0 +1,19 @@
+{
+  "type": "hbm:sellafield_crater",
+  "biomes": [
+    "hbmspace:minmus_hills",
+    "hbmspace:minmus_basins"
+  ],
+  "exponent": 4,
+  "max_size": 24,
+  "min_size": 6,
+  "regolith": {
+    "Name": "hbmspace:minmus_regolith"
+  },
+  "rock": {
+    "Name": "hbmspace:minmus_stone"
+  },
+  "spawn_overrides": {},
+  "step": "lakes",
+  "terrain_adaptation": "none"
+}

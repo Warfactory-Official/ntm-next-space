@@ -4,7 +4,7 @@
   "icon": {
     "components": {
       "hbm:fluid_content": {
-        "type": "hbmspace:fluorine",
+        "type": "hbm:fluorine",
         "amount": 32000
       },
       "minecraft:custom_model_data": {
@@ -19,7 +19,7 @@
     {
       "components": {
         "hbm:fluid_content": {
-          "type": "hbmspace:fluorine",
+          "type": "hbm:fluorine",
           "amount": 32000
         }
       },
@@ -29,7 +29,7 @@
   "order": 129026,
   "output_fluids": [
     {
-      "type": "hbmspace:fluorine",
+      "type": "hbm:fluorine",
       "amount": 32000
     }
   ],

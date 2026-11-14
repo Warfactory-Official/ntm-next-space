@@ -1,5 +1,21 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbmspace.client.fog;
 
@@ -10,6 +26,7 @@ import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
 import java.util.LinkedHashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -25,7 +42,7 @@ public final class FogShaderPatch {
     private static final Identifier SODIUM_GLOBALS =
             Identifier.fromNamespaceAndPath("sodium", "shaders/include/globals.glsl");
     private static final Pattern TOTAL = Pattern.compile("\\bfloat\\s+total_fog_value\\s*\\(");
-    private static final String RANGE = "hbmspace_range_fog_value";
+    private static final Pattern PARAMETER = Pattern.compile("\\s*float\\s+(\\w+)\\s*");
 
     private FogShaderPatch() {}
 
@@ -86,44 +103,47 @@ public final class FogShaderPatch {
         Matcher total = TOTAL.matcher(source);
         if (!total.find() || source.lastIndexOf("linear_fog_value(", total.start()) < 0)
             return null;
-        int start = total.start(), open = source.indexOf('{', total.end());
-        if (open < 0 || total.find()) return null;
-        int end = open, depth = 0;
-        do {
-            char c = source.charAt(end++);
-            if (c == '{') depth++;
-            else if (c == '}') depth--;
-        } while (depth > 0 && end < source.length());
-        if (depth != 0) return null;
-        return source.substring(0, start)
-                + "float "
-                + RANGE
-                + "("
-                + source.substring(source.indexOf('(', start) + 1, end)
-                + """
+        int list = total.end(), close = source.indexOf(')', list), open = source.indexOf('{', list);
+        if (close < 0
+                || open < close
+                || !source.substring(close + 1, open).isBlank()
+                || total.find()) return null;
+        String[] parameters = source.substring(list, close).split(",", -1);
+        if (parameters.length != 6) return null;
+        String[] names = new String[parameters.length];
+        for (int i = 0; i < parameters.length; i++) {
+            Matcher name = PARAMETER.matcher(parameters[i]);
+            if (!name.matches()) return null;
+            names[i] = name.group(1);
+        }
+        return source.substring(0, open + 1)
+                + String.format(
+                        Locale.ROOT,
+                        """
 
-
-                float total_fog_value(float sphericalDistance, float cylindricalDistance, float environmentalStart, float environmentalEnd, float renderStart, float renderEnd) {
-                    if ((%2$s & %3$d) == 0) {
-                        return %6$s(sphericalDistance, cylindricalDistance, environmentalStart, environmentalEnd, renderStart, renderEnd);
+                    if ((%2$s & %3$d) != 0) {
+                        float value = 1.0 - exp(-%1$s * %6$s);
+                        if ((%2$s & %4$d) != 0) {
+                            value = max(value, linear_fog_value(%7$s, %10$s, %11$s));
+                        }
+                        if ((%2$s & %5$d) != 0) {
+                            value = max(value, linear_fog_value(%6$s, %8$s, %9$s));
+                        }
+                        return value;
                     }
-                    float value = 1.0 - exp(-%1$s * sphericalDistance);
-                    if ((%2$s & %4$d) != 0) {
-                        value = max(value, linear_fog_value(cylindricalDistance, renderStart, renderEnd));
-                    }
-                    if ((%2$s & %5$d) != 0) {
-                        value = max(value, linear_fog_value(sphericalDistance, environmentalStart, environmentalEnd));
-                    }
-                    return value;
-                }"""
-                        .formatted(
-                                density,
-                                flags,
-                                TerrainExpFog.EXP,
-                                TerrainExpFog.EDGE,
-                                TerrainExpFog.DARKNESS,
-                                RANGE)
-                + source.substring(end);
+                """,
+                        density,
+                        flags,
+                        TerrainExpFog.EXP,
+                        TerrainExpFog.EDGE,
+                        TerrainExpFog.DARKNESS,
+                        names[0],
+                        names[1],
+                        names[2],
+                        names[3],
+                        names[4],
+                        names[5])
+                + source.substring(open + 1);
     }
 
     private static String read(Resource resource) {

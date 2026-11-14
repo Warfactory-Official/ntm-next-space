@@ -1,11 +1,27 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbmspace.compat.computercraft;
 
 import com.hbm.compat.computercraft.SnapshotPeripheral;
 import com.hbm.inventory.fluid.NTMFluids;
-import com.hbmspace.blockentity.machine.BlockEntityAirPump;
+import com.hbmspace.blockentity.machine.AirPumpBlockEntity;
 import com.hbmspace.dim.trait.CBT_Atmosphere.FluidEntry;
 import com.hbmspace.dim.trait.CBT_Atmosphere;
 import dan200.computercraft.api.lua.LuaFunction;
@@ -13,7 +29,7 @@ import java.util.List;
 import net.minecraft.world.level.material.Fluid;
 import org.jspecify.annotations.Nullable;
 
-public final class AirPumpPeripheral extends SnapshotPeripheral<BlockEntityAirPump> {
+public final class AirPumpPeripheral extends SnapshotPeripheral<AirPumpBlockEntity> {
 
     private static final int FILL = 0;
     private static final int MAX = 1;
@@ -25,12 +41,12 @@ public final class AirPumpPeripheral extends SnapshotPeripheral<BlockEntityAirPu
     private double[] pressures = new double[0];
     private Object[] details = VACUUM;
 
-    public AirPumpPeripheral(BlockEntityAirPump machine) {
+    public AirPumpPeripheral(AirPumpBlockEntity machine) {
         super(machine, "ntm_atmospheric_vent", 3, 1);
     }
 
     @Override
-    protected void capture(BlockEntityAirPump machine) {
+    protected void capture(AirPumpBlockEntity machine) {
         put(FILL, machine.tank.getFill());
         put(MAX, machine.tank.getMaxFill());
         put(SEALED, machine.hasSeal());
@@ -69,17 +85,17 @@ public final class AirPumpPeripheral extends SnapshotPeripheral<BlockEntityAirPu
     }
 
     @LuaFunction
-    public final Object[] getAtmosphereDetails() {
+    public Object[] getAtmosphereDetails() {
         return read(s -> (Object[]) s.refAt(DETAILS));
     }
 
     @LuaFunction
-    public final Object[] getFluid() {
+    public Object[] getFluid() {
         return read(s -> new Object[] {s.intAt(FILL), s.intAt(MAX)});
     }
 
     @LuaFunction
-    public final Object[] isSealed() {
-        return read(s -> new Object[] {s.booleanAt(SEALED)});
+    public Object[] isSealed() {
+        return new Object[] {booleanAt(SEALED)};
     }
 }

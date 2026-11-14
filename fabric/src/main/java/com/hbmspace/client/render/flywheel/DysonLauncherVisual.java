@@ -1,18 +1,35 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbmspace.client.render.flywheel;
 
-import com.hbm.client.render.flywheel.HbmDynamicBlockEntityVisual;
 import com.hbm.client.render.flywheel.LightBounds;
 import com.hbm.client.render.flywheel.MeshPart;
-import com.hbmspace.blockentity.machine.BlockEntityDysonLauncher;
+import com.hbmspace.blockentity.machine.DysonLauncherBlockEntity;
 import com.hbmspace.client.render.PosedParts;
 import dev.engine_room.flywheel.api.instance.Instance;
 import dev.engine_room.flywheel.api.visual.ShaderLightVisual;
 import dev.engine_room.flywheel.api.visualization.VisualizationContext;
 import dev.engine_room.flywheel.lib.instance.InstanceTypes;
 import dev.engine_room.flywheel.lib.instance.TransformedInstance;
+import dev.engine_room.flywheel.lib.visual.AbstractDynamicExtentBlockEntityVisual;
+import dev.engine_room.flywheel.lib.visual.CulledDynamicVisual;
 import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
 import java.util.Arrays;
 import java.util.List;
@@ -22,18 +39,24 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.phys.AABB;
 import org.joml.Matrix4f;
 
-public final class DysonLauncherVisual extends HbmDynamicBlockEntityVisual<BlockEntityDysonLauncher>
-        implements ShaderLightVisual {
+public final class DysonLauncherVisual
+        extends AbstractDynamicExtentBlockEntityVisual<DysonLauncherBlockEntity>
+        implements ShaderLightVisual, CulledDynamicVisual {
 
-    private final PosedParts<BlockEntityDysonLauncher> parts;
+    private final PosedParts<DysonLauncherBlockEntity> parts;
     private final MeshPart[] meshes;
     private final TransformedInstance[] instances;
     private final Matrix4f[] poses;
     private final Matrix4f[] written;
     private final boolean[] drawn;
     private final Matrix4f instancePose = new Matrix4f();
+    private final Matrix4f extentPose = new Matrix4f();
     private final AABB lit;
-    private final AABB visible;
+    private final AABB machineBounds;
+    private AABB visible;
+    private int extentTick = Integer.MIN_VALUE;
+    private boolean extentShot;
+    private boolean extentRetained;
     private final double[] near = new double[6];
     private final int[] published = new int[12];
     private final int[] next = new int[12];
@@ -43,15 +66,16 @@ public final class DysonLauncherVisual extends HbmDynamicBlockEntityVisual<Block
 
     public DysonLauncherVisual(
             VisualizationContext context,
-            BlockEntityDysonLauncher blockEntity,
+            DysonLauncherBlockEntity blockEntity,
             float partialTick,
-            PosedParts<BlockEntityDysonLauncher> parts,
+            PosedParts<DysonLauncherBlockEntity> parts,
             MeshPart[] meshes) {
         super(context, blockEntity, partialTick);
         this.parts = parts;
         this.meshes = meshes;
         this.lit = parts.lit().at(pos);
-        this.visible = parts.drawn().at(pos);
+        this.machineBounds = parts.drawn().at(pos);
+        this.visible = machineBounds;
         int count = meshes.length;
         instances = new TransformedInstance[count];
         poses = new Matrix4f[count];
@@ -69,12 +93,38 @@ public final class DysonLauncherVisual extends HbmDynamicBlockEntityVisual<Block
     }
 
     @Override
-    protected void frame(Context context) {
+    public void frame(Context context) {
         writeFrame(context.partialTick());
     }
 
+    @Override
+    public void beforeFrame() {
+        int shot = instances.length - 1;
+        int tick = blockEntity.payloadTicks;
+        boolean flying = blockEntity.isSpinningDown;
+        boolean retained = drawn[shot];
+        if (tick == extentTick && flying == extentShot && retained == extentRetained) return;
+        extentTick = tick;
+        extentShot = flying;
+        extentRetained = retained;
+        AABB bounds = machineBounds;
+        if (flying) {
+            var part = parts.parts().get(shot);
+            part.pose().at(blockEntity, 0F, extentPose.identity());
+            bounds = bounds.minmax(LightBounds.lightBounds(meshes[shot].model(), extentPose, pos));
+            part.pose().at(blockEntity, 1F, extentPose.identity());
+            bounds = bounds.minmax(LightBounds.lightBounds(meshes[shot].model(), extentPose, pos));
+        }
+        if (retained)
+            bounds =
+                    bounds.minmax(
+                            LightBounds.lightBounds(meshes[shot].model(), written[shot], pos));
+        visible = bounds;
+        refreshVisibleBounds();
+    }
+
     private void writeFrame(float partialTick) {
-        List<PosedParts.Part<BlockEntityDysonLauncher>> list = parts.parts();
+        List<PosedParts.Part<DysonLauncherBlockEntity>> list = parts.parts();
         boolean moved = false;
         for (int i = 0; i < instances.length; i++) {
             boolean draws = list.get(i).pose().at(blockEntity, partialTick, poses[i].identity());

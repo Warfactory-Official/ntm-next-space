@@ -1,0 +1,14 @@
+{
+  "neoforge:definition_type": "hbm:ctm",
+  "connect_to": [
+    "hbmspace:laythe_root"
+  ],
+  "ctm_textures": {
+    "hbmspace:block/laythe_root": "hbmspace:block/ctm_lib/laythe_root"
+  },
+  "variants": {
+    "": {
+      "model": "hbmspace:block/laythe_root"
+    }
+  }
+}

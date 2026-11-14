@@ -1,12 +1,28 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbmspace.handler;
 
-import com.hbm.blockentity.network.pneumatic.BlockEntityPneumoTube;
+import com.hbm.blockentity.network.pneumatic.PneumaticTubeBlockEntity;
 import com.hbm.blocks.network.pneumatic.PneumoTubeBlock;
 import com.hbm.inventory.fluid.NTMFluidProperties;
-import com.hbm.inventory.fluid.trait.FT_Corrosive;
+import com.hbm.inventory.fluid.trait.CorrosiveTrait;
 import com.hbm.inventory.fluid.trait.FluidTraitSimple.FT_Amat;
 import com.hbm.inventory.fluid.trait.FluidTraitSimple.FT_Gaseous;
 import com.hbm.inventory.fluid.trait.FluidTraitSimple.FT_Gaseous_ART;
@@ -28,8 +44,8 @@ public final class PneumoIdentifierSelection {
     public static boolean handle(ItemStack stack, Level level, BlockPos pos, Player player) {
         if (player.isSecondaryUseActive()
                 || !(stack.getItem() instanceof FluidIdentifierItem)
-                || !(level.getBlockEntity(pos) instanceof BlockEntityPneumoTube tube)
-                || !tube.isCompressor()) {
+                || !(level.getBlockEntity(pos) instanceof PneumaticTubeBlockEntity tube)
+                || !tube.hasIntake()) {
             return false;
         }
         if (!level.isClientSide()) {
@@ -40,11 +56,11 @@ public final class PneumoIdentifierSelection {
                             .primary();
             boolean valid =
                     !NTMFluidProperties.hasTrait(type, FT_Amat.class)
-                            && !NTMFluidProperties.hasTrait(type, FT_Corrosive.class)
+                            && !NTMFluidProperties.hasTrait(type, CorrosiveTrait.class)
                             && (NTMFluidProperties.hasTrait(type, FT_Gaseous.class)
                                     || NTMFluidProperties.hasTrait(type, FT_Gaseous_ART.class));
             if (valid) {
-                tube.compair.setTankTypeByIdentifier(type);
+                tube.gasTank.setTankTypeByIdentifier(type);
                 tube.setChanged();
                 PneumoTubeBlock.refreshConnections(level, pos);
                 player.sendSystemMessage(

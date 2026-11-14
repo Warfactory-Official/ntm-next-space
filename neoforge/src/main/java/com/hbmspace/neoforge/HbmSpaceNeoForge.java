@@ -1,21 +1,32 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbmspace.neoforge;
 
-import com.hbm.registration.NeoForgeRegistrar;
+import com.hbm.registration.Registrar;
 import com.hbmspace.HbmSpace;
-import com.hbmspace.blocks.machine.BlockOrbitalStation;
+import com.hbmspace.blocks.machine.OrbitalStationBlock;
 import com.hbmspace.commands.SpaceCommands;
 import com.hbmspace.dim.CelestialFishing;
 import com.hbmspace.dim.CityLights;
-import com.hbmspace.dim.SpaceChunkGenerators;
-import com.hbmspace.dim.trait.CBT_Invasion;
-import com.hbmspace.handler.SpaceItemEvents;
-import com.hbmspace.handler.atmosphere.EveDeath;
 import com.hbmspace.items.VanillaCreativeSpace;
 import com.hbmspace.items.armor.ArmorModsSpace;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
@@ -29,21 +40,14 @@ import net.neoforged.neoforge.common.NeoForgeMod;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.LootTableLoadEvent;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
-import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.level.block.BreakBlockEvent;
-import net.neoforged.neoforge.registries.RegisterEvent;
 
 @Mod(HbmSpace.MOD_ID)
 public final class HbmSpaceNeoForge {
     public HbmSpaceNeoForge(IEventBus modBus) {
         NeoForgeMod.enableMilkFluid();
-        NeoForgeRegistrar.addon(HbmSpace.MOD_ID, modBus, HbmSpace::register);
-        modBus.addListener(
-                (RegisterEvent event) ->
-                        event.register(
-                                Registries.CHUNK_GENERATOR,
-                                registrar -> SpaceChunkGenerators.forEach(registrar::register)));
+        Registrar.addon(HbmSpace.MOD_ID, modBus, HbmSpace::register);
         modBus.addListener(
                 (BuildCreativeModeTabContentsEvent event) -> {
                     for (VanillaCreativeSpace.Insertion insertion :
@@ -61,25 +65,13 @@ public final class HbmSpaceNeoForge {
         NeoForge.EVENT_BUS.addListener(
                 (RegisterCommandsEvent event) -> SpaceCommands.register(event.getDispatcher()));
         NeoForge.EVENT_BUS.addListener(
-                (LivingDeathEvent event) -> EveDeath.onDeath(event.getEntity(), event.getSource()));
-        NeoForge.EVENT_BUS.addListener(
-                (LivingDeathEvent event) ->
-                        SpaceItemEvents.onDeath(event.getEntity(), event.getSource()));
-        NeoForge.EVENT_BUS.addListener(
-                EventPriority.LOWEST,
-                (LivingDeathEvent event) ->
-                        ArmorModsSpace.onDeath(event.getEntity(), event.getSource()));
-        NeoForge.EVENT_BUS.addListener(
-                (LivingDeathEvent event) ->
-                        CBT_Invasion.onDeath(event.getEntity(), event.getSource()));
-        NeoForge.EVENT_BUS.addListener(
                 (LivingIncomingDamageEvent event) ->
                         ArmorModsSpace.onHurt(
                                 event.getEntity(), event.getSource(), event.getAmount()));
         NeoForge.EVENT_BUS.addListener(
                 (BreakBlockEvent event) -> {
                     if (event.getLevel() instanceof Level level
-                            && BlockOrbitalStation.refusesRemoval(
+                            && OrbitalStationBlock.refusesRemoval(
                                     level, event.getPos(), event.getState())) {
                         event.setCanceled(true);
                     }

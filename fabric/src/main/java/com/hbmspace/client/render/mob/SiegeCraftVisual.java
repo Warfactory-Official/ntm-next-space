@@ -1,5 +1,21 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbmspace.client.render.mob;
 
@@ -12,7 +28,7 @@ import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.HFRWavefrontObject;
 import com.hbm.render.util.BeamPronter.EnumWaveType;
 import com.hbm.util.GameTime;
-import com.hbmspace.entity.mob.siege.EntitySiegeCraft;
+import com.hbmspace.entity.mob.siege.SiegeCraftEntity;
 import dev.engine_room.flywheel.api.material.CardinalLightingMode;
 import dev.engine_room.flywheel.api.material.DepthTest;
 import dev.engine_room.flywheel.api.material.Material;
@@ -38,7 +54,7 @@ import org.joml.FrustumIntersection;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
-public final class SiegeCraftVisual extends HbmDynamicEntityVisual<EntitySiegeCraft> {
+public final class SiegeCraftVisual extends HbmDynamicEntityVisual<SiegeCraftEntity> {
 
     private static final Supplier<Models> MODELS = Suppliers.memoize(Models::create);
     private static final float REACH = 8F;
@@ -47,11 +63,11 @@ public final class SiegeCraftVisual extends HbmDynamicEntityVisual<EntitySiegeCr
     private final TransformedInstance[] hulls;
     private final TransformedInstance coils;
     private final AffineUvTransformedInstance[] glints =
-            new AffineUvTransformedInstance[RenderSiegeCraft.GLINT_LAYERS];
-    private final BeamVisual[] spokes = new BeamVisual[RenderSiegeCraft.SPOKES];
+            new AffineUvTransformedInstance[SiegeCraftRenderer.GLINT_LAYERS];
+    private final BeamVisual[] spokes = new BeamVisual[SiegeCraftRenderer.SPOKES];
     private final BeamVisual[] lockon = new BeamVisual[3];
     private final BlockPos anchor;
-    private final boolean[] spokeFlags = new boolean[RenderSiegeCraft.SPOKES];
+    private final boolean[] spokeFlags = new boolean[SiegeCraftRenderer.SPOKES];
     private final Vector3f visualPosition = new Vector3f();
     private final Matrix4f hull = new Matrix4f();
     private final Matrix4f beamBase = new Matrix4f();
@@ -61,7 +77,7 @@ public final class SiegeCraftVisual extends HbmDynamicEntityVisual<EntitySiegeCr
     private boolean glinting;
 
     public SiegeCraftVisual(
-            VisualizationContext context, EntitySiegeCraft entity, float partialTick) {
+            VisualizationContext context, SiegeCraftEntity entity, float partialTick) {
         super(context, entity, partialTick);
         hulls = new TransformedInstance[models.hulls.size()];
         for (int i = 0; i < hulls.length; i++) {
@@ -112,7 +128,7 @@ public final class SiegeCraftVisual extends HbmDynamicEntityVisual<EntitySiegeCr
         int light = computePackedLight(partialTick);
         getVisualPosition(partialTick, visualPosition);
         hull.translation(visualPosition.x, visualPosition.y + 0.5F, visualPosition.z);
-        RenderSiegeCraft.hullPose(hull, entity, partialTick);
+        SiegeCraftRenderer.hullPose(hull, entity, partialTick);
 
         int tier = entity.getTier().id;
         if (tier != shownTier) {
@@ -123,7 +139,7 @@ public final class SiegeCraftVisual extends HbmDynamicEntityVisual<EntitySiegeCr
         hulls[tier].setTransform(hull).light(light).setChanged();
         coils.setVisible(true);
         coils.setTransform(hull)
-                .colorArgb(RenderSiegeCraft.coilColor(entity))
+                .colorArgb(SiegeCraftRenderer.coilColor(entity))
                 .light(LightCoordsUtil.FULL_BRIGHT)
                 .setChanged();
 
@@ -131,11 +147,11 @@ public final class SiegeCraftVisual extends HbmDynamicEntityVisual<EntitySiegeCr
         if (beam) {
             float offset = (float) (GameTime.now() / 50D);
             for (int k = 0; k < glints.length; k++) {
-                float movement = offset * (.001F + k * .003F) * RenderSiegeCraft.GLINT_SPEED;
+                float movement = offset * (.001F + k * .003F) * SiegeCraftRenderer.GLINT_SPEED;
                 float angle = (float) Math.toRadians(30F - k * 60F);
                 float cos = Mth.cos(angle), sin = Mth.sin(angle);
                 if (!glinting) glints[k].setVisible(true);
-                glints[k].setTransform(hull).colorArgb(RenderSiegeCraft.GLINT_TINT).light(light);
+                glints[k].setTransform(hull).colorArgb(SiegeCraftRenderer.GLINT_TINT).light(light);
                 glints[k].uv(cos, -sin, sin, cos, -sin * movement, cos * movement);
                 glints[k].setChanged();
             }
@@ -148,10 +164,10 @@ public final class SiegeCraftVisual extends HbmDynamicEntityVisual<EntitySiegeCr
         double y = Mth.lerp(partialTick, entity.yo, entity.getY()) - anchor.getY() + 0.5D;
         double z = Mth.lerp(partialTick, entity.zo, entity.getZ()) - anchor.getZ();
         beamBase.translation((float) x, (float) y, (float) z);
-        RenderSiegeCraft.spokes(entity, spokeFlags);
+        SiegeCraftRenderer.spokes(entity, spokeFlags);
         int arcStart = (int) (GameTime.now() % 1000L) / 50;
         spoke.set(beamBase);
-        RenderSiegeCraft.hullPose(spoke, entity, partialTick);
+        SiegeCraftRenderer.hullPose(spoke, entity, partialTick);
         for (int i = 0; i < spokes.length; i++) {
             spoke.rotateY(45F * Mth.DEG_TO_RAD);
             if (!spokeFlags[i]) {
@@ -161,20 +177,20 @@ public final class SiegeCraftVisual extends HbmDynamicEntityVisual<EntitySiegeCr
             arm.set(spoke).translate(4F, 0F, 0F);
             spokes[i].update(
                     arm,
-                    RenderSiegeCraft.SPOKE,
+                    SiegeCraftRenderer.SPOKE,
                     EnumWaveType.RANDOM,
                     arcStart,
                     15,
                     .125F,
                     0F,
-                    RenderSiegeCraft.SPOKE_OUTER,
-                    RenderSiegeCraft.SPOKE_INNER);
+                    SiegeCraftRenderer.SPOKE_OUTER,
+                    SiegeCraftRenderer.SPOKE_INNER);
         }
 
         if (beam) {
             Vec3 delta = entity.getLockon().subtract(entity.getX(), entity.getY(), entity.getZ());
             int segments = (int) (delta.length() / 2 + 1);
-            float scale = (float) RenderSiegeCraft.LOCKON_SCALE;
+            float scale = (float) SiegeCraftRenderer.LOCKON_SCALE;
             int age = entity.tickCount;
             lockon[0].update(
                     beamBase,

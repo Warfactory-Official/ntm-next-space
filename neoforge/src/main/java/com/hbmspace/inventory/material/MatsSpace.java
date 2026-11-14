@@ -1,207 +1,231 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-FileCopyrightText: 2025 70000hp
-// SPDX-FileCopyrightText: 2024-2026 George Paton
-// SPDX-FileCopyrightText: 2024 HbmMods (The Bobcat)
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: 2025 70000hp
+ * SPDX-FileCopyrightText: 2024-2026 George Paton
+ * SPDX-FileCopyrightText: 2024 HbmMods (The Bobcat)
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) 2025 70000hp. All rights reserved.
+ * Copyright (C) 2024-2026 George Paton. All rights reserved.
+ * Copyright (C) 2024 HbmMods (The Bobcat). All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT: Space";
+ * - a modified version must not be named NTM NEXT: Space or presented as
+ *   the official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT: Space does not
+ * violate these additional terms, provided it is clearly distinguished from
+ * the official release and does not imply endorsement. Ports are encouraged
+ * to acknowledge NTM NEXT: Space as their upstream project and provide a
+ * link to it.
+ */
 
 package com.hbmspace.inventory.material;
 
-import com.hbm.inventory.material.NTMMaterial;
+import com.hbm.inventory.material.Material;
+import com.hbm.inventory.material.Materials;
 import com.hbmspace.HbmSpace;
 
-import static com.hbm.inventory.OreDictManager.AUSTRALIUM;
-import static com.hbm.inventory.OreDictManager.BR;
-import static com.hbm.inventory.OreDictManager.I;
-import static com.hbm.inventory.OreDictManager.LAPIS;
-import static com.hbm.inventory.OreDictManager.NETHERQUARTZ;
-import static com.hbm.inventory.OreDictManager.P_WHITE;
-import static com.hbm.inventory.material.MaterialShapes.*;
-import static com.hbm.inventory.material.Mats.*;
+import static com.hbm.inventory.material.MaterialShape.*;
+import static com.hbm.inventory.material.MaterialTagRegistry.AUSTRALIUM;
+import static com.hbm.inventory.material.MaterialTagRegistry.BR;
+import static com.hbm.inventory.material.MaterialTagRegistry.I;
+import static com.hbm.inventory.material.MaterialTagRegistry.LAPIS;
+import static com.hbm.inventory.material.MaterialTagRegistry.NETHERQUARTZ;
+import static com.hbm.inventory.material.MaterialTagRegistry.P_WHITE;
+import static com.hbm.inventory.material.SmeltingBehavior.*;
 import static com.hbmspace.inventory.OreDictManagerSpace.*;
 
 public final class MatsSpace {
 
     public static final int _EX = 24_000;
 
-    public static final NTMMaterial MAT_GLOWSTONE =
-            makeNonSmeltable(_VS + 5, GLOWSTONE, 0xFFFF00, 0x535300, 0xFFFF00)
-                    .setAutogen(FRAGMENT)
-                    .setTagOnly(DUST)
-                    .n()
-                    .namespace(HbmSpace.MOD_ID)
-                    .after(MAT_OBSIDIAN);
-    public static final NTMMaterial MAT_CONGLOMERATE =
-            makeAdditive(2993, CONGLOMERATE, 0x797979, 0x797979, 0x797979)
-                    .setTagOnly(ORE)
-                    .m()
-                    .namespace(HbmSpace.MOD_ID)
-                    .after(MAT_CRYOLITE);
-    public static final NTMMaterial MAT_AUSTRALIUM =
-            makeSmeltable(13800, AUSTRALIUM, 0xFFFF00, 0x935B00, 0xFFFF00)
-                    .setAutogen(FRAGMENT)
-                    .setTagOnly(NUGGET, BILLET, INGOT, DUST, BLOCK, ORE)
-                    .m()
-                    .namespace(HbmSpace.MOD_ID)
-                    .after(MAT_GHIORSIUM);
-    public static final NTMMaterial MAT_TASMANITE =
-            makeSmeltable(13895, TASMANITE, 0xFFFF00, 0x935B00, 0xFFFF00)
-                    .setAutogen(FRAGMENT)
-                    .setTagOnly(NUGGET, BILLET, INGOT)
-                    .legacy(INGOT, "ingot_australium_lesser")
-                    .m()
-                    .namespace(HbmSpace.MOD_ID)
-                    .after(MAT_AUSTRALIUM);
-    public static final NTMMaterial MAT_AYERITE =
-            makeSmeltable(13851, AYERITE, 0xFFFF00, 0x935B00, 0xFFFF00)
-                    .setAutogen(FRAGMENT)
-                    .setTagOnly(NUGGET, BILLET, INGOT)
-                    .legacy(INGOT, "ingot_australium_greater")
-                    .m()
-                    .namespace(HbmSpace.MOD_ID)
-                    .after(MAT_TASMANITE);
-    public static final NTMMaterial MAT_LAPIS =
-            makeNonSmeltable(2701, LAPIS, 0x567DF9, 0x001793, 0x264DC9)
-                    .setAutogen(FRAGMENT, DUST, GEM, BLOCK)
-                    .setTagOnly(ORE)
-                    .m()
-                    .namespace(HbmSpace.MOD_ID)
-                    .after(MAT_COBALT);
-    public static final NTMMaterial MAT_PHOSPHORUS_W =
-            makeNonSmeltable(1501, P_WHITE, 0xF5F5ED, 0xC4BD9A, 0xC4BD9A)
-                    .setAutogen(FRAGMENT, DUST)
-                    .setTagOnly(INGOT, BLOCK)
-                    .n()
-                    .namespace(HbmSpace.MOD_ID)
-                    .after(MAT_PHOSPHORUS);
-    public static final NTMMaterial MAT_QUARTZ =
-            makeNonSmeltable(1402, NETHERQUARTZ, 0xF7F5F2, 0x6F5D5A, 0xF7F5F2)
-                    .setAutogen(FRAGMENT)
-                    .setTagOnly(GEM, DUST, ORE)
-                    .n()
-                    .namespace(HbmSpace.MOD_ID)
-                    .after(MAT_ASBESTOS);
-    public static final NTMMaterial MAT_NICKEL =
-            makeSmeltable(2800, NI, 0xE8D1C7, 0x87756E, 0xAE9572)
-                    .setAutogen(FRAGMENT, NUGGET, DUST, BLOCK)
-                    .setTagOnly(INGOT, PLATE, ORE)
-                    .legacy(INGOT, "ingot_nickel")
-                    .legacy(NUGGET, "nugget_nickel")
-                    .legacy(DUST, "powder_nickel")
-                    .legacy(PLATE, "plate_nickel")
-                    .m()
-                    .namespace(HbmSpace.MOD_ID)
-                    .after(MAT_OSMIRIDIUM);
-    public static final NTMMaterial MAT_GALLIUM =
-            makeSmeltable(3100, GALLIUM, 0x52687F, 0x52687F, 0x52687F)
-                    .setAutogen(FRAGMENT, NUGGET, DUST, DUSTTINY)
-                    .setTagOnly(INGOT)
-                    .legacy(INGOT, "ingot_gallium")
-                    .legacy(NUGGET, "nugget_gallium")
-                    .legacy(DUST, "powder_gallium")
-                    .legacy(DUSTTINY, "powder_gallium_tiny")
-                    .m()
-                    .namespace(HbmSpace.MOD_ID)
-                    .after(MAT_NICKEL);
-    public static final NTMMaterial MAT_ZINC =
-            makeSmeltable(3000, ZI, 0xD7CBDA, 0x7A7277, 0xA79DA8)
-                    .setAutogen(FRAGMENT, NUGGET, DUST, WIRE)
-                    .setTagOnly(INGOT, ORE)
-                    .legacy(INGOT, "ingot_zinc")
-                    .legacy(NUGGET, "nugget_zinc")
-                    .legacy(DUST, "powder_zinc")
-                    .m()
-                    .namespace(HbmSpace.MOD_ID)
-                    .after(MAT_GALLIUM);
-    public static final NTMMaterial MAT_BROMINE =
-            makeNonSmeltable(3500, BR, 0xFF642B, 0x720000, 0xFF642B)
-                    .setAutogen(FRAGMENT)
-                    .setTagOnly(DUST)
-                    .m()
-                    .namespace(HbmSpace.MOD_ID)
-                    .after(MAT_ZINC);
+    public static final Material MAT_GLOWSTONE =
+            space(
+                    Material.define(
+                                    Materials.BASE_VANILLA + 5,
+                                    GLOWSTONE,
+                                    NOT_SMELTABLE,
+                                    0xFFFF00,
+                                    0x535300,
+                                    0xFFFF00)
+                            .after(Materials.OBSIDIAN)
+                            .autoShapes(FRAGMENT)
+                            .memberShapes(DUST));
+    public static final Material MAT_CONGLOMERATE =
+            space(
+                    Material.define(2993, CONGLOMERATE, ADDITIVE, 0x797979, 0x797979, 0x797979)
+                            .after(Materials.CRYOLITE)
+                            .memberShapes(ORE));
+    public static final Material MAT_AUSTRALIUM =
+            space(
+                    Material.define(13800, AUSTRALIUM, SMELTABLE, 0xFFFF00, 0x935B00, 0xFFFF00)
+                            .after(Materials.GHIORSIUM_336)
+                            .autoShapes(FRAGMENT)
+                            .memberShapes(NUGGET, BILLET, INGOT, DUST, BLOCK, ORE));
+    public static final Material MAT_TASMANITE =
+            space(
+                    Material.define(13895, TASMANITE, SMELTABLE, 0xFFFF00, 0x935B00, 0xFFFF00)
+                            .after(MAT_AUSTRALIUM)
+                            .autoShapes(FRAGMENT)
+                            .memberShapes(NUGGET, BILLET, INGOT)
+                            .namedId(INGOT, "ingot_australium_lesser"));
+    public static final Material MAT_AYERITE =
+            space(
+                    Material.define(13851, AYERITE, SMELTABLE, 0xFFFF00, 0x935B00, 0xFFFF00)
+                            .after(MAT_TASMANITE)
+                            .autoShapes(FRAGMENT)
+                            .memberShapes(NUGGET, BILLET, INGOT)
+                            .namedId(INGOT, "ingot_australium_greater"));
+    public static final Material MAT_LAPIS =
+            space(
+                    Material.define(2701, LAPIS, NOT_SMELTABLE, 0x567DF9, 0x001793, 0x264DC9)
+                            .after(Materials.COBALT)
+                            .autoShapes(FRAGMENT, DUST, GEM, BLOCK)
+                            .memberShapes(ORE));
+    public static final Material MAT_PHOSPHORUS_W =
+            space(
+                    Material.define(1501, P_WHITE, NOT_SMELTABLE, 0xF5F5ED, 0xC4BD9A, 0xC4BD9A)
+                            .after(Materials.RED_PHOSPHORUS)
+                            .autoShapes(FRAGMENT, DUST)
+                            .memberShapes(INGOT, BLOCK));
+    public static final Material MAT_QUARTZ =
+            space(
+                    Material.define(1402, NETHERQUARTZ, NOT_SMELTABLE, 0xF7F5F2, 0x6F5D5A, 0xF7F5F2)
+                            .after(Materials.ASBESTOS)
+                            .autoShapes(FRAGMENT)
+                            .memberShapes(GEM, DUST, ORE));
+    public static final Material MAT_NICKEL =
+            space(
+                    Material.define(2800, NI, SMELTABLE, 0xE8D1C7, 0x87756E, 0xAE9572)
+                            .after(Materials.OSMIRIDIUM)
+                            .autoShapes(FRAGMENT, NUGGET, DUST, BLOCK)
+                            .memberShapes(INGOT, PLATE, ORE)
+                            .namedId(INGOT, "ingot_nickel")
+                            .namedId(NUGGET, "nugget_nickel")
+                            .namedId(DUST, "powder_nickel")
+                            .namedId(PLATE, "plate_nickel"));
+    public static final Material MAT_GALLIUM =
+            space(
+                    Material.define(3100, GALLIUM, SMELTABLE, 0x52687F, 0x52687F, 0x52687F)
+                            .after(MAT_NICKEL)
+                            .autoShapes(FRAGMENT, NUGGET, DUST, TINY_DUST)
+                            .memberShapes(INGOT)
+                            .namedId(INGOT, "ingot_gallium")
+                            .namedId(NUGGET, "nugget_gallium")
+                            .namedId(DUST, "powder_gallium")
+                            .namedId(TINY_DUST, "powder_gallium_tiny"));
+    public static final Material MAT_ZINC =
+            space(
+                    Material.define(3000, ZI, SMELTABLE, 0xD7CBDA, 0x7A7277, 0xA79DA8)
+                            .after(MAT_GALLIUM)
+                            .autoShapes(FRAGMENT, NUGGET, DUST, FINE_WIRE)
+                            .memberShapes(INGOT, ORE)
+                            .namedId(INGOT, "ingot_zinc")
+                            .namedId(NUGGET, "nugget_zinc")
+                            .namedId(DUST, "powder_zinc"));
+    public static final Material MAT_BROMINE =
+            space(
+                    Material.define(3500, BR, NOT_SMELTABLE, 0xFF642B, 0x720000, 0xFF642B)
+                            .after(MAT_ZINC)
+                            .autoShapes(FRAGMENT)
+                            .memberShapes(DUST));
 
-    public static final NTMMaterial MAT_IODINE =
-            makeNonSmeltable(5300, I, 0x7A8796, 0x3F3049, 0x7A8796)
-                    .setAutogen(FRAGMENT)
-                    .setTagOnly(DUST, ORE)
-                    .m()
-                    .namespace(HbmSpace.MOD_ID)
-                    .after(MAT_BROMINE);
+    public static final Material MAT_IODINE =
+            space(
+                    Material.define(5300, I, NOT_SMELTABLE, 0x7A8796, 0x3F3049, 0x7A8796)
+                            .after(MAT_BROMINE)
+                            .autoShapes(FRAGMENT)
+                            .memberShapes(DUST, ORE));
 
-    public static final NTMMaterial MAT_HAFNIUM =
-            makeSmeltable(7200, HAFNIUM, 0xFFF8C7, 0x2E1600, 0xFFF8C7)
-                    .setAutogen(FRAGMENT, DUST)
-                    .setTagOnly(NUGGET, INGOT)
-                    .legacy(INGOT, "ingot_hafnium")
-                    .legacy(NUGGET, "nugget_hafnium")
-                    .m()
-                    .namespace(HbmSpace.MOD_ID)
-                    .after(MAT_IODINE);
-    public static final NTMMaterial MAT_IRIDIUM =
-            makeSmeltable(7700, IRIDIUM, 0xB8D0FF, 0xB8D0FF, 0xB8D0FF)
-                    .setAutogen(INGOT)
-                    .legacy(INGOT, "ingot_iridium")
-                    .m()
-                    .namespace(HbmSpace.MOD_ID)
-                    .after(MAT_HAFNIUM);
-    public static final NTMMaterial MAT_GAAS =
-            makeSmeltable(_EX, GAAS, 0x6F4A57, 0x6F4A57, 0x6F4A57)
-                    .setAutogen(NUGGET, BILLET)
-                    .setTagOnly(INGOT)
-                    .legacy(INGOT, "ingot_gaas", "ingot_gaas1")
-                    .legacy(NUGGET, "nugget_gaas")
-                    .legacy(BILLET, "billet_gaas", "billet_gaas1")
-                    .m()
-                    .namespace(HbmSpace.MOD_ID)
-                    .after(MAT_SATURN);
-    public static final NTMMaterial MAT_STAINLESS =
-            makeSmeltable(_EX + 1, STAINLESS, 0xD8D8D8, 0x474747, 0x4A4A4A)
-                    .setAutogen(PLATE, WELDEDPLATE, CASTPLATE)
-                    .setTagOnly(INGOT)
-                    .legacy(INGOT, "ingot_stainless")
-                    .legacy(PLATE, "plate_stainless")
-                    .m()
-                    .namespace(HbmSpace.MOD_ID)
-                    .after(MAT_GAAS);
-    public static final NTMMaterial MAT_RICH_MAGMA =
-            makeSmeltable(_EX + 2, RICHMAGMA, 0x7F7F7F, 0x353555, 0xFF6212)
-                    .setTagOnly(INGOT)
-                    .legacy(INGOT, "ingot_magma")
-                    .n()
-                    .namespace(HbmSpace.MOD_ID)
-                    .after(MAT_STAINLESS);
-    public static final NTMMaterial MAT_SEMTEX =
-            makeNonSmeltable(_EX + 3, SEMTEX, 0xEDAA28, 0x825D16, 0xF0B090)
-                    .setAutogen(FRAGMENT)
-                    .setTagOnly(INGOT, BLOCK)
-                    .n()
-                    .namespace(HbmSpace.MOD_ID)
-                    .after(MAT_RICH_MAGMA);
+    public static final Material MAT_HAFNIUM =
+            space(
+                    Material.define(7200, HAFNIUM, SMELTABLE, 0xFFF8C7, 0x2E1600, 0xFFF8C7)
+                            .after(MAT_IODINE)
+                            .autoShapes(FRAGMENT, DUST)
+                            .memberShapes(NUGGET, INGOT)
+                            .namedId(INGOT, "ingot_hafnium")
+                            .namedId(NUGGET, "nugget_hafnium"));
+    public static final Material MAT_IRIDIUM =
+            space(
+                    Material.define(7700, IRIDIUM, SMELTABLE, 0xB8D0FF, 0xB8D0FF, 0xB8D0FF)
+                            .after(MAT_HAFNIUM)
+                            .autoShapes(INGOT)
+                            .namedId(INGOT, "ingot_iridium"));
+    public static final Material MAT_GAAS =
+            space(
+                    Material.define(_EX, GAAS, SMELTABLE, 0x6F4A57, 0x6F4A57, 0x6F4A57)
+                            .after(Materials.SATURNITE)
+                            .autoShapes(NUGGET, BILLET)
+                            .memberShapes(INGOT)
+                            .namedId(INGOT, "ingot_gaas", "ingot_gaas1")
+                            .namedId(NUGGET, "nugget_gaas")
+                            .namedId(BILLET, "billet_gaas", "billet_gaas1"));
+    public static final Material MAT_STAINLESS =
+            space(
+                    Material.define(_EX + 1, STAINLESS, SMELTABLE, 0xD8D8D8, 0x474747, 0x4A4A4A)
+                            .after(MAT_GAAS)
+                            .autoShapes(PLATE, WELDED_PLATE, CAST_PLATE)
+                            .memberShapes(INGOT)
+                            .namedId(INGOT, "ingot_stainless")
+                            .namedId(PLATE, "plate_stainless"));
+    public static final Material MAT_RICH_MAGMA =
+            space(
+                    Material.define(_EX + 2, RICHMAGMA, SMELTABLE, 0x7F7F7F, 0x353555, 0xFF6212)
+                            .after(MAT_STAINLESS)
+                            .memberShapes(INGOT)
+                            .namedId(INGOT, "ingot_magma"));
+    public static final Material MAT_SEMTEX =
+            space(
+                    Material.define(_EX + 3, SEMTEX, NOT_SMELTABLE, 0xEDAA28, 0x825D16, 0xF0B090)
+                            .after(MAT_RICH_MAGMA)
+                            .autoShapes(FRAGMENT)
+                            .memberShapes(INGOT, BLOCK));
 
     static {
-        for (NTMMaterial mat :
-                new NTMMaterial[] {
-                    MAT_U233,
-                    MAT_U235,
-                    MAT_PLUTONIUM,
-                    MAT_PU239,
-                    MAT_NEPTUNIUM,
-                    MAT_CO60,
-                    MAT_AU198,
-                    MAT_PB209,
-                    MAT_SCHRABIDIUM,
-                    MAT_SOLINIUM,
-                    MAT_GHIORSIUM,
-                    MAT_ARSENIC,
-                    MAT_CADMIUM,
-                    MAT_POLYMER
+        for (Material mat :
+                new Material[] {
+                    Materials.URANIUM_233,
+                    Materials.URANIUM_235,
+                    Materials.PLUTONIUM,
+                    Materials.PLUTONIUM_239,
+                    Materials.NEPTUNIUM_237,
+                    Materials.COBALT_60,
+                    Materials.GOLD_198,
+                    Materials.LEAD_209,
+                    Materials.SCHRABIDIUM,
+                    Materials.SOLINIUM,
+                    Materials.GHIORSIUM_336,
+                    Materials.ARSENIC,
+                    Materials.CADMIUM,
+                    Materials.POLYMER
                 }) {
-            mat.setAutogen(FRAGMENT);
+            mat.addAutoShapes(FRAGMENT);
         }
-        MAT_RUBBER.setAutogen(FRAGMENT, DUST).legacy(DUST, "powder_rubber");
-        MAT_PVC.setAutogen(FRAGMENT, DUST).legacy(DUST, "powder_pvc");
-        MAT_MINGRADE.setTagOnly(BILLET).legacy(BILLET, "billet_red_copper");
-        MAT_LANTHANIUM.legacy(NUGGET, "nugget_lanthanium");
+        Materials.RUBBER.addAutoShapes(FRAGMENT, DUST).addNamedId(DUST, "powder_rubber");
+        Materials.PVC.addAutoShapes(FRAGMENT, DUST).addNamedId(DUST, "powder_pvc");
+        Materials.MINGRADE.addMemberShapes(BILLET).addNamedId(BILLET, "billet_red_copper");
+        Materials.LANTHANUM.addNamedId(NUGGET, "nugget_lanthanium");
+    }
+
+    private static Material space(Material.Declaration declaration) {
+        return declaration.owner(HbmSpace.MOD_ID).register();
     }
 
     private MatsSpace() {}

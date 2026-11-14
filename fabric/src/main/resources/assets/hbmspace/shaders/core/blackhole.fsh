@@ -113,5 +113,7 @@ void main() {
 		}
 	}
 
-	fragColor = vec4(smoothstep(0.1, 0.6, col.r), smoothstep(0.5, 0.9, col.g), smoothstep(0.1, 0.9, col.b),alpha);
+	vec3 emission = vec3(smoothstep(0.1, 0.6, col.r), smoothstep(0.5, 0.9, col.g), smoothstep(0.1, 0.9, col.b)) * clamp(alpha, 0.0, 1.0);
+	
+	fragColor = vec4(emission, 1.0 - noncaptured);
 }

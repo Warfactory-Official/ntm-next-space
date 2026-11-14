@@ -1,15 +1,32 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbmspace.mixin;
 
-import com.hbm.blocks.machine.MachineCondenserPowered;
-import com.hbm.blocks.multiblock.BlockMultiblockCore;
+import com.hbm.blocks.machine.PoweredCondenserBlock;
+import com.hbm.blocks.multiblock.MultiblockCoreBlock;
 import com.hbm.client.RepairLookOverlay;
-import com.hbm.interfaces.ILookOverlay.LookInfo;
-import com.hbm.interfaces.IRepairable;
-import com.hbm.interfaces.IToolable;
-import com.hbmspace.blockentity.machine.BlockEntityCondenserPoweredSpace;
+import com.hbm.interfaces.LookOverlay;
+import com.hbm.interfaces.RepairHandler;
+import com.hbm.interfaces.ToolInteractionHandler;
+import com.hbm.interfaces.ToolType;
+import com.hbmspace.blockentity.machine.CondenserPoweredSpaceBlockEntity;
 import com.hbmspace.blockentity.machine.ThermalMachineDamage;
 import java.util.function.BiConsumer;
 import net.minecraft.core.BlockPos;
@@ -31,9 +48,9 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(MachineCondenserPowered.class)
-public abstract class MixinMachineCondenserPowered extends BlockMultiblockCore
-        implements IToolable {
+@Mixin(PoweredCondenserBlock.class)
+abstract class MixinMachineCondenserPowered extends MultiblockCoreBlock
+        implements ToolInteractionHandler {
     protected MixinMachineCondenserPowered(Properties properties) {
         super(properties);
     }
@@ -52,7 +69,7 @@ public abstract class MixinMachineCondenserPowered extends BlockMultiblockCore
     @Inject(method = "newBlockEntity", at = @At("HEAD"), cancellable = true)
     private void hbmspace$repairable(
             BlockPos pos, BlockState state, CallbackInfoReturnable<BlockEntity> cir) {
-        cir.setReturnValue(new BlockEntityCondenserPoweredSpace(pos, state));
+        cir.setReturnValue(new CondenserPoweredSpaceBlockEntity(pos, state));
     }
 
     @Override
@@ -67,7 +84,7 @@ public abstract class MixinMachineCondenserPowered extends BlockMultiblockCore
             BlockPos core,
             Explosion explosion,
             BiConsumer<ItemStack, BlockPos> onHit) {
-        var be = (BlockEntityCondenserPoweredSpace) level.getBlockEntity(core);
+        var be = (CondenserPoweredSpaceBlockEntity) level.getBlockEntity(core);
         if (be.lastExplosion == explosion) return;
         be.lastExplosion = explosion;
         if (be.isDamaged()) level.removeBlock(core, false);
@@ -75,7 +92,7 @@ public abstract class MixinMachineCondenserPowered extends BlockMultiblockCore
     }
 
     @Override
-    public boolean onScrew(
+    public boolean onToolUse(
             Level level,
             Player player,
             BlockPos core,
@@ -83,13 +100,13 @@ public abstract class MixinMachineCondenserPowered extends BlockMultiblockCore
             Vec3 hit,
             ToolType tool) {
         if (tool != ToolType.TORCH) return false;
-        return IRepairable.tryRepairMultiblock(level, core, player);
+        return RepairHandler.tryRepair(level, core, player);
     }
 
     @Inject(method = "buildLookOverlay", at = @At("HEAD"), cancellable = true)
     private void hbmspace$repairOverlay(
-            Level level, BlockPos core, LookInfo info, CallbackInfo ci) {
-        if (level.getBlockEntity(core) instanceof BlockEntityCondenserPoweredSpace be
+            Level level, BlockPos core, LookOverlay info, CallbackInfo ci) {
+        if (level.getBlockEntity(core) instanceof CondenserPoweredSpaceBlockEntity be
                 && be.isDamaged()) {
             RepairLookOverlay.build(level, core, info);
             ci.cancel();

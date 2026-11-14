@@ -2,23 +2,85 @@
   "attributes": {
     "minecraft:visual/sky_color": "#76a8ff"
   },
-  "carvers": [],
+  "carvers": [
+    "hbmspace:moho/caves",
+    "hbmspace:moho/ravine"
+  ],
   "creature_spawn_probability": 0.1,
   "downfall": 0.0,
   "effects": {
     "water_color": "#3f76e4"
   },
   "features": [
+    [
+      "hbmspace:moho/basalt_spikes"
+    ],
     [],
+    [
+      "hbmspace:moho/stratum_hematite",
+      "hbmspace:moho/stratum_bauxite",
+      "hbmspace:moho/stratum_malachite",
+      "hbmspace:moho/ore_cave_sulfur"
+    ],
     [],
+    [
+      "hbmspace:moho/geysir"
+    ],
     [],
+    [
+      "hbmspace:moho/ore_mineral",
+      "hbmspace:moho/ore_glowstone",
+      "hbmspace:moho/ore_fire",
+      "hbmspace:moho/ore_australium",
+      "hbmspace:moho/ore_shale",
+      "hbmspace:moho/basalt",
+      "hbmspace:moho/ore_basalt_sulfur",
+      "hbmspace:moho/ore_basalt_fluorite",
+      "hbmspace:moho/ore_basalt_asbestos",
+      "hbmspace:moho/ore_basalt_gem",
+      "hbmspace:moho/ore_basalt_molysite",
+      "hbmspace:moho/celestial/ore_iron",
+      "hbmspace:moho/celestial/ore_gold",
+      "hbmspace:moho/celestial/ore_redstone",
+      "hbmspace:moho/celestial/ore_diamond",
+      "hbmspace:moho/celestial/ore_alexandrite",
+      "hbmspace:moho/celestial/deposit_iron",
+      "hbmspace:moho/celestial/deposit_titanium",
+      "hbmspace:moho/celestial/deposit_tungsten",
+      "hbmspace:moho/celestial/deposit_cinnabar",
+      "hbmspace:moho/celestial/deposit_zirconium",
+      "hbmspace:moho/celestial/deposit_borax",
+      "hbmspace:moho/celestial/ore_uranium",
+      "hbmspace:moho/celestial/ore_thorium",
+      "hbmspace:moho/celestial/ore_titanium",
+      "hbmspace:moho/celestial/ore_sulfur",
+      "hbmspace:moho/celestial/ore_aluminium",
+      "hbmspace:moho/celestial/ore_copper",
+      "hbmspace:moho/celestial/ore_nickel",
+      "hbmspace:moho/celestial/ore_zinc",
+      "hbmspace:moho/celestial/ore_fluorite",
+      "hbmspace:moho/celestial/ore_niter",
+      "hbmspace:moho/celestial/ore_tungsten",
+      "hbmspace:moho/celestial/ore_lead",
+      "hbmspace:moho/celestial/ore_beryllium",
+      "hbmspace:moho/celestial/ore_rare",
+      "hbmspace:moho/celestial/ore_cinnebar",
+      "hbmspace:moho/celestial/ore_cobalt",
+      "hbmspace:moho/celestial/cluster_iron",
+      "hbmspace:moho/celestial/cluster_titanium",
+      "hbmspace:moho/celestial/cluster_aluminium",
+      "hbmspace:moho/celestial/cluster_copper",
+      "hbmspace:moho/celestial/ore_limestone",
+      "hbmspace:moho/celestial/keyhole",
+      "hbmspace:moho/celestial/bedrock_ore"
+    ],
     [],
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
+    [
+      "hbmspace:moho/spring_lava"
+    ],
+    [
+      "hbm:meteorite"
+    ],
     []
   ],
   "has_precipitation": false,

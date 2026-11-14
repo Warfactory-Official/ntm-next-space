@@ -1,0 +1,29 @@
+{
+  "feature": {
+    "type": "hbm:stratum_3d",
+    "config": {
+      "domain_x": "hbmspace:noise/eve/stratum_bauxite/x",
+      "domain_y": "hbmspace:noise/eve/stratum_bauxite/y",
+      "domain_z": "hbmspace:noise/eve/stratum_bauxite/z",
+      "replaceable": {
+        "block": "hbmspace:eve_rock",
+        "predicate_type": "minecraft:block_match"
+      },
+      "scale_h": 0.03,
+      "scale_v": 0.15,
+      "state": {
+        "Name": "hbm:stone_resource_bauxite"
+      },
+      "threshold": 300.0
+    }
+  },
+  "placement": [
+    {
+      "type": "minecraft:count",
+      "count": 1
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

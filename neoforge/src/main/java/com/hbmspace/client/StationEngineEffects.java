@@ -1,20 +1,53 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: 2024-2025 George Paton
+ * SPDX-FileCopyrightText: 2024 JamesH_2
+ * SPDX-FileCopyrightText: 2024 StarlarkXVII
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) 2024-2025 George Paton. All rights reserved.
+ * Copyright (C) 2024 JamesH_2. All rights reserved.
+ * Copyright (C) 2024 StarlarkXVII. All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT: Space";
+ * - a modified version must not be named NTM NEXT: Space or presented as
+ *   the official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT: Space does not
+ * violate these additional terms, provided it is clearly distinguished from
+ * the official release and does not imply endorsement. Ports are encouraged
+ * to acknowledge NTM NEXT: Space as their upstream project and provide a
+ * link to it.
+ */
 
 package com.hbmspace.client;
 
 import com.hbm.api.environment.Environment;
-import com.hbm.blocks.multiblock.BlockMultiblockCore;
+import com.hbm.blocks.multiblock.MultiblockCoreBlock;
 import com.hbm.client.ClientEffects;
-import com.hbmspace.blockentity.machine.BlockEntityMachineGasDock;
-import com.hbmspace.blockentity.machine.BlockEntityMachineHTR3;
-import com.hbmspace.blockentity.machine.BlockEntityMachineHTRF4;
-import com.hbmspace.blockentity.machine.BlockEntityMachineHTRNeo;
-import com.hbmspace.blockentity.machine.BlockEntityMachineLPW2Space;
-import com.hbmspace.blockentity.machine.BlockEntityTransporterRocket;
-import com.hbmspace.client.gui.ScreenTransporterLinker;
-import com.hbmspace.items.tool.ItemTransporterLinker;
-import com.hbmspace.particle.RocketFlamesSpace;
+import com.hbm.particle.RocketFlameColor;
+import com.hbmspace.blockentity.machine.GasDockBlockEntity;
+import com.hbmspace.blockentity.machine.HTR3BlockEntity;
+import com.hbmspace.blockentity.machine.HTRF4BlockEntity;
+import com.hbmspace.blockentity.machine.HTRNeoBlockEntity;
+import com.hbmspace.blockentity.machine.LPW2SpaceBlockEntity;
+import com.hbmspace.blockentity.machine.TransporterRocketBlockEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -29,13 +62,13 @@ public final class StationEngineEffects {
     private StationEngineEffects() {}
 
     public static void install() {
-        BlockEntityMachineLPW2Space.CLIENT_EFFECTS =
+        LPW2SpaceBlockEntity.CLIENT_EFFECTS =
                 be -> {
                     boolean burning = be.isOn && be.soundtime > 18;
                     be.audioLoop(burning, 1F);
                     if (burning) lpw2Contrail(be);
                 };
-        BlockEntityMachineHTR3.CLIENT_EFFECTS =
+        HTR3BlockEntity.CLIENT_EFFECTS =
                 be -> {
                     boolean burning = be.isOn && be.soundtime > 18;
                     be.audioLoop(burning, 1F);
@@ -47,7 +80,7 @@ public final class StationEngineEffects {
                                 7,
                                 be.contrailType());
                 };
-        BlockEntityMachineHTRF4.CLIENT_EFFECTS =
+        HTRF4BlockEntity.CLIENT_EFFECTS =
                 be -> {
                     boolean burning = be.isOn && be.soundtime > 18;
                     be.audioLoop(burning, 1F);
@@ -59,22 +92,16 @@ public final class StationEngineEffects {
                                 12,
                                 be.contrailType());
                 };
-        BlockEntityMachineHTRNeo.CLIENT_EFFECTS =
-                be -> be.audioLoop(be.isOn && be.soundtime > 28, 1F);
-        BlockEntityTransporterRocket.CLIENT_EFFECTS =
+        HTRNeoBlockEntity.CLIENT_EFFECTS = be -> be.audioLoop(be.isOn && be.soundtime > 28, 1F);
+        TransporterRocketBlockEntity.CLIENT_EFFECTS =
                 be -> launch(be.getLevel(), be.getBlockPos(), be.launchTicks);
-        BlockEntityMachineGasDock.CLIENT_EFFECTS =
+        GasDockBlockEntity.CLIENT_EFFECTS =
                 be -> launch(be.getLevel(), be.getBlockPos(), be.launchTicks);
-        ItemTransporterLinker.OPEN_SCREEN =
-                (from, transporters) ->
-                        Minecraft.getInstance()
-                                .gui
-                                .setScreen(new ScreenTransporterLinker(from, transporters));
     }
 
-    private static void lpw2Contrail(BlockEntityMachineLPW2Space be) {
+    private static void lpw2Contrail(LPW2SpaceBlockEntity be) {
         Level level = be.getLevel();
-        Direction rot = be.getBlockState().getValue(BlockMultiblockCore.FACING).getClockWise();
+        Direction rot = be.getBlockState().getValue(MultiblockCoreBlock.FACING).getClockWise();
         BlockPos pos = be.getBlockPos();
         double x = pos.getX() + rot.getStepX() * 8.5;
         double y = pos.getY() + 4.5;
@@ -97,8 +124,8 @@ public final class StationEngineEffects {
     }
 
     private static void contrail(
-            Level level, BlockPos pos, BlockState state, int reach, String type) {
-        Direction rot = state.getValue(BlockMultiblockCore.FACING).getClockWise();
+            Level level, BlockPos pos, BlockState state, int reach, RocketFlameColor color) {
+        Direction rot = state.getValue(MultiblockCoreBlock.FACING).getClockWise();
         double x = pos.getX() + rot.getStepX() * reach;
         double y = pos.getY() + 1;
         double z = pos.getZ() + rot.getStepZ() * reach;
@@ -118,7 +145,7 @@ public final class StationEngineEffects {
                 rot.getStepZ() * 10,
                 40 + level.getRandom().nextInt(40),
                 Environment.particlePressure(level),
-                RocketFlamesSpace.contrail(type));
+                color);
     }
 
     private static void launch(Level level, BlockPos pos, int launchTicks) {

@@ -1,0 +1,21 @@
+{
+  "feature": {
+    "type": "hbm:lantern_behemoth",
+    "config": {}
+  },
+  "placement": [
+    {
+      "type": "minecraft:rarity_filter",
+      "chance": 1234
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "hbm:light_blocking_height"
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

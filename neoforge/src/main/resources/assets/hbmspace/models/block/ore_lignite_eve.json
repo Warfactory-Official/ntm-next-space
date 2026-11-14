@@ -1,6 +1,7 @@
 {
-  "parent": "minecraft:block/cube_all",
+  "parent": "hbmspace:block/celestial_ore",
   "textures": {
-    "all": "hbmspace:block/ore_lignite"
+    "overlay": "hbmspace:block/ore_lignite",
+    "stone": "hbmspace:block/eve_stone_2"
   }
 }

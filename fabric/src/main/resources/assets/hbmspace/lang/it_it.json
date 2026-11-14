@@ -10,5 +10,22 @@
   "block.hbmspace.ore_aluminium_mun": "Aluminium Ore",
   "block.hbmspace.ore_aluminium_tekto": "Aluminium Ore",
   "hbmmat.lapis": "Lapis Lazulo",
-  "hbmmat.white_phosphorus": "Fosforo Bianco"
+  "hbmmat.white_phosphorus": "Fosforo Bianco",
+  "item.hbmspace.bedrock_ore_fragment_arsenic": "Arsenico Bedrock Ore Fragment",
+  "item.hbmspace.bedrock_ore_fragment_cadmium": "Cadmio Bedrock Ore Fragment",
+  "item.hbmspace.bedrock_ore_fragment_cobalt_60": "Cobalto-60 Bedrock Ore Fragment",
+  "item.hbmspace.bedrock_ore_fragment_ghiorsium_336": "Ghiorsio-336 Bedrock Ore Fragment",
+  "item.hbmspace.bedrock_ore_fragment_gold_198": "Oro-198 Bedrock Ore Fragment",
+  "item.hbmspace.bedrock_ore_fragment_lapis": "Lapis Lazulo Bedrock Ore Fragment",
+  "item.hbmspace.bedrock_ore_fragment_lead_209": "Piombo-209 Bedrock Ore Fragment",
+  "item.hbmspace.bedrock_ore_fragment_neptunium_237": "Nettunio-237 Bedrock Ore Fragment",
+  "item.hbmspace.bedrock_ore_fragment_plutonium": "Plutonio Bedrock Ore Fragment",
+  "item.hbmspace.bedrock_ore_fragment_plutonium_239": "Plutonio-239 Bedrock Ore Fragment",
+  "item.hbmspace.bedrock_ore_fragment_polymer": "Polimero Bedrock Ore Fragment",
+  "item.hbmspace.bedrock_ore_fragment_rubber": "Gomma Bedrock Ore Fragment",
+  "item.hbmspace.bedrock_ore_fragment_schrabidium": "Schrabidio Bedrock Ore Fragment",
+  "item.hbmspace.bedrock_ore_fragment_solinium": "Solinio Bedrock Ore Fragment",
+  "item.hbmspace.bedrock_ore_fragment_uranium_233": "Uranio-233 Bedrock Ore Fragment",
+  "item.hbmspace.bedrock_ore_fragment_uranium_235": "Uranio-235 Bedrock Ore Fragment",
+  "item.hbmspace.bedrock_ore_fragment_white_phosphorus": "Fosforo Bianco Bedrock Ore Fragment"
 }

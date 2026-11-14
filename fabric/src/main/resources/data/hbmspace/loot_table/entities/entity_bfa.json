@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:entity",
+  "pools": [
+    {
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "hbmspace:core_angel"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "hbmspace:entities/entity_bfa"
+}

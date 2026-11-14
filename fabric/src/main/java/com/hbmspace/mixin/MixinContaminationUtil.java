@@ -1,9 +1,25 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbmspace.mixin;
 
-import com.hbm.extprop.HbmLivingProps;
+import com.hbm.extprop.LivingHazards;
 import com.hbm.items.ModDataComponents;
 import com.hbm.util.ContaminationUtil;
 import com.hbmspace.hazard.NeutronExposureSpace;
@@ -30,7 +46,7 @@ public abstract class MixinContaminationUtil {
     @Inject(method = "getPlayerRads", at = @At("HEAD"), cancellable = true)
     private static void hbmspace$fieldRate(
             LivingEntity entity, CallbackInfoReturnable<Double> cir) {
-        cir.setReturnValue(HbmLivingProps.getRadBuf(entity));
+        cir.setReturnValue(LivingHazards.fieldLastSecond(entity));
     }
 
     @Inject(
@@ -42,7 +58,7 @@ public abstract class MixinContaminationUtil {
                                     "Lnet/minecraft/world/entity/player/Player;sendSystemMessage(Lnet/minecraft/network/chat/Component;)V",
                             ordinal = 5))
     private static void hbmspace$activationReading(Player player, CallbackInfo ci) {
-        double activation = ((int) (HbmLivingProps.getNeutron(player) * 10D)) / 10D;
+        double activation = ((int) (LivingHazards.neutron(player) * 10D)) / 10D;
         player.sendSystemMessage(
                 Component.translatable("geiger.playerAct")
                         .withStyle(ChatFormatting.YELLOW)
@@ -51,7 +67,8 @@ public abstract class MixinContaminationUtil {
                                 Component.translatable(
                                                 "desc.hbmspace.geiger.activation", activation)
                                         .withStyle(
-                                                prefixFromRad(HbmLivingProps.getRadBuf(player)))));
+                                                prefixFromRad(
+                                                        LivingHazards.fieldLastSecond(player)))));
     }
 
     @Inject(method = "contaminate", at = @At("HEAD"), cancellable = true)

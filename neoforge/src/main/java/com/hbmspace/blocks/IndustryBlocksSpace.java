@@ -1,5 +1,21 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbmspace.blocks;
 
@@ -8,14 +24,14 @@ import com.hbm.items.CreativeContents;
 import com.hbm.items.DescBlockItem;
 import com.hbm.registration.Reg;
 import com.hbmspace.HbmSpace;
+import com.hbmspace.blocks.machine.AlkylationBlock;
+import com.hbmspace.blocks.machine.CryoDistillBlock;
+import com.hbmspace.blocks.machine.DishControlBlock;
 import com.hbmspace.blocks.machine.HydrobayEndCell;
-import com.hbmspace.blocks.machine.MachineAlkylation;
-import com.hbmspace.blocks.machine.MachineCryoDistill;
-import com.hbmspace.blocks.machine.MachineDishControl;
-import com.hbmspace.blocks.machine.MachineHydroponic;
-import com.hbmspace.blocks.machine.MachineMagma;
-import com.hbmspace.blocks.machine.MachineTrollDisturber;
-import com.hbmspace.blocks.machine.MachineVacuumCircuit;
+import com.hbmspace.blocks.machine.HydroponicBlock;
+import com.hbmspace.blocks.machine.MagmaBlock;
+import com.hbmspace.blocks.machine.TrollDisturberBlock;
+import com.hbmspace.blocks.machine.VacuumCircuitBlock;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -29,39 +45,39 @@ public final class IndustryBlocksSpace {
                 .requiresCorrectToolForDrops();
     }
 
-    public static final Reg.Handle<MachineTrollDisturber> TROLL_DISTURBER =
+    public static final Reg.Handle<TrollDisturberBlock> TROLL_DISTURBER =
             HbmSpace.REG.blockItem(
-                    "troll_disturber", MachineTrollDisturber::new, () -> iron(5.0F, 120.0F));
+                    "troll_disturber", TrollDisturberBlock::new, () -> iron(5.0F, 120.0F));
 
-    public static final Reg.Handle<MachineAlkylation> MACHINE_ALKYLATION =
+    public static final Reg.Handle<AlkylationBlock> MACHINE_ALKYLATION =
             HbmSpace.REG.blockItem(
                     "machine_alkylation",
-                    MachineAlkylation::new,
+                    AlkylationBlock::new,
                     () -> iron(5.0F, 6.0F).noOcclusion());
 
-    public static final Reg.Handle<MachineCryoDistill> MACHINE_CRYO_DISTILL =
+    public static final Reg.Handle<CryoDistillBlock> MACHINE_CRYO_DISTILL =
             HbmSpace.REG.blockItem(
                     "machine_cryo_distill",
-                    MachineCryoDistill::new,
+                    CryoDistillBlock::new,
                     () -> iron(5.0F, 6.0F).noOcclusion());
 
-    public static final Reg.Handle<MachineVacuumCircuit> MACHINE_VACUUM_CIRCUIT =
+    public static final Reg.Handle<VacuumCircuitBlock> MACHINE_VACUUM_CIRCUIT =
             HbmSpace.REG.blockItem(
                     "machine_vacuum_circuit",
-                    MachineVacuumCircuit::new,
+                    VacuumCircuitBlock::new,
                     () -> iron(5.0F, 18.0F).noOcclusion());
 
-    public static final Reg.Handle<MachineDishControl> DISH_CONTROL =
+    public static final Reg.Handle<DishControlBlock> DISH_CONTROL =
             HbmSpace.REG.blockItem(
                     "dish_control",
-                    MachineDishControl::new,
+                    DishControlBlock::new,
                     () -> iron(5.0F, 6.0F).noOcclusion(),
                     (block, props) -> new DescBlockItem(block, props, 3));
 
-    public static final Reg.Handle<MachineMagma> MACHINE_MAGMA =
+    public static final Reg.Handle<MagmaBlock> MACHINE_MAGMA =
             HbmSpace.REG.blockItem(
                     "machine_magma",
-                    MachineMagma::new,
+                    MagmaBlock::new,
                     () -> iron(5.0F, 60.0F).noOcclusion(),
                     (block, props) -> new DescBlockItem(block, props, 1));
 
@@ -71,10 +87,10 @@ public final class IndustryBlocksSpace {
                     HydrobayEndCell::new,
                     () -> iron(5.0F, 6.0F).noOcclusion().dynamicShape());
 
-    public static final Reg.Handle<MachineHydroponic> HYDROBAY =
+    public static final Reg.Handle<HydroponicBlock> HYDROBAY =
             HbmSpace.REG.blockItem(
                     "hydrobay",
-                    MachineHydroponic::new,
+                    HydroponicBlock::new,
                     () -> iron(5.0F, 6.0F).noOcclusion(),
                     (block, props) -> new DescBlockItem(block, props, 2));
 

@@ -1,0 +1,29 @@
+{
+  "feature": {
+    "type": "hbm:stratum_3d",
+    "config": {
+      "domain_x": "hbmspace:noise/minmus/stratum_minmus_regolith/x",
+      "domain_y": "hbmspace:noise/minmus/stratum_minmus_regolith/y",
+      "domain_z": "hbmspace:noise/minmus/stratum_minmus_regolith/z",
+      "replaceable": {
+        "block": "hbmspace:minmus_stone",
+        "predicate_type": "minecraft:block_match"
+      },
+      "scale_h": 0.06,
+      "scale_v": 0.25,
+      "state": {
+        "Name": "hbmspace:minmus_regolith"
+      },
+      "threshold": 220.0
+    }
+  },
+  "placement": [
+    {
+      "type": "minecraft:count",
+      "count": 1
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "feature": {
+    "type": "hbm:ore_cave",
+    "config": {
+      "domain": "hbmspace:noise/laythe/ore_cave_silt",
+      "exposed_by_fluid": true,
+      "max_range": 14,
+      "ore": {
+        "Name": "hbmspace:laythe_silt",
+        "Properties": {
+          "shade": "1"
+        }
+      },
+      "range_mult": 60,
+      "replaceable": {
+        "block": "hbmspace:laythe_silt",
+        "predicate_type": "minecraft:block_match"
+      },
+      "threshold": 0.2,
+      "y_level": 58
+    }
+  },
+  "placement": [
+    {
+      "type": "minecraft:count",
+      "count": 1
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

@@ -18,7 +18,7 @@ out vec4 vertexColor;
 void main() {
     gl_Position = ProjMat * ModelViewMat * vec4(Position, 1.0);
 #ifdef TEXTURED
-    texCoord0 = UV0;
+    texCoord0 = (TextureMat * vec4(UV0, 0.0, 1.0)).xy;
 #endif
 #ifdef COLORED
     vertexColor = Color;

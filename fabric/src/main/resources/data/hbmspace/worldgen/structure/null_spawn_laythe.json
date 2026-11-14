@@ -1,0 +1,11 @@
+{
+  "type": "hbm:null_spawn",
+  "biomes": [
+    "hbmspace:laythe_islands",
+    "hbmspace:laythe_ocean",
+    "hbmspace:laythe_polar",
+    "hbmspace:laythe_coast"
+  ],
+  "spawn_overrides": {},
+  "step": "strongholds"
+}

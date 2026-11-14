@@ -1,14 +1,30 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbmspace.mixin;
 
-import com.hbm.entity.effect.EntityNukeTorex;
-import com.hbm.entity.logic.EntityBalefire;
+import com.hbm.entity.effect.NukeTorexEntity;
+import com.hbm.entity.logic.BalefireEntity;
 import com.hbm.explosion.ExplosionNukeCustom;
 import com.hbmspace.entity.BombEntitiesSpace;
 import com.hbmspace.entity.effect.TorexAntimatter;
-import com.hbmspace.entity.logic.EntityAntimatterBlast;
+import com.hbmspace.entity.logic.AntimatterBlastEntity;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.world.entity.EntityType;
@@ -21,12 +37,12 @@ public abstract class MixinExplosionNukeCustom {
 
     @WrapOperation(
             method = "explodeCustom",
-            at = @At(value = "NEW", target = "com/hbm/entity/logic/EntityBalefire"))
-    private static EntityBalefire hbmspace$antimatterBlast(
-            EntityType<? extends EntityBalefire> type,
+            at = @At(value = "NEW", target = "com/hbm/entity/logic/BalefireEntity"))
+    private static BalefireEntity hbmspace$antimatterBlast(
+            EntityType<? extends BalefireEntity> type,
             Level level,
-            Operation<EntityBalefire> original) {
-        return new EntityAntimatterBlast(BombEntitiesSpace.ANTIMATTER_BLAST.get(), level);
+            Operation<BalefireEntity> original) {
+        return new AntimatterBlastEntity(BombEntitiesSpace.ANTIMATTER_BLAST.get(), level);
     }
 
     @WrapOperation(
@@ -35,14 +51,14 @@ public abstract class MixinExplosionNukeCustom {
                     @At(
                             value = "INVOKE",
                             target =
-                                    "Lcom/hbm/entity/effect/EntityNukeTorex;statFacBale(Lnet/minecraft/world/level/Level;DDDF)Lcom/hbm/entity/effect/EntityNukeTorex;"))
-    private static EntityNukeTorex hbmspace$antimatterTorex(
+                                    "Lcom/hbm/entity/effect/NukeTorexEntity;statFacBale(Lnet/minecraft/world/level/Level;DDDF)Lcom/hbm/entity/effect/NukeTorexEntity;"))
+    private static NukeTorexEntity hbmspace$antimatterTorex(
             Level level,
             double x,
             double y,
             double z,
             float scale,
-            Operation<EntityNukeTorex> original) {
+            Operation<NukeTorexEntity> original) {
         return TorexAntimatter.startFacAnti(level, x, y, z, scale);
     }
 }

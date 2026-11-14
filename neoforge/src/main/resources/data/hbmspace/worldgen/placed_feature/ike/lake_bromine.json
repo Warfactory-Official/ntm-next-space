@@ -1,0 +1,59 @@
+{
+  "feature": {
+    "type": "minecraft:lake",
+    "config": {
+      "barrier": {
+        "type": "minecraft:simple_state_provider",
+        "state": {
+          "Name": "minecraft:air"
+        }
+      },
+      "can_place_feature": {
+        "type": "minecraft:true"
+      },
+      "can_replace_with_air_or_fluid": {
+        "type": "minecraft:true"
+      },
+      "can_replace_with_barrier": {
+        "type": "minecraft:true"
+      },
+      "fluid": {
+        "type": "minecraft:simple_state_provider",
+        "state": {
+          "Name": "hbmspace:bromine_block",
+          "Properties": {
+            "level": "0"
+          }
+        }
+      }
+    }
+  },
+  "placement": [
+    {
+      "type": "minecraft:rarity_filter",
+      "chance": 8
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "minecraft:height_range",
+      "height": {
+        "type": "minecraft:uniform",
+        "max_inclusive": {
+          "absolute": 255
+        },
+        "min_inclusive": {
+          "absolute": 0
+        }
+      }
+    },
+    {
+      "type": "hbmspace:descend_through_air",
+      "floor": 5
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

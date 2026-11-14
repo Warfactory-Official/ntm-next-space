@@ -1,0 +1,13 @@
+{
+  "placement": {
+    "type": "hbmspace:chunk_odds",
+    "frequency": 0.0069444445,
+    "salt": 1925028081
+  },
+  "structures": [
+    {
+      "structure": "hbmspace:tekto/volcano",
+      "weight": 1
+    }
+  ]
+}

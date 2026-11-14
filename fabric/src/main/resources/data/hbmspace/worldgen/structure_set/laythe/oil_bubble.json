@@ -1,0 +1,13 @@
+{
+  "placement": {
+    "type": "hbmspace:chunk_odds",
+    "frequency": 0.01,
+    "salt": 1353613588
+  },
+  "structures": [
+    {
+      "structure": "hbmspace:laythe/oil_bubble",
+      "weight": 1
+    }
+  ]
+}

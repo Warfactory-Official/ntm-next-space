@@ -1,24 +1,45 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-FileCopyrightText: 2024-2025 George Paton
-// SPDX-FileCopyrightText: 2023 JamesH_2
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: 2024-2025 George Paton
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) 2024-2025 George Paton. All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT: Space";
+ * - a modified version must not be named NTM NEXT: Space or presented as
+ *   the official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT: Space does not
+ * violate these additional terms, provided it is clearly distinguished from
+ * the official release and does not imply endorsement. Ports are encouraged
+ * to acknowledge NTM NEXT: Space as their upstream project and provide a
+ * link to it.
+ */
 
 package com.hbmspace.dim.laythe;
 
-import com.hbmspace.dim.BiomeGenBaseCelestial;
-import com.hbmspace.dim.GenLayerCelestialBiomes;
-import com.hbmspace.dim.GenLayerDiversify;
 import com.hbmspace.dim.SpaceDimensions;
-import com.hbmspace.dim.WorldChunkManagerCelestial.BiomeGenLayers;
 import com.hbmspace.dim.WorldProviderCelestial;
 import com.hbmspace.dim.laythe.biome.BiomeGenBaseLaythe;
-import com.hbmspace.dim.laythe.genlayer.GenLayerLaytheIslands;
-import com.hbmspace.dim.laythe.genlayer.GenLayerLaytheOceans;
-import com.hbmspace.dim.laythe.genlayer.GenLayerLaythePolar;
-import com.hbmspace.dim.legacy.layer.GenLayer;
-import com.hbmspace.dim.legacy.layer.GenLayerSmooth;
-import com.hbmspace.dim.legacy.layer.GenLayerVoronoiZoom;
-import com.hbmspace.dim.legacy.layer.GenLayerZoom;
+import com.hbmspace.world.gen.layer.BiomeLayer;
+import com.hbmspace.world.gen.layer.BiomeLayers;
+import com.hbmspace.world.gen.layer.CelestialLayers;
 
 public class WorldProviderLaythe extends WorldProviderCelestial {
 
@@ -31,41 +52,34 @@ public class WorldProviderLaythe extends WorldProviderCelestial {
         return true;
     }
 
-    @Override
-    public int getWaterOpacity() {
-        return 1;
-    }
+    public static CelestialLayers.Stack layers(long seed) {
+        int island = BiomeGenBaseLaythe.laytheIsland.biomeID;
+        int ocean = BiomeGenBaseLaythe.laytheOcean.biomeID;
+        int coast = BiomeGenBaseLaythe.laytheCoast.biomeID;
+        int polar = BiomeGenBaseLaythe.laythePolar.biomeID;
+        BiomeLayer biomes = BiomeLayers.pick(seed, 0L, island, ocean, coast);
+        biomes = BiomeLayers.enclosed(biomes, ocean, polar);
 
-    public static BiomeGenLayers createBiomeGenerators(long seed) {
-        BiomeGenBaseCelestial island = BiomeGenBaseLaythe.laytheIsland;
-        BiomeGenBaseCelestial ocean = BiomeGenBaseLaythe.laytheOcean;
-        BiomeGenBaseCelestial coast = BiomeGenBaseLaythe.laytheCoast;
+        biomes = BiomeLayers.zoom(seed, 1040L, biomes);
+        biomes = BiomeLayers.zoom(seed, 1000L, biomes);
+        biomes = BiomeLayers.enclosed(biomes, ocean, polar);
 
-        GenLayer biomes = new GenLayerCelestialBiomes(seed, island, ocean, coast);
-        biomes = new GenLayerLaythePolar(1000L, biomes);
+        biomes = BiomeLayers.diversify(seed, 1000L, biomes, 2, island, ocean, coast);
+        biomes = BiomeLayers.border(biomes, ocean, island, coast);
+        biomes = BiomeLayers.islands(seed, 200L, biomes, island, coast, ocean);
 
-        biomes = new GenLayerZoom(1040L, biomes);
-        biomes = GenLayerZoom.magnify(1000L, biomes, 1);
-        biomes = new GenLayerLaythePolar(1300L, biomes);
+        biomes = BiomeLayers.zoom(seed, 1200L, biomes);
+        biomes = BiomeLayers.zoom(seed, 1001L, biomes);
 
-        biomes = new GenLayerDiversify(1000L, biomes, 2, island, ocean, coast);
-        biomes = new GenLayerLaytheOceans(56000L, biomes, island.biomeID);
-        biomes = new GenLayerLaytheIslands(200L, biomes);
+        biomes = BiomeLayers.border(biomes, ocean, island, coast);
+        biomes = BiomeLayers.border(biomes, ocean, coast, coast);
 
-        biomes = new GenLayerZoom(1200L, biomes);
-        biomes = new GenLayerZoom(1001L, biomes);
+        biomes = BiomeLayers.zoom(seed, 1003L, biomes);
+        biomes = BiomeLayers.border(biomes, ocean, coast, coast);
+        biomes = BiomeLayers.smooth(seed, 700L, biomes);
 
-        biomes = new GenLayerLaytheOceans(4000L, biomes, island.biomeID);
-        biomes = new GenLayerLaytheOceans(4001L, biomes, coast.biomeID);
+        biomes = BiomeLayers.zoom(seed, 1006L, biomes);
 
-        biomes = new GenLayerZoom(1003L, biomes);
-        biomes = new GenLayerLaytheOceans(4342L, biomes, coast.biomeID);
-        biomes = new GenLayerSmooth(700L, biomes);
-
-        biomes = new GenLayerZoom(1006L, biomes);
-
-        GenLayer genLayerVoronoiZoom = new GenLayerVoronoiZoom(10L, biomes);
-
-        return new BiomeGenLayers(biomes, genLayerVoronoiZoom, seed);
+        return new CelestialLayers.Stack(biomes);
     }
 }

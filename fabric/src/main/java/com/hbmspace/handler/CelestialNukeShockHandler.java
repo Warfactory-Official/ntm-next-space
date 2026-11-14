@@ -1,20 +1,53 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-FileCopyrightText: 2026 detree05
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: 2026 detree05
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) 2026 detree05. All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT: Space";
+ * - a modified version must not be named NTM NEXT: Space or presented as
+ *   the official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT: Space does not
+ * violate these additional terms, provided it is clearly distinguished from
+ * the official release and does not imply endorsement. Ports are encouraged
+ * to acknowledge NTM NEXT: Space as their upstream project and provide a
+ * link to it.
+ */
 
 package com.hbmspace.handler;
 
 import com.hbm.packet.PacketWire;
 import com.hbmspace.dim.CelestialBody;
 import com.hbmspace.dim.Target;
+import com.hbmspace.packet.layout.SpaceNukeShocks;
 import io.netty.buffer.ByteBuf;
+import io.netty.handler.codec.DecoderException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import net.minecraft.network.Utf8String;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -26,19 +59,63 @@ public final class CelestialNukeShockHandler {
     public static final int MAX_ACTIVE_SHOCKS = 4;
     private static final float FLASH_GRID = 16.0F;
 
-    public static final class ShockStatus {
-        public long time;
-        public float centerX;
-        public float centerY;
-        public float strength;
+    public record ShockStatus(long time, float centerX, float centerY, float strength) {
 
-        public ShockStatus(long time, float centerX, float centerY, float strength) {
-            this.time = time;
-            this.centerX = centerX;
-            this.centerY = centerY;
-            this.strength = strength;
-        }
+        private static final int BYTES = Long.BYTES + Float.BYTES * 3;
+
+        static final StreamCodec<ByteBuf, ShockStatus> STREAM_CODEC =
+                StreamCodec.composite(
+                        ByteBufCodecs.LONG,
+                        ShockStatus::time,
+                        ByteBufCodecs.FLOAT,
+                        ShockStatus::centerX,
+                        ByteBufCodecs.FLOAT,
+                        ShockStatus::centerY,
+                        ByteBufCodecs.FLOAT,
+                        ShockStatus::strength,
+                        ShockStatus::new);
     }
+
+    public static final StreamCodec<ByteBuf, Map<String, List<ShockStatus>>> STREAM_CODEC =
+            new StreamCodec<>() {
+                @Override
+                public Map<String, List<ShockStatus>> decode(ByteBuf input) {
+                    int count = readCount(input, 2);
+                    Map<String, List<ShockStatus>> result = new HashMap<>(Math.min(count, 65_536));
+                    for (int i = 0; i < count; i++) {
+                        String body = ByteBufCodecs.STRING_UTF8.decode(input);
+                        int shocks = readCount(input, ShockStatus.BYTES);
+                        if (shocks > MAX_ACTIVE_SHOCKS) {
+                            throw new DecoderException(
+                                    "Too many shocks for " + body + ": " + shocks);
+                        }
+                        List<ShockStatus> statuses = new ArrayList<>(shocks);
+                        for (int j = 0; j < shocks; j++)
+                            statuses.add(ShockStatus.STREAM_CODEC.decode(input));
+                        if (result.put(body, List.copyOf(statuses)) != null) {
+                            throw new DecoderException(
+                                    "Duplicate celestial body shock entry: " + body);
+                        }
+                    }
+                    return result;
+                }
+
+                @Override
+                public void encode(ByteBuf output, Map<String, List<ShockStatus>> shocks) {
+                    ByteBufCodecs.VAR_INT.encode(output, shocks.size());
+                    shocks.forEach(
+                            (body, statuses) -> {
+                                if (statuses.size() > MAX_ACTIVE_SHOCKS) {
+                                    throw new IllegalArgumentException(
+                                            "Too many shocks for " + body + ": " + statuses.size());
+                                }
+                                ByteBufCodecs.STRING_UTF8.encode(output, body);
+                                ByteBufCodecs.VAR_INT.encode(output, statuses.size());
+                                for (ShockStatus status : statuses)
+                                    ShockStatus.STREAM_CODEC.encode(output, status);
+                            });
+                }
+            };
 
     private static final Map<String, List<ShockStatus>> serverStatuses = new HashMap<>();
     private static final Map<String, List<ShockStatus>> clientStatuses = new HashMap<>();
@@ -68,7 +145,7 @@ public final class CelestialNukeShockHandler {
     }
 
     public static void sync(ServerPlayer player) {
-        PacketWire.sendTo(NukeShockSyncPayload.of(player.level().getGameTime()), player);
+        PacketWire.sendTo(SpaceNukeShocks.encode(snapshot(player.level().getGameTime())), player);
     }
 
     public static List<ShockStatus> getServerShocks(CelestialBody body) {
@@ -86,40 +163,16 @@ public final class CelestialNukeShockHandler {
         serverStatuses.clear();
     }
 
-    static void writeSync(ByteBuf buf, long currentTime) {
+    private static Map<String, List<ShockStatus>> snapshot(long currentTime) {
         cleanup(serverStatuses, currentTime);
-
-        buf.writeShort(serverStatuses.size());
-        for (Map.Entry<String, List<ShockStatus>> entry : serverStatuses.entrySet()) {
-            List<ShockStatus> statuses = entry.getValue();
-            Utf8String.write(buf, entry.getKey(), Short.MAX_VALUE);
-            buf.writeByte(statuses.size());
-            for (ShockStatus status : statuses) {
-                buf.writeLong(status.time);
-                buf.writeFloat(status.centerX);
-                buf.writeFloat(status.centerY);
-                buf.writeFloat(status.strength);
-            }
-        }
+        Map<String, List<ShockStatus>> copy = new HashMap<>();
+        serverStatuses.forEach((body, statuses) -> copy.put(body, List.copyOf(statuses)));
+        return copy;
     }
 
-    static void readSync(ByteBuf buf) {
+    public static void replaceClient(Map<String, List<ShockStatus>> shocks) {
         clientStatuses.clear();
-
-        int count = buf.readShort();
-        for (int i = 0; i < count; i++) {
-            String body = Utf8String.read(buf, Short.MAX_VALUE);
-            int shockCount = buf.readUnsignedByte();
-            List<ShockStatus> statuses = new ArrayList<>(shockCount);
-            for (int j = 0; j < shockCount; j++) {
-                long time = buf.readLong();
-                float centerX = buf.readFloat();
-                float centerY = buf.readFloat();
-                float strength = buf.readFloat();
-                statuses.add(new ShockStatus(time, centerX, centerY, strength));
-            }
-            clientStatuses.put(body, statuses);
-        }
+        shocks.forEach((body, statuses) -> clientStatuses.put(body, new ArrayList<>(statuses)));
     }
 
     private static void cleanup(Map<String, List<ShockStatus>> statuses, long currentTime) {
@@ -134,7 +187,15 @@ public final class CelestialNukeShockHandler {
     }
 
     private static void pruneStatuses(List<ShockStatus> statuses, long currentTime) {
-        statuses.removeIf(status -> currentTime - status.time > MAX_AGE);
+        statuses.removeIf(status -> currentTime - status.time() > MAX_AGE);
+    }
+
+    private static int readCount(ByteBuf input, int minimumBytesPerEntry) {
+        int count = ByteBufCodecs.VAR_INT.decode(input);
+        if (count < 0 || count > input.readableBytes() / minimumBytesPerEntry) {
+            throw new DecoderException("Invalid shock count: " + count);
+        }
+        return count;
     }
 
     private static float hashToUnit(double value) {

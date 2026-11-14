@@ -1,11 +1,27 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbmspace.handler;
 
-import com.hbm.blocks.machine.MachineMiningLaser;
-import com.hbm.blocks.multiblock.BlockMultiblockCore;
-import com.hbm.blocks.multiblock.MultiblockHandlerXR;
+import com.hbm.blocks.machine.MiningLaserBlock;
+import com.hbm.blocks.multiblock.MultiblockCoreBlock;
+import com.hbm.blocks.multiblock.MultiblockLayout;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
@@ -46,7 +62,7 @@ public final class SpaceMultiblockPlacement {
         return placement != NO_PLACEMENT && (placement & ASSEMBLED) != 0;
     }
 
-    private static Direction facing(BlockMultiblockCore block, Direction face, float yaw) {
+    private static Direction facing(MultiblockCoreBlock block, Direction face, float yaw) {
         if (face.getAxis().isHorizontal()) return face;
         int quadrant = Mth.floor(yaw * 4F / block.placementYawSpan() + 0.5D) & 3;
         return switch (quadrant) {
@@ -57,30 +73,33 @@ public final class SpaceMultiblockPlacement {
         };
     }
 
-    public static Direction direction(BlockMultiblockCore block, Direction face, float yaw) {
+    public static Direction direction(MultiblockCoreBlock block, Direction face, float yaw) {
         return block.getDirModified(facing(block, face, yaw));
     }
 
     public static BlockPos core(
-            BlockMultiblockCore block, BlockPos clicked, Direction face, float yaw) {
+            MultiblockCoreBlock block, BlockPos clicked, Direction face, float yaw) {
         Direction facing = facing(block, face, yaw);
         Direction direction = block.getDirModified(facing);
+        MultiblockLayout.Placement placement = block.placement();
         if (face.getAxis().isHorizontal()) {
-            int[] rotated = MultiblockHandlerXR.rotate(block.getDimensions(), direction);
+            int[] rotated =
+                    MultiblockLayout.Placement.rotateDimensions(placement.dimensions(), direction);
             return clicked.relative(face, rotated[face.getOpposite().ordinal()])
-                    .above(block.getHeightOffset());
+                    .above(placement.heightOffset());
         }
-        BlockPos core = clicked.relative(facing, -block.getOffset()).above(block.getHeightOffset());
-        if (face == Direction.DOWN && !(block instanceof MachineMiningLaser)) {
-            int[] dimensions = block.getDimensions();
+        BlockPos core =
+                clicked.relative(facing, -placement.offset()).above(placement.heightOffset());
+        if (face == Direction.DOWN && !(block instanceof MiningLaserBlock)) {
+            int[] dimensions = placement.dimensions();
             core = core.below(dimensions[0] + dimensions[1]);
         }
         return core;
     }
 
     public static BlockPos requirementAnchor(
-            BlockMultiblockCore block, BlockPos clicked, Direction face, float yaw) {
+            MultiblockCoreBlock block, BlockPos clicked, Direction face, float yaw) {
         return core(block, clicked, face, yaw)
-                .relative(direction(block, face, yaw), block.getOffset());
+                .relative(direction(block, face, yaw), block.placement().offset());
     }
 }

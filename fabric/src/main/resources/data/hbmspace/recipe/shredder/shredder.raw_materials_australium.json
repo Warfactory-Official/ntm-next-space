@@ -1,0 +1,16 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "#c:raw_materials/australium"
+    }
+  ],
+  "order": 52995,
+  "output_items": [
+    {
+      "chance": 0.667,
+      "count": 2,
+      "id": "hbm:powder_australium"
+    }
+  ]
+}

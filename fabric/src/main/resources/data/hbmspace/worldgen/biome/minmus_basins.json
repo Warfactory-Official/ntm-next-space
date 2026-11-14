@@ -2,7 +2,9 @@
   "attributes": {
     "minecraft:visual/sky_color": "#879bff"
   },
-  "carvers": [],
+  "carvers": [
+    "hbmspace:minmus/caves"
+  ],
   "creature_spawn_probability": 0.1,
   "downfall": 0.0,
   "effects": {
@@ -11,14 +13,63 @@
   "features": [
     [],
     [],
+    [
+      "hbmspace:minmus/stratum_hematite",
+      "hbmspace:minmus/stratum_bauxite",
+      "hbmspace:minmus/stratum_malachite",
+      "hbmspace:minmus/ore_cave_sulfur",
+      "hbmspace:minmus/stratum_minmus_regolith",
+      "hbmspace:minmus/stratum_minmus_smooth",
+      "hbmspace:minmus/stratum_conglomerate"
+    ],
     [],
     [],
     [],
+    [
+      "hbmspace:minmus/ore_nickel",
+      "hbmspace:minmus/ore_titanium",
+      "hbmspace:minmus/ore_malachite",
+      "hbmspace:minmus/ore_copper",
+      "hbmspace:minmus/celestial/ore_iron",
+      "hbmspace:minmus/celestial/ore_gold",
+      "hbmspace:minmus/celestial/ore_redstone",
+      "hbmspace:minmus/celestial/ore_diamond",
+      "hbmspace:minmus/celestial/ore_alexandrite",
+      "hbmspace:minmus/celestial/deposit_iron",
+      "hbmspace:minmus/celestial/deposit_titanium",
+      "hbmspace:minmus/celestial/deposit_tungsten",
+      "hbmspace:minmus/celestial/deposit_cinnabar",
+      "hbmspace:minmus/celestial/deposit_zirconium",
+      "hbmspace:minmus/celestial/deposit_borax",
+      "hbmspace:minmus/celestial/ore_uranium",
+      "hbmspace:minmus/celestial/ore_thorium",
+      "hbmspace:minmus/celestial/ore_titanium",
+      "hbmspace:minmus/celestial/ore_sulfur",
+      "hbmspace:minmus/celestial/ore_aluminium",
+      "hbmspace:minmus/celestial/ore_copper",
+      "hbmspace:minmus/celestial/ore_nickel",
+      "hbmspace:minmus/celestial/ore_zinc",
+      "hbmspace:minmus/celestial/ore_fluorite",
+      "hbmspace:minmus/celestial/ore_niter",
+      "hbmspace:minmus/celestial/ore_tungsten",
+      "hbmspace:minmus/celestial/ore_lead",
+      "hbmspace:minmus/celestial/ore_beryllium",
+      "hbmspace:minmus/celestial/ore_rare",
+      "hbmspace:minmus/celestial/ore_cinnebar",
+      "hbmspace:minmus/celestial/ore_cobalt",
+      "hbmspace:minmus/celestial/cluster_iron",
+      "hbmspace:minmus/celestial/cluster_titanium",
+      "hbmspace:minmus/celestial/cluster_aluminium",
+      "hbmspace:minmus/celestial/cluster_copper",
+      "hbmspace:minmus/celestial/ore_limestone",
+      "hbmspace:minmus/celestial/keyhole",
+      "hbmspace:minmus/celestial/bedrock_ore"
+    ],
     [],
     [],
-    [],
-    [],
-    [],
+    [
+      "hbm:meteorite"
+    ],
     []
   ],
   "has_precipitation": true,

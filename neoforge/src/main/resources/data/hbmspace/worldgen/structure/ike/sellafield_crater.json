@@ -1,0 +1,24 @@
+{
+  "type": "hbm:sellafield_crater",
+  "biomes": [
+    "hbmspace:ike"
+  ],
+  "exponent": 2,
+  "max_size": 64,
+  "min_size": 8,
+  "regolith": {
+    "Name": "hbm:sellafield",
+    "Properties": {
+      "level": "0"
+    }
+  },
+  "rock": {
+    "Name": "hbm:sellafield_slaked",
+    "Properties": {
+      "shade": "0"
+    }
+  },
+  "spawn_overrides": {},
+  "step": "lakes",
+  "terrain_adaptation": "none"
+}

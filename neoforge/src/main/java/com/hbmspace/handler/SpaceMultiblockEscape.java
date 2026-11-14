@@ -1,19 +1,36 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbmspace.handler;
 
 import com.hbm.blockentity.Synced;
-import com.hbm.blocks.multiblock.BlockMultiblockCore;
+import com.hbm.blocks.multiblock.MultiblockCoreBlock;
 import com.hbm.blocks.multiblock.MultiblockSurface;
 import com.hbm.packet.PacketWire;
-import com.hbm.packet.PayloadHandlerThread;
-import com.hbm.platform.NeoForgeNetwork;
+import com.hbm.packet.PayloadHandlerContext;
+import com.hbmspace.packet.layout.SpacePlacementEscapeLayout;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.shorts.ShortOpenHashSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
 import net.minecraft.network.protocol.game.ClientboundSectionBlocksUpdatePacket;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
@@ -29,15 +46,6 @@ public final class SpaceMultiblockEscape {
 
     private SpaceMultiblockEscape() {}
 
-    public static void register() {
-        NeoForgeNetwork.clientbound.add(
-                new NeoForgeNetwork.Registration<>(
-                        PlacementEscapePayload.TYPE,
-                        PlacementEscapePayload.STREAM_CODEC,
-                        PlacementEscapePayload::handle,
-                        PayloadHandlerThread.MAIN));
-    }
-
     public static long ownerAt(Level level, BlockPos pos) {
         if (level.isOutsideBuildHeight(pos)) return MultiblockSurface.NO_CORE;
         LevelChunk chunk = loadedChunk(level, pos);
@@ -52,6 +60,14 @@ public final class SpaceMultiblockEscape {
         return core == null ? MultiblockSurface.NO_CORE_TRUNCATED : core.asLong();
     }
 
+    public static void grant(PayloadHandlerContext context, Identifier dimension, long core) {
+        Player player = context.playerOrNull();
+        if (player != null && player.level().dimension().identifier().equals(dimension)) {
+            ((com.hbmspace.handler.SpacePlacementEscape) (player))
+                    .hbmspace$grantPlacementEscape(player.level().dimension(), core);
+        }
+    }
+
     public static boolean isCurrentState(Level level, BlockPos pos, BlockState state) {
         LevelChunk chunk = loadedChunk(level, pos);
         return chunk != null && chunk.getBlockState(pos) == state;
@@ -59,7 +75,7 @@ public final class SpaceMultiblockEscape {
 
     private static @Nullable LevelChunk loadedChunk(Level level, BlockPos pos) {
         return level instanceof ServerLevel server
-                ? BlockMultiblockCore.readableChunk(server, pos.getX(), pos.getZ())
+                ? MultiblockCoreBlock.readableChunk(server, pos.getX(), pos.getZ())
                 : (LevelChunk)
                         level.getChunkSource()
                                 .getChunk(
@@ -67,14 +83,15 @@ public final class SpaceMultiblockEscape {
     }
 
     public static void placed(
-            Level level, BlockPos core, BlockMultiblockCore block, LivingEntity placer) {
+            Level level, BlockPos core, MultiblockCoreBlock block, LivingEntity placer) {
         if (!(level instanceof ServerLevel)
                 || !(placer instanceof Player player)
                 || !level.getBlockState(core).is(block)) return;
         BlockPos feet = BlockPos.containing(player.getX(), player.getY() + 0.1D, player.getZ());
         long packed = core.asLong();
         if (ownerAt(level, feet) != packed && ownerAt(level, feet.above()) != packed) return;
-        ((SpacePlacementEscape) player).hbmspace$grantPlacementEscape(level.dimension(), packed);
+        ((com.hbmspace.handler.SpacePlacementEscape) (player))
+                .hbmspace$grantPlacementEscape(level.dimension(), packed);
         if (!(player instanceof ServerPlayer recipient)) return;
 
         Long2ObjectOpenHashMap<ShortOpenHashSet> changes = new Long2ObjectOpenHashMap<>();
@@ -102,6 +119,7 @@ public final class SpaceMultiblockEscape {
             if (initial != null) recipient.connection.send(initial);
         }
         PacketWire.sendTo(
-                new PlacementEscapePayload(level.dimension().identifier(), packed), recipient);
+                SpacePlacementEscapeLayout.encode(level.dimension().identifier(), packed),
+                recipient);
     }
 }

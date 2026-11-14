@@ -1,0 +1,42 @@
+{
+  "type": "hbmspace:experimental_cave",
+  "config": {
+    "biomes": "hbmspace:duna_lowlands",
+    "carving_scale": 2.0,
+    "depth_threshold": 40,
+    "filler": [
+      "hbmspace:duna_sands",
+      "hbmspace:duna_rock",
+      "minecraft:snow_block"
+    ],
+    "large_cave_size": 3.0,
+    "lava": {
+      "Name": "hbm:basalt"
+    },
+    "lava_level": {
+      "absolute": 9
+    },
+    "probability": 0.14285715,
+    "replaceable": [
+      "hbmspace:duna_cobble",
+      "hbmspace:duna_sands",
+      "hbmspace:duna_rock"
+    ],
+    "small_cave_size": 1.0,
+    "top": [
+      "hbmspace:duna_sands",
+      "minecraft:snow_block"
+    ],
+    "y": {
+      "type": "minecraft:biased_to_bottom",
+      "inner": 8,
+      "max_inclusive": {
+        "absolute": 127
+      },
+      "min_inclusive": {
+        "absolute": 0
+      }
+    },
+    "yScale": 0.5
+  }
+}

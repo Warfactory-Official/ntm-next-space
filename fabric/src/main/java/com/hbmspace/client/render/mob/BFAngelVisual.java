@@ -1,5 +1,21 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbmspace.client.render.mob;
 
@@ -10,7 +26,7 @@ import com.hbm.client.render.flywheel.HbmDynamicEntityVisual;
 import com.hbm.client.render.flywheel.PackedQuadMesh;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.HFRWavefrontObject;
-import com.hbmspace.entity.mob.EntityBFAngel;
+import com.hbmspace.entity.mob.BFAngelEntity;
 import dev.engine_room.flywheel.api.material.CardinalLightingMode;
 import dev.engine_room.flywheel.api.material.Material;
 import dev.engine_room.flywheel.api.material.Transparency;
@@ -28,7 +44,7 @@ import org.joml.FrustumIntersection;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
-public final class BFAngelVisual extends HbmDynamicEntityVisual<EntityBFAngel> {
+public final class BFAngelVisual extends HbmDynamicEntityVisual<BFAngelEntity> {
 
     private static final Supplier<Models> MODELS = Suppliers.memoize(Models::create);
     private static final float REACH = 16F;
@@ -36,7 +52,7 @@ public final class BFAngelVisual extends HbmDynamicEntityVisual<EntityBFAngel> {
     private final Models models = MODELS.get();
     private final TransformedInstance[] core;
     private final TransformedInstance[] wings;
-    private final TransformedInstance[] rays = new TransformedInstance[RenderBFAngel.RAYS];
+    private final TransformedInstance[] rays = new TransformedInstance[BFAngelRenderer.RAYS];
     private final Vector3f visualPosition = new Vector3f();
     private final Matrix4f root = new Matrix4f();
     private final Matrix4f body = new Matrix4f();
@@ -44,7 +60,7 @@ public final class BFAngelVisual extends HbmDynamicEntityVisual<EntityBFAngel> {
     private final Matrix4f scratch = new Matrix4f();
     private boolean shown;
 
-    public BFAngelVisual(VisualizationContext context, EntityBFAngel entity, float partialTick) {
+    public BFAngelVisual(VisualizationContext context, BFAngelEntity entity, float partialTick) {
         super(context, entity, partialTick);
         core = instances(models.core);
         wings = instances(models.wings);
@@ -93,28 +109,28 @@ public final class BFAngelVisual extends HbmDynamicEntityVisual<EntityBFAngel> {
         int light = computePackedLight(partialTick);
         getVisualPosition(partialTick, visualPosition);
         root.translation(visualPosition.x, visualPosition.y, visualPosition.z);
-        RenderBFAngel.rootPose(root, entity, partialTick);
+        BFAngelRenderer.rootPose(root, entity, partialTick);
 
-        float seed = RenderBFAngel.raySeed(entity, partialTick);
+        float seed = BFAngelRenderer.raySeed(entity, partialTick);
         turn.identity();
         for (int i = 0; i < rays.length; i++) {
-            RenderBFAngel.turnRay(turn, i, seed);
+            BFAngelRenderer.turnRay(turn, i, seed);
             scratch.set(root)
                     .translate(1F, 2.2F, 1F)
                     .mul(turn)
                     .scale(
-                            RenderBFAngel.RAY_WIDTH[i],
-                            RenderBFAngel.RAY_LENGTH[i],
-                            RenderBFAngel.RAY_WIDTH[i]);
+                            BFAngelRenderer.RAY_WIDTH[i],
+                            BFAngelRenderer.RAY_LENGTH[i],
+                            BFAngelRenderer.RAY_WIDTH[i]);
             rays[i].setTransform(scratch).setChanged();
         }
 
         body.set(root);
-        RenderBFAngel.bodyPose(body);
+        BFAngelRenderer.bodyPose(body);
         for (var instance : core) instance.setTransform(body).light(light).setChanged();
         for (int i = 0; i < wings.length; i++) {
             scratch.set(body);
-            RenderBFAngel.wingPose(scratch, i, entity, partialTick);
+            BFAngelRenderer.wingPose(scratch, i, entity, partialTick);
             wings[i].setTransform(scratch).light(light).setChanged();
         }
     }
@@ -162,17 +178,17 @@ public final class BFAngelVisual extends HbmDynamicEntityVisual<EntityBFAngel> {
                             .backfaceCulling(true)
                             .useOverlay(false)
                             .build();
-            Model[] core = new Model[RenderBFAngel.CORE.length];
+            Model[] core = new Model[BFAngelRenderer.CORE.length];
             for (int i = 0; i < core.length; i++) {
                 core[i] =
                         new SingleMeshModel(
-                                PackedQuadMesh.of(mesh, mesh.partId(RenderBFAngel.CORE[i])), lit);
+                                PackedQuadMesh.of(mesh, mesh.partId(BFAngelRenderer.CORE[i])), lit);
             }
-            Model[] wings = new Model[RenderBFAngel.WINGS.length];
+            Model[] wings = new Model[BFAngelRenderer.WINGS.length];
             for (int i = 0; i < wings.length; i++) {
                 wings[i] =
                         new SingleMeshModel(
-                                PackedQuadMesh.of(mesh, mesh.partId(RenderBFAngel.WINGS[i])),
+                                PackedQuadMesh.of(mesh, mesh.partId(BFAngelRenderer.WINGS[i])),
                                 unlit);
             }
             return new Models(core, wings, new SingleMeshModel(spike(), flash));
@@ -183,10 +199,10 @@ public final class BFAngelVisual extends HbmDynamicEntityVisual<EntityBFAngel> {
             float[][] rim = {{-.866F, 1F, -.5F}, {.866F, 1F, -.5F}, {0F, 1F, 1F}};
             for (int i = 0; i < 3; i++) {
                 float[] a = rim[i], b = rim[(i + 1) % 3];
-                mesh.vertex(0, 0, 0, RenderBFAngel.RAY_TIP);
-                mesh.vertex(a[0], a[1], a[2], RenderBFAngel.RAY_EDGE);
-                mesh.vertex(b[0], b[1], b[2], RenderBFAngel.RAY_EDGE);
-                mesh.vertex(b[0], b[1], b[2], RenderBFAngel.RAY_EDGE);
+                mesh.vertex(0, 0, 0, BFAngelRenderer.RAY_TIP);
+                mesh.vertex(a[0], a[1], a[2], BFAngelRenderer.RAY_EDGE);
+                mesh.vertex(b[0], b[1], b[2], BFAngelRenderer.RAY_EDGE);
+                mesh.vertex(b[0], b[1], b[2], BFAngelRenderer.RAY_EDGE);
             }
             return mesh.build();
         }

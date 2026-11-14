@@ -1,0 +1,25 @@
+{
+  "type": "hbm:oil_bubble",
+  "biomes": [
+    "hbmspace:eve_plains",
+    "hbmspace:eve_ocean",
+    "hbmspace:eve_mountains",
+    "hbmspace:eve_seismic_plains",
+    "hbmspace:eve_river"
+  ],
+  "core": {
+    "Name": "hbmspace:ore_gas_eve"
+  },
+  "fuzzy": false,
+  "max_size": 16,
+  "min_size": 8,
+  "min_y": 15,
+  "range_y": 25,
+  "replaceable": {
+    "block": "hbmspace:eve_rock",
+    "predicate_type": "minecraft:block_match"
+  },
+  "spawn_overrides": {},
+  "step": "raw_generation",
+  "terrain_adaptation": "none"
+}

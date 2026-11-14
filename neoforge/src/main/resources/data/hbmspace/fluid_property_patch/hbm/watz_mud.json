@@ -1,0 +1,20 @@
+{
+  "traits": {
+    "heatable": {
+      "efficiency": {
+        "PWR": 1.0
+      },
+      "steps": [
+        {
+          "amount_produced": 1,
+          "amount_req": 1,
+          "heat_req": 300,
+          "produces": "hbmspace:gas_watz"
+        }
+      ]
+    },
+    "pwrmoderator": {
+      "multiplier": 1.4
+    }
+  }
+}

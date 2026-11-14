@@ -1,0 +1,13 @@
+{
+  "placement": {
+    "type": "hbmspace:chunk_odds",
+    "frequency": 0.001,
+    "salt": 996996996
+  },
+  "structures": [
+    {
+      "structure": "hbmspace:spaceship",
+      "weight": 1
+    }
+  ]
+}

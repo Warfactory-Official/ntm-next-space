@@ -1,7 +1,7 @@
 {
   "type": "hbmspace:duna",
   "generator": {
-    "type": "hbmspace:duna",
+    "type": "minecraft:noise",
     "biome_source": {
       "type": "hbmspace:celestial",
       "biomes": [
@@ -10,8 +10,8 @@
         "hbmspace:duna_polar",
         "hbmspace:duna_hills",
         "hbmspace:duna_polar_hills"
-      ],
-      "layers": "hbmspace:duna"
-    }
+      ]
+    },
+    "settings": "hbmspace:duna"
   }
 }

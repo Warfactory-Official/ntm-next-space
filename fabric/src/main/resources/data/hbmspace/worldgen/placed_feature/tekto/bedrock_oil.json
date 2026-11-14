@@ -1,0 +1,64 @@
+{
+  "feature": {
+    "type": "hbm:bedrock_oil_deposit",
+    "config": {
+      "core": {
+        "Name": "hbmspace:ore_bedrock_oil_tekto"
+      },
+      "replaceable": {
+        "block": "hbm:basalt",
+        "predicate_type": "minecraft:block_match"
+      },
+      "surface_scars": [
+        {
+          "state": {
+            "Name": "hbm:sellafield_slaked",
+            "Properties": {
+              "shade": "0"
+            }
+          },
+          "target": {
+            "block": "hbmspace:rubber_silt",
+            "predicate_type": "minecraft:block_match"
+          }
+        },
+        {
+          "state": {
+            "Name": "hbm:sellafield_slaked",
+            "Properties": {
+              "shade": "0"
+            }
+          },
+          "target": {
+            "block": "hbmspace:rubber_grass",
+            "predicate_type": "minecraft:block_match"
+          }
+        },
+        {
+          "state": {
+            "Name": "hbm:sellafield_slaked",
+            "Properties": {
+              "shade": "0"
+            }
+          },
+          "target": {
+            "block": "hbmspace:vinyl_sand",
+            "predicate_type": "minecraft:block_match"
+          }
+        }
+      ]
+    }
+  },
+  "placement": [
+    {
+      "type": "minecraft:rarity_filter",
+      "chance": 200
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

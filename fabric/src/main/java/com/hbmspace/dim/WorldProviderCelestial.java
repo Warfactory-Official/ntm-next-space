@@ -1,8 +1,40 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-FileCopyrightText: 2024-2026 George Paton
-// SPDX-FileCopyrightText: 2025 JamesH_2
-// SPDX-FileCopyrightText: 2026 detree05
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: 2024-2026 George Paton
+ * SPDX-FileCopyrightText: 2025 JamesH_2
+ * SPDX-FileCopyrightText: 2026 detree05
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) 2024-2026 George Paton. All rights reserved.
+ * Copyright (C) 2025 JamesH_2. All rights reserved.
+ * Copyright (C) 2026 detree05. All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT: Space";
+ * - a modified version must not be named NTM NEXT: Space or presented as
+ *   the official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT: Space does not
+ * violate these additional terms, provided it is clearly distinguished from
+ * the official release and does not imply endorsement. Ports are encouraged
+ * to acknowledge NTM NEXT: Space as their upstream project and provide a
+ * link to it.
+ */
 
 package com.hbmspace.dim;
 
@@ -23,12 +55,14 @@ import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
 import net.minecraft.world.attribute.EnvironmentAttributeSystem;
+import net.minecraft.world.attribute.EnvironmentAttributes;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.MoonPhase;
 import net.minecraft.world.level.block.Blocks;
@@ -117,10 +151,6 @@ public class WorldProviderCelestial {
         return false;
     }
 
-    public int getWaterOpacity() {
-        return 3;
-    }
-
     public boolean hasWeatherCycle() {
         return CBT_Weather.supportsWeather(body());
     }
@@ -146,26 +176,10 @@ public class WorldProviderCelestial {
         return body.getRotationalPeriod() / (1 - (1 / body.getPlanet().getOrbitalPeriod()));
     }
 
-    public static float calculateCelestialAngle(
-            long worldTime, float partialTicks, double dayLength) {
-        double j = worldTime % dayLength;
-        double f1 = (j + partialTicks) / dayLength - 0.25F;
-
-        if (f1 < 0.0F) {
-            ++f1;
-        }
-
-        if (f1 > 1.0F) {
-            --f1;
-        }
-
-        double f2 = f1;
-        f1 = 0.5F - Math.cos(f1 * Math.PI) / 2.0F;
-        return (float) (f2 + (f1 - f2) / 3.0D);
-    }
-
-    public float getCelestialAngle(Level level, float partialTicks) {
-        return calculateCelestialAngle(level.getDefaultClockTime(), partialTicks, getDayLength());
+    public float getCelestialAngle(Level level) {
+        return level.environmentAttributes()
+                        .getValue(EnvironmentAttributes.SUN_ANGLE, BlockPos.ZERO)
+                / 360F;
     }
 
     public static double getEclipseFactor(
@@ -200,7 +214,7 @@ public class WorldProviderCelestial {
 
         CelestialBody body = body();
         double sunSize = SolarSystem.calculateSunSize(body);
-        float solarAngle = getCelestialAngle(level, 0);
+        float solarAngle = getCelestialAngle(level);
 
         List<AstroMetric> metrics =
                 SolarSystem.calculateMetricsFromBody(level, 0, body, solarAngle);

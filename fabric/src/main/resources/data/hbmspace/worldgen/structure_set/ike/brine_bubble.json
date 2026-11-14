@@ -1,0 +1,13 @@
+{
+  "placement": {
+    "type": "hbmspace:chunk_odds",
+    "frequency": 0.01,
+    "salt": 1110282126
+  },
+  "structures": [
+    {
+      "structure": "hbmspace:ike/brine_bubble",
+      "weight": 1
+    }
+  ]
+}

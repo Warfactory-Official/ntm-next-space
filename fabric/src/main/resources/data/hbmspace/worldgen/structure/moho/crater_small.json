@@ -1,0 +1,21 @@
+{
+  "type": "hbm:sellafield_crater",
+  "biomes": [
+    "hbmspace:moho_crag",
+    "hbmspace:moho_basalt_deltas",
+    "hbmspace:moho_lava_sea",
+    "hbmspace:moho_plateau"
+  ],
+  "exponent": 4,
+  "max_size": 32,
+  "min_size": 8,
+  "regolith": {
+    "Name": "hbmspace:moho_regolith"
+  },
+  "rock": {
+    "Name": "hbmspace:moho_stone"
+  },
+  "spawn_overrides": {},
+  "step": "lakes",
+  "terrain_adaptation": "none"
+}

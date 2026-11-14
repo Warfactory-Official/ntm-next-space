@@ -1,0 +1,74 @@
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
+
+package com.hbmspace.inventory.container;
+
+import com.hbm.inventory.container.BlockEntityMenu;
+import com.hbm.inventory.slot.SlotFiltered;
+import com.hbm.packet.PacketWire;
+import com.hbmspace.blockentity.machine.StardarBlockEntity;
+import com.hbmspace.items.VOTVdriveItem;
+import com.hbmspace.items.weapon.MissilePartsSpace;
+import com.hbmspace.packet.layout.SpaceStardarHeightmap;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import org.jspecify.annotations.Nullable;
+
+public class StardarMenu extends BlockEntityMenu<StardarBlockEntity> {
+    private static final int[] UNSENT = new int[0];
+
+    private final Player viewer;
+    private int @Nullable [] sent = UNSENT;
+
+    public StardarMenu(int containerId, Inventory playerInv, StardarBlockEntity stardar) {
+        super(RocketryMenusSpace.MACHINE_STARDAR.get(), containerId, stardar);
+        checkContainerSize(stardar, 1);
+        viewer = playerInv.player;
+
+        addSlot(
+                new SlotFiltered(
+                        stardar,
+                        0,
+                        150,
+                        124,
+                        stack ->
+                                stack.is(MissilePartsSpace.HARD_DRIVE.get())
+                                        || stack.getItem() instanceof VOTVdriveItem));
+
+        addStandardInventorySlots(playerInv, 8, 174);
+    }
+
+    @Override
+    public void broadcastChanges() {
+        super.broadcastChanges();
+        int @Nullable [] map = blockEntity().heightmap;
+        if (map == sent || !(viewer instanceof ServerPlayer player)) return;
+        sent = map;
+        PacketWire.sendTo(
+                SpaceStardarHeightmap.encode(blockEntity().getBlockPos(), map != null, map),
+                player);
+    }
+
+    @Override
+    public ItemStack quickMoveStack(Player player, int index) {
+        return quickMoveUnsorted(player, index, 1);
+    }
+}

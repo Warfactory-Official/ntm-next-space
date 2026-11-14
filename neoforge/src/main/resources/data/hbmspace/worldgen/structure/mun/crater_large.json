@@ -1,0 +1,18 @@
+{
+  "type": "hbm:sellafield_crater",
+  "biomes": [
+    "hbmspace:mun"
+  ],
+  "exponent": 4,
+  "max_size": 128,
+  "min_size": 96,
+  "regolith": {
+    "Name": "hbm:basalt"
+  },
+  "rock": {
+    "Name": "hbmspace:moon_rock"
+  },
+  "spawn_overrides": {},
+  "step": "lakes",
+  "terrain_adaptation": "none"
+}

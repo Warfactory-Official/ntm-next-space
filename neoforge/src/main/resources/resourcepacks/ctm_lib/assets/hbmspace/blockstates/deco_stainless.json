@@ -1,0 +1,14 @@
+{
+  "neoforge:definition_type": "hbm:ctm",
+  "connect_to": [
+    "hbmspace:deco_stainless"
+  ],
+  "ctm_textures": {
+    "hbmspace:block/deco_stainless": "hbmspace:block/ctm_lib/deco_stainless"
+  },
+  "variants": {
+    "": {
+      "model": "hbmspace:block/deco_stainless"
+    }
+  }
+}

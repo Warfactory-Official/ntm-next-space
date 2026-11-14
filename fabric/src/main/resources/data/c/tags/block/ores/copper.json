@@ -10,6 +10,16 @@
     "hbmspace:ore_copper_eve",
     "hbmspace:ore_copper_ike",
     "hbmspace:ore_copper_laythe",
-    "hbmspace:ore_copper_tekto"
+    "hbmspace:ore_copper_tekto",
+    "hbmspace:cluster_copper_kerbin",
+    "hbmspace:cluster_copper_mun",
+    "hbmspace:cluster_copper_minmus",
+    "hbmspace:cluster_copper_duna",
+    "hbmspace:cluster_copper_moho",
+    "hbmspace:cluster_copper_dres",
+    "hbmspace:cluster_copper_eve",
+    "hbmspace:cluster_copper_ike",
+    "hbmspace:cluster_copper_laythe",
+    "hbmspace:cluster_copper_tekto"
   ]
 }

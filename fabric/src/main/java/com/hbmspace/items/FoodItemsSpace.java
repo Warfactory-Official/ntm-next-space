@@ -1,24 +1,40 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbmspace.items;
 
-import com.hbm.extprop.HbmLivingProps;
+import com.hbm.extprop.LivingHazards;
 import com.hbm.items.CreativeContents.Tab;
 import com.hbm.items.CreativeContents;
 import com.hbm.items.ModItems;
 import com.hbm.items.food.ConsumableTreatments;
-import com.hbm.items.food.ItemDrinkEnergy;
-import com.hbm.items.food.ItemFlask;
-import com.hbm.items.special.ItemCustomLore;
-import com.hbm.items.tool.ItemSwordAbility;
+import com.hbm.items.food.DrinkEnergyItem;
+import com.hbm.items.food.FlaskItem;
+import com.hbm.items.special.CustomLoreItem;
+import com.hbm.items.tool.SwordAbilityItem;
 import com.hbm.items.tool.ToolTier;
-import com.hbm.lib.Library;
 import com.hbm.registration.ItemFamily;
 import com.hbm.registration.Reg;
+import com.hbm.util.RegistryUtil;
 import com.hbmspace.HbmSpace;
-import com.hbmspace.items.food.ItemAniman;
-import com.hbmspace.items.food.ItemFlaskSpace;
+import com.hbmspace.items.food.AnimanItem;
+import com.hbmspace.items.food.FlaskSpaceItem;
 import com.hbmspace.items.weapon.BSword;
 import net.minecraft.SharedConstants;
 import net.minecraft.core.component.DataComponents;
@@ -37,10 +53,10 @@ import net.minecraft.world.item.consume_effects.ApplyStatusEffectsConsumeEffect;
 public final class FoodItemsSpace {
     public static final Reg.Handle<Item> CHOCOLATE_MINT_BILLET =
             HbmSpace.REG.item("chocolate_mint_billet", Item::new, () -> food(5, 5F));
-    public static final Reg.Handle<ItemAniman> ANIMAN =
+    public static final Reg.Handle<AnimanItem> ANIMAN =
             HbmSpace.REG.item(
                     "animan",
-                    ItemAniman::new,
+                    AnimanItem::new,
                     () ->
                             new Item.Properties()
                                     .food(
@@ -69,26 +85,26 @@ public final class FoodItemsSpace {
             HbmSpace.REG.item("min_cream", Item::new, () -> food(10, 1.0F));
     public static final Reg.Handle<Item> FLOUR =
             HbmSpace.REG.item("flour", Item::new, Item.Properties::new);
-    public static final Reg.Handle<ItemCustomLore> COIN_AIRLINER =
+    public static final Reg.Handle<CustomLoreItem> COIN_AIRLINER =
             HbmSpace.REG.item(
                     "coin_airliner",
-                    ItemCustomLore::new,
+                    CustomLoreItem::new,
                     () -> new Item.Properties().rarity(Rarity.UNCOMMON));
     public static final Reg.Handle<Item> GLASS_EMPTY =
             HbmSpace.REG.item("glass_empty", Item::new, Item.Properties::new);
-    public static final Reg.Handle<ItemCustomLore> POWDER_COFFEE =
-            HbmSpace.REG.item("powder_coffee", ItemCustomLore::new, Item.Properties::new);
+    public static final Reg.Handle<CustomLoreItem> POWDER_COFFEE =
+            HbmSpace.REG.item("powder_coffee", CustomLoreItem::new, Item.Properties::new);
     public static final Reg.Handle<Item> BEAN_ROAST =
             HbmSpace.REG.item("bean_roast", Item::new, Item.Properties::new);
     public static final Reg.Handle<Item> CMUG_EMPTY =
             HbmSpace.REG.item("cmug_empty", Item::new, Item.Properties::new);
     public static final Reg.Handle<Item> TEACUP_EMPTY =
             HbmSpace.REG.item("teacup_empty", Item::new, Item.Properties::new);
-    public static final Reg.Handle<ItemDrinkEnergy> TEACUP =
+    public static final Reg.Handle<DrinkEnergyItem> TEACUP =
             HbmSpace.REG.item(
                     "teacup",
                     props ->
-                            new ItemDrinkEnergy(
+                            new DrinkEnergyItem(
                                     props,
                                     null,
                                     false,
@@ -104,52 +120,50 @@ public final class FoodItemsSpace {
                             new Item.Properties()
                                     .component(DataComponents.CONSUMABLE, Consumables.DEFAULT_DRINK)
                                     .craftRemainder(TEACUP_EMPTY.get()));
-    public static final Reg.Handle<ItemDrinkEnergy> BOTTLE_HONEY =
+    public static final Reg.Handle<DrinkEnergyItem> BOTTLE_HONEY =
             HbmSpace.REG.item(
                     "bottle_honey",
                     props ->
-                            new ItemDrinkEnergy(
+                            new DrinkEnergyItem(
                                     props,
                                     null,
                                     false,
                                     player -> {
                                         player.heal(9F);
-                                        HbmLivingProps.setDigamma(
+                                        LivingHazards.setDigamma(
                                                 player,
-                                                Math.max(
-                                                        HbmLivingProps.getDigamma(player) - 0.3D,
-                                                        0D));
+                                                Math.max(LivingHazards.digamma(player) - 0.3D, 0D));
                                     }),
                     () ->
                             new Item.Properties()
                                     .component(DataComponents.CONSUMABLE, Consumables.DEFAULT_DRINK)
                                     .craftRemainder(Items.GLASS_BOTTLE));
-    public static final Reg.Handle<ItemDrinkEnergy> GLASS_SMILK =
+    public static final Reg.Handle<DrinkEnergyItem> GLASS_SMILK =
             HbmSpace.REG.item(
                     "glass_smilk",
-                    props -> new ItemDrinkEnergy(props, null, false, player -> player.heal(6F)),
+                    props -> new DrinkEnergyItem(props, null, false, player -> player.heal(6F)),
                     () ->
                             new Item.Properties()
                                     .component(DataComponents.CONSUMABLE, Consumables.DEFAULT_DRINK)
                                     .craftRemainder(GLASS_EMPTY.get()));
-    public static final ItemFamily<ItemFlaskSpace.EnumInfusion, ItemFlaskSpace> FLASK_INFUSION =
+    public static final ItemFamily<FlaskSpaceItem.EnumInfusion, FlaskSpaceItem> FLASK_INFUSION =
             HbmSpace.REG
                     .family(
                             "flask_infusion",
-                            ItemFlaskSpace.EnumInfusion.class,
-                            ItemFlaskSpace::new,
+                            FlaskSpaceItem.EnumInfusion.class,
+                            FlaskSpaceItem::new,
                             () ->
                                     new Item.Properties()
                                             .component(
                                                     DataComponents.CONSUMABLE,
-                                                    ItemFlask.CONSUMABLE))
+                                                    FlaskItem.CONSUMABLE))
                     .joins(ModItems.FLASK_INFUSION);
     public static final Reg.Handle<BSword> BUTTER_SWORD =
             HbmSpace.REG.item(
                     "butter_sword",
                     BSword::new,
                     () ->
-                            ItemSwordAbility.swordProperties(
+                            SwordAbilityItem.swordProperties(
                                     ToolTier.VANILLA_WOOD,
                                     4.0F,
                                     0,
@@ -158,13 +172,13 @@ public final class FoodItemsSpace {
     static {
         CreativeContents.insertBefore(
                 Tab.CONSUMABLES,
-                Library.id("bobmazon"),
+                RegistryUtil.id("bobmazon"),
                 () -> new ItemStack(CHOCOLATE_MINT_BILLET.get()));
         after("gun_kit_2", ANIMAN);
         after("hbmspace:butter", S_CREAM, MIN_CREAM);
         after("chocolate", FLOUR);
         after("coin_ufo", COIN_AIRLINER);
-        after("flask_infusion_shield", FLASK_INFUSION.handle(ItemFlaskSpace.EnumInfusion.NITAN));
+        after("flask_infusion_shield", FLASK_INFUSION.handle(FlaskSpaceItem.EnumInfusion.NITAN));
         after(
                 "bdcl",
                 GLASS_SMILK,
@@ -192,7 +206,7 @@ public final class FoodItemsSpace {
 
     @SafeVarargs
     private static void after(String anchor, Reg.Handle<? extends Item>... entries) {
-        Identifier id = anchor.contains(":") ? Identifier.parse(anchor) : Library.id(anchor);
+        Identifier id = anchor.contains(":") ? Identifier.parse(anchor) : RegistryUtil.id(anchor);
         for (Reg.Handle<? extends Item> entry : entries) {
             CreativeContents.insertAfter(Tab.CONSUMABLES, id, () -> new ItemStack(entry.get()));
         }

@@ -1,0 +1,25 @@
+{
+  "type": "hbmspace:ttree",
+  "config": {
+    "leaves": {
+      "Name": "hbmspace:rubber_leaves",
+      "Properties": {
+        "distance": "7",
+        "persistent": "false",
+        "waterlogged": "false"
+      }
+    },
+    "log": {
+      "Name": "hbmspace:pvc_log",
+      "Properties": {
+        "axis": "y"
+      }
+    },
+    "offset": 2,
+    "smallest": 5,
+    "tallest": 7,
+    "vines": false,
+    "xz": 4,
+    "y": 3
+  }
+}

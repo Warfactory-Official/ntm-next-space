@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:entity",
+  "pools": [
+    {
+      "entries": [
+        {
+          "type": "minecraft:loot_table",
+          "value": "hbm:chests/machine_parts"
+        }
+      ],
+      "rolls": {
+        "type": "minecraft:uniform",
+        "max": {
+          "type": "minecraft:sum",
+          "summands": [
+            3.0,
+            {
+              "type": "hbm:entity_enchantment_level",
+              "enchantment": "minecraft:looting",
+              "entity": "attacker"
+            }
+          ]
+        },
+        "min": 1.0
+      }
+    }
+  ],
+  "random_sequence": "hbmspace:entities/entity_scrapfish"
+}

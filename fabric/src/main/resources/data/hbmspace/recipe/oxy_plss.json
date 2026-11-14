@@ -1,0 +1,17 @@
+{
+  "type": "hbm:crafting_shaped",
+  "key": {
+    "A": "#c:plates/aluminum",
+    "C": "hbm:circuit_basic",
+    "R": "#c:ingots/rubber",
+    "T": "hbm:tank_steel"
+  },
+  "pattern": [
+    "AA",
+    "TC",
+    "RR"
+  ],
+  "result": {
+    "id": "hbmspace:oxy_plss"
+  }
+}

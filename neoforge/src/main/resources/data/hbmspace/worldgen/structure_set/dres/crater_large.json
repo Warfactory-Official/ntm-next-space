@@ -1,0 +1,13 @@
+{
+  "placement": {
+    "type": "hbmspace:chunk_odds",
+    "frequency": 2.4414062E-4,
+    "salt": 1066757111
+  },
+  "structures": [
+    {
+      "structure": "hbmspace:dres/crater_large",
+      "weight": 1
+    }
+  ]
+}

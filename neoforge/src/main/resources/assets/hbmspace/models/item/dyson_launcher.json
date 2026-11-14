@@ -170,5 +170,8 @@
   "textures": {
     "all": "hbmspace:block/models/machines/dyson_spinlaunch",
     "particle": "hbmspace:block/models/machines/dyson_spinlaunch"
-  }
+  },
+  "tiled": [
+    "Launch"
+  ]
 }

@@ -1,20 +1,50 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: 2024 JamesH_2
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) 2024 JamesH_2. All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT: Space";
+ * - a modified version must not be named NTM NEXT: Space or presented as
+ *   the official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT: Space does not
+ * violate these additional terms, provided it is clearly distinguished from
+ * the official release and does not imply endorsement. Ports are encouraged
+ * to acknowledge NTM NEXT: Space as their upstream project and provide a
+ * link to it.
+ */
 
 package com.hbmspace.items.armor;
 
-import com.hbm.api.entity.LivingHooks;
 import com.hbm.handler.ArmorModHandler;
 import com.hbm.handler.threading.TargetPoint;
 import com.hbm.items.CreativeContents.Tab;
 import com.hbm.items.CreativeContents;
-import com.hbm.lib.Library;
 import com.hbm.packet.PacketWire;
-import com.hbm.packet.toclient.BlockDustBurstPayload;
-import com.hbm.particle.ParticleGiblet;
+import com.hbm.packet.layout.BlockDustBurstLayout;
+import com.hbm.particle.EffectKinds.GibletType;
 import com.hbm.particle.helper.ParticleCreators;
 import com.hbm.registration.Reg;
 import com.hbm.sound.EntitySounds;
+import com.hbm.util.RegistryUtil;
 import com.hbmspace.HbmSpace;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.Identifier;
@@ -30,18 +60,19 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.equipment.EquipmentAssets;
 import net.minecraft.world.item.equipment.Equippable;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import org.jspecify.annotations.Nullable;
 
 public final class ArmorModsSpace {
-    public static final Reg.Handle<ItemModV1> V1 =
-            HbmSpace.REG.item("v1", ItemModV1::new, Item.Properties::new);
-    public static final Reg.Handle<ItemModFlippers> FLIPPERS =
-            HbmSpace.REG.item("flippers", ItemModFlippers::new, Item.Properties::new);
-    public static final Reg.Handle<ItemModHeavyBoots> HEAVY_BOOTS =
+    public static final Reg.Handle<ModV1Item> V1 =
+            HbmSpace.REG.item("v1", ModV1Item::new, Item.Properties::new);
+    public static final Reg.Handle<ModFlippersItem> FLIPPERS =
+            HbmSpace.REG.item("flippers", ModFlippersItem::new, Item.Properties::new);
+    public static final Reg.Handle<ModHeavyBootsItem> HEAVY_BOOTS =
             HbmSpace.REG.item(
                     "heavy_boots",
-                    ItemModHeavyBoots::new,
+                    ModHeavyBootsItem::new,
                     () ->
                             new Item.Properties()
                                     .component(
@@ -61,7 +92,6 @@ public final class ArmorModsSpace {
     static {
         after("medal_liquidator", V1);
         after("armor_battery_mk3", FLIPPERS, HEAVY_BOOTS);
-        LivingHooks.onTick(ItemModHeavyBoots::tick);
     }
 
     private ArmorModsSpace() {}
@@ -70,7 +100,7 @@ public final class ArmorModsSpace {
     private static void after(String anchor, Reg.Handle<? extends Item>... entries) {
         for (Reg.Handle<? extends Item> entry : entries) {
             CreativeContents.insertAfter(
-                    Tab.CONSUMABLES, Library.id(anchor), () -> new ItemStack(entry.get()));
+                    Tab.CONSUMABLES, RegistryUtil.id(anchor), () -> new ItemStack(entry.get()));
         }
     }
 
@@ -88,8 +118,8 @@ public final class ArmorModsSpace {
         if (attacker == null || !(victim.level() instanceof ServerLevel level)) return;
         double y = victim.getY() + victim.getBbHeight() * 0.5D;
         PacketWire.sendToAllAround(
-                new BlockDustBurstPayload(
-                        Blocks.REDSTONE_BLOCK.defaultBlockState(),
+                BlockDustBurstLayout.encode(
+                        Block.BLOCK_STATE_REGISTRY.getId(Blocks.REDSTONE_BLOCK.defaultBlockState()),
                         victim.getX(),
                         y,
                         victim.getZ(),
@@ -102,7 +132,7 @@ public final class ArmorModsSpace {
     public static void onDeath(LivingEntity victim, DamageSource source) {
         Player attacker = v1Attacker(source);
         if (attacker == null || !(victim.level() instanceof ServerLevel level)) return;
-        ParticleCreators.giblets(level, victim, ParticleGiblet.TYPE_MEAT, 0);
+        ParticleCreators.giblets(level, victim, GibletType.MEAT, 0);
         EntitySounds.play(
                 victim,
                 victim.getX(),

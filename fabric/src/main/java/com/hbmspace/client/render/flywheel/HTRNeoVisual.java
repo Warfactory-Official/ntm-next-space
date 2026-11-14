@@ -1,17 +1,32 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbmspace.client.render.flywheel;
 
-import com.hbm.blocks.multiblock.BlockMultiblockCore;
-import com.hbm.client.render.flywheel.HbmDynamicBlockEntityVisual;
+import com.hbm.blocks.multiblock.MultiblockCoreBlock;
 import com.hbm.client.render.flywheel.LightBounds;
 import com.hbm.client.render.flywheel.MeshPart;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.HFRWavefrontObject;
 import com.hbm.util.Facing;
 import com.hbm.util.GameTime;
-import com.hbmspace.blockentity.machine.BlockEntityMachineHTRNeo;
+import com.hbmspace.blockentity.machine.HTRNeoBlockEntity;
 import com.hbmspace.client.render.StationModels;
 import dev.engine_room.flywheel.api.instance.Instance;
 import dev.engine_room.flywheel.api.material.Material;
@@ -20,6 +35,8 @@ import dev.engine_room.flywheel.api.visualization.VisualizationContext;
 import dev.engine_room.flywheel.lib.instance.InstanceTypes;
 import dev.engine_room.flywheel.lib.instance.TransformedInstance;
 import dev.engine_room.flywheel.lib.instance.UvTransformedInstance;
+import dev.engine_room.flywheel.lib.visual.AbstractBoundedBlockEntityVisual;
+import dev.engine_room.flywheel.lib.visual.CulledDynamicVisual;
 import java.util.function.Consumer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.ARGB;
@@ -29,8 +46,8 @@ import net.minecraft.world.phys.AABB;
 import org.joml.Matrix4f;
 import org.jspecify.annotations.Nullable;
 
-public final class HTRNeoVisual extends HbmDynamicBlockEntityVisual<BlockEntityMachineHTRNeo>
-        implements ShaderLightVisual {
+public final class HTRNeoVisual extends AbstractBoundedBlockEntityVisual<HTRNeoBlockEntity>
+        implements ShaderLightVisual, CulledDynamicVisual {
 
     private static final HFRWavefrontObject MODEL = StationModels.htrf4_neo;
     private static final MeshPart ROTOR =
@@ -59,7 +76,7 @@ public final class HTRNeoVisual extends HbmDynamicBlockEntityVisual<BlockEntityM
     private boolean plumeShown;
 
     public HTRNeoVisual(
-            VisualizationContext context, BlockEntityMachineHTRNeo blockEntity, float partialTick) {
+            VisualizationContext context, HTRNeoBlockEntity blockEntity, float partialTick) {
         super(context, blockEntity, partialTick);
         BlockPos p = pos;
         lit = new AABB(p);
@@ -73,7 +90,7 @@ public final class HTRNeoVisual extends HbmDynamicBlockEntityVisual<BlockEntityM
                         p.getZ() + 23);
         base.translation(0.5F, -2.0F, 0.5F)
                 .rotateY(
-                        Facing.yaw(blockState.getValue(BlockMultiblockCore.FACING), 90)
+                        Facing.yaw(blockState.getValue(MultiblockCoreBlock.FACING), 90)
                                 * Mth.DEG_TO_RAD);
         rotor =
                 instancerProvider()
@@ -101,7 +118,7 @@ public final class HTRNeoVisual extends HbmDynamicBlockEntityVisual<BlockEntityM
     }
 
     @Override
-    protected void frame(Context context) {
+    public void frame(Context context) {
         writeFrame(context.partialTick());
     }
 

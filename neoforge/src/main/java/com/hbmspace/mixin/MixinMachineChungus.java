@@ -1,25 +1,42 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbmspace.mixin;
 
-import com.hbm.blockentity.machine.BlockEntityTurbineBase;
-import com.hbm.blocks.machine.MachineChungus;
-import com.hbm.blocks.multiblock.BlockMultiblockCore;
-import com.hbm.blocks.multiblock.MultiblockHandlerXR;
+import com.hbm.blockentity.machine.TurbineBaseBlockEntity;
+import com.hbm.blocks.machine.ChungusBlock;
+import com.hbm.blocks.multiblock.MultiblockCoreBlock;
 import com.hbm.client.RepairLookOverlay;
-import com.hbm.interfaces.ILookOverlay.LookInfo;
-import com.hbm.interfaces.IRepairable;
-import com.hbm.interfaces.IToolable;
+import com.hbm.interfaces.LookOverlay;
+import com.hbm.interfaces.RepairHandler;
+import com.hbm.interfaces.ToolInteractionHandler;
+import com.hbm.interfaces.ToolType;
 import com.hbm.sound.ModSounds;
-import com.hbmspace.blockentity.machine.BlockEntityChungusSpace;
+import com.hbm.sound.WorldSounds;
+import com.hbmspace.blockentity.machine.ChungusSpaceBlockEntity;
 import com.hbmspace.blockentity.machine.ThermalMachineDamage;
-import com.hbmspace.blocks.machine.ChungusPlacementSpace;
 import java.util.function.BiConsumer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Explosion;
@@ -28,6 +45,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
@@ -37,8 +55,8 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(MachineChungus.class)
-public abstract class MixinMachineChungus extends BlockMultiblockCore implements IToolable {
+@Mixin(ChungusBlock.class)
+abstract class MixinMachineChungus extends MultiblockCoreBlock implements ToolInteractionHandler {
     protected MixinMachineChungus(Properties properties) {
         super(properties);
     }
@@ -57,7 +75,7 @@ public abstract class MixinMachineChungus extends BlockMultiblockCore implements
     @Inject(method = "newBlockEntity", at = @At("HEAD"), cancellable = true)
     private void hbmspace$repairable(
             BlockPos pos, BlockState state, CallbackInfoReturnable<BlockEntity> cir) {
-        cir.setReturnValue(new BlockEntityChungusSpace(pos, state));
+        cir.setReturnValue(new ChungusSpaceBlockEntity(pos, state));
     }
 
     @Override
@@ -72,7 +90,7 @@ public abstract class MixinMachineChungus extends BlockMultiblockCore implements
             BlockPos core,
             Explosion explosion,
             BiConsumer<ItemStack, BlockPos> onHit) {
-        var be = (BlockEntityChungusSpace) level.getBlockEntity(core);
+        var be = (ChungusSpaceBlockEntity) level.getBlockEntity(core);
         if (be.lastExplosion == explosion) return;
         be.lastExplosion = explosion;
         if (be.isDamaged()) level.removeBlock(core, false);
@@ -80,7 +98,7 @@ public abstract class MixinMachineChungus extends BlockMultiblockCore implements
     }
 
     @Override
-    public boolean onScrew(
+    public boolean onToolUse(
             Level level,
             Player player,
             BlockPos core,
@@ -88,43 +106,16 @@ public abstract class MixinMachineChungus extends BlockMultiblockCore implements
             Vec3 hit,
             ToolType tool) {
         if (tool != ToolType.TORCH) return false;
-        return IRepairable.tryRepairMultiblock(level, core, player);
+        return RepairHandler.tryRepair(level, core, player);
     }
 
     @Inject(method = "buildLookOverlay", at = @At("HEAD"), cancellable = true)
     private void hbmspace$repairOverlay(
-            Level level, BlockPos core, LookInfo info, CallbackInfo ci) {
-        if (level.getBlockEntity(core) instanceof BlockEntityChungusSpace be && be.isDamaged()) {
+            Level level, BlockPos core, LookOverlay info, CallbackInfo ci) {
+        if (level.getBlockEntity(core) instanceof ChungusSpaceBlockEntity be && be.isDamaged()) {
             RepairLookOverlay.build(level, core, info);
             ci.cancel();
         }
-    }
-
-    @Inject(method = "getDimensions", at = @At("HEAD"), cancellable = true)
-    private void hbmspace$wholeClearance(CallbackInfoReturnable<int[]> cir) {
-        cir.setReturnValue(ChungusPlacementSpace.DIMENSIONS);
-    }
-
-    @Redirect(
-            method = "visitCells",
-            at =
-                    @At(
-                            value = "INVOKE",
-                            target =
-                                    "Lcom/hbm/blocks/multiblock/BlockMultiblockCore;visitCells(Lnet/minecraft/core/BlockPos;Lnet/minecraft/core/Direction;Lcom/hbm/blocks/multiblock/BlockMultiblockCore$CellVisitor;)V"))
-    private void hbmspace$mainBox(
-            BlockMultiblockCore block, BlockPos core, Direction facing, CellVisitor visitor) {
-        MultiblockHandlerXR.visitBox(core, ChungusPlacementSpace.BOXES[0], facing, visitor);
-    }
-
-    @Inject(method = "checkRequirement", at = @At("HEAD"), cancellable = true)
-    private void hbmspace$allBoxes(
-            Level level,
-            BlockPos placed,
-            Direction facing,
-            int offset,
-            CallbackInfoReturnable<Boolean> cir) {
-        cir.setReturnValue(ChungusPlacementSpace.check(level, placed, facing, offset));
     }
 
     @Inject(method = "useAtCore", at = @At("HEAD"), cancellable = true)
@@ -133,10 +124,10 @@ public abstract class MixinMachineChungus extends BlockMultiblockCore implements
             Level level,
             BlockPos core,
             Player player,
-            net.minecraft.world.phys.BlockHitResult hit,
-            CallbackInfoReturnable<net.minecraft.world.InteractionResult> cir) {
+            BlockHitResult hit,
+            CallbackInfoReturnable<InteractionResult> cir) {
         if (player.isShiftKeyDown() || state.getValue(ThermalMachineDamage.DAMAGED)) {
-            cir.setReturnValue(net.minecraft.world.InteractionResult.PASS);
+            cir.setReturnValue(InteractionResult.PASS);
         }
     }
 
@@ -146,13 +137,14 @@ public abstract class MixinMachineChungus extends BlockMultiblockCore implements
                     @At(
                             value = "INVOKE",
                             target =
-                                    "Lcom/hbm/blocks/machine/MachineIndustrialTurbine;pullLever(Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/entity/player/Player;Lcom/hbm/blockentity/machine/BlockEntityTurbineBase;)Lnet/minecraft/world/InteractionResult;"))
-    private net.minecraft.world.InteractionResult hbmspace$liveLever(
-            Level level, BlockPos pos, Player player, BlockEntityTurbineBase turbine) {
+                                    "Lcom/hbm/blocks/machine/IndustrialTurbineBlock;pullLever(Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/entity/player/Player;Lcom/hbm/blockentity/machine/TurbineBaseBlockEntity;)Lnet/minecraft/world/InteractionResult;"))
+    private InteractionResult hbmspace$liveLever(
+            Level level, BlockPos pos, Player player, TurbineBaseBlockEntity turbine) {
         if (!level.isClientSide()) {
-            level.playSound(null, pos, ModSounds.CHUNGUS_LEVER.get(), SoundSource.BLOCKS, 1.5F, 1F);
-            ((BlockEntityChungusSpace) turbine).onLeverPull();
+            WorldSounds.machine(
+                    level, null, pos, ModSounds.CHUNGUS_LEVER.get(), SoundSource.BLOCKS, 1.5F, 1F);
+            ((ChungusSpaceBlockEntity) turbine).onLeverPull();
         }
-        return net.minecraft.world.InteractionResult.SUCCESS;
+        return InteractionResult.SUCCESS;
     }
 }

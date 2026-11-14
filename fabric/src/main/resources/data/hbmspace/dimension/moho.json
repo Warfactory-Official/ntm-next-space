@@ -1,7 +1,7 @@
 {
   "type": "hbmspace:moho",
   "generator": {
-    "type": "hbmspace:moho",
+    "type": "minecraft:noise",
     "biome_source": {
       "type": "hbmspace:celestial",
       "biomes": [
@@ -9,8 +9,8 @@
         "hbmspace:moho_basalt_deltas",
         "hbmspace:moho_lava_sea",
         "hbmspace:moho_plateau"
-      ],
-      "layers": "hbmspace:moho"
-    }
+      ]
+    },
+    "settings": "hbmspace:moho"
   }
 }

@@ -1,7 +1,7 @@
 {
   "type": "hbmspace:eve",
   "generator": {
-    "type": "hbmspace:eve",
+    "type": "minecraft:noise",
     "biome_source": {
       "type": "hbmspace:celestial",
       "biomes": [
@@ -10,8 +10,8 @@
         "hbmspace:eve_mountains",
         "hbmspace:eve_seismic_plains",
         "hbmspace:eve_river"
-      ],
-      "layers": "hbmspace:eve"
-    }
+      ]
+    },
+    "settings": "hbmspace:eve"
   }
 }

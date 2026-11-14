@@ -1,20 +1,36 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbmspace.blocks.ore;
 
 import com.hbm.blocks.ModBlocks;
-import com.hbm.blocks.generic.BlockOreNetherFire;
-import com.hbm.blocks.generic.BlockOutgas;
+import com.hbm.blocks.generic.OreNetherFireBlock;
+import com.hbm.blocks.generic.OutgasBlock;
 import com.hbm.items.CreativeContents.Tab;
 import com.hbm.items.CreativeContents;
-import com.hbm.items.armor.ItemModLens;
-import com.hbm.items.tool.ItemSurveyScanner.Deposit;
-import com.hbm.items.tool.ItemSurveyScanner;
-import com.hbm.lib.Library;
-import com.hbm.registration.FabricRegistrar;
+import com.hbm.items.armor.ModLensItem;
+import com.hbm.items.tool.SurveyScannerItem.Deposit;
+import com.hbm.items.tool.SurveyScannerItem;
 import com.hbm.registration.Reg;
+import com.hbm.registration.Registrar;
 import com.hbm.registration.RegistryHandle;
+import com.hbm.util.RegistryUtil;
 import com.hbmspace.HbmSpace;
 import com.hbmspace.blocks.ore.CelestialOre.Spec;
 import com.hbmspace.dim.SolarSystem.Body;
@@ -25,6 +41,7 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvent;
@@ -40,9 +57,8 @@ import org.jspecify.annotations.Nullable;
 public final class CelestialOresSpace {
 
     public static final RegistryHandle<SoundEvent> STEP_MORKITE =
-            FabricRegistrar.registerSound(HbmSpace.MOD_ID + ":step.morkite");
+            Registrar.registerSound(HbmSpace.MOD_ID + ":step.morkite");
 
-    private static final String TEMPLATE = "hbmspace:block/celestial_ore";
     private static final String HOST_STONE = "minecraft:block/stone";
     private static final Map<Body, String> STONES =
             new EnumMap<>(
@@ -56,7 +72,7 @@ public final class CelestialOresSpace {
                             Body.EVE, "hbmspace:block/eve_stone_2",
                             Body.IKE, "hbmspace:block/ike_stone",
                             Body.TEKTO, "hbm:block/basalt"));
-    private static final Identifier FIRST_NTM_ORE = Library.id("ore_uranium");
+    private static final Identifier FIRST_NTM_ORE = RegistryUtil.id("ore_uranium");
 
     static {
         for (CelestialOre ore : CelestialOre.values()) {
@@ -93,6 +109,11 @@ public final class CelestialOresSpace {
                                         : STONES.get(body)));
             }
         }
+        for (CelestialOre ore : List.of(CelestialOre.RARE, CelestialOre.AUSTRALIUM)) {
+            Registrar.modifyDefaultComponents(
+                    () -> ore.host().asItem(),
+                    components -> components.set(DataComponents.RARITY, Rarity.UNCOMMON));
+        }
         listInBlockTab();
         prospecting();
         ReservesSpace.install();
@@ -103,26 +124,26 @@ public final class CelestialOresSpace {
     private static void prospecting() {
         for (Body body : CelestialOre.OIL.bodies()) {
             Supplier<Block> twin = () -> CelestialOre.OIL.block(body);
-            ItemSurveyScanner.alias(twin, Deposit.OIL);
-            ItemModLens.alias(twin, ModBlocks.ORE_OIL::get);
+            SurveyScannerItem.registerAlias(twin, Deposit.OIL);
+            ModLensItem.alias(twin, ModBlocks.ORE_OIL::get);
         }
         for (Body body : CelestialOre.BEDROCK_OIL.bodies()) {
             Supplier<Block> twin = () -> CelestialOre.BEDROCK_OIL.block(body);
-            ItemSurveyScanner.alias(twin, Deposit.BEDROCK_OIL);
-            ItemModLens.alias(twin, ModBlocks.ORE_BEDROCK_OIL::get);
+            SurveyScannerItem.registerAlias(twin, Deposit.BEDROCK_OIL);
+            ModLensItem.alias(twin, ModBlocks.ORE_BEDROCK_OIL::get);
         }
         List<Supplier<? extends Block>> gas = withHost(CelestialOre.GAS);
         List<Supplier<? extends Block>> brine = withHost(CelestialOre.BRINE);
-        ItemSurveyScanner.addLine(
+        SurveyScannerItem.registerLine(
                 "chat.hbmspace.surveyScanner.foundGas", ChatFormatting.WHITE, gas);
-        ItemSurveyScanner.addLine(
+        SurveyScannerItem.registerLine(
                 "chat.hbmspace.surveyScanner.foundBrine", ChatFormatting.WHITE, brine);
         Component gasMarker = Component.translatable("marker.hbmspace.neutrino_lens.natural_gas");
         Component brineMarker = Component.translatable("marker.hbmspace.neutrino_lens.brine");
         for (Supplier<? extends Block> block : gas)
-            ItemModLens.addTarget(block, 300, gasMarker, 0xa0a0a0);
+            ModLensItem.addTarget(block, 300, gasMarker, 0xa0a0a0);
         for (Supplier<? extends Block> block : brine)
-            ItemModLens.addTarget(block, 300, brineMarker, 0xa0a0a0);
+            ModLensItem.addTarget(block, 300, brineMarker, 0xa0a0a0);
     }
 
     private static List<Supplier<? extends Block>> withHost(CelestialOre ore) {
@@ -148,20 +169,20 @@ public final class CelestialOresSpace {
     private static Function<BlockBehaviour.Properties, Block> factory(CelestialOre ore, Body body) {
         Spec spec = ore.spec;
         if (spec.gas == CelestialOre.Gas.RADON)
-            return p -> new BlockOutgas(p, () -> ModBlocks.GAS_RADON.get(), true);
+            return p -> new OutgasBlock(p, () -> ModBlocks.GAS_RADON.get(), true);
         if (spec.gas == CelestialOre.Gas.ASBESTOS) {
-            return p -> new BlockOutgas(p, () -> ModBlocks.GAS_ASBESTOS.get(), true);
+            return p -> new OutgasBlock(p, () -> ModBlocks.GAS_ASBESTOS.get(), true);
         }
-        if (spec.fire) return BlockOreNetherFire::new;
+        if (spec.fire) return OreNetherFireBlock::new;
         if (spec.reserve != null) {
-            BlockOreFluid.ReserveType reserve = spec.reserve;
+            OreFluidBlock.ReserveType reserve = spec.reserve;
             @Nullable CelestialOre emptyFamily =
                     spec.drained == null ? null : CelestialOre.valueOf(spec.drained);
             @Nullable Supplier<Block> drained =
                     emptyFamily == null ? null : () -> emptyFamily.block(body);
-            return p -> new BlockOreFluid(p, drained, reserve, body, emptyFamily);
+            return p -> new OreFluidBlock(p, drained, reserve, body, emptyFamily);
         }
-        if (spec.drainedDeposit) return BlockOreFluid.Drained::new;
+        if (spec.drainedDeposit) return OreFluidBlock.Drained::new;
         return Block::new;
     }
 
@@ -183,7 +204,7 @@ public final class CelestialOresSpace {
         for (CelestialOre ore : CelestialOre.values()) {
             if (ore.spec.host == CelestialOre.Host.NTM) anchor = ore.hostId();
             if (ore.spec.host == CelestialOre.Host.SPACE) {
-                if (ore.spec.after != null) anchor = Library.id(ore.spec.after);
+                if (ore.spec.after != null) anchor = RegistryUtil.id(ore.spec.after);
                 list(anchor, () -> new ItemStack(ore.host()));
                 if (anchor != null) anchor = ore.hostId();
             }

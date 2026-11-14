@@ -1,0 +1,19 @@
+{
+  "feature": {
+    "type": "hbmspace:seismic_crack",
+    "config": {
+      "biomes": "hbmspace:eve_seismic_plains",
+      "depth": 9,
+      "domain": "hbmspace:eve/cracks",
+      "fill": {
+        "Name": "minecraft:lava",
+        "Properties": {
+          "level": "0"
+        }
+      },
+      "scale": 0.3,
+      "threshold": 0.9
+    }
+  },
+  "placement": []
+}

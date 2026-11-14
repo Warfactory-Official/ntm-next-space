@@ -1,0 +1,16 @@
+{
+  "type": "hbm:shredder",
+  "input_items": [
+    {
+      "ingredient": "#c:raw_materials/nickel_pure"
+    }
+  ],
+  "order": 52993,
+  "output_items": [
+    {
+      "chance": 0.667,
+      "count": 2,
+      "id": "hbmspace:chunk_ore_pentlandite"
+    }
+  ]
+}

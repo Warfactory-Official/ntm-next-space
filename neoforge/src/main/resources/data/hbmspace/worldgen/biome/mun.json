@@ -2,7 +2,10 @@
   "attributes": {
     "minecraft:visual/sky_color": "#879bff"
   },
-  "carvers": [],
+  "carvers": [
+    "hbmspace:mun/caves",
+    "hbmspace:mun/ravine"
+  ],
   "creature_spawn_probability": 0.008,
   "downfall": 0.0,
   "effects": {
@@ -11,14 +14,62 @@
   "features": [
     [],
     [],
+    [
+      "hbmspace:mun/stratum_hematite",
+      "hbmspace:mun/stratum_bauxite",
+      "hbmspace:mun/stratum_malachite",
+      "hbmspace:mun/ore_cave_sulfur",
+      "hbmspace:mun/stratum_conglomerate"
+    ],
     [],
     [],
     [],
+    [
+      "hbmspace:mun/ore_lithium",
+      "hbmspace:mun/ore_aluminium",
+      "hbmspace:mun/ore_fluorite",
+      "hbmspace:mun/ore_quartz",
+      "hbmspace:mun/ore_shale",
+      "hbmspace:mun/celestial/ore_iron",
+      "hbmspace:mun/celestial/ore_gold",
+      "hbmspace:mun/celestial/ore_redstone",
+      "hbmspace:mun/celestial/ore_diamond",
+      "hbmspace:mun/celestial/ore_alexandrite",
+      "hbmspace:mun/celestial/deposit_iron",
+      "hbmspace:mun/celestial/deposit_titanium",
+      "hbmspace:mun/celestial/deposit_tungsten",
+      "hbmspace:mun/celestial/deposit_cinnabar",
+      "hbmspace:mun/celestial/deposit_zirconium",
+      "hbmspace:mun/celestial/deposit_borax",
+      "hbmspace:mun/celestial/ore_uranium",
+      "hbmspace:mun/celestial/ore_thorium",
+      "hbmspace:mun/celestial/ore_titanium",
+      "hbmspace:mun/celestial/ore_sulfur",
+      "hbmspace:mun/celestial/ore_aluminium",
+      "hbmspace:mun/celestial/ore_copper",
+      "hbmspace:mun/celestial/ore_nickel",
+      "hbmspace:mun/celestial/ore_zinc",
+      "hbmspace:mun/celestial/ore_fluorite",
+      "hbmspace:mun/celestial/ore_niter",
+      "hbmspace:mun/celestial/ore_tungsten",
+      "hbmspace:mun/celestial/ore_lead",
+      "hbmspace:mun/celestial/ore_beryllium",
+      "hbmspace:mun/celestial/ore_rare",
+      "hbmspace:mun/celestial/ore_cinnebar",
+      "hbmspace:mun/celestial/ore_cobalt",
+      "hbmspace:mun/celestial/cluster_iron",
+      "hbmspace:mun/celestial/cluster_titanium",
+      "hbmspace:mun/celestial/cluster_aluminium",
+      "hbmspace:mun/celestial/cluster_copper",
+      "hbmspace:mun/celestial/ore_limestone",
+      "hbmspace:mun/celestial/keyhole",
+      "hbmspace:mun/celestial/bedrock_ore"
+    ],
     [],
     [],
-    [],
-    [],
-    [],
+    [
+      "hbm:meteorite"
+    ],
     []
   ],
   "has_precipitation": false,

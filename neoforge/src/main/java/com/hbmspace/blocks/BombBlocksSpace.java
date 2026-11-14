@@ -1,18 +1,34 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbmspace.blocks;
 
-import com.hbm.blockentity.BlockEntityMachineBase;
+import com.hbm.blockentity.BlockEntityTicks;
 import com.hbm.client.model.BarrelModel;
 import com.hbm.items.CreativeContents.Tab;
 import com.hbm.items.CreativeContents;
-import com.hbm.lib.Library;
 import com.hbm.registration.Reg;
+import com.hbm.util.RegistryUtil;
 import com.hbmspace.HbmSpace;
-import com.hbmspace.blockentity.bomb.BlockEntityNukeAntimatter;
+import com.hbmspace.blockentity.bomb.NukeAntimatterBlockEntity;
 import com.hbmspace.blocks.bomb.NukeAntimatter;
-import com.hbmspace.blocks.generic.BlockBrownBarrel;
+import com.hbmspace.blocks.generic.BrownBarrelBlock;
 import java.util.Set;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -31,21 +47,20 @@ public final class BombBlocksSpace {
                                     .noOcclusion()
                                     .requiresCorrectToolForDrops());
 
-    public static final Reg.BeHandle<BlockEntityNukeAntimatter> NUKE_ANTIMATTER_BE =
-            HbmSpace.REG
-                    .be(
+    public static final Reg.BeHandle<NukeAntimatterBlockEntity> NUKE_ANTIMATTER_BE =
+            (HbmSpace.REG.<NukeAntimatterBlockEntity>be(
                             "nuke_antimatter",
                             () ->
                                     new BlockEntityType<>(
-                                            BlockEntityNukeAntimatter::new,
-                                            Set.of(NUKE_ANTIMATTER.get())))
-                    .ticksServer(BlockEntityMachineBase::tickServer);
+                                            NukeAntimatterBlockEntity::new,
+                                            Set.of(NUKE_ANTIMATTER.get()))))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
 
-    public static final Reg.Handle<BlockBrownBarrel> OIL_BARREL =
+    public static final Reg.Handle<BrownBarrelBlock> OIL_BARREL =
             HbmSpace.REG
                     .blockItem(
                             "oil_barrel",
-                            BlockBrownBarrel::new,
+                            BrownBarrelBlock::new,
                             () ->
                                     BlockBehaviour.Properties.of()
                                             .mapColor(MapColor.METAL)
@@ -56,9 +71,13 @@ public final class BombBlocksSpace {
 
     static {
         CreativeContents.insertBefore(
-                Tab.NUKES, Library.id("nuke_fstbmb"), () -> new ItemStack(NUKE_ANTIMATTER.get()));
+                Tab.NUKES,
+                RegistryUtil.id("nuke_fstbmb"),
+                () -> new ItemStack(NUKE_ANTIMATTER.get()));
         CreativeContents.insertAfter(
-                Tab.NUKES, Library.id("vitrified_barrel"), () -> new ItemStack(OIL_BARREL.get()));
+                Tab.NUKES,
+                RegistryUtil.id("vitrified_barrel"),
+                () -> new ItemStack(OIL_BARREL.get()));
     }
 
     private BombBlocksSpace() {}

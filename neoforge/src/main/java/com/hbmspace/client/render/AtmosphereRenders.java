@@ -1,5 +1,21 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbmspace.client.render;
 
@@ -9,9 +25,9 @@ import com.hbm.client.model.Meshes;
 import com.hbm.client.render.flywheel.MeshPart;
 import com.hbm.util.Facing;
 import com.hbmspace.HbmSpace;
-import com.hbmspace.blockentity.machine.BlockEntityAirScrubber;
-import com.hbmspace.blockentity.machine.BlockEntityAtmosphericCompressor;
-import com.hbmspace.blockentity.machine.BlockEntityAtmosphericEmitter;
+import com.hbmspace.blockentity.machine.AirScrubberBlockEntity;
+import com.hbmspace.blockentity.machine.AtmosphericCompressorBlockEntity;
+import com.hbmspace.blockentity.machine.AtmosphericEmitterBlockEntity;
 import com.hbmspace.blocks.AtmosphereBlockEntitiesSpace;
 import com.hbmspace.client.render.flywheel.SpinningPartVisual;
 import dev.engine_room.flywheel.lib.visualization.SimpleBlockEntityVisualizer;
@@ -24,7 +40,7 @@ import net.minecraft.world.phys.AABB;
 
 public final class AtmosphereRenders {
     private static final class Parts {
-        private static final SpinningPart<BlockEntityAirScrubber> SCRUBBER =
+        private static final SpinningPart<AirScrubberBlockEntity> SCRUBBER =
                 new SpinningPart<>(
                         Meshes.load(id("models/machines/air_scrubber.obj")),
                         id("textures/block/models/machines/air_scrubber.png"),
@@ -44,7 +60,7 @@ public final class AtmosphereRenders {
                                         pos.getY() + 2,
                                         pos.getZ() + 1));
 
-        private static final SpinningPart<BlockEntityAtmosphericCompressor> COMPRESSOR =
+        private static final SpinningPart<AtmosphericCompressorBlockEntity> COMPRESSOR =
                 new SpinningPart<>(
                         Meshes.load(id("models/machines/atmo_vent.obj")),
                         id("textures/block/models/machines/atmo_vent.png"),
@@ -68,7 +84,7 @@ public final class AtmosphereRenders {
                                         pos.getY() + 10,
                                         pos.getZ() + 2));
 
-        private static final SpinningPart<BlockEntityAtmosphericEmitter> EMITTER =
+        private static final SpinningPart<AtmosphericEmitterBlockEntity> EMITTER =
                 new SpinningPart<>(
                         Meshes.load(id("models/machines/outtake.obj")),
                         id("textures/block/models/machines/outtake.png"),
@@ -96,13 +112,13 @@ public final class AtmosphereRenders {
             ClientRegistry.BlockEntityRendererRegistrar reg) {
         reg.accept(
                 AtmosphereBlockEntitiesSpace.AIR_SCRUBBER.get(),
-                context -> new RenderSpinningPart<>(Parts.SCRUBBER));
+                context -> new SpinningPartRenderer<>(Parts.SCRUBBER));
         reg.accept(
                 AtmosphereBlockEntitiesSpace.ATMOSPHERIC_COMPRESSOR.get(),
-                context -> new RenderSpinningPart<>(Parts.COMPRESSOR));
+                context -> new SpinningPartRenderer<>(Parts.COMPRESSOR));
         reg.accept(
                 AtmosphereBlockEntitiesSpace.ATMOSPHERIC_EMITTER.get(),
-                context -> new RenderSpinningPart<>(Parts.EMITTER));
+                context -> new SpinningPartRenderer<>(Parts.EMITTER));
     }
 
     public static void registerVisualizers() {

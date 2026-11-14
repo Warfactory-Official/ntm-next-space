@@ -2,23 +2,71 @@
   "attributes": {
     "minecraft:visual/sky_color": "#76a8ff"
   },
-  "carvers": [],
+  "carvers": [
+    "hbmspace:tekto/caves"
+  ],
   "creature_spawn_probability": 0.1,
   "downfall": 0.5,
   "effects": {
     "water_color": "#16008a"
   },
   "features": [
+    [
+      "hbmspace:tekto/bedrock_oil"
+    ],
+    [],
+    [
+      "hbmspace:tekto/stratum_hematite",
+      "hbmspace:tekto/stratum_bauxite",
+      "hbmspace:tekto/stratum_malachite"
+    ],
     [],
     [],
     [],
+    [
+      "hbmspace:tekto/ore_cobalt",
+      "hbmspace:tekto/celestial/ore_iron",
+      "hbmspace:tekto/celestial/ore_gold",
+      "hbmspace:tekto/celestial/ore_redstone",
+      "hbmspace:tekto/celestial/ore_diamond",
+      "hbmspace:tekto/celestial/ore_alexandrite",
+      "hbmspace:tekto/celestial/deposit_iron",
+      "hbmspace:tekto/celestial/deposit_titanium",
+      "hbmspace:tekto/celestial/deposit_tungsten",
+      "hbmspace:tekto/celestial/deposit_cinnabar",
+      "hbmspace:tekto/celestial/deposit_zirconium",
+      "hbmspace:tekto/celestial/deposit_borax",
+      "hbmspace:tekto/celestial/ore_uranium",
+      "hbmspace:tekto/celestial/ore_thorium",
+      "hbmspace:tekto/celestial/ore_titanium",
+      "hbmspace:tekto/celestial/ore_sulfur",
+      "hbmspace:tekto/celestial/ore_aluminium",
+      "hbmspace:tekto/celestial/ore_copper",
+      "hbmspace:tekto/celestial/ore_nickel",
+      "hbmspace:tekto/celestial/ore_zinc",
+      "hbmspace:tekto/celestial/ore_fluorite",
+      "hbmspace:tekto/celestial/ore_niter",
+      "hbmspace:tekto/celestial/ore_tungsten",
+      "hbmspace:tekto/celestial/ore_lead",
+      "hbmspace:tekto/celestial/ore_beryllium",
+      "hbmspace:tekto/celestial/ore_rare",
+      "hbmspace:tekto/celestial/ore_cinnebar",
+      "hbmspace:tekto/celestial/ore_cobalt",
+      "hbmspace:tekto/celestial/cluster_iron",
+      "hbmspace:tekto/celestial/cluster_titanium",
+      "hbmspace:tekto/celestial/cluster_aluminium",
+      "hbmspace:tekto/celestial/cluster_copper",
+      "hbmspace:tekto/celestial/ore_limestone",
+      "hbmspace:tekto/celestial/keyhole",
+      "hbmspace:tekto/celestial/bedrock_ore"
+    ],
     [],
     [],
-    [],
-    [],
-    [],
-    [],
-    [],
+    [
+      "hbm:meteorite",
+      "hbmspace:tekto/rubber_plants",
+      "hbmspace:tekto/tree_halogen"
+    ],
     []
   ],
   "has_precipitation": true,

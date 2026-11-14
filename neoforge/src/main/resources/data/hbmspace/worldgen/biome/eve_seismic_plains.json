@@ -9,16 +9,68 @@
     "water_color": "#16008a"
   },
   "features": [
+    [
+      "hbmspace:eve/cracks"
+    ],
     [],
+    [
+      "hbmspace:eve/stratum_hematite",
+      "hbmspace:eve/stratum_bauxite",
+      "hbmspace:eve/stratum_malachite",
+      "hbmspace:eve/ore_cave_sulfur",
+      "hbmspace:eve/ore_cave_basalt"
+    ],
     [],
+    [
+      "hbmspace:eve/spike"
+    ],
     [],
+    [
+      "hbmspace:eve/ore_niobium",
+      "hbmspace:eve/ore_iodine",
+      "hbmspace:eve/ore_schrabidium",
+      "hbmspace:eve/celestial/ore_iron",
+      "hbmspace:eve/celestial/ore_gold",
+      "hbmspace:eve/celestial/ore_redstone",
+      "hbmspace:eve/celestial/ore_diamond",
+      "hbmspace:eve/celestial/ore_alexandrite",
+      "hbmspace:eve/celestial/deposit_iron",
+      "hbmspace:eve/celestial/deposit_titanium",
+      "hbmspace:eve/celestial/deposit_tungsten",
+      "hbmspace:eve/celestial/deposit_cinnabar",
+      "hbmspace:eve/celestial/deposit_zirconium",
+      "hbmspace:eve/celestial/deposit_borax",
+      "hbmspace:eve/celestial/ore_uranium",
+      "hbmspace:eve/celestial/ore_thorium",
+      "hbmspace:eve/celestial/ore_titanium",
+      "hbmspace:eve/celestial/ore_sulfur",
+      "hbmspace:eve/celestial/ore_aluminium",
+      "hbmspace:eve/celestial/ore_copper",
+      "hbmspace:eve/celestial/ore_nickel",
+      "hbmspace:eve/celestial/ore_zinc",
+      "hbmspace:eve/celestial/ore_fluorite",
+      "hbmspace:eve/celestial/ore_niter",
+      "hbmspace:eve/celestial/ore_tungsten",
+      "hbmspace:eve/celestial/ore_lead",
+      "hbmspace:eve/celestial/ore_beryllium",
+      "hbmspace:eve/celestial/ore_rare",
+      "hbmspace:eve/celestial/ore_cinnebar",
+      "hbmspace:eve/celestial/ore_cobalt",
+      "hbmspace:eve/celestial/cluster_iron",
+      "hbmspace:eve/celestial/cluster_titanium",
+      "hbmspace:eve/celestial/cluster_aluminium",
+      "hbmspace:eve/celestial/cluster_copper",
+      "hbmspace:eve/celestial/ore_limestone",
+      "hbmspace:eve/celestial/keyhole",
+      "hbmspace:eve/celestial/bedrock_ore"
+    ],
     [],
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
+    [
+      "hbmspace:eve/spring_lava"
+    ],
+    [
+      "hbm:meteorite"
+    ],
     []
   ],
   "has_precipitation": true,

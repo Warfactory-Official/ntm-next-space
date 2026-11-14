@@ -1,11 +1,27 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbmspace.world;
 
 import com.hbm.data.WorldData;
-import com.hbm.platform.FabricBiomeInjection;
-import com.hbm.registration.FabricRegistrar;
+import com.hbm.platform.BiomeInjection;
+import com.hbm.registration.Registrar;
 import com.hbm.world.BiomeTarget;
 import com.hbm.world.HbmFeatureAttachments.Attachment;
 import com.hbm.world.HbmPlacedFeatures;
@@ -21,6 +37,8 @@ import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 
 public final class OverworldFeaturesSpace {
+
+    public static final int FLOWER_ODDS = 32;
 
     public static final ResourceKey<PlacedFeature> STRAWBERRY = key("strawberry");
     public static final ResourceKey<PlacedFeature> MINT = key("mint");
@@ -47,14 +65,16 @@ public final class OverworldFeaturesSpace {
                             List.of(WorldData.OVERWORLD_ORES)));
 
     static {
-        FabricRegistrar.registerFeature(
+        Registrar.registerFeature(
                 "hbmspace:strawberry",
-                new FlowerPatchFeature(() -> FloraBlocksSpace.PLANT_FLOWER_STRAWBERRY.get(), 32));
-        FabricRegistrar.registerFeature(
+                new FlowerPatchFeature(
+                        () -> FloraBlocksSpace.PLANT_FLOWER_STRAWBERRY.get(), FLOWER_ODDS));
+        Registrar.registerFeature(
                 "hbmspace:mint",
-                new FlowerPatchFeature(() -> FloraBlocksSpace.PLANT_FLOWER_MINT.get(), 32));
+                new FlowerPatchFeature(
+                        () -> FloraBlocksSpace.PLANT_FLOWER_MINT.get(), FLOWER_ODDS));
         for (Attachment attachment : ALL) {
-            FabricBiomeInjection.addFeaturesToBiome(
+            BiomeInjection.addFeaturesToBiome(
                     attachment.biomes(), attachment.step(), attachment.feature());
         }
     }

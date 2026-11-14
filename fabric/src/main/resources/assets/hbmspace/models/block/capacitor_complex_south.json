@@ -123,9 +123,7 @@
     }
   ],
   "model": "hbm:models/blocks/capacitor.obj",
-  "offset_x": 0.5,
   "offset_y": 0.5,
-  "offset_z": 0.5,
   "textures": {
     "bottom": "hbmspace:block/capacitor_complex_bottom",
     "inner_side": "hbmspace:block/capacitor_complex_inner_side",

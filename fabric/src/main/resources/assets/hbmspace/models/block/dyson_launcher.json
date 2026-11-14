@@ -15,5 +15,8 @@
   "textures": {
     "all": "hbmspace:block/models/machines/dyson_spinlaunch",
     "particle": "hbmspace:block/block_steel_machine"
-  }
+  },
+  "tiled": [
+    "Launch"
+  ]
 }

@@ -1,0 +1,25 @@
+{
+  "type": "hbm:oil_bubble",
+  "biomes": [
+    "hbmspace:duna_plains",
+    "hbmspace:duna_lowlands",
+    "hbmspace:duna_polar",
+    "hbmspace:duna_hills",
+    "hbmspace:duna_polar_hills"
+  ],
+  "core": {
+    "Name": "hbmspace:ore_oil_duna"
+  },
+  "fuzzy": false,
+  "max_size": 16,
+  "min_size": 8,
+  "min_y": 15,
+  "range_y": 25,
+  "replaceable": {
+    "block": "hbmspace:duna_rock",
+    "predicate_type": "minecraft:block_match"
+  },
+  "spawn_overrides": {},
+  "step": "raw_generation",
+  "terrain_adaptation": "none"
+}

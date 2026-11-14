@@ -1,0 +1,15 @@
+{
+  "traits": {
+    "coolable": {
+      "amount_produced": 1,
+      "amount_req": 1,
+      "cools_to": "hbm:wastefluid",
+      "efficiency": {},
+      "heat_energy": 300
+    },
+    "rocket": {
+      "isp": 900,
+      "thrust": 700000
+    }
+  }
+}

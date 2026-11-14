@@ -1,19 +1,49 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-FileCopyrightText: 2024-2025 George Paton
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: 2024-2025 George Paton
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) 2024-2025 George Paton. All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT: Space";
+ * - a modified version must not be named NTM NEXT: Space or presented as
+ *   the official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT: Space does not
+ * violate these additional terms, provided it is clearly distinguished from
+ * the official release and does not imply endorsement. Ports are encouraged
+ * to acknowledge NTM NEXT: Space as their upstream project and provide a
+ * link to it.
+ */
 
 package com.hbmspace.handler.atmosphere;
 
-import com.hbm.blocks.generic.BlockDoorGeneric;
-import com.hbm.blocks.machine.MachineDiesel;
-import com.hbm.blocks.machine.MachineFan;
-import com.hbm.blocks.machine.MachineFurnaceBrick;
-import com.hbm.blocks.multiblock.BlockMultiblockCell;
-import com.hbm.blocks.multiblock.BlockMultiblockCore;
-import com.hbm.blocks.multiblock.BlockMultiblockGeometryCell;
+import com.hbm.blocks.generic.GenericDoorBlock;
+import com.hbm.blocks.machine.DieselBlock;
+import com.hbm.blocks.machine.FanBlock;
+import com.hbm.blocks.machine.FurnaceBrickBlock;
+import com.hbm.blocks.multiblock.MultiblockCellBlock;
+import com.hbm.blocks.multiblock.MultiblockCoreBlock;
+import com.hbm.blocks.multiblock.MultiblockGeometryCellBlock;
 import com.hbm.blocks.multiblock.MultiblockSurface;
 import com.hbmspace.dim.trait.CBT_Atmosphere;
-import com.hbmspace.entity.effect.EntityDepress;
+import com.hbmspace.entity.effect.DepressEntity;
 import it.unimi.dsi.fastutil.longs.Long2IntLinkedOpenHashMap;
 import it.unimi.dsi.fastutil.longs.Long2IntMap;
 import it.unimi.dsi.fastutil.longs.LongArrayList;
@@ -43,14 +73,14 @@ public class AtmosphereBlob {
 
     protected final LongOpenHashSet graph = new LongOpenHashSet();
 
-    protected final IAtmosphereProvider handler;
+    protected final AtmosphereProvider handler;
 
     public boolean runDepress;
     public Direction depressDir = Direction.UP;
 
     private final Long2IntLinkedOpenHashMap plants = new Long2IntLinkedOpenHashMap();
 
-    public AtmosphereBlob(IAtmosphereProvider handler) {
+    public AtmosphereBlob(AtmosphereProvider handler) {
         this.handler = handler;
     }
 
@@ -76,15 +106,15 @@ public class AtmosphereBlob {
         if (own != null) return own;
 
         Block block = state.getBlock();
-        if (block instanceof IBlockSealable sealable) return sealable.isSealed(level, pos);
-        if (block instanceof BlockDoorGeneric) return !state.getValue(BlockDoorGeneric.OPEN);
+        if (block instanceof SealableBlock sealable) return sealable.isSealed(level, pos);
+        if (block instanceof GenericDoorBlock) return !state.getValue(GenericDoorBlock.OPEN);
 
         BlockPos core = MultiblockSurface.indexedCore(level, pos);
         if (core == null) return false;
         Block owner = level.getBlockState(core).getBlock();
-        if (owner instanceof IBlockSealable sealable) return sealable.isSealed(level, pos);
-        return owner instanceof BlockDoorGeneric
-                && block instanceof BlockMultiblockGeometryCell cell
+        if (owner instanceof SealableBlock sealable) return sealable.isSealed(level, pos);
+        return owner instanceof GenericDoorBlock
+                && block instanceof MultiblockGeometryCellBlock cell
                 && !cell.isOpen(state);
     }
 
@@ -92,15 +122,15 @@ public class AtmosphereBlob {
         if (state.isAir()) return false;
 
         Block block = state.getBlock();
-        if (block instanceof IBlockSealable
-                || block instanceof BlockDoorGeneric
-                || block instanceof BlockMultiblockCell) {
+        if (block instanceof SealableBlock
+                || block instanceof GenericDoorBlock
+                || block instanceof MultiblockCellBlock) {
             return null;
         }
-        if (block instanceof BlockMultiblockCore) return false;
-        if (block instanceof MachineDiesel
-                || block instanceof MachineFurnaceBrick
-                || block instanceof MachineFan
+        if (block instanceof MultiblockCoreBlock) return false;
+        if (block instanceof DieselBlock
+                || block instanceof FurnaceBrickBlock
+                || block instanceof FanBlock
                 || block instanceof AbstractFurnaceBlock) {
             return false;
         }
@@ -305,7 +335,7 @@ public class AtmosphereBlob {
     public void decompress(BlockPos pos, Direction dir) {
         ServerLevel level = level();
         double x = pos.getX() + 0.5, y = pos.getY() + 0.5, z = pos.getZ() + 0.5;
-        EntityDepress depress = new EntityDepress(level, dir.getOpposite(), 20);
+        DepressEntity depress = new DepressEntity(level, dir.getOpposite(), 20);
         depress.setPos(x, y, z);
         level.addFreshEntity(depress);
 

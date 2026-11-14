@@ -1,0 +1,40 @@
+{
+  "feature": {
+    "type": "hbm:ore_cave",
+    "config": {
+      "domain": "hbmspace:noise/laythe/ore_cave_tumor",
+      "max_range": 70,
+      "ore": {
+        "Name": "hbmspace:tumor"
+      },
+      "range_mult": 20,
+      "replaceable": {
+        "block": "minecraft:stone",
+        "predicate_type": "minecraft:block_match"
+      },
+      "stalactite": {
+        "Name": "hbmspace:stalactite_flesh",
+        "Properties": {
+          "waterlogged": "false"
+        }
+      },
+      "stalagmite": {
+        "Name": "hbmspace:stalagmite_flesh",
+        "Properties": {
+          "waterlogged": "false"
+        }
+      },
+      "threshold": 0.3,
+      "y_level": 25
+    }
+  },
+  "placement": [
+    {
+      "type": "minecraft:count",
+      "count": 1
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

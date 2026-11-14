@@ -1,10 +1,8 @@
 {
   "placement": {
-    "type": "minecraft:random_spread",
-    "frequency": 2.5E-4,
-    "salt": 413017,
-    "separation": 0,
-    "spacing": 1
+    "type": "hbmspace:chunk_odds",
+    "frequency": 8.0E-4,
+    "salt": 413017
   },
   "structures": [
     {

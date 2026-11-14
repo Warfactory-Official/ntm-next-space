@@ -14,5 +14,8 @@
   "textures": {
     "all": "hbmspace:block/models/machines/air_scrubber",
     "particle": "hbmspace:block/models/machines/air_scrubber"
-  }
+  },
+  "tiled": [
+    "Base"
+  ]
 }

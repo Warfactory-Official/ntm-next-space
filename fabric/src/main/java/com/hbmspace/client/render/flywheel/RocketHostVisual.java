@@ -1,9 +1,24 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbmspace.client.render.flywheel;
 
-import com.hbm.client.render.flywheel.HbmDynamicBlockEntityVisual;
 import com.hbm.client.render.flywheel.LightBounds;
 import com.hbm.client.render.flywheel.MeshPart;
 import com.hbm.render.loader.GroupObject;
@@ -22,6 +37,8 @@ import dev.engine_room.flywheel.lib.material.CutoutShaders;
 import dev.engine_room.flywheel.lib.material.LightShaders;
 import dev.engine_room.flywheel.lib.material.Materials;
 import dev.engine_room.flywheel.lib.material.SimpleMaterial;
+import dev.engine_room.flywheel.lib.visual.AbstractDynamicExtentBlockEntityVisual;
+import dev.engine_room.flywheel.lib.visual.CulledDynamicVisual;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -33,8 +50,9 @@ import net.minecraft.world.phys.AABB;
 import org.joml.Matrix4f;
 import org.jspecify.annotations.Nullable;
 
-public final class RocketHostVisual<T extends BlockEntity, S> extends HbmDynamicBlockEntityVisual<T>
-        implements ShaderLightVisual {
+public final class RocketHostVisual<T extends BlockEntity, S>
+        extends AbstractDynamicExtentBlockEntityVisual<T>
+        implements ShaderLightVisual, CulledDynamicVisual {
     private static final Map<PieceKey, MeshPart[]> PARTS = new ConcurrentHashMap<>();
 
     private final RocketHost<T, S> host;
@@ -64,7 +82,7 @@ public final class RocketHostVisual<T extends BlockEntity, S> extends HbmDynamic
     }
 
     @Override
-    protected void trackExtent() {
+    public void beforeFrame() {
         S snapshot = host.snapshot(blockEntity);
         if (snapshot.equals(drawn)) return;
         drawn = snapshot;
@@ -74,7 +92,7 @@ public final class RocketHostVisual<T extends BlockEntity, S> extends HbmDynamic
     }
 
     @Override
-    protected void frame(Context context) {
+    public void frame(Context context) {
         if (stale) rebuild();
     }
 
@@ -131,10 +149,9 @@ public final class RocketHostVisual<T extends BlockEntity, S> extends HbmDynamic
                         GroupObject group =
                                 Float.isNaN(piece.clipTop())
                                         ? groups[g]
-                                        : ClippedGroup.below(
-                                                groups[g],
+                                        : groups[g].clipped(
                                                 piece.mesh().smoothing(),
-                                                piece.clipTop());
+                                                new float[][] {{0, -1, 0, -piece.clipTop()}});
                         if (group == null) continue;
                         parts.add(
                                 MeshPart.obj(

@@ -1,12 +1,28 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbmspace.client.render.flywheel;
 
-import com.hbm.blocks.multiblock.BlockMultiblockCore;
+import com.hbm.blocks.multiblock.MultiblockCoreBlock;
 import com.hbm.client.render.flywheel.MeshPart;
 import com.hbm.util.Facing;
-import com.hbmspace.blockentity.machine.BlockEntityOrbitalStationLauncher;
+import com.hbmspace.blockentity.machine.OrbitalStationLauncherBlockEntity;
 import com.hbmspace.client.render.PosedParts;
 import com.hbmspace.client.render.RocketPronter;
 import com.hbmspace.client.render.StationRenders;
@@ -21,7 +37,7 @@ import net.minecraft.world.phys.AABB;
 import org.joml.Matrix4f;
 
 public final class StationLauncherVisual
-        extends PosedPartsVisual<BlockEntityOrbitalStationLauncher> {
+        extends PosedPartsVisual<OrbitalStationLauncherBlockEntity> {
 
     private final RocketPronter pronter;
     private final float yaw;
@@ -31,14 +47,14 @@ public final class StationLauncherVisual
 
     public StationLauncherVisual(
             VisualizationContext context,
-            BlockEntityOrbitalStationLauncher blockEntity,
+            OrbitalStationLauncherBlockEntity blockEntity,
             float partialTick,
-            PosedParts<BlockEntityOrbitalStationLauncher> parts,
+            PosedParts<OrbitalStationLauncherBlockEntity> parts,
             MeshPart[] meshes,
             RocketPronter pronter) {
         super(context, blockEntity, partialTick, parts, meshes);
         this.pronter = pronter;
-        this.yaw = Facing.yaw(blockEntity.getBlockState().getValue(BlockMultiblockCore.FACING), 0);
+        this.yaw = Facing.yaw(blockEntity.getBlockState().getValue(MultiblockCoreBlock.FACING), 0);
         track();
         rebuild();
     }
@@ -49,7 +65,7 @@ public final class StationLauncherVisual
     }
 
     @Override
-    protected void trackExtent() {
+    public void beforeFrame() {
         if (blockEntity.rocket.equals(drawn)) return;
         track();
         stale = true;
@@ -57,7 +73,7 @@ public final class StationLauncherVisual
     }
 
     @Override
-    protected void frame(Context context) {
+    public void frame(Context context) {
         if (stale) rebuild();
         super.frame(context);
     }

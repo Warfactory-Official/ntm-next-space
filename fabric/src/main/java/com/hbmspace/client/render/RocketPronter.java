@@ -1,11 +1,41 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-FileCopyrightText: 2024-2025 George Paton
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: 2024-2025 George Paton
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) 2024-2025 George Paton. All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT: Space";
+ * - a modified version must not be named NTM NEXT: Space or presented as
+ *   the official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT: Space does not
+ * violate these additional terms, provided it is clearly distinguished from
+ * the official release and does not imply endorsement. Ports are encouraged
+ * to acknowledge NTM NEXT: Space as their upstream project and provide a
+ * link to it.
+ */
 
 package com.hbmspace.client.render;
 
 import com.hbm.client.model.Meshes;
-import com.hbm.items.weapon.ItemCustomMissilePart;
+import com.hbm.items.weapon.CustomMissilePartItem;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.HFRWavefrontObject;
 import com.hbmspace.HbmSpace;
@@ -21,6 +51,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.resources.Identifier;
+import org.joml.Quaternionfc;
 import org.jspecify.annotations.Nullable;
 
 public final class RocketPronter {
@@ -93,12 +124,12 @@ public final class RocketPronter {
                 if (decoupleTimer > 0) {
                     float decoupleLerp = decoupleTimer + partialTick;
                     pose.translate(0, -decoupleLerp, 0);
-                    pose.mulPose(Axis.XP.rotationDegrees(decoupleLerp));
+                    pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees(decoupleLerp));
                 }
 
                 if (c > 0) {
                     float spin = (float) c / (float) (cluster - 1);
-                    pose.mulPose(Axis.YP.rotationDegrees(360.0F * spin));
+                    pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(360.0F * spin));
 
                     if (fuselage != null) {
                         pose.translate(RocketPart.radius(fuselage.bottom), 0, 0);
@@ -113,7 +144,7 @@ public final class RocketPronter {
                             float shroudLerp = shroudTimer + partialTick;
                             pose.pushPose();
                             pose.translate(0, -shroudLerp, 0);
-                            pose.mulPose(Axis.XP.rotationDegrees(shroudLerp * 0.5F));
+                            pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees(shroudLerp * 0.5F));
                         }
 
                         Identifier shroud = shroudOf(fuselage);
@@ -177,18 +208,18 @@ public final class RocketPronter {
 
         pose.pushPose();
         pose.translate(0.69291F, 2.8333F, 0);
-        pose.mulPose(Axis.ZP.rotationDegrees(pod.door()));
+        pose.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(pod.door()));
         pose.translate(-0.69291F, -2.8333F, 0);
         visitor.accept(new Piece(DROP_POD, mesh, mesh.partId("Door"), DROP_POD_TEX, Float.NaN));
         pose.popPose();
 
         for (int i = 0; i < 4; i++) {
             pose.pushPose();
-            pose.mulPose(Axis.YP.rotationDegrees(i * 90 - 45));
+            pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(i * 90 - 45));
             pose.translate(0.46194, 3.5, 0);
-            pose.mulPose(Axis.ZP.rotationDegrees(pod.airbrake()));
+            pose.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(pod.airbrake()));
             pose.translate(-0.46194, -3.5, 0);
-            pose.mulPose(Axis.YP.rotationDegrees(45));
+            pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(45));
             visitor.accept(
                     new Piece(DROP_POD, mesh, mesh.partId("Airbrake0"), DROP_POD_TEX, Float.NaN));
             pose.popPose();
@@ -217,13 +248,13 @@ public final class RocketPronter {
     }
 
     private static Identifier meshOf(RocketPart part) {
-        if (!(part.item instanceof ItemCustomMissilePart missile) || missile.mesh == null)
+        if (!(part.item instanceof CustomMissilePartItem missile) || missile.mesh == null)
             return FAIRING;
         return missile.mesh;
     }
 
     private static Identifier skinOf(RocketPart part) {
-        if (!(part.item instanceof ItemCustomMissilePart missile) || missile.skin == null)
+        if (!(part.item instanceof CustomMissilePartItem missile) || missile.skin == null)
             return FAIRING_TEX;
         return missile.skin;
     }

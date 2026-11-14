@@ -1,5 +1,36 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: 2025 JamesH_2
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) 2025 JamesH_2. All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT: Space";
+ * - a modified version must not be named NTM NEXT: Space or presented as
+ *   the official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT: Space does not
+ * violate these additional terms, provided it is clearly distinguished from
+ * the official release and does not imply endorsement. Ports are encouraged
+ * to acknowledge NTM NEXT: Space as their upstream project and provide a
+ * link to it.
+ */
 
 package com.hbmspace.client.render.mob;
 
@@ -7,8 +38,8 @@ import com.google.common.base.Suppliers;
 import com.hbm.client.ClientRegistry;
 import com.hbm.client.VanishedEntities;
 import com.hbm.client.model.Meshes;
-import com.hbm.client.render.RenderBulletMK4;
-import com.hbm.client.render.RenderCreeperUniversal;
+import com.hbm.client.render.BulletMK4Renderer;
+import com.hbm.client.render.CreeperUniversalRenderer;
 import com.hbm.client.render.flywheel.FlywheelResources;
 import com.hbm.client.render.flywheel.MobObjVisual;
 import com.hbm.client.render.flywheel.MobVisuals;
@@ -17,14 +48,14 @@ import com.hbm.items.weapon.sedna.factory.LegoClient;
 import com.hbm.render.loader.HFRWavefrontObject;
 import com.hbmspace.HbmSpace;
 import com.hbmspace.entity.MobEntitiesSpace;
-import com.hbmspace.entity.mob.EntityDepthSquid;
-import com.hbmspace.entity.mob.EntityScrapFish;
-import com.hbmspace.entity.mob.EntityScutterfish;
-import com.hbmspace.entity.mob.EntityScuttlecrab;
-import com.hbmspace.entity.mob.EntitySifterEel;
-import com.hbmspace.entity.mob.EntityTankbot;
-import com.hbmspace.entity.mob.EntityWarBehemoth;
+import com.hbmspace.entity.mob.DepthSquidEntity;
 import com.hbmspace.entity.mob.MobWeaponsSpace;
+import com.hbmspace.entity.mob.ScrapFishEntity;
+import com.hbmspace.entity.mob.ScutterfishEntity;
+import com.hbmspace.entity.mob.ScuttlecrabEntity;
+import com.hbmspace.entity.mob.SifterEelEntity;
+import com.hbmspace.entity.mob.TankbotEntity;
+import com.hbmspace.entity.mob.WarBehemothEntity;
 import dev.engine_room.flywheel.lib.visualization.SimpleEntityVisualizer;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,13 +75,13 @@ public final class MobRenders {
     private static final double[] SCRAP_PHASE = {0.6D, 0.8D, 1.0D};
     private static final double[] SCRAP_YAW = {10.0D, 6.0D, 4.0D};
 
-    private static final ObjMobRig<EntityScutterfish> SCUTTERFISH = scutterfish();
-    private static final ObjMobRig<EntityScrapFish> SCRAP_FISH = scrapFish();
-    private static final ObjMobRig<EntitySifterEel> SIFTER_EEL = sifterEel();
-    private static final ObjMobRig<EntityScuttlecrab> SCUTTLECRAB = scuttlecrab();
-    private static final ObjMobRig<EntityDepthSquid> DEPTH_SQUID = depthSquid();
-    private static final ObjMobRig<EntityTankbot> TANKBOT = tankbot();
-    private static final ObjMobRig<EntityWarBehemoth> WAR_BEHEMOTH = warBehemoth();
+    private static final ObjMobRig<ScutterfishEntity> SCUTTERFISH = scutterfish();
+    private static final ObjMobRig<ScrapFishEntity> SCRAP_FISH = scrapFish();
+    private static final ObjMobRig<SifterEelEntity> SIFTER_EEL = sifterEel();
+    private static final ObjMobRig<ScuttlecrabEntity> SCUTTLECRAB = scuttlecrab();
+    private static final ObjMobRig<DepthSquidEntity> DEPTH_SQUID = depthSquid();
+    private static final ObjMobRig<TankbotEntity> TANKBOT = tankbot();
+    private static final ObjMobRig<WarBehemothEntity> WAR_BEHEMOTH = warBehemoth();
 
     private MobRenders() {}
 
@@ -58,32 +89,33 @@ public final class MobRenders {
         reg.accept(
                 MobEntitiesSpace.CREEPER_FLESH.get(),
                 context ->
-                        new RenderCreeperUniversal(
+                        new CreeperUniversalRenderer(
                                 context, space("textures/entity/creeper_flesh.png"), 1.0F));
-        reg.accept(MobEntitiesSpace.MOON_COW.get(), RenderMoonCow::new);
+        reg.accept(MobEntitiesSpace.MOON_COW.get(), MoonCowRenderer::new);
         reg.accept(
                 MobEntitiesSpace.SCUTTERFISH.get(),
-                context -> new RenderObjMob<>(context, SCUTTERFISH));
+                context -> new ObjMobRenderer<>(context, SCUTTERFISH));
         reg.accept(
                 MobEntitiesSpace.SCRAP_FISH.get(),
-                context -> new RenderObjMob<>(context, SCRAP_FISH));
+                context -> new ObjMobRenderer<>(context, SCRAP_FISH));
         reg.accept(
                 MobEntitiesSpace.SIFTER_EEL.get(),
-                context -> new RenderObjMob<>(context, SIFTER_EEL));
+                context -> new ObjMobRenderer<>(context, SIFTER_EEL));
         reg.accept(
                 MobEntitiesSpace.SCUTTLECRAB.get(),
-                context -> new RenderObjMob<>(context, SCUTTLECRAB));
+                context -> new ObjMobRenderer<>(context, SCUTTLECRAB));
         reg.accept(
                 MobEntitiesSpace.DEPTH_SQUID.get(),
-                context -> new RenderObjMob<>(context, DEPTH_SQUID));
-        reg.accept(MobEntitiesSpace.TANKBOT.get(), context -> new RenderObjMob<>(context, TANKBOT));
+                context -> new ObjMobRenderer<>(context, DEPTH_SQUID));
+        reg.accept(
+                MobEntitiesSpace.TANKBOT.get(), context -> new ObjMobRenderer<>(context, TANKBOT));
         reg.accept(
                 MobEntitiesSpace.WAR_BEHEMOTH.get(),
-                context -> new RenderObjMob<>(context, WAR_BEHEMOTH));
+                context -> new ObjMobRenderer<>(context, WAR_BEHEMOTH));
     }
 
     public static void registerBulletDrawers() {
-        RenderBulletMK4.setRenderer(MobWeaponsSpace.R762_AP_STILL, LegoClient.RENDER_AP_BULLET);
+        BulletMK4Renderer.setRenderer(MobWeaponsSpace.R762_AP_STILL, LegoClient.RENDER_AP_BULLET);
     }
 
     public static void registerVisualizers() {
@@ -217,13 +249,13 @@ public final class MobRenders {
                 });
     }
 
-    private static ObjMobRig<EntityScutterfish> scutterfish() {
-        ObjEntityVisual.Pose<EntityScutterfish> tail =
+    private static ObjMobRig<ScutterfishEntity> scutterfish() {
+        ObjEntityVisual.Pose<ScutterfishEntity> tail =
                 (pose, entity, partialTick) -> {
                     pose.rotateZ(rad(cycle(entity, partialTick, 1.0F, 0.2D) * 10.0D));
                     pose.rotateX(rad(cycle(entity, partialTick, 1.0F, 0.4D) * -5.0D));
                 };
-        List<MobObjVisual.Part<EntityScutterfish>> parts =
+        List<MobObjVisual.Part<ScutterfishEntity>> parts =
                 List.of(
                         MobObjVisual.Part.of("body"),
                         head("head", 0.0F, 0.0F, 0.0F),
@@ -251,8 +283,8 @@ public final class MobRenders {
                 0.3F);
     }
 
-    private static ObjMobRig<EntityScrapFish> scrapFish() {
-        List<MobObjVisual.Part<EntityScrapFish>> parts =
+    private static ObjMobRig<ScrapFishEntity> scrapFish() {
+        List<MobObjVisual.Part<ScrapFishEntity>> parts =
                 List.of(
                         MobObjVisual.Part.of("Body"),
                         head("Head", 0.0F, 0.0F, -0.3125F),
@@ -267,7 +299,7 @@ public final class MobRenders {
                         yawChain("TailFin", SCRAP_PHASE, SCRAP_YAW, 3));
         return new ObjMobRig<>(
                 mesh("scrapfish"),
-                skins(EntityScrapFish.ScrapFish.class),
+                skins(ScrapFishEntity.ScrapFish.class),
                 entity -> entity.getEnum().ordinal(),
                 Map.of(),
                 upright(),
@@ -275,8 +307,8 @@ public final class MobRenders {
                 0.5F);
     }
 
-    private static ObjMobRig<EntitySifterEel> sifterEel() {
-        List<MobObjVisual.Part<EntitySifterEel>> parts =
+    private static ObjMobRig<SifterEelEntity> sifterEel() {
+        List<MobObjVisual.Part<SifterEelEntity>> parts =
                 List.of(
                         head("Head", 0.0F, 0.0F, -0.5F),
                         head("Jaw", 0.0F, 0.0F, -0.5F),
@@ -299,7 +331,7 @@ public final class MobRenders {
                         yawChain("Tail", EEL_PHASE, EEL_YAW, 7));
         return new ObjMobRig<>(
                 mesh("siftereel"),
-                skins(EntitySifterEel.SifterEel.class),
+                skins(SifterEelEntity.SifterEel.class),
                 entity -> entity.getEnum().ordinal(),
                 Map.of(),
                 upright(),
@@ -307,8 +339,8 @@ public final class MobRenders {
                 0.5F);
     }
 
-    private static ObjMobRig<EntityScuttlecrab> scuttlecrab() {
-        List<MobObjVisual.Part<EntityScuttlecrab>> parts =
+    private static ObjMobRig<ScuttlecrabEntity> scuttlecrab() {
+        List<MobObjVisual.Part<ScuttlecrabEntity>> parts =
                 List.of(
                         MobObjVisual.Part.of("Body"),
                         head("EyeL", -0.125F, 0.5625F, -0.3125F),
@@ -325,7 +357,7 @@ public final class MobRenders {
                         rollZ("LegR4", 6.0F, 1.6D, -8.0D));
         return new ObjMobRig<>(
                 mesh("scuttlecrab"),
-                skins(EntityScuttlecrab.Scuttlecrab.class),
+                skins(ScuttlecrabEntity.Scuttlecrab.class),
                 entity -> entity.getEnum().ordinal(),
                 Map.of(),
                 upright(),
@@ -333,8 +365,8 @@ public final class MobRenders {
                 0.5F);
     }
 
-    private static ObjMobRig<EntityDepthSquid> depthSquid() {
-        List<MobObjVisual.Part<EntityDepthSquid>> parts = new ArrayList<>();
+    private static ObjMobRig<DepthSquidEntity> depthSquid() {
+        List<MobObjVisual.Part<DepthSquidEntity>> parts = new ArrayList<>();
         parts.add(MobObjVisual.Part.of("Body"));
         parts.add(
                 MobObjVisual.Part.at(
@@ -366,7 +398,7 @@ public final class MobRenders {
                                 pose.translate(0.0F, 0.9F, 0.0F);
                             }));
         }
-        ObjEntityVisual.Pose<EntityDepthSquid> body =
+        ObjEntityVisual.Pose<DepthSquidEntity> body =
                 (pose, entity, partialTick) -> {
                     corpse(pose, entity, partialTick);
                     pose.scale(-1.0F, -1.0F, 1.0F);
@@ -377,7 +409,7 @@ public final class MobRenders {
                 };
         return new ObjMobRig<>(
                 mesh("depthsquid"),
-                skins(EntityDepthSquid.DepthSquid.class),
+                skins(DepthSquidEntity.DepthSquid.class),
                 entity -> entity.getEnum().ordinal(),
                 Map.of(),
                 body,
@@ -385,38 +417,38 @@ public final class MobRenders {
                 0.5F);
     }
 
-    private static ObjMobRig<EntityTankbot> tankbot() {
-        ObjEntityVisual.Pose<EntityTankbot> base =
+    private static ObjMobRig<TankbotEntity> tankbot() {
+        ObjEntityVisual.Pose<TankbotEntity> base =
                 (pose, entity, partialTick) -> {
                     turned(pose, entity, partialTick);
                     pose.scale(2.0F);
                 };
-        ObjEntityVisual.Pose<EntityTankbot> front2 =
+        ObjEntityVisual.Pose<TankbotEntity> front2 =
                 (pose, entity, partialTick) -> {
                     pose.rotateY(rad(10.0D - cycle(entity, partialTick, 1.0F, 0.75D) * 10.0D));
                     pose.rotateZ(rad(cycle(entity, partialTick, 1.0F, 1.0D) * -2.0D));
                 };
-        ObjEntityVisual.Pose<EntityTankbot> front1 =
+        ObjEntityVisual.Pose<TankbotEntity> front1 =
                 (pose, entity, partialTick) -> {
                     double cy2 = cycle(entity, partialTick, 1.0F, 1.0D);
                     double cy3 = cycle(entity, partialTick, 1.0F, 0.75D);
                     pose.rotateY(rad(cy3 - cy2 * 10.0D));
                     pose.rotateZ(rad(cy2 - cy3 * -2.0D));
                 };
-        ObjEntityVisual.Pose<EntityTankbot> back2 =
+        ObjEntityVisual.Pose<TankbotEntity> back2 =
                 (pose, entity, partialTick) -> {
                     double cy2 = cycle(entity, partialTick, 1.0F, 1.0D);
                     pose.rotateY(rad(cy2 - cycle(entity, partialTick, 1.0F, 0.75D) * 5.0D));
                     pose.rotateX(rad(cy2 * 2.0D));
                 };
-        ObjEntityVisual.Pose<EntityTankbot> turret =
+        ObjEntityVisual.Pose<TankbotEntity> turret =
                 (pose, entity, partialTick) ->
                         pose.rotateY(
                                 (Mth.rotLerp(partialTick, entity.yHeadRotO, entity.yHeadRot)
                                                 - entity.headTargetYaw(partialTick)
                                                 - 90.0F)
                                         * Mth.DEG_TO_RAD);
-        List<MobObjVisual.Part<EntityTankbot>> parts = new ArrayList<>();
+        List<MobObjVisual.Part<TankbotEntity>> parts = new ArrayList<>();
         parts.add(MobObjVisual.Part.of("body"));
         tankLegs(parts, "front2", 0.0625F, front2);
         tankLegs(parts, "front1", 0.4375F, front1);
@@ -436,10 +468,10 @@ public final class MobRenders {
     }
 
     private static void tankLegs(
-            List<MobObjVisual.Part<EntityTankbot>> parts,
+            List<MobObjVisual.Part<TankbotEntity>> parts,
             String leg,
             float z,
-            ObjEntityVisual.Pose<EntityTankbot> swing) {
+            ObjEntityVisual.Pose<TankbotEntity> swing) {
         for (String joint : List.of("foot", "leg", "knee")) {
             parts.add(
                     MobObjVisual.Part.at(
@@ -452,21 +484,21 @@ public final class MobRenders {
         }
     }
 
-    private static ObjMobRig<EntityWarBehemoth> warBehemoth() {
-        ObjEntityVisual.Pose<EntityWarBehemoth> base =
+    private static ObjMobRig<WarBehemothEntity> warBehemoth() {
+        ObjEntityVisual.Pose<WarBehemothEntity> base =
                 (pose, entity, partialTick) -> {
                     turned(pose, entity, partialTick);
                     pose.scale(1.2F);
                     pose.translate(0.0F, -0.5F, 0.0F);
                     pose.rotateY(-(float) Math.PI);
                 };
-        ObjEntityVisual.Pose<EntityWarBehemoth> body =
+        ObjEntityVisual.Pose<WarBehemothEntity> body =
                 (pose, entity, partialTick) -> {
                     pose.translate(0.0F, 8.6F, 0.5F);
                     pose.rotateX(-entity.aimPitch(partialTick) * Mth.DEG_TO_RAD);
                     pose.translate(0.0F, -8.7F, -0.5F);
                 };
-        List<MobObjVisual.Part<EntityWarBehemoth>> parts = new ArrayList<>();
+        List<MobObjVisual.Part<WarBehemothEntity>> parts = new ArrayList<>();
         for (String group : List.of("body", "hatch1", "hatch2", "gun", "helmet", "eye")) {
             parts.add(MobObjVisual.Part.at(group, body));
         }
@@ -520,7 +552,7 @@ public final class MobRenders {
     }
 
     private static void behemothLeg(
-            Matrix4f pose, EntityWarBehemoth entity, float partialTick, boolean right, int joint) {
+            Matrix4f pose, WarBehemothEntity entity, float partialTick, boolean right, int joint) {
         double step = entity.walkAnimation.position(partialTick) * 0.25D + (right ? Math.PI : 0.0D);
         double footX = Math.sin(step) * 2.5D + 5.0D;
         double footY = Math.max(Math.sin(step) * 5.5D - (right ? 4.0D : 2.0D), 7.0D);

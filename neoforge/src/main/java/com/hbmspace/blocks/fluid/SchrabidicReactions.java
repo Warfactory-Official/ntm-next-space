@@ -1,12 +1,28 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbmspace.blocks.fluid;
 
 import com.hbm.blocks.ModBlocks;
-import com.hbm.blocks.multiblock.BlockMultiblockCell;
+import com.hbm.blocks.multiblock.MultiblockCellBlock;
 import com.hbm.blocks.multiblock.MultiblockSurface;
-import com.hbm.lib.Library;
+import com.hbm.util.RegistryUtil;
 import java.util.Set;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -14,90 +30,22 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.block.state.properties.SlabType;
+import org.jspecify.annotations.Nullable;
 
 public final class SchrabidicReactions {
 
     private static final Block BRICK_OBSIDIAN = byId("brick_obsidian");
     private static final Block BRICK_OBSIDIAN_STAIRS = byId("brick_obsidian_stairs");
     private static final Block BLOCK_POLYMER = byId("block_polymer");
-    private static final Set<Block> LEGACY_LOGS =
-            Set.of(
-                    Blocks.OAK_LOG,
-                    Blocks.SPRUCE_LOG,
-                    Blocks.BIRCH_LOG,
-                    Blocks.JUNGLE_LOG,
-                    Blocks.ACACIA_LOG,
-                    Blocks.DARK_OAK_LOG,
-                    Blocks.OAK_WOOD,
-                    Blocks.SPRUCE_WOOD,
-                    Blocks.BIRCH_WOOD,
-                    Blocks.JUNGLE_WOOD,
-                    Blocks.ACACIA_WOOD,
-                    Blocks.DARK_OAK_WOOD,
-                    Blocks.STRIPPED_OAK_LOG,
-                    Blocks.STRIPPED_SPRUCE_LOG,
-                    Blocks.STRIPPED_BIRCH_LOG,
-                    Blocks.STRIPPED_JUNGLE_LOG,
-                    Blocks.STRIPPED_ACACIA_LOG,
-                    Blocks.STRIPPED_DARK_OAK_LOG,
-                    Blocks.STRIPPED_OAK_WOOD,
-                    Blocks.STRIPPED_SPRUCE_WOOD,
-                    Blocks.STRIPPED_BIRCH_WOOD,
-                    Blocks.STRIPPED_JUNGLE_WOOD,
-                    Blocks.STRIPPED_ACACIA_WOOD,
-                    Blocks.STRIPPED_DARK_OAK_WOOD,
-                    Blocks.MANGROVE_LOG,
-                    Blocks.MANGROVE_WOOD,
-                    Blocks.STRIPPED_MANGROVE_LOG,
-                    Blocks.STRIPPED_MANGROVE_WOOD,
-                    Blocks.CHERRY_LOG,
-                    Blocks.CHERRY_WOOD,
-                    Blocks.STRIPPED_CHERRY_LOG,
-                    Blocks.STRIPPED_CHERRY_WOOD,
-                    Blocks.PALE_OAK_LOG,
-                    Blocks.PALE_OAK_WOOD,
-                    Blocks.STRIPPED_PALE_OAK_LOG,
-                    Blocks.STRIPPED_PALE_OAK_WOOD,
-                    Blocks.BAMBOO_BLOCK,
-                    Blocks.STRIPPED_BAMBOO_BLOCK,
-                    Blocks.CRIMSON_STEM,
-                    Blocks.CRIMSON_HYPHAE,
-                    Blocks.STRIPPED_CRIMSON_STEM,
-                    Blocks.STRIPPED_CRIMSON_HYPHAE,
-                    Blocks.WARPED_STEM,
-                    Blocks.WARPED_HYPHAE,
-                    Blocks.STRIPPED_WARPED_STEM,
-                    Blocks.STRIPPED_WARPED_HYPHAE);
-    private static final Set<Block> LEGACY_PLANKS =
-            Set.of(
-                    Blocks.OAK_PLANKS,
-                    Blocks.SPRUCE_PLANKS,
-                    Blocks.BIRCH_PLANKS,
-                    Blocks.JUNGLE_PLANKS,
-                    Blocks.ACACIA_PLANKS,
-                    Blocks.DARK_OAK_PLANKS,
-                    Blocks.MANGROVE_PLANKS,
-                    Blocks.CHERRY_PLANKS,
-                    Blocks.PALE_OAK_PLANKS,
-                    Blocks.BAMBOO_PLANKS,
-                    Blocks.BAMBOO_MOSAIC,
-                    Blocks.CRIMSON_PLANKS,
-                    Blocks.WARPED_PLANKS);
-    private static final Set<Block> LEGACY_LEAVES =
-            Set.of(
-                    Blocks.OAK_LEAVES,
-                    Blocks.SPRUCE_LEAVES,
-                    Blocks.BIRCH_LEAVES,
-                    Blocks.JUNGLE_LEAVES,
-                    Blocks.ACACIA_LEAVES,
-                    Blocks.DARK_OAK_LEAVES);
-
     private static final Set<Block> LEGACY_STONE_BRICKS =
             Set.of(
                     Blocks.STONE_BRICKS,
@@ -264,7 +212,7 @@ public final class SchrabidicReactions {
     private SchrabidicReactions() {}
 
     private static Block byId(String id) {
-        return BuiltInRegistries.BLOCK.getOptional(Library.id(id)).orElseThrow();
+        return BuiltInRegistries.BLOCK.getOptional(RegistryUtil.id(id)).orElseThrow();
     }
 
     public static void react(ServerLevel level, BlockPos pos, RandomSource random) {
@@ -272,55 +220,38 @@ public final class SchrabidicReactions {
         BlockState state = level.getBlockState(pos);
         Block block = state.getBlock();
         if (state.isAir()) return;
-        Block materialCarrier = block;
-        if (block instanceof BlockMultiblockCell) {
+        BlockState carrier = state;
+        if (block instanceof MultiblockCellBlock) {
             long core =
                     MultiblockSurface.indexedCorePacked(level, pos.getX(), pos.getY(), pos.getZ());
             if (!MultiblockSurface.hasCore(core)) return;
-            materialCarrier = level.getBlockState(BlockPos.of(core)).getBlock();
+            carrier = level.getBlockState(BlockPos.of(core));
         }
         double x = pos.getX() + random.nextFloat();
         double y = pos.getY() + random.nextFloat();
         double z = pos.getZ() + random.nextFloat();
+        BlockState eroded = erosion(state);
 
         if (block != ModBlocks.SCHRABIDIC_BLOCK.get()
-                && SchrabidicLegacyMaterials.water(materialCarrier)) {
+                && carrier.getFluidState().is(FluidTags.WATER)) {
             level.setBlockAndUpdate(pos, ModBlocks.SELLAFIELD_SLAKED.get().defaultBlockState());
-        } else if (LEGACY_LOGS.contains(block) && random.nextInt(4) == 0) {
+        } else if ((state.is(BlockTags.LOGS) || state.is(BlockTags.BAMBOO_BLOCKS))
+                && random.nextInt(4) == 0) {
             change(level, pos, ModBlocks.WASTE_LOG.get().defaultBlockState());
-        } else if (LEGACY_PLANKS.contains(block) && random.nextInt(4) == 0) {
+        } else if ((state.is(BlockTags.PLANKS) || block == Blocks.BAMBOO_MOSAIC)
+                && random.nextInt(4) == 0) {
             change(level, pos, ModBlocks.WASTE_PLANKS.get().defaultBlockState());
-        } else if ((LEGACY_LEAVES.contains(block)
-                        || SchrabidicLegacyMaterials.iron(materialCarrier)
-                                && block != ModBlocks.GRAVEL_OBSIDIAN.get()
-                        || SchrabidicLegacyMaterials.glass(materialCarrier)
-                                && block != ModBlocks.REINFORCED_GLASS.get())
+        } else if ((state.is(BlockTags.LEAVES)
+                        || glass(carrier) && block != ModBlocks.REINFORCED_GLASS.get())
                 && random.nextInt(4) == 0) {
             destroy(level, pos, x, y, z);
-        } else if ((block == Blocks.STONE
-                        || block == Blocks.STONE_BRICK_STAIRS
-                        || LEGACY_STONE_BRICKS.contains(block)
-                        || legacySingleSlab(state)
-                        || NEW_STONE_FAMILIES.contains(block))
+        } else if (eroded != null && random.nextInt(4) == 0) {
+            change(level, pos, eroded);
+        } else if (eroded == null
+                && carrier.is(BlockTags.MINEABLE_WITH_PICKAXE)
+                && !resists(carrier.getBlock())
                 && random.nextInt(4) == 0) {
-            change(level, pos, Blocks.COBBLESTONE.defaultBlockState());
-        } else if (block == Blocks.COBBLESTONE && random.nextInt(4) == 0) {
-            change(level, pos, Blocks.GRAVEL.defaultBlockState());
-        } else if (block == Blocks.GRAVEL && random.nextInt(4) == 0) {
-            change(level, pos, Blocks.CLAY.defaultBlockState());
-        } else if ((block == Blocks.OBSIDIAN
-                        || block == Blocks.CRYING_OBSIDIAN
-                        || block == BRICK_OBSIDIAN
-                        || block == BRICK_OBSIDIAN_STAIRS)
-                && random.nextInt(4) == 0) {
-            change(level, pos, ModBlocks.GRAVEL_OBSIDIAN.get().defaultBlockState());
-        } else if ((LEGACY_SANDSTONES.contains(block)
-                        || block == Blocks.RED_SANDSTONE
-                        || block == Blocks.CHISELED_RED_SANDSTONE
-                        || block == Blocks.CUT_RED_SANDSTONE
-                        || block == Blocks.END_STONE)
-                && random.nextInt(4) == 0) {
-            change(level, pos, Blocks.SAND.defaultBlockState());
+            destroy(level, pos, x, y, z);
         } else if (block.getExplosionResistance() < 1.2F
                 && block != BLOCK_POLYMER
                 && block != ModBlocks.GRAVEL_OBSIDIAN.get()
@@ -329,6 +260,45 @@ public final class SchrabidicReactions {
                 && block != Blocks.CLAY) {
             destroy(level, pos, x, y, z);
         }
+    }
+
+    private static @Nullable BlockState erosion(BlockState state) {
+        Block block = state.getBlock();
+        if (block == Blocks.STONE
+                || block == Blocks.STONE_BRICK_STAIRS
+                || LEGACY_STONE_BRICKS.contains(block)
+                || legacySingleSlab(state)
+                || NEW_STONE_FAMILIES.contains(block)) {
+            return Blocks.COBBLESTONE.defaultBlockState();
+        }
+        if (block == Blocks.COBBLESTONE) return Blocks.GRAVEL.defaultBlockState();
+        if (block == Blocks.GRAVEL) return Blocks.CLAY.defaultBlockState();
+        if (block == Blocks.OBSIDIAN
+                || block == Blocks.CRYING_OBSIDIAN
+                || block == BRICK_OBSIDIAN
+                || block == BRICK_OBSIDIAN_STAIRS) {
+            return ModBlocks.GRAVEL_OBSIDIAN.get().defaultBlockState();
+        }
+        if (LEGACY_SANDSTONES.contains(block)
+                || block == Blocks.RED_SANDSTONE
+                || block == Blocks.CHISELED_RED_SANDSTONE
+                || block == Blocks.CUT_RED_SANDSTONE
+                || block == Blocks.END_STONE) {
+            return Blocks.SAND.defaultBlockState();
+        }
+        return null;
+    }
+
+    private static boolean glass(BlockState state) {
+        return state.instrument() == NoteBlockInstrument.HAT || state.is(Blocks.GLOWSTONE);
+    }
+
+    private static boolean resists(Block block) {
+        return block == Blocks.NETHERITE_BLOCK
+                || block == BLOCK_POLYMER
+                || block == ModBlocks.GRAVEL_OBSIDIAN.get()
+                || block == ModBlocks.SELLAFIELD_SLAKED.get()
+                || block == ModBlocks.REINFORCED_GLASS.get();
     }
 
     private static boolean legacySingleSlab(BlockState state) {

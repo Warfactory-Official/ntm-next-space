@@ -1,17 +1,34 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbmspace.mixin.client;
 
-import com.hbm.blockentity.machine.BlockEntityChungus;
-import com.hbm.blockentity.machine.BlockEntityCondenserPowered;
+import com.hbm.blockentity.machine.thermal.LeviathanTurbineBlockEntity;
+import com.hbm.blockentity.machine.thermal.PoweredCondenserBlockEntity;
+import com.hbm.blockentity.machine.thermal.PoweredCondenserBlockEntity;
 import com.hbm.blocks.ModBlockEntities;
 import com.hbm.client.ClientRegistry;
 import com.hbm.entity.ModEntities;
-import com.hbm.entity.item.EntityTntNtm;
-import com.hbmspace.client.render.RenderChungusSpace;
-import com.hbmspace.client.render.RenderCondenserPoweredSpace;
-import com.hbmspace.client.render.RenderTntSpin;
+import com.hbm.entity.item.TntNtmEntity;
+import com.hbmspace.client.render.ChungusSpaceRenderer;
+import com.hbmspace.client.render.CondenserPoweredSpaceRenderer;
+import com.hbmspace.client.render.TntSpinRenderer;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -35,7 +52,7 @@ public abstract class MixinClientRegistry {
             EntityType<?> type,
             EntityRendererProvider<?> provider,
             Operation<Void> original) {
-        EntityRendererProvider<EntityTntNtm> spin = context -> new RenderTntSpin(context);
+        EntityRendererProvider<TntNtmEntity> spin = context -> new TntSpinRenderer(context);
         original.call(reg, type, type == ModEntities.TNT_NTM.get() ? spin : provider);
     }
 
@@ -51,10 +68,11 @@ public abstract class MixinClientRegistry {
             BlockEntityType<?> type,
             BlockEntityRendererProvider<?, ?> provider,
             Operation<Void> original) {
-        BlockEntityRendererProvider<BlockEntityChungus, RenderChungusSpace.State> chungus =
-                context -> new RenderChungusSpace();
-        BlockEntityRendererProvider<BlockEntityCondenserPowered, RenderCondenserPoweredSpace.State>
-                condenser = context -> new RenderCondenserPoweredSpace();
+        BlockEntityRendererProvider<LeviathanTurbineBlockEntity, ChungusSpaceRenderer.State>
+                chungus = context -> new ChungusSpaceRenderer();
+        BlockEntityRendererProvider<
+                        PoweredCondenserBlockEntity, CondenserPoweredSpaceRenderer.State>
+                condenser = context -> new CondenserPoweredSpaceRenderer();
         original.call(
                 reg,
                 type,

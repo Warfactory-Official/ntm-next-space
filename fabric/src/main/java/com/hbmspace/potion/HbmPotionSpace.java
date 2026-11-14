@@ -1,10 +1,26 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbmspace.potion;
 
-import com.hbm.explosion.vanillant.ExplosionVNT;
-import com.hbm.registration.FabricRegistrar;
+import com.hbm.explosion.vanillant.ComposableExplosion;
+import com.hbm.registration.Registrar;
 import com.hbm.registration.RegistryHandle;
 import com.hbm.sound.EntitySounds;
 import com.hbm.sound.ModSounds;
@@ -19,15 +35,15 @@ import net.minecraft.world.entity.player.Player;
 
 public final class HbmPotionSpace {
     public static final RegistryHandle<MobEffect> RUN =
-            FabricRegistrar.registerMobEffect("hbmspace:run", RunEffect::new);
+            Registrar.registerMobEffect("hbmspace:run", RunEffect::new);
     public static final RegistryHandle<MobEffect> NITAN =
-            FabricRegistrar.registerMobEffect("hbmspace:nitan", NitanEffect::new);
+            Registrar.registerMobEffect("hbmspace:nitan", NitanEffect::new);
     public static final RegistryHandle<MobEffect> FLASHBANG =
-            FabricRegistrar.registerMobEffect(
+            Registrar.registerMobEffect(
                     "hbmspace:flashbang",
                     () -> new SpaceMobEffect(MobEffectCategory.NEUTRAL, 0xD0D0D0));
     public static final RegistryHandle<MobEffect> SLIPPERY =
-            FabricRegistrar.registerMobEffect("hbmspace:slippery", SlipperyEffect::new);
+            Registrar.registerMobEffect("hbmspace:slippery", SlipperyEffect::new);
 
     private HbmPotionSpace() {}
 
@@ -46,10 +62,10 @@ public final class HbmPotionSpace {
 
         @Override
         public boolean applyEffectTick(ServerLevel level, LivingEntity entity, int amplifier) {
+            if (entity.isSpectator()) return true;
             entity.hurtServer(level, level.damageSources().source(ModDamageTypesSpace.RUN), 1000F);
-            entity.setHealth(0.0F);
-            new ExplosionVNT(level, entity.getX(), entity.getY(), entity.getZ(), BLAST)
-                    .makeAmat()
+            new ComposableExplosion(level, entity.getX(), entity.getY(), entity.getZ(), BLAST)
+                    .antimatter()
                     .explode();
             EntitySounds.play(
                     entity,
@@ -60,7 +76,6 @@ public final class HbmPotionSpace {
                     SoundSource.PLAYERS,
                     100.0F,
                     1.0F);
-            if (!(entity instanceof Player)) entity.discard();
             return true;
         }
 
@@ -80,6 +95,7 @@ public final class HbmPotionSpace {
         @Override
         public boolean applyEffectTick(ServerLevel level, LivingEntity entity, int amplifier) {
             if (entity instanceof Player player
+                    && !player.isSpectator()
                     && SpacePlayerProps.getNitanCount(player) == FATAL_COUNT) {
                 entity.hurtServer(
                         level, level.damageSources().source(ModDamageTypesSpace.NITAN), 1000F);

@@ -1,0 +1,13 @@
+{
+  "placement": {
+    "type": "hbmspace:chunk_odds",
+    "frequency": 0.002,
+    "salt": 1899734832
+  },
+  "structures": [
+    {
+      "structure": "hbmspace:ike/sellafield_crater",
+      "weight": 1
+    }
+  ]
+}

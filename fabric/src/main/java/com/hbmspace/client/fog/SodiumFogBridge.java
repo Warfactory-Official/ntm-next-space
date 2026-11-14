@@ -1,11 +1,26 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbmspace.client.fog;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.caffeinemc.mods.sodium.client.util.FogParameters;
-import net.caffeinemc.mods.sodium.client.util.FogStorage;
 import net.minecraft.client.renderer.fog.FogData;
 import net.minecraft.client.renderer.fog.FogRenderer;
 
@@ -14,15 +29,15 @@ public final class SodiumFogBridge {
 
     public static void captureStored(FogRenderer renderer, FogData data) {
         capture(
-                ((FogStorage) renderer).sodium$getFogParameters(),
-                (TerrainFogPayload) data,
-                (TerrainFogWriter) renderer);
+                ((net.caffeinemc.mods.sodium.client.util.FogStorage) (renderer))
+                        .sodium$getFogParameters(),
+                ((com.hbmspace.client.fog.TerrainFogPayload) (data)),
+                ((com.hbmspace.client.fog.TerrainFogWriter) (renderer)));
     }
 
     public static Object capture(
             Object original, TerrainFogPayload source, TerrainFogWriter writer) {
         FogParameters parameters = (FogParameters) original;
-        BoundTerrainFog snapshot = (BoundTerrainFog) (Object) parameters;
         boolean enabled = writer.hbmspace$fogEnabled();
         int flags = enabled ? source.hbmspace$flags() : 0;
         if ((flags & TerrainExpFog.EXP) != 0) {
@@ -30,12 +45,16 @@ public final class SodiumFogBridge {
                     (flags & TerrainExpFog.DARKNESS) != 0
                             ? Math.min(parameters.renderEnd(), parameters.environmentalEnd())
                             : parameters.renderEnd();
-            snapshot.hbmspace$cullDistance(cull);
+            ((com.hbmspace.client.fog.BoundTerrainFog) (java.lang.Object) (parameters))
+                    .hbmspace$cullDistance(cull);
         }
-        snapshot.hbmspace$payload(enabled ? source.hbmspace$density() : 0F, flags);
-        snapshot.hbmspace$writer(writer);
+        ((com.hbmspace.client.fog.TerrainFogPayload) (java.lang.Object) (parameters))
+                .hbmspace$payload(enabled ? source.hbmspace$density() : 0F, flags);
+        ((com.hbmspace.client.fog.BoundTerrainFog) (java.lang.Object) (parameters))
+                .hbmspace$writer(writer);
         var buffer = writer.hbmspace$worldFog();
-        snapshot.hbmspace$binding(buffer.buffer(), buffer.offset(), buffer.length());
+        ((com.hbmspace.client.fog.BoundTerrainFog) (java.lang.Object) (parameters))
+                .hbmspace$binding(buffer.buffer(), buffer.offset(), buffer.length());
         return parameters;
     }
 

@@ -1,0 +1,21 @@
+{
+  "traits": {
+    "heatable": {
+      "efficiency": {
+        "PWR": 1.0
+      },
+      "steps": [
+        {
+          "amount_produced": 1,
+          "amount_req": 1,
+          "heat_req": 300,
+          "produces": "hbmspace:superheated_hydrogen"
+        }
+      ]
+    },
+    "rocket": {
+      "isp": 380,
+      "thrust": 700000
+    }
+  }
+}

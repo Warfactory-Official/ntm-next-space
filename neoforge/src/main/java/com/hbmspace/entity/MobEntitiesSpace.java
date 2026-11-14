@@ -1,25 +1,41 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbmspace.entity;
 
-import com.hbm.items.special.ItemSpawnEgg;
-import com.hbm.registration.NeoForgeRegistrar;
+import com.hbm.items.special.SpawnEggItem;
 import com.hbm.registration.Reg;
+import com.hbm.registration.Registrar;
 import com.hbmspace.HbmSpace;
 import com.hbmspace.blocks.TerrainBlocksSpace;
 import com.hbmspace.data.SpaceData;
 import com.hbmspace.dim.moon.BiomeGenMoon;
-import com.hbmspace.entity.mob.EntityCreeperFlesh;
-import com.hbmspace.entity.mob.EntityDepthSquid;
-import com.hbmspace.entity.mob.EntityFish;
-import com.hbmspace.entity.mob.EntityMoonCow;
-import com.hbmspace.entity.mob.EntityScrapFish;
-import com.hbmspace.entity.mob.EntityScutterfish;
-import com.hbmspace.entity.mob.EntityScuttlecrab;
-import com.hbmspace.entity.mob.EntitySifterEel;
-import com.hbmspace.entity.mob.EntityTankbot;
-import com.hbmspace.entity.mob.EntityWarBehemoth;
+import com.hbmspace.entity.mob.CreeperFleshEntity;
+import com.hbmspace.entity.mob.DepthSquidEntity;
+import com.hbmspace.entity.mob.FishEntity;
+import com.hbmspace.entity.mob.MoonCowEntity;
+import com.hbmspace.entity.mob.ScrapFishEntity;
+import com.hbmspace.entity.mob.ScutterfishEntity;
+import com.hbmspace.entity.mob.ScuttlecrabEntity;
+import com.hbmspace.entity.mob.SifterEelEntity;
+import com.hbmspace.entity.mob.TankbotEntity;
+import com.hbmspace.entity.mob.WarBehemothEntity;
 import java.util.List;
 import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
@@ -45,51 +61,62 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.levelgen.Heightmap;
 
 public final class MobEntitiesSpace {
-    public static final Reg.EntityHandle<EntityWarBehemoth> WAR_BEHEMOTH =
-            mob("entity_war_behemoth", EntityWarBehemoth::new, MobCategory.MONSTER, 1.75F, 6.35F);
-    public static final Reg.EntityHandle<EntityTankbot> TANKBOT =
+    public static final Reg.EntityHandle<WarBehemothEntity> WAR_BEHEMOTH =
+            mob(
+                    "entity_war_behemoth",
+                    () ->
+                            EntityType.Builder.of(WarBehemothEntity::new, MobCategory.MONSTER)
+                                    .sized(1.75F, 6.35F)
+                                    .noLootTable());
+    public static final Reg.EntityHandle<TankbotEntity> TANKBOT =
             mob(
                     "entity_tankbot",
                     () ->
-                            EntityType.Builder.of(EntityTankbot::new, MobCategory.MONSTER)
+                            EntityType.Builder.of(TankbotEntity::new, MobCategory.MONSTER)
                                     .sized(2.45F, 3.25F)
-                                    .fireImmune());
-    public static final Reg.EntityHandle<EntityCreeperFlesh> CREEPER_FLESH =
+                                    .fireImmune()
+                                    .noLootTable());
+    public static final Reg.EntityHandle<CreeperFleshEntity> CREEPER_FLESH =
             mob(
                     "entity_mob_flesh_creeper",
-                    EntityCreeperFlesh::new,
+                    CreeperFleshEntity::new,
                     MobCategory.MONSTER,
                     0.6F,
                     1.7F);
-    public static final Reg.EntityHandle<EntityMoonCow> MOON_COW =
-            mob("entity_moon_cow", EntityMoonCow::new, MobCategory.CREATURE, 0.9F, 1.3F);
-    public static final Reg.EntityHandle<EntityScutterfish> SCUTTERFISH =
+    public static final Reg.EntityHandle<MoonCowEntity> MOON_COW =
+            mob("entity_moon_cow", MoonCowEntity::new, MobCategory.CREATURE, 0.9F, 1.3F);
+    public static final Reg.EntityHandle<ScutterfishEntity> SCUTTERFISH =
             mob(
                     "entity_scutterfish",
-                    EntityScutterfish::new,
+                    ScutterfishEntity::new,
                     MobCategory.WATER_CREATURE,
                     2.0F,
                     2.0F);
-    public static final Reg.EntityHandle<EntityScuttlecrab> SCUTTLECRAB =
+    public static final Reg.EntityHandle<ScuttlecrabEntity> SCUTTLECRAB =
             mob(
                     "entity_scuttlecrab",
-                    EntityScuttlecrab::new,
+                    ScuttlecrabEntity::new,
                     MobCategory.WATER_CREATURE,
                     0.6F,
                     1.8F);
-    public static final Reg.EntityHandle<EntityDepthSquid> DEPTH_SQUID =
+    public static final Reg.EntityHandle<DepthSquidEntity> DEPTH_SQUID =
             mob(
                     "entity_depthsquid",
-                    EntityDepthSquid::new,
+                    DepthSquidEntity::new,
                     MobCategory.WATER_CREATURE,
                     0.95F,
                     0.95F);
-    public static final Reg.EntityHandle<EntityScrapFish> SCRAP_FISH =
-            mob("entity_scrapfish", EntityScrapFish::new, MobCategory.WATER_CREATURE, 2.0F, 2.0F);
-    public static final Reg.EntityHandle<EntitySifterEel> SIFTER_EEL =
-            mob("entity_siftereel", EntitySifterEel::new, MobCategory.WATER_CREATURE, 2.0F, 2.0F);
+    public static final Reg.EntityHandle<ScrapFishEntity> SCRAP_FISH =
+            mob("entity_scrapfish", ScrapFishEntity::new, MobCategory.WATER_CREATURE, 2.0F, 2.0F);
+    public static final Reg.EntityHandle<SifterEelEntity> SIFTER_EEL =
+            mob(
+                    "entity_siftereel",
+                    () ->
+                            EntityType.Builder.of(SifterEelEntity::new, MobCategory.WATER_CREATURE)
+                                    .sized(2.0F, 2.0F)
+                                    .noLootTable());
 
-    public static final List<Reg.Handle<ItemSpawnEgg>> EGGS =
+    public static final List<Reg.Handle<SpawnEggItem>> EGGS =
             List.of(
                     egg(WAR_BEHEMOTH, 0x204131, 0x75CE00),
                     egg(TANKBOT, 0x204131, 0x75CE00),
@@ -102,33 +129,31 @@ public final class MobEntitiesSpace {
                     egg(SIFTER_EEL, 0x5B963E, 0xC0B286));
 
     static {
-        NeoForgeRegistrar.registerLivingAttributes(
-                WAR_BEHEMOTH, EntityWarBehemoth::createAttributes);
-        NeoForgeRegistrar.registerLivingAttributes(TANKBOT, EntityTankbot::createAttributes);
-        NeoForgeRegistrar.registerLivingAttributes(CREEPER_FLESH, Creeper::createAttributes);
-        NeoForgeRegistrar.registerLivingAttributes(MOON_COW, AbstractCow::createAttributes);
-        NeoForgeRegistrar.registerLivingAttributes(SCUTTERFISH, EntityFish::createAttributes);
-        NeoForgeRegistrar.registerLivingAttributes(
-                SCUTTLECRAB, EntityScuttlecrab::createAttributes);
-        NeoForgeRegistrar.registerLivingAttributes(DEPTH_SQUID, Squid::createAttributes);
-        NeoForgeRegistrar.registerLivingAttributes(SCRAP_FISH, EntityFish::createAttributes);
-        NeoForgeRegistrar.registerLivingAttributes(SIFTER_EEL, EntityFish::createAttributes);
-        NeoForgeRegistrar.registerSpawnPlacement(
+        Registrar.registerLivingAttributes(WAR_BEHEMOTH, WarBehemothEntity::createAttributes);
+        Registrar.registerLivingAttributes(TANKBOT, TankbotEntity::createAttributes);
+        Registrar.registerLivingAttributes(CREEPER_FLESH, Creeper::createAttributes);
+        Registrar.registerLivingAttributes(MOON_COW, AbstractCow::createAttributes);
+        Registrar.registerLivingAttributes(SCUTTERFISH, FishEntity::createAttributes);
+        Registrar.registerLivingAttributes(SCUTTLECRAB, ScuttlecrabEntity::createAttributes);
+        Registrar.registerLivingAttributes(DEPTH_SQUID, Squid::createAttributes);
+        Registrar.registerLivingAttributes(SCRAP_FISH, FishEntity::createAttributes);
+        Registrar.registerLivingAttributes(SIFTER_EEL, FishEntity::createAttributes);
+        Registrar.registerSpawnPlacement(
                 WAR_BEHEMOTH,
                 SpawnPlacementTypes.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 MobEntitiesSpace::warMachineSpawns);
-        NeoForgeRegistrar.registerSpawnPlacement(
+        Registrar.registerSpawnPlacement(
                 TANKBOT,
                 SpawnPlacementTypes.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 MobEntitiesSpace::warMachineSpawns);
-        NeoForgeRegistrar.registerSpawnPlacement(
+        Registrar.registerSpawnPlacement(
                 CREEPER_FLESH,
                 SpawnPlacementTypes.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 MobEntitiesSpace::fleshCreeperSpawns);
-        NeoForgeRegistrar.registerSpawnPlacement(
+        Registrar.registerSpawnPlacement(
                 MOON_COW,
                 SpawnPlacementTypes.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
@@ -157,7 +182,6 @@ public final class MobEntitiesSpace {
                 name,
                 () ->
                         builder.get()
-                                .noLootTable()
                                 .clientTrackingRange(5)
                                 .updateInterval(3)
                                 .build(
@@ -168,7 +192,7 @@ public final class MobEntitiesSpace {
     }
 
     private static <T extends Mob> void inWater(Reg.EntityHandle<T> type) {
-        NeoForgeRegistrar.registerSpawnPlacement(
+        Registrar.registerSpawnPlacement(
                 type,
                 SpawnPlacementTypes.IN_WATER,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
@@ -186,7 +210,7 @@ public final class MobEntitiesSpace {
     }
 
     private static boolean fleshCreeperSpawns(
-            EntityType<EntityCreeperFlesh> type,
+            EntityType<CreeperFleshEntity> type,
             ServerLevelAccessor level,
             EntitySpawnReason reason,
             BlockPos pos,
@@ -197,7 +221,7 @@ public final class MobEntitiesSpace {
     }
 
     private static boolean moonCowSpawns(
-            EntityType<EntityMoonCow> type,
+            EntityType<MoonCowEntity> type,
             ServerLevelAccessor level,
             EntitySpawnReason reason,
             BlockPos pos,
@@ -208,11 +232,11 @@ public final class MobEntitiesSpace {
                 || Animal.checkAnimalSpawnRules(type, level, reason, pos, random);
     }
 
-    private static Reg.Handle<ItemSpawnEgg> egg(
+    private static Reg.Handle<SpawnEggItem> egg(
             Reg.EntityHandle<?> type, int primary, int secondary) {
         return HbmSpace.REG.item(
                 type.id().getPath() + "_spawn_egg",
-                ItemSpawnEgg::new,
+                SpawnEggItem::new,
                 () ->
                         new Item.Properties()
                                 .delayedComponent(

@@ -1,0 +1,29 @@
+{
+  "feature": {
+    "type": "hbm:ore_cave",
+    "config": {
+      "domain": "hbmspace:noise/eve/ore_cave_basalt",
+      "exposed_by_fluid": true,
+      "max_range": 24,
+      "ore": {
+        "Name": "hbm:basalt"
+      },
+      "range_mult": 40,
+      "replaceable": {
+        "block": "hbmspace:eve_silt",
+        "predicate_type": "minecraft:block_match"
+      },
+      "threshold": 0.15,
+      "y_level": 54
+    }
+  },
+  "placement": [
+    {
+      "type": "minecraft:count",
+      "count": 1
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

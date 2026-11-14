@@ -1,40 +1,63 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbmspace.client;
 
 import com.google.common.base.Suppliers;
 import com.hbm.client.ClientRegistry;
 import com.hbm.client.model.Meshes;
+import com.hbm.client.render.BlockEntityShading;
 import com.hbm.client.render.BomberStyles;
 import com.hbm.integration.recipeviewer.RecipePages;
+import com.hbm.platform.Platform;
 import com.hbmspace.HbmSpace;
 import com.hbmspace.blocks.StationBlockEntitiesSpace;
 import com.hbmspace.blocks.TerrainBlockEntitiesSpace;
 import com.hbmspace.blocks.TerrainBlocksSpace;
-import com.hbmspace.client.gui.ScreenMachineMilkReformer;
-import com.hbmspace.client.gui.ScreenOrbitalStationComputer;
-import com.hbmspace.client.gui.ScreenOrbitalStationLauncher;
-import com.hbmspace.client.gui.ScreenTransporterRocket;
-import com.hbmspace.client.gui.ScreenWarController;
-import com.hbmspace.client.particle.ParticleDuoDec;
-import com.hbmspace.client.particle.ParticleDust;
-import com.hbmspace.client.particle.ParticleGlow;
+import com.hbmspace.client.fog.DistantHorizonsFog;
+import com.hbmspace.client.gui.MilkReformerScreen;
+import com.hbmspace.client.gui.OrbitalStationComputerScreen;
+import com.hbmspace.client.gui.OrbitalStationLauncherScreen;
+import com.hbmspace.client.gui.TransporterLinkerScreen;
+import com.hbmspace.client.gui.TransporterRocketScreen;
+import com.hbmspace.client.gui.WarControllerScreen;
+import com.hbmspace.client.particle.DuoDecParticle;
+import com.hbmspace.client.particle.DustParticle;
+import com.hbmspace.client.particle.GlowParticle;
 import com.hbmspace.client.render.AtmosphereRenders;
+import com.hbmspace.client.render.HTRNeoRenderer;
 import com.hbmspace.client.render.OrreryRenderTypes;
-import com.hbmspace.client.render.RenderHTRNeo;
-import com.hbmspace.client.render.RenderVol2;
-import com.hbmspace.client.render.RenderXenonThruster;
 import com.hbmspace.client.render.RocketryRenders;
 import com.hbmspace.client.render.SkyRenders;
 import com.hbmspace.client.render.StationRenders;
 import com.hbmspace.client.render.TerrainRenders;
 import com.hbmspace.client.render.TrinketFiguresSpace;
+import com.hbmspace.client.render.Vol2Renderer;
+import com.hbmspace.client.render.XenonThrusterRenderer;
 import com.hbmspace.client.render.mob.MobRenders;
 import com.hbmspace.client.render.mob.SiegeRenders;
 import com.hbmspace.client.sky.CelestialLightmapTint;
 import com.hbmspace.client.sky.SkyPipelines;
 import com.hbmspace.client.sky.SpaceSkies;
+import com.hbmspace.dim.CelestialBody;
+import com.hbmspace.dim.SolarSystemWorldSavedData;
+import com.hbmspace.dim.orbit.OrbitalStation;
 import com.hbmspace.entity.AtmosphereEntitiesSpace;
 import com.hbmspace.handler.PlayerAuras;
 import com.hbmspace.integration.recipeviewer.AlkylationPage;
@@ -63,6 +86,7 @@ import net.minecraft.client.renderer.state.gui.pip.PictureInPictureRenderState;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.resources.Identifier;
+import net.minecraft.world.level.Level;
 
 public final class SpaceClient {
 
@@ -77,6 +101,7 @@ public final class SpaceClient {
     }
 
     public static void init() {
+        if (Platform.isModLoaded("distanthorizons")) DistantHorizonsFog.install();
         PlayerAuras.CLIENT_START = DuodecAura::playerTick;
         BomberStyles.register(
                 9,
@@ -99,17 +124,21 @@ public final class SpaceClient {
         RecipePages.addon(new AlkylationPage());
         IndustryClient.init();
         SpaceSkies.register();
-        RocketryClient.init();
         InvasionWarning.install();
         SiegeRenders.registerSocketCentrepieces();
     }
 
     public static void clientTick() {
         SpaceSkies.clientTick();
-        StationHum.tick();
+        StationHum.clientTick();
     }
 
     public static void disconnected() {
+        SpaceSkies.disconnected();
+        SolarSystemWorldSavedData.updateClientTraits(null);
+        OrbitalStation.clientStation = new OrbitalStation(CelestialBody.getBody(Level.OVERWORLD));
+        OrbitalStation.orbitingStations.clear();
+        StationHum.disconnected();
         AstronomyUtil.TIME_MULTIPLIER = 1;
     }
 
@@ -144,15 +173,16 @@ public final class SpaceClient {
     }
 
     public static void registerMenuScreens(ClientRegistry.MenuScreenRegistrar reg) {
-        reg.accept(ModMenusSpace.MACHINE_MILK_REFORMER.get(), ScreenMachineMilkReformer::new);
+        reg.accept(ModMenusSpace.MACHINE_MILK_REFORMER.get(), MilkReformerScreen::new);
         reg.accept(
                 StationMenusSpace.ORBITAL_STATION_COMPUTER.get(),
-                ScreenOrbitalStationComputer::new);
-        reg.accept(StationMenusSpace.TRANSPORTER_ROCKET.get(), ScreenTransporterRocket::new);
+                OrbitalStationComputerScreen::new);
+        reg.accept(StationMenusSpace.TRANSPORTER_ROCKET.get(), TransporterRocketScreen::new);
+        reg.accept(StationMenusSpace.TRANSPORTER_LINKER.get(), TransporterLinkerScreen::new);
         reg.accept(
                 StationMenusSpace.ORBITAL_STATION_LAUNCHER.get(),
-                ScreenOrbitalStationLauncher::new);
-        reg.accept(WarMenusSpace.WAR_CONTROLLER.get(), ScreenWarController::new);
+                OrbitalStationLauncherScreen::new);
+        reg.accept(WarMenusSpace.WAR_CONTROLLER.get(), WarControllerScreen::new);
         RocketryClient.registerMenuScreens(reg);
         IndustryClient.registerMenuScreens(reg);
         BombClient.registerMenuScreens(reg);
@@ -160,12 +190,14 @@ public final class SpaceClient {
 
     public static void registerBlockEntityRenderers(
             ClientRegistry.BlockEntityRendererRegistrar reg) {
+        BlockEntityShading.claim(HbmSpace.MOD_ID);
         StationRenders.registerBlockEntityRenderers(reg);
         reg.accept(
                 StationBlockEntitiesSpace.XENON_THRUSTER.get(),
-                context -> new RenderXenonThruster());
-        reg.accept(StationBlockEntitiesSpace.HTRF4_NEO.get(), context -> new RenderHTRNeo());
-        reg.accept(TerrainBlockEntitiesSpace.LIGHTNING_VOLCANO.get(), context -> new RenderVol2());
+                context -> new XenonThrusterRenderer());
+        reg.accept(StationBlockEntitiesSpace.HTRF4_NEO.get(), context -> new HTRNeoRenderer());
+        reg.accept(
+                TerrainBlockEntitiesSpace.LIGHTNING_VOLCANO.get(), context -> new Vol2Renderer());
         AtmosphereRenders.registerBlockEntityRenderers(reg);
         SkyRenders.registerBlockEntityRenderers(reg);
         RocketryRenders.registerBlockEntityRenderers(reg);
@@ -186,18 +218,18 @@ public final class SpaceClient {
     }
 
     public static void registerParticleProviders(ParticleProviderRegistrar reg) {
-        reg.accept(SpaceParticles.DUST_STORM.get(), new ParticleDust.Provider());
-        reg.accept(SpaceParticles.FLARE.get(), new ParticleGlow.Provider());
-        reg.accept(SpaceParticles.DUOEWE.get(), new ParticleDuoDec.Provider(true));
-        reg.accept(SpaceParticles.DUODEC.get(), new ParticleDuoDec.Provider(false));
+        reg.accept(SpaceParticles.DUST_STORM.get(), new DustParticle.Provider());
+        reg.accept(SpaceParticles.FLARE.get(), new GlowParticle.Provider());
+        reg.accept(SpaceParticles.DUOEWE.get(), new DuoDecParticle.Provider(true));
+        reg.accept(SpaceParticles.DUODEC.get(), new DuoDecParticle.Provider(false));
     }
 
     public static void registerParticleGroups(
             BiConsumer<ParticleRenderType, Function<ParticleEngine, ParticleGroup<?>>> reg) {
-        reg.accept(ParticleDust.DUST_GROUP, ParticleDust::group);
-        reg.accept(ParticleGlow.GROUP, ParticleGlow::group);
-        reg.accept(ParticleDuoDec.TUNE_GROUP, ParticleDuoDec::tuneGroup);
-        reg.accept(ParticleDuoDec.JESUS_GROUP, ParticleDuoDec::jesusGroup);
+        reg.accept(DustParticle.DUST_GROUP, DustParticle::group);
+        reg.accept(GlowParticle.GROUP, GlowParticle::group);
+        reg.accept(DuoDecParticle.TUNE_GROUP, DuoDecParticle::tuneGroup);
+        reg.accept(DuoDecParticle.JESUS_GROUP, DuoDecParticle::jesusGroup);
     }
 
     public static void registerBlockTintSources(ClientRegistry.BlockTintRegistrar reg) {

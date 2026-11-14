@@ -1,19 +1,35 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbmspace.client.render.flywheel;
 
 import com.hbm.client.render.flywheel.BeamVisual;
 import com.hbm.client.render.flywheel.MeshPart;
 import com.hbm.render.util.BeamPronter.EnumWaveType;
-import com.hbmspace.blockentity.machine.BlockEntityDysonReceiver;
+import com.hbmspace.blockentity.machine.DysonReceiverBlockEntity;
+import com.hbmspace.client.render.DysonReceiverRenderer;
 import com.hbmspace.client.render.PosedParts;
-import com.hbmspace.client.render.RenderDysonReceiver;
 import com.hbmspace.client.render.SkyRenders;
 import dev.engine_room.flywheel.api.visualization.VisualizationContext;
 import org.joml.Matrix4f;
 
-public final class DysonReceiverVisual extends PosedPartsVisual<BlockEntityDysonReceiver> {
+public final class DysonReceiverVisual extends PosedPartsVisual<DysonReceiverBlockEntity> {
     private static final int COLOR = 0x804400;
 
     private final BeamVisual spiral;
@@ -22,19 +38,19 @@ public final class DysonReceiverVisual extends PosedPartsVisual<BlockEntityDyson
 
     public DysonReceiverVisual(
             VisualizationContext context,
-            BlockEntityDysonReceiver blockEntity,
+            DysonReceiverBlockEntity blockEntity,
             float partialTick,
-            PosedParts<BlockEntityDysonReceiver> parts,
+            PosedParts<DysonReceiverBlockEntity> parts,
             MeshPart[] meshes) {
         super(context, blockEntity, partialTick, parts, meshes);
-        SkyRenders.base(blockEntity, base).translate(0F, RenderDysonReceiver.AXIS, 0F);
-        spiral = new BeamVisual(context, level, pos, false, RenderDysonReceiver.LAYERS, 1F);
-        random = new BeamVisual(context, level, pos, false, RenderDysonReceiver.LAYERS, 1F);
+        SkyRenders.base(blockEntity, base).translate(0F, DysonReceiverRenderer.AXIS, 0F);
+        spiral = new BeamVisual(context, level, pos, false, DysonReceiverRenderer.LAYERS, 1F);
+        random = new BeamVisual(context, level, pos, false, DysonReceiverRenderer.LAYERS, 1F);
         beams();
     }
 
     @Override
-    protected void frame(Context context) {
+    public void frame(Context context) {
         super.frame(context);
         beams();
     }
@@ -54,8 +70,8 @@ public final class DysonReceiverVisual extends PosedPartsVisual<BlockEntityDyson
                 EnumWaveType.SPIRAL,
                 0,
                 1,
-                RenderDysonReceiver.SPIRAL_SIZE,
-                RenderDysonReceiver.THICKNESS,
+                DysonReceiverRenderer.SPIRAL_SIZE,
+                DysonReceiverRenderer.THICKNESS,
                 COLOR,
                 COLOR);
         random.update(
@@ -66,8 +82,8 @@ public final class DysonReceiverVisual extends PosedPartsVisual<BlockEntityDyson
                 EnumWaveType.RANDOM,
                 (int) (level.getGameTime() % 1000),
                 length / 2,
-                RenderDysonReceiver.RANDOM_SIZE,
-                RenderDysonReceiver.THICKNESS,
+                DysonReceiverRenderer.RANDOM_SIZE,
+                DysonReceiverRenderer.THICKNESS,
                 COLOR,
                 COLOR);
     }

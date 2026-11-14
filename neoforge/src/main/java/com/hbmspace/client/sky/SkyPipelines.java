@@ -1,5 +1,21 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbmspace.client.sky;
 
@@ -48,15 +64,24 @@ public final class SkyPipelines {
                     .withVertexBinding(0, DefaultVertexFormat.POSITION)
                     .withPrimitiveTopology(PrimitiveTopology.TRIANGLE_FAN)
                     .build();
-    public static final RenderPipeline TEXTURED_ADDITIVE = RenderPipelines.CELESTIAL;
+    public static final RenderPipeline TEXTURED_ADDITIVE =
+            WorldRenderPipeline.nativeSky(textured("textured_additive", ADDITIVE, true));
     public static final RenderPipeline TEXTURED_ADDITIVE_NO_CULL =
             WorldRenderPipeline.nativeSky(textured("textured_additive_no_cull", ADDITIVE, false));
-    public static final RenderPipeline TEXTURED_ADDITIVE_ALPHA = RenderPipelines.CELESTIAL;
+    public static final RenderPipeline TEXTURED_ADDITIVE_ALPHA = TEXTURED_ADDITIVE;
     public static final RenderPipeline TEXTURED_TRANSLUCENT =
             WorldRenderPipeline.nativeSky(textured("textured_translucent", TRANSLUCENT, true));
     public static final RenderPipeline TEXTURED_OPAQUE =
             WorldRenderPipeline.nativeSky(textured("textured_opaque", null, true));
-    public static final RenderPipeline FLAT_ADDITIVE = RenderPipelines.STARS;
+    public static final RenderPipeline FLAT_ADDITIVE =
+            WorldRenderPipeline.nativeSky(
+                    sky(
+                                    "flat_additive",
+                                    DefaultVertexFormat.POSITION,
+                                    PrimitiveTopology.QUADS,
+                                    ADDITIVE,
+                                    true)
+                            .build());
     public static final RenderPipeline FLAT_ADDITIVE_DEPTH_WRITE =
             WorldRenderPipeline.nativeSky(
                     sky(
@@ -104,16 +129,6 @@ public final class SkyPipelines {
                             .withDepthStencilState(
                                     new DepthStencilState(CompareOp.GREATER_THAN_OR_EQUAL, true))
                             .build());
-    public static final RenderPipeline RAILGUN_BEAM =
-            WorldRenderPipeline.nativeSky(
-                    sky(
-                                    "railgun_beam",
-                                    DefaultVertexFormat.POSITION_COLOR,
-                                    PrimitiveTopology.QUADS,
-                                    BlendFunction.LIGHTNING,
-                                    false)
-                            .withShaderDefine("COLORED")
-                            .build());
     public static final RenderPipeline SATELLITE_ORBIT_LINE =
             WorldRenderPipeline.nativeSky(
                     sky(
@@ -124,17 +139,15 @@ public final class SkyPipelines {
                                     false)
                             .withShaderDefine("COLORED")
                             .build());
-    public static final RenderPipeline POINTS_TEXTURED_ADDITIVE =
+    public static final RenderPipeline POINTS_ADDITIVE =
             WorldRenderPipeline.nativeSky(
                     sky(
-                                    "points_textured_additive",
-                                    DefaultVertexFormat.POSITION_TEX,
+                                    "points_additive",
+                                    DefaultVertexFormat.POSITION,
                                     PrimitiveTopology.POINTS,
                                     ADDITIVE,
                                     true)
-                            .withShaderDefine("TEXTURED")
                             .withShaderDefine("POINTS")
-                            .withBindGroupLayout(BindGroupLayouts.SAMPLER0)
                             .build());
 
     public static final RenderPipeline SWARM =
@@ -160,7 +173,9 @@ public final class SkyPipelines {
                             .withLocation(id("pipeline/sky_black_hole"))
                             .withVertexShader(id("core/planet"))
                             .withFragmentShader(id("core/blackhole"))
-                            .withColorTargetState(new ColorTargetState(TRANSLUCENT))
+                            .withColorTargetState(
+                                    new ColorTargetState(
+                                            BlendFunction.TRANSLUCENT_PREMULTIPLIED_ALPHA))
                             .withVertexBinding(0, DefaultVertexFormat.POSITION_TEX)
                             .withPrimitiveTopology(PrimitiveTopology.QUADS)
                             .build());
@@ -208,6 +223,8 @@ public final class SkyPipelines {
     private static final List<RenderPipeline> ALL =
             List.of(
                     SKY_DISC,
+                    TEXTURED_ADDITIVE,
+                    FLAT_ADDITIVE,
                     TEXTURED_ADDITIVE_NO_CULL,
                     TEXTURED_TRANSLUCENT,
                     TEXTURED_OPAQUE,
@@ -216,9 +233,8 @@ public final class SkyPipelines {
                     SUNSET_ADDITIVE,
                     BEAM_ADDITIVE,
                     RAILGUN_BODY,
-                    RAILGUN_BEAM,
                     SATELLITE_ORBIT_LINE,
-                    POINTS_TEXTURED_ADDITIVE,
+                    POINTS_ADDITIVE,
                     SWARM,
                     BLACK_HOLE,
                     FLESH,
@@ -276,7 +292,8 @@ public final class SkyPipelines {
                         .withCull(cull)
                         .withVertexBinding(0, DefaultVertexFormat.POSITION_TEX)
                         .withPrimitiveTopology(PrimitiveTopology.QUADS);
-        if (blend != null) builder.withColorTargetState(new ColorTargetState(blend));
+        builder.withColorTargetState(
+                blend == null ? ColorTargetState.DEFAULT : new ColorTargetState(blend));
         return builder;
     }
 

@@ -1,15 +1,31 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbmspace.blocks;
 
-import com.hbm.blocks.machine.storage.MachineCapacitor;
+import com.hbm.blocks.machine.storage.CapacitorBlock;
 import com.hbm.items.CreativeContents.Tab;
 import com.hbm.items.CreativeContents;
-import com.hbm.lib.Library;
 import com.hbm.registration.Reg;
+import com.hbm.util.RegistryUtil;
 import com.hbmspace.HbmSpace;
-import com.hbmspace.items.block.ItemCapacitorComplex;
+import com.hbmspace.items.block.CapacitorComplexItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
@@ -18,22 +34,22 @@ public final class CapacitorBlocksSpace {
 
     public static final long COMPLEX_POWER = 100_000_000_000_000_000L;
 
-    public static final Reg.Handle<MachineCapacitor> CAPACITOR_COMPLEX =
+    public static final Reg.Handle<CapacitorBlock> CAPACITOR_COMPLEX =
             HbmSpace.REG.blockItem(
                     "capacitor_complex",
-                    props -> new MachineCapacitor(COMPLEX_POWER, props),
+                    props -> new CapacitorBlock(COMPLEX_POWER, props),
                     () ->
                             BlockBehaviour.Properties.of()
                                     .mapColor(MapColor.METAL)
                                     .strength(5.0F, 6.0F)
                                     .requiresCorrectToolForDrops()
                                     .noOcclusion(),
-                    ItemCapacitorComplex::new);
+                    CapacitorComplexItem::new);
 
     static {
         CreativeContents.insertAfter(
                 Tab.MACHINES,
-                Library.id("capacitor_copper"),
+                RegistryUtil.id("capacitor_copper"),
                 () -> new ItemStack(CAPACITOR_COMPLEX.get()));
     }
 

@@ -1,7 +1,7 @@
 {
   "type": "hbmspace:tekto",
   "generator": {
-    "type": "hbmspace:tekto",
+    "type": "minecraft:noise",
     "biome_source": {
       "type": "hbmspace:celestial",
       "biomes": [
@@ -10,8 +10,8 @@
         "hbmspace:tekto_tetrachloride_river",
         "hbmspace:tekto_forest",
         "hbmspace:tekto_vinyl_desert"
-      ],
-      "layers": "hbmspace:tekto"
-    }
+      ]
+    },
+    "settings": "hbmspace:tekto"
   }
 }

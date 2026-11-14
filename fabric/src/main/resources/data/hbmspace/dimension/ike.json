@@ -1,10 +1,11 @@
 {
   "type": "hbmspace:ike",
   "generator": {
-    "type": "hbmspace:ike",
+    "type": "minecraft:noise",
     "biome_source": {
       "type": "minecraft:fixed",
       "biome": "hbmspace:ike"
-    }
+    },
+    "settings": "hbmspace:ike"
   }
 }

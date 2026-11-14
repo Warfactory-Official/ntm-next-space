@@ -1,16 +1,46 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-FileCopyrightText: 2024-2026 George Paton
-// SPDX-FileCopyrightText: 2025-2026 JamesH_2
-// SPDX-FileCopyrightText: 2026 detree05
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: 2024-2026 George Paton
+ * SPDX-FileCopyrightText: 2025-2026 JamesH_2
+ * SPDX-FileCopyrightText: 2026 detree05
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) 2024-2026 George Paton. All rights reserved.
+ * Copyright (C) 2025-2026 JamesH_2. All rights reserved.
+ * Copyright (C) 2026 detree05. All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT: Space";
+ * - a modified version must not be named NTM NEXT: Space or presented as
+ *   the official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT: Space does not
+ * violate these additional terms, provided it is clearly distinguished from
+ * the official release and does not imply endorsement. Ports are encouraged
+ * to acknowledge NTM NEXT: Space as their upstream project and provide a
+ * link to it.
+ */
 
 package com.hbmspace.client.sky;
 
 import com.hbm.api.client.ShaderPacks;
-import com.hbm.client.model.Meshes;
 import com.hbm.client.render.NTMSkybox;
-import com.hbm.extprop.HbmLivingProps;
-import com.hbm.render.loader.HFRWavefrontObject;
+import com.hbm.extprop.LivingHazards;
 import com.hbm.saveddata.satellites.SatelliteType;
 import com.hbm.util.GameTime;
 import com.hbmspace.HbmSpace;
@@ -34,13 +64,22 @@ import com.hbmspace.render.util.AtmosphereRenderUtil;
 import com.hbmspace.saveddata.satellites.ClientSatellites;
 import com.hbmspace.saveddata.satellites.SatelliteOrbit;
 import com.hbmspace.saveddata.satellites.SatellitesSpace;
+import com.mojang.blaze3d.PrimitiveTopology;
+import com.mojang.blaze3d.platform.NativeImage;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
-import dev.engine_room.flywheel.lib.util.RendererReloadCache;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UncheckedIOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
+import java.util.stream.Stream;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -55,7 +94,10 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.joml.Matrix4f;
 import org.joml.Quaternionf;
+import org.joml.Quaternionfc;
+import org.joml.Vector3f;
 import org.jspecify.annotations.Nullable;
 
 public class SkyProviderCelestial {
@@ -71,12 +113,10 @@ public class SkyProviderCelestial {
     private static final Identifier SHOCKWAVE = ntm("textures/particle/shockwave.png");
     private static final Identifier SHOCK_FLARE = ntm("textures/particle/flare.png");
     private static final Identifier SHOCK_SHIELD = space("cens.png");
-    private static final Identifier SHOCK_PLANE =
-            Identifier.fromNamespaceAndPath(HbmSpace.MOD_ID, "models/plane.obj");
-    private static final Identifier FLESH_SPHERE =
-            Identifier.fromNamespaceAndPath(HbmSpace.MOD_ID, "models/spherev2.obj");
-    private static final RendererReloadCache<Identifier, HFRWavefrontObject> SHELL_MESHES =
-            new RendererReloadCache<>(id -> Meshes.load(id).insetUv(0.0005F));
+    private static final SkyMesh SHOCK_PLANE =
+            SkyMesh.obj(Identifier.fromNamespaceAndPath(HbmSpace.MOD_ID, "models/plane.obj"));
+    private static final SkyMesh FLESH_SPHERE =
+            SkyMesh.obj(Identifier.fromNamespaceAndPath(HbmSpace.MOD_ID, "models/spherev2.obj"));
     private static final Identifier RINGS = space("rings.png");
     private static final Identifier DESTROYED = space("destroyed.png");
     private static final Identifier NOISE = space("ichannel1.png");
@@ -94,6 +134,96 @@ public class SkyProviderCelestial {
     private static final float BOBMAZON_B = 0.385F;
     private static final float DEFAULT_ALTITUDE_KM = 100;
 
+    private static final SkyMesh DISC =
+            new SkyMesh(
+                    "Space sky disc",
+                    DefaultVertexFormat.POSITION,
+                    PrimitiveTopology.TRIANGLE_FAN,
+                    buffer -> {
+                        buffer.addVertex(0.0F, 16.0F, 0.0F);
+                        for (int i = -180; i <= 180; i += 45) {
+                            buffer.addVertex(
+                                    512.0F * Mth.cos(i * (float) (Math.PI / 180.0)),
+                                    16.0F,
+                                    512.0F * Mth.sin(i * (float) (Math.PI / 180.0)));
+                        }
+                    });
+    private static final SkyMesh NIGHT_CUBE =
+            new SkyMesh(
+                    "Space night sky",
+                    DefaultVertexFormat.POSITION_TEX,
+                    PrimitiveTopology.QUADS,
+                    buffer -> {
+                        Matrix4f face =
+                                new Matrix4f()
+                                        .rotate(Axis.XP.rotationDegrees(90.0F))
+                                        .rotate(Axis.ZP.rotationDegrees(-90.0F));
+                        nightSide(buffer, face, 4);
+                        nightSide(
+                                buffer,
+                                new Matrix4f(face).rotate(Axis.XP.rotationDegrees(90.0F)),
+                                1);
+                        nightSide(
+                                buffer,
+                                new Matrix4f(face).rotate(Axis.XP.rotationDegrees(-90.0F)),
+                                0);
+                        for (int side : new int[] {5, 2, 3})
+                            nightSide(buffer, face.rotate(Axis.ZP.rotationDegrees(90.0F)), side);
+                    });
+    private static final SkyMesh RING_BACK =
+            new SkyMesh(
+                    "Space ring back",
+                    DefaultVertexFormat.POSITION_TEX,
+                    PrimitiveTopology.QUADS,
+                    buffer -> {
+                        buffer.addVertex(-1.0F, 0.0F, -1.0F).setUv(0.0F, 0.0F);
+                        buffer.addVertex(1.0F, 0.0F, -1.0F).setUv(1.0F, 0.0F);
+                        buffer.addVertex(1.0F, 0.0F, 0.0F).setUv(1.0F, 0.5F);
+                        buffer.addVertex(-1.0F, 0.0F, 0.0F).setUv(0.0F, 0.5F);
+                    });
+    private static final SkyMesh RING_FRONT =
+            new SkyMesh(
+                    "Space ring front",
+                    DefaultVertexFormat.POSITION_TEX,
+                    PrimitiveTopology.QUADS,
+                    buffer -> {
+                        buffer.addVertex(-1.0F, 0.0F, 0.0F).setUv(0.0F, 0.5F);
+                        buffer.addVertex(1.0F, 0.0F, 0.0F).setUv(1.0F, 0.5F);
+                        buffer.addVertex(1.0F, 0.0F, 1.0F).setUv(1.0F, 1.0F);
+                        buffer.addVertex(-1.0F, 0.0F, 1.0F).setUv(0.0F, 1.0F);
+                    });
+    private static final SkyMesh RING_WALL =
+            new SkyMesh(
+                    "Space ring wall",
+                    DefaultVertexFormat.POSITION_TEX,
+                    PrimitiveTopology.QUADS,
+                    buffer -> {
+                        buffer.addVertex(0.0F, -1.0F, -1.0F).setUv(0.0F, 0.0F);
+                        buffer.addVertex(0.0F, 1.0F, -1.0F).setUv(1.0F, 0.0F);
+                        buffer.addVertex(0.0F, 1.0F, 1.0F).setUv(1.0F, 1.0F);
+                        buffer.addVertex(0.0F, -1.0F, 1.0F).setUv(0.0F, 1.0F);
+                    });
+    private static final SkyMesh ORBIT =
+            new SkyMesh(
+                    "Space satellite orbit",
+                    DefaultVertexFormat.POSITION_COLOR,
+                    PrimitiveTopology.DEBUG_LINE_STRIP,
+                    buffer -> {
+                        for (int i = 0; i <= 72; i++) {
+                            double angle = Math.PI * 2.0D * (i % 72) / 72.0D;
+                            buffer.addVertex(0.0F, (float) Math.cos(angle), (float) Math.sin(angle))
+                                    .setColor(1.0F, 1.0F, 1.0F, 1.0F);
+                        }
+                    });
+    private static final float[] BILLBOARD = {
+        -0.5F, -0.25F, 1.0F, 0.0F,
+        0.5F, -0.25F, 0.0F, 0.0F,
+        0.5F, 0.75F, 0.0F, 1.0F,
+        -0.5F, 0.75F, 1.0F, 1.0F,
+    };
+    private static final float SMOKE_FADE = 100f * 0.35F;
+    private static final int SMOKE_SHADES = (int) SMOKE_FADE + 1;
+
     protected ClientLevel level;
     protected float partialTicks;
     protected CelestialBody body;
@@ -109,6 +239,9 @@ public class SkyProviderCelestial {
     private float celestialFogDensity;
     private int celestialFogColor;
     protected boolean belowHorizon;
+    private final Map<Identifier, Integer> sheetTexels = new HashMap<>();
+    private final List<List<Meteors.Meteor>> meteorShades =
+            Stream.<List<Meteors.Meteor>>generate(ArrayList::new).limit(SMOKE_SHADES + 1).toList();
 
     private static Identifier space(String name) {
         return Identifier.fromNamespaceAndPath(HbmSpace.MOD_ID, "textures/misc/space/" + name);
@@ -152,7 +285,7 @@ public class SkyProviderCelestial {
         digamma =
                 Minecraft.getInstance().player == null
                         ? 0
-                        : (float) HbmLivingProps.getDigamma(Minecraft.getInstance().player);
+                        : (float) LivingHazards.digamma(Minecraft.getInstance().player);
     }
 
     public void render(SkyRenderer vanilla, SkyRenderState state, SkyDraws draws) {
@@ -182,15 +315,15 @@ public class SkyProviderCelestial {
         float starBrightness = state.starBrightness * visibility;
         float siderealAngle = (float) SolarSystem.calculateSiderealAngle(level, partialTicks, body);
 
-        renderSunset(vanilla, state, draws, pressure, body.surfaceTexture);
+        renderSunset(vanilla, state, draws, pressure);
 
         renderStars(draws, starBrightness, solarAngle + siderealAngle, body.axialTilt);
 
         PoseStack pose = new PoseStack();
         pose.pushPose();
-        pose.mulPose(Axis.XP.rotationDegrees(body.axialTilt));
-        pose.mulPose(Axis.YP.rotationDegrees(-90.0F));
-        pose.mulPose(Axis.XP.rotationDegrees(solarAngle * 360.0F));
+        pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees(body.axialTilt));
+        pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(-90.0F));
+        pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees(solarAngle * 360.0F));
 
         double sunSize = SolarSystem.calculateSunSize(body) * SolarSystem.SUN_RENDER_SCALE;
         double coronaSize = sunSize * (3 - Mth.clamp(pressure, 0.0F, 1.0F));
@@ -240,9 +373,9 @@ public class SkyProviderCelestial {
 
         if (body.hasRings) {
             pose.pushPose();
-            pose.mulPose(Axis.XP.rotationDegrees(body.axialTilt - body.ringTilt));
+            pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees(body.axialTilt - body.ringTilt));
             pose.translate(0, -100, 0);
-            pose.mulPose(Axis.YP.rotationDegrees(-90.0F));
+            pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(-90.0F));
 
             renderRings(draws, pose, body.ringColor, 200, visibility);
             pose.popPose();
@@ -266,14 +399,8 @@ public class SkyProviderCelestial {
             vanilla.renderSkyDisc(ARGB.colorFromFloat(1.0F, r, g, b));
             return;
         }
-        VertexConsumer disc = draws.draw(SkyPipelines.SKY_DISC, new PoseStack(), r, g, b, 1, null);
-        disc.addVertex(0.0F, 16.0F, 0.0F);
-        for (int i = -180; i <= 180; i += 45) {
-            disc.addVertex(
-                    512.0F * Mth.cos(i * (float) (Math.PI / 180.0)),
-                    16.0F,
-                    512.0F * Mth.sin(i * (float) (Math.PI / 180.0)));
-        }
+        draws.mesh(
+                DISC, SkyPipelines.SKY_DISC, new PoseStack(), SkyDraws.IDENTITY, r, g, b, 1, null);
         draws.flush();
     }
 
@@ -285,33 +412,26 @@ public class SkyProviderCelestial {
         double uvOffset = (feet.x / 1024) % 1;
 
         PoseStack pose = new PoseStack();
-        pose.mulPose(Axis.XP.rotationDegrees(180));
+        pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees(180));
 
-        VertexConsumer quad =
-                draws.draw(
-                        SkyPipelines.TEXTURED_TRANSLUCENT,
-                        pose,
-                        sunBrightness,
-                        sunBrightness,
-                        sunBrightness,
-                        alpha,
-                        body.texture);
-        quad.addVertex((float) (-115 * sc), 100.0F, (float) (-115 * sc))
-                .setUv((float) uvOffset, 0.0F);
-        quad.addVertex((float) (115 * sc), 100.0F, (float) (-115 * sc))
-                .setUv((float) (1.0D + uvOffset), 0.0F);
-        quad.addVertex((float) (115 * sc), 100.0F, (float) (115 * sc))
-                .setUv((float) (1.0D + uvOffset), 1.0F);
-        quad.addVertex((float) (-115 * sc), 100.0F, (float) (115 * sc))
-                .setUv((float) uvOffset, 1.0F);
+        draws.mesh(
+                SkyMesh.QUAD,
+                SkyPipelines.TEXTURED_TRANSLUCENT,
+                pose,
+                SkyDraws.lifted(100.0F, (float) (115 * sc)),
+                sunBrightness,
+                sunBrightness,
+                sunBrightness,
+                alpha,
+                body.texture,
+                null,
+                null,
+                0,
+                (float) uvOffset);
     }
 
     protected void renderSunset(
-            SkyRenderer vanilla,
-            SkyRenderState state,
-            SkyDraws draws,
-            float pressure,
-            @Nullable Identifier surfaceTexture) {
+            SkyRenderer vanilla, SkyRenderState state, SkyDraws draws, float pressure) {
         float[] sunsetColor = calcSunriseSunsetColors(state, pressure);
         if (sunsetColor == null) return;
 
@@ -327,33 +447,47 @@ public class SkyProviderCelestial {
             double time = ((double) level.getDefaultClockTime() + partialTicks) * 0.002;
 
             PoseStack pose = new PoseStack();
-            pose.mulPose(Axis.XP.rotationDegrees(90.0F));
-            pose.mulPose(Axis.ZP.rotationDegrees(sunsetDirection));
-            pose.mulPose(Axis.ZP.rotationDegrees(90.0F));
+            pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees(90.0F));
+            pose.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(sunsetDirection));
+            pose.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(90.0F));
 
-            float r = 0.5F + rand.nextFloat() * 0.5F;
-            float g = 0.5F + rand.nextFloat() * 0.5F;
-            float b = 0.5F + rand.nextFloat() * 0.5F;
-            float a = rand.nextFloat() * sunsetColor[3] * 4.0F;
+            int texel =
+                    sheetTexels.computeIfAbsent(
+                            Objects.requireNonNull(body.surfaceTexture),
+                            SkyProviderCelestial::firstTexel);
+            float r = (0.5F + rand.nextFloat() * 0.5F) * ARGB.redFloat(texel);
+            float g = (0.5F + rand.nextFloat() * 0.5F) * ARGB.greenFloat(texel);
+            float b = (0.5F + rand.nextFloat() * 0.5F) * ARGB.blueFloat(texel);
+            float a = rand.nextFloat() * sunsetColor[3] * 4.0F * ARGB.alphaFloat(texel);
 
             VertexConsumer points =
-                    draws.draw(
-                            SkyPipelines.POINTS_TEXTURED_ADDITIVE,
-                            pose,
-                            r,
-                            g,
-                            b,
-                            a,
-                            Objects.requireNonNull(surfaceTexture));
+                    draws.draw(SkyPipelines.POINTS_ADDITIVE, pose, r, g, b, a, null);
             for (int i = 0; i < 1024; i++) {
                 double x = rand.nextGaussian() * 50;
                 double z =
                         -((Math.abs(rand.nextGaussian() * 20) + time)
                                 % Math.abs(rand.nextGaussian())
                                 * 20);
-                points.addVertex((float) x, 100.0F, (float) z).setUv(0.0F, 0.0F);
+                points.addVertex((float) x, 100.0F, (float) z);
             }
         }
+    }
+
+    private static int firstTexel(Identifier sheet) {
+        try (InputStream stream =
+                        Minecraft.getInstance()
+                                .getResourceManager()
+                                .getResourceOrThrow(sheet)
+                                .open();
+                NativeImage image = NativeImage.read(stream)) {
+            return image.getPixel(0, 0);
+        } catch (IOException failure) {
+            throw new UncheckedIOException(failure);
+        }
+    }
+
+    void close() {
+        sheetTexels.clear();
     }
 
     protected float @Nullable [] calcSunriseSunsetColors(SkyRenderState state, float pressure) {
@@ -386,82 +520,65 @@ public class SkyProviderCelestial {
             float lodeDist = 100F;
 
             PoseStack pose = new PoseStack();
-            pose.mulPose(Axis.XP.rotationDegrees(-75.0F));
-            pose.mulPose(Axis.YP.rotationDegrees(10.0F));
-            VertexConsumer quad =
-                    draws.draw(SkyPipelines.TEXTURED_ADDITIVE, pose, 1, 1, 1, 1, LODE_STAR);
-            quad.addVertex(-lodeSize, lodeDist, -lodeSize).setUv(0.0F, 0.0F);
-            quad.addVertex(lodeSize, lodeDist, -lodeSize).setUv(0.0F, 1.0F);
-            quad.addVertex(lodeSize, lodeDist, lodeSize).setUv(1.0F, 1.0F);
-            quad.addVertex(-lodeSize, lodeDist, lodeSize).setUv(1.0F, 0.0F);
+            pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees(-75.0F));
+            pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(10.0F));
+            draws.mesh(
+                    SkyMesh.QUAD_TRANSPOSED,
+                    SkyPipelines.TEXTURED_ADDITIVE,
+                    pose,
+                    SkyDraws.lifted(lodeDist, lodeSize),
+                    1,
+                    1,
+                    1,
+                    1,
+                    LODE_STAR);
         }
 
         PoseStack pose = new PoseStack();
-        pose.mulPose(Axis.XP.rotationDegrees(axialTilt));
-        pose.mulPose(Axis.YP.rotationDegrees(-90.0F));
-        pose.mulPose(Axis.XP.rotationDegrees(siderealAngle * 360.0F));
-        pose.mulPose(Axis.XP.rotationDegrees(-90.0F));
+        pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees(axialTilt));
+        pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(-90.0F));
+        pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees(siderealAngle * 360.0F));
+        pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees(-90.0F));
 
         if (starBrightness > 0.0F) {
-            pose.pushPose();
-            float alpha = starBrightness * 0.6F;
-
-            pose.mulPose(Axis.XP.rotationDegrees(90.0F));
-            pose.mulPose(Axis.ZP.rotationDegrees(-90.0F));
-            renderSkyboxSide(draws, pose, alpha, 4);
-
-            pose.pushPose();
-            pose.mulPose(Axis.XP.rotationDegrees(90.0F));
-            renderSkyboxSide(draws, pose, alpha, 1);
-            pose.popPose();
-
-            pose.pushPose();
-            pose.mulPose(Axis.XP.rotationDegrees(-90.0F));
-            renderSkyboxSide(draws, pose, alpha, 0);
-            pose.popPose();
-
-            pose.mulPose(Axis.ZP.rotationDegrees(90.0F));
-            renderSkyboxSide(draws, pose, alpha, 5);
-
-            pose.mulPose(Axis.ZP.rotationDegrees(90.0F));
-            renderSkyboxSide(draws, pose, alpha, 2);
-
-            pose.mulPose(Axis.ZP.rotationDegrees(90.0F));
-            renderSkyboxSide(draws, pose, alpha, 3);
-            pose.popPose();
+            draws.mesh(
+                    NIGHT_CUBE,
+                    SkyPipelines.TEXTURED_ADDITIVE_ALPHA,
+                    pose,
+                    SkyDraws.IDENTITY,
+                    1,
+                    1,
+                    1,
+                    starBrightness * 0.6F,
+                    NIGHT);
         }
 
         float brightness = Math.max(0.5F, starBrightness * 1.6F);
         float digmaSize = 1 + digamma * 0.25F;
         float digmaDist = 100F - digamma * 2.5F;
 
-        pose.mulPose(Axis.XP.rotationDegrees(140.0F));
-        pose.mulPose(Axis.ZP.rotationDegrees(-40.0F));
+        pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees(140.0F));
+        pose.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(-40.0F));
 
-        VertexConsumer quad =
-                draws.draw(
-                        SkyPipelines.TEXTURED_ADDITIVE,
-                        pose,
-                        brightness,
-                        brightness,
-                        brightness,
-                        brightness,
-                        DIGAMMA_STAR);
-        quad.addVertex(-digmaSize, digmaDist, -digmaSize).setUv(0.0F, 0.0F);
-        quad.addVertex(digmaSize, digmaDist, -digmaSize).setUv(0.0F, 1.0F);
-        quad.addVertex(digmaSize, digmaDist, digmaSize).setUv(1.0F, 1.0F);
-        quad.addVertex(-digmaSize, digmaDist, digmaSize).setUv(1.0F, 0.0F);
+        draws.mesh(
+                SkyMesh.QUAD_TRANSPOSED,
+                SkyPipelines.TEXTURED_ADDITIVE,
+                pose,
+                SkyDraws.lifted(digmaDist, digmaSize),
+                brightness,
+                brightness,
+                brightness,
+                brightness,
+                DIGAMMA_STAR);
     }
 
-    private static void renderSkyboxSide(SkyDraws draws, PoseStack pose, float alpha, int side) {
+    private static void nightSide(VertexConsumer buffer, Matrix4f face, int side) {
         float u = side % 3 / 3.0F;
         float v = side / 3 / 2.0F;
-        VertexConsumer quad =
-                draws.draw(SkyPipelines.TEXTURED_ADDITIVE_ALPHA, pose, 1, 1, 1, alpha, NIGHT);
-        quad.addVertex(-100.0F, -100.0F, -100.0F).setUv(u, v);
-        quad.addVertex(-100.0F, -100.0F, 100.0F).setUv(u, v + 0.5F);
-        quad.addVertex(100.0F, -100.0F, 100.0F).setUv(u + 0.33333334F, v + 0.5F);
-        quad.addVertex(100.0F, -100.0F, -100.0F).setUv(u + 0.33333334F, v);
+        buffer.addVertex(face, -100.0F, -100.0F, -100.0F).setUv(u, v);
+        buffer.addVertex(face, -100.0F, -100.0F, 100.0F).setUv(u, v + 0.5F);
+        buffer.addVertex(face, 100.0F, -100.0F, 100.0F).setUv(u + 0.33333334F, v + 0.5F);
+        buffer.addVertex(face, 100.0F, -100.0F, -100.0F).setUv(u + 0.33333334F, v);
     }
 
     protected void renderSun(
@@ -480,59 +597,62 @@ public class SkyProviderCelestial {
             float time = ((float) level.getDefaultClockTime() + partialTicks) / 20.0F;
 
             pose.pushPose();
-            pose.mulPose(Axis.YP.rotationDegrees(-90.0F));
-            VertexConsumer quad =
-                    draws.draw(SkyPipelines.BLACK_HOLE, pose, 1, 1, 1, 1, NOISE, null, null, time);
-            quad.addVertex(-shaderSize, 100.0F, -shaderSize).setUv(0.0F, 0.0F);
-            quad.addVertex(shaderSize, 100.0F, -shaderSize).setUv(1.0F, 0.0F);
-            quad.addVertex(shaderSize, 100.0F, shaderSize).setUv(1.0F, 1.0F);
-            quad.addVertex(-shaderSize, 100.0F, shaderSize).setUv(0.0F, 1.0F);
+            pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(-90.0F));
+            draws.mesh(
+                    SkyMesh.QUAD,
+                    SkyPipelines.BLACK_HOLE,
+                    pose,
+                    SkyDraws.lifted(100.0F, shaderSize),
+                    1,
+                    1,
+                    1,
+                    1,
+                    NOISE,
+                    null,
+                    null,
+                    time,
+                    0);
             pose.popPose();
             return;
         }
 
-        float occluder = (float) (sunSize * 0.25D);
-        VertexConsumer depth =
-                draws.draw(SkyPipelines.FLAT_ADDITIVE_DEPTH_WRITE, pose, 0, 0, 0, 0, null);
-        depth.addVertex(-occluder, 100.1F, -occluder);
-        depth.addVertex(occluder, 100.1F, -occluder);
-        depth.addVertex(occluder, 100.1F, occluder);
-        depth.addVertex(-occluder, 100.1F, occluder);
+        draws.mesh(
+                SkyMesh.QUAD_FLAT,
+                SkyPipelines.FLAT_ADDITIVE_DEPTH_WRITE,
+                pose,
+                SkyDraws.lifted(100.1F, (float) (sunSize * 0.25D)),
+                0,
+                0,
+                0,
+                0,
+                null);
 
         float[] sunColor =
                 WorldProviderCelestial.of(level) != null
                         ? Objects.requireNonNull(WorldProviderCelestial.of(level)).getSunColor()
                         : new float[] {1.0F, 1.0F, 1.0F};
 
-        float size = (float) sunSize;
-        VertexConsumer quad =
-                draws.draw(
-                        SkyPipelines.TEXTURED_ADDITIVE,
-                        pose,
-                        sunColor[0],
-                        sunColor[1],
-                        sunColor[2],
-                        visibility,
-                        SolarSystem.kerbol.texture);
-        quad.addVertex(-size, 100.0F, -size).setUv(0.0F, 0.0F);
-        quad.addVertex(size, 100.0F, -size).setUv(1.0F, 0.0F);
-        quad.addVertex(size, 100.0F, size).setUv(1.0F, 1.0F);
-        quad.addVertex(-size, 100.0F, size).setUv(0.0F, 1.0F);
+        draws.mesh(
+                SkyMesh.QUAD,
+                SkyPipelines.TEXTURED_ADDITIVE,
+                pose,
+                SkyDraws.lifted(100.0F, (float) sunSize),
+                sunColor[0],
+                sunColor[1],
+                sunColor[2],
+                visibility,
+                SolarSystem.kerbol.texture);
 
-        float corona = (float) coronaSize;
-        quad =
-                draws.draw(
-                        SkyPipelines.TEXTURED_ADDITIVE,
-                        pose,
-                        sunColor[0],
-                        sunColor[1],
-                        sunColor[2],
-                        1 - Mth.clamp(pressure, 0.0F, 1.0F) * 0.75F,
-                        FLARE);
-        quad.addVertex(-corona, 99.9F, -corona).setUv(0.0F, 0.0F);
-        quad.addVertex(corona, 99.9F, -corona).setUv(1.0F, 0.0F);
-        quad.addVertex(corona, 99.9F, corona).setUv(1.0F, 1.0F);
-        quad.addVertex(-corona, 99.9F, corona).setUv(0.0F, 1.0F);
+        draws.mesh(
+                SkyMesh.QUAD,
+                SkyPipelines.TEXTURED_ADDITIVE,
+                pose,
+                SkyDraws.lifted(99.9F, (float) coronaSize),
+                sunColor[0],
+                sunColor[1],
+                sunColor[2],
+                1 - Mth.clamp(pressure, 0.0F, 1.0F) * 0.75F,
+                FLARE);
 
         renderSwarm(draws, pose, sunSize * 0.5, swarmCount);
 
@@ -556,9 +676,9 @@ public class SkyProviderCelestial {
 
         for (int ring = 0; ring < 3; ring++) {
             pose.pushPose();
-            if (ring == 1) pose.mulPose(Axis.YP.rotationDegrees(60.0F));
-            if (ring == 2) pose.mulPose(Axis.YP.rotationDegrees(-60.0F));
-            pose.mulPose(Axis.XP.rotationDegrees(80.0F));
+            if (ring == 1) pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(60.0F));
+            if (ring == 2) pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(-60.0F));
+            pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees(80.0F));
 
             VertexConsumer points =
                     draws.draw(SkyPipelines.SWARM, pose, 0, 0, 0, alpha, null, null, null, time);
@@ -604,11 +724,12 @@ public class SkyProviderCelestial {
             boolean renderPoint = size < transitionMaxSize;
             boolean renderBody = size > transitionMinSize;
 
-            pose.mulPose(Axis.XP.rotationDegrees((float) metric.angle));
-            pose.mulPose(Axis.ZP.rotationDegrees((float) metric.inclination));
-            pose.mulPose(Axis.YP.rotationDegrees(axialTilt + 90.0F));
+            pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees((float) metric.angle));
+            pose.mulPose((Quaternionfc) Axis.ZP.rotationDegrees((float) metric.inclination));
+            pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(axialTilt + 90.0F));
 
             float s = (float) size;
+            Matrix4f square = SkyDraws.lifted(100.0F, s);
             if (renderBody) {
                 if (other.hasRings) {
                     renderRingHalf(draws, pose, metric, s, visibility, true);
@@ -621,16 +742,20 @@ public class SkyProviderCelestial {
                 } else {
                     renderAtmosphereGlow(draws, pose, other, size, 1.0F);
 
-                    VertexConsumer quad =
-                            draws.draw(
-                                    SkyPipelines.TEXTURED_OPAQUE,
-                                    pose,
-                                    1,
-                                    1,
-                                    1,
-                                    visibility,
-                                    other.texture);
-                    planeQuad(quad, s, (float) uvOffset);
+                    draws.mesh(
+                            SkyMesh.QUAD,
+                            SkyPipelines.TEXTURED_OPAQUE,
+                            pose,
+                            square,
+                            1,
+                            1,
+                            1,
+                            visibility,
+                            other.texture,
+                            null,
+                            null,
+                            0,
+                            (float) uvOffset);
 
                     CBT_Impact impact = other.getTrait(CBT_Impact.class);
                     CBT_Lights light = other.getTrait(CBT_Lights.class);
@@ -684,37 +809,37 @@ public class SkyProviderCelestial {
                         info.cloudTintStrength = cloudTintStrength;
                         info.cloudStormDarkness = cloudStormDarkness;
                         info.atmosphereAlpha = atmosphereOverlayAlpha;
-                        planeQuad(
-                                draws.draw(
-                                        SkyPipelines.ATMOSPHERE,
-                                        pose,
-                                        1,
-                                        1,
-                                        1,
-                                        1,
-                                        other.texture,
-                                        null,
-                                        info,
-                                        0),
-                                s,
+                        draws.mesh(
+                                SkyMesh.QUAD,
+                                SkyPipelines.ATMOSPHERE,
+                                pose,
+                                square,
+                                1,
+                                1,
+                                1,
+                                1,
+                                other.texture,
+                                null,
+                                info,
+                                0,
                                 0);
                     }
 
                     PlanetInfo crescent = copy(shared);
                     crescent.phase = phase;
-                    planeQuad(
-                            draws.draw(
-                                    SkyPipelines.CRESCENT,
-                                    pose,
-                                    1,
-                                    1,
-                                    1,
-                                    1,
-                                    other.texture,
-                                    null,
-                                    crescent,
-                                    0),
-                            s,
+                    draws.mesh(
+                            SkyMesh.QUAD,
+                            SkyPipelines.CRESCENT,
+                            pose,
+                            square,
+                            1,
+                            1,
+                            1,
+                            1,
+                            other.texture,
+                            null,
+                            crescent,
+                            0,
                             0);
 
                     Identifier cityMask = other.cityMask != null ? other.cityMask : DEFAULT_MASK;
@@ -728,19 +853,19 @@ public class SkyProviderCelestial {
                         info.phase = phase;
                         info.atmosphereDensity = atmosphereDensity;
                         info.blackouts = activeBlackouts;
-                        planeQuad(
-                                draws.draw(
-                                        SkyPipelines.ATMOSPHERE_EMISSIVE,
-                                        pose,
-                                        1,
-                                        1,
-                                        1,
-                                        1,
-                                        CITY_LIGHTS[lightIntensity],
-                                        cityMask,
-                                        info,
-                                        0),
-                                s,
+                        draws.mesh(
+                                SkyMesh.QUAD,
+                                SkyPipelines.ATMOSPHERE_EMISSIVE,
+                                pose,
+                                square,
+                                1,
+                                1,
+                                1,
+                                1,
+                                CITY_LIGHTS[lightIntensity],
+                                cityMask,
+                                info,
+                                0,
                                 0);
                     }
 
@@ -749,19 +874,19 @@ public class SkyProviderCelestial {
                         info.phase = phase;
                         info.atmosphereDensity = atmosphereDensity;
                         info.blackouts = activeBlackouts;
-                        planeQuad(
-                                draws.draw(
-                                        SkyPipelines.NIGHT_LIGHTS,
-                                        pose,
-                                        1,
-                                        1,
-                                        1,
-                                        1,
-                                        CITY_LIGHTS[lightIntensity],
-                                        cityMask,
-                                        info,
-                                        0),
-                                s,
+                        draws.mesh(
+                                SkyMesh.QUAD,
+                                SkyPipelines.NIGHT_LIGHTS,
+                                pose,
+                                square,
+                                1,
+                                1,
+                                1,
+                                1,
+                                CITY_LIGHTS[lightIntensity],
+                                cityMask,
+                                info,
+                                0,
                                 0);
                     }
 
@@ -774,19 +899,19 @@ public class SkyProviderCelestial {
                         info.eveFlashStrength =
                                 AtmosphereRenderUtil.getBodyEveFlashStrength(other, atmosphereTime);
                         info.lightningMode = AtmosphereRenderUtil.getBodyLightningMode(other);
-                        planeQuad(
-                                draws.draw(
-                                        SkyPipelines.LIGHTNING,
-                                        pose,
-                                        1,
-                                        1,
-                                        1,
-                                        1,
-                                        other.texture,
-                                        cityMask,
-                                        info,
-                                        0),
-                                s,
+                        draws.mesh(
+                                SkyMesh.QUAD,
+                                SkyPipelines.LIGHTNING,
+                                pose,
+                                square,
+                                1,
+                                1,
+                                1,
+                                1,
+                                other.texture,
+                                cityMask,
+                                info,
+                                0,
                                 0);
                     }
 
@@ -794,19 +919,16 @@ public class SkyProviderCelestial {
                         renderImpact(draws, pose, s, (float) uvOffset, impactTime);
                     }
 
-                    VertexConsumer blend =
-                            draws.draw(
-                                    SkyPipelines.FLAT_ADDITIVE,
-                                    pose,
-                                    (float) planetTint.x - blendDarken,
-                                    (float) planetTint.y - blendDarken,
-                                    (float) planetTint.z - blendDarken,
-                                    1 - blendAmount * visibility,
-                                    null);
-                    blend.addVertex(-s, 100.0F, -s);
-                    blend.addVertex(s, 100.0F, -s);
-                    blend.addVertex(s, 100.0F, s);
-                    blend.addVertex(-s, 100.0F, s);
+                    draws.mesh(
+                            SkyMesh.QUAD_FLAT,
+                            SkyPipelines.FLAT_ADDITIVE,
+                            pose,
+                            square,
+                            (float) planetTint.x - blendDarken,
+                            (float) planetTint.y - blendDarken,
+                            (float) planetTint.z - blendDarken,
+                            1 - blendAmount * visibility,
+                            null);
                 }
 
                 if (other.hasRings) {
@@ -819,9 +941,19 @@ public class SkyProviderCelestial {
                     PlanetInfo info = new PlanetInfo();
                     info.phase = (float) -metric.phase;
                     AtmosphereRenderUtil.applyNukeShockUniforms(info, flashShocks, totalTime);
-                    planeQuad(
-                            draws.draw(SkyPipelines.NUKE, pose, 1, 1, 1, 1, null, null, info, 0),
-                            s,
+                    draws.mesh(
+                            SkyMesh.QUAD,
+                            SkyPipelines.NUKE,
+                            pose,
+                            square,
+                            1,
+                            1,
+                            1,
+                            1,
+                            null,
+                            null,
+                            info,
+                            0,
                             0);
                 }
             }
@@ -830,20 +962,22 @@ public class SkyProviderCelestial {
                 float alpha = Mth.clamp((float) size * 100.0F, 0.0F, 1.0F);
                 alpha *=
                         1
-                                - remap01Clamp(
+                                - Mth.clampedMap(
                                         (float) size,
                                         (float) transitionMinSize,
-                                        (float) transitionMaxSize);
-                VertexConsumer quad =
-                        draws.draw(
-                                SkyPipelines.TEXTURED_ADDITIVE,
-                                pose,
-                                other.color[0],
-                                other.color[1],
-                                other.color[2],
-                                alpha * visibility,
-                                PLANET);
-                planeQuad(quad, 1.0F, 0);
+                                        (float) transitionMaxSize,
+                                        0,
+                                        1);
+                draws.mesh(
+                        SkyMesh.QUAD,
+                        SkyPipelines.TEXTURED_ADDITIVE,
+                        pose,
+                        SkyDraws.lifted(100.0F, 1.0F),
+                        other.color[0],
+                        other.color[1],
+                        other.color[2],
+                        alpha * visibility,
+                        PLANET);
             }
 
             pose.popPose();
@@ -868,11 +1002,28 @@ public class SkyProviderCelestial {
         return info;
     }
 
-    private static float remap01Clamp(float value, float min, float max) {
-        return Mth.clamp((value - min) / (max - min), 0.0F, 1.0F);
-    }
-
-    private static void planeQuad(VertexConsumer quad, float size, float uvOffset) {
+    private static void additiveSquare(
+            SkyDraws draws,
+            PoseStack pose,
+            float size,
+            float uvOffset,
+            float alpha,
+            Identifier texture) {
+        if (uvOffset == 0) {
+            draws.mesh(
+                    SkyMesh.QUAD,
+                    SkyPipelines.TEXTURED_ADDITIVE,
+                    pose,
+                    SkyDraws.lifted(100.0F, size),
+                    1,
+                    1,
+                    1,
+                    alpha,
+                    texture);
+            return;
+        }
+        VertexConsumer quad =
+                draws.draw(SkyPipelines.TEXTURED_ADDITIVE, pose, 1, 1, 1, alpha, texture);
         quad.addVertex(-size, 100.0F, -size).setUv(uvOffset, 0.0F);
         quad.addVertex(size, 100.0F, -size).setUv(1.0F + uvOffset, 0.0F);
         quad.addVertex(size, 100.0F, size).setUv(1.0F + uvOffset, 1.0F);
@@ -891,30 +1042,20 @@ public class SkyProviderCelestial {
 
         pose.pushPose();
         pose.translate(0.0F, 100.0F, 0.0F);
-        pose.mulPose(Axis.ZP.rotationDegrees((float) -metric.angle));
-        pose.mulPose(Axis.XP.rotationDegrees(90.0F - other.ringTilt));
-        pose.mulPose(Axis.YP.rotationDegrees((float) metric.angle));
+        pose.mulPose((Quaternionfc) Axis.ZP.rotationDegrees((float) -metric.angle));
+        pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees(90.0F - other.ringTilt));
+        pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees((float) metric.angle));
 
-        VertexConsumer quad =
-                draws.draw(
-                        SkyPipelines.TEXTURED_ADDITIVE_NO_CULL,
-                        pose,
-                        other.ringColor[0],
-                        other.ringColor[1],
-                        other.ringColor[2],
-                        visibility,
-                        RINGS);
-        if (back) {
-            quad.addVertex(-ringSize, 0, -ringSize).setUv(0.0F, 0.0F);
-            quad.addVertex(ringSize, 0, -ringSize).setUv(1.0F, 0.0F);
-            quad.addVertex(ringSize, 0, 0).setUv(1.0F, 0.5F);
-            quad.addVertex(-ringSize, 0, 0).setUv(0.0F, 0.5F);
-        } else {
-            quad.addVertex(-ringSize, 0, 0).setUv(0.0F, 0.5F);
-            quad.addVertex(ringSize, 0, 0).setUv(1.0F, 0.5F);
-            quad.addVertex(ringSize, 0, ringSize).setUv(1.0F, 1.0F);
-            quad.addVertex(-ringSize, 0, ringSize).setUv(0.0F, 1.0F);
-        }
+        draws.mesh(
+                back ? RING_BACK : RING_FRONT,
+                SkyPipelines.TEXTURED_ADDITIVE_NO_CULL,
+                pose,
+                SkyDraws.lifted(0.0F, ringSize),
+                other.ringColor[0],
+                other.ringColor[1],
+                other.ringColor[2],
+                visibility,
+                RINGS);
         pose.popPose();
     }
 
@@ -925,14 +1066,15 @@ public class SkyProviderCelestial {
             CBT_Destroyed destroyed,
             float size,
             float uvOffset) {
-        double progress = destroyed.destProgress + size * 0.5;
+        float destProgress = destroyed.progress(GameTime.ticks());
+        double progress = destProgress + size * 0.5;
 
         float alpha = (float) (1.0F - Math.min(1.0F, progress / 100));
         Random random = new Random(12);
 
         int numQuads = 30;
         for (int i = 0; i < numQuads; i++) {
-            double radius = (random.nextDouble() * size) * destroyed.destProgress;
+            double radius = (random.nextDouble() * size) * destProgress;
 
             double randomTheta = random.nextDouble() * Math.PI * 2;
             double randomPhi = random.nextDouble() * Math.PI;
@@ -951,7 +1093,8 @@ public class SkyProviderCelestial {
             pose.pushPose();
             pose.translate(
                     (float) (randomX * -0.05), (float) (randomY * 0.00), (float) (randomZ * -0.05));
-            pose.mulPose(Axis.YP.rotationDegrees(randomRotation * destroyed.destProgress * 0.05F));
+            pose.mulPose(
+                    (Quaternionfc) Axis.YP.rotationDegrees(randomRotation * destProgress * 0.05F));
             float qsize = (float) (size * random.nextDouble() * 0.1);
             VertexConsumer quad =
                     draws.draw(SkyPipelines.TEXTURED_ADDITIVE, pose, 1, 1, 1, 1, other.texture);
@@ -964,7 +1107,8 @@ public class SkyProviderCelestial {
             pose.pushPose();
             pose.translate(
                     (float) (randomX * 0.04), (float) (randomY * 0.00), (float) (randomZ * 0.04));
-            pose.mulPose(Axis.YP.rotationDegrees(randomRotation * destroyed.destProgress * 0.05F));
+            pose.mulPose(
+                    (Quaternionfc) Axis.YP.rotationDegrees(randomRotation * destProgress * 0.05F));
             qsize = (float) (size * random.nextDouble() * 0.07);
             quad = draws.draw(SkyPipelines.TEXTURED_ADDITIVE, pose, 1, 1, 1, 1, DESTROYED);
             quad.addVertex(-qsize, 100.0F, -qsize).setUv(uMin, vMin);
@@ -974,17 +1118,14 @@ public class SkyProviderCelestial {
             pose.popPose();
         }
 
-        float shock = (float) ((destroyed.destProgress * 0.5) * size * 0.1);
-        planeQuad(
-                draws.draw(SkyPipelines.TEXTURED_ADDITIVE, pose, 1, 1, 1, alpha, SHOCKWAVE),
-                shock,
-                uvOffset);
-
-        float flare = size * 3;
-        planeQuad(
-                draws.draw(SkyPipelines.TEXTURED_ADDITIVE, pose, 1, 1, 1, alpha * 2, SHOCK_FLARE),
-                flare,
-                uvOffset);
+        additiveSquare(
+                draws,
+                pose,
+                (float) ((destProgress * 0.5) * size * 0.1),
+                uvOffset,
+                alpha,
+                SHOCKWAVE);
+        additiveSquare(draws, pose, size * 3, uvOffset, alpha * 2, SHOCK_FLARE);
     }
 
     private static void renderImpact(
@@ -996,50 +1137,16 @@ public class SkyProviderCelestial {
         float flareSize = size * 1.5F;
         double flareAlpha = 1.0 - Math.min(1.0, impactTime * 0.002);
 
-        if (lavaAlpha > 0) {
-            planeQuad(
-                    draws.draw(
-                            SkyPipelines.TEXTURED_ADDITIVE,
-                            pose,
-                            1,
-                            1,
-                            1,
-                            (float) lavaAlpha,
-                            IMPACT),
-                    size,
-                    uvOffset);
-        }
+        if (lavaAlpha > 0) additiveSquare(draws, pose, size, uvOffset, (float) lavaAlpha, IMPACT);
 
         pose.pushPose();
         pose.translate(-size * 0.5F, 0, size * 0.4F);
 
-        if (impactAlpha > 0) {
-            planeQuad(
-                    draws.draw(
-                            SkyPipelines.TEXTURED_ADDITIVE,
-                            pose,
-                            1,
-                            1,
-                            1,
-                            (float) impactAlpha,
-                            SHOCKWAVE),
-                    impactSize,
-                    0);
-        }
+        if (impactAlpha > 0)
+            additiveSquare(draws, pose, impactSize, 0, (float) impactAlpha, SHOCKWAVE);
 
-        if (flareAlpha > 0) {
-            planeQuad(
-                    draws.draw(
-                            SkyPipelines.TEXTURED_ADDITIVE,
-                            pose,
-                            1,
-                            1,
-                            1,
-                            (float) flareAlpha,
-                            SHOCK_FLARE),
-                    flareSize,
-                    0);
-        }
+        if (flareAlpha > 0)
+            additiveSquare(draws, pose, flareSize, 0, (float) flareAlpha, SHOCK_FLARE);
         pose.popPose();
     }
 
@@ -1107,20 +1214,16 @@ public class SkyProviderCelestial {
 
     protected static void renderRings(
             SkyDraws draws, PoseStack pose, float[] ringColor, float ringSize, float visibility) {
-        float offset = -20.0F;
-        VertexConsumer quad =
-                draws.draw(
-                        SkyPipelines.TEXTURED_ADDITIVE,
-                        pose,
-                        ringColor[0],
-                        ringColor[1],
-                        ringColor[2],
-                        visibility,
-                        RINGS);
-        quad.addVertex(offset, -ringSize, -ringSize).setUv(0.0F, 0.0F);
-        quad.addVertex(offset, ringSize, -ringSize).setUv(1.0F, 0.0F);
-        quad.addVertex(offset, ringSize, ringSize).setUv(1.0F, 1.0F);
-        quad.addVertex(offset, -ringSize, ringSize).setUv(0.0F, 1.0F);
+        draws.mesh(
+                RING_WALL,
+                SkyPipelines.TEXTURED_ADDITIVE,
+                pose,
+                new Matrix4f().translation(-20.0F, 0.0F, 0.0F).scale(1.0F, ringSize, ringSize),
+                ringColor[0],
+                ringColor[1],
+                ringColor[2],
+                visibility,
+                RINGS);
     }
 
     protected void renderSpecialEffects(SkyDraws draws) {}
@@ -1139,18 +1242,23 @@ public class SkyProviderCelestial {
                     projectile.getTranslateY(),
                     projectile.getTranslateZ() + 50D);
             pose.scale(age, age, age);
-            pose.mulPose(new Quaternionf().rotationAxis((float) (Math.PI / 2D), -10F, -1F, 50F));
-            pose.mulPose(new Quaternionf().rotationAxis((float) Math.toRadians(20D), 0F, -1F, 1F));
-            draws.obj(
+            pose.mulPose(
+                    (Quaternionfc)
+                            new Quaternionf().rotationAxis((float) (Math.PI / 2D), -10F, -1F, 50F));
+            pose.mulPose(
+                    (Quaternionfc)
+                            new Quaternionf()
+                                    .rotationAxis((float) Math.toRadians(20D), 0F, -1F, 1F));
+            draws.mesh(
+                    SHOCK_PLANE,
                     SkyPipelines.TEXTURED_ADDITIVE,
                     pose,
+                    SkyDraws.IDENTITY,
                     1F,
                     1F,
                     1F,
                     alpha,
-                    SHOCKWAVE,
-                    SHELL_MESHES.get(SHOCK_PLANE),
-                    0F);
+                    SHOCKWAVE);
             pose = new PoseStack();
             pose.translate(
                     projectile.getTranslateX() + 70D,
@@ -1158,18 +1266,23 @@ public class SkyProviderCelestial {
                     projectile.getTranslateZ() + 50D);
             float inner = age * 0.4F;
             pose.scale(inner, inner, inner);
-            pose.mulPose(new Quaternionf().rotationAxis((float) (Math.PI / 2D), -10F, -1F, 50F));
-            pose.mulPose(new Quaternionf().rotationAxis((float) Math.toRadians(20D), 0F, -1F, 1F));
-            draws.obj(
+            pose.mulPose(
+                    (Quaternionfc)
+                            new Quaternionf().rotationAxis((float) (Math.PI / 2D), -10F, -1F, 50F));
+            pose.mulPose(
+                    (Quaternionfc)
+                            new Quaternionf()
+                                    .rotationAxis((float) Math.toRadians(20D), 0F, -1F, 1F));
+            draws.mesh(
+                    SHOCK_PLANE,
                     SkyPipelines.TEXTURED_ADDITIVE,
                     pose,
+                    SkyDraws.IDENTITY,
                     1F,
                     1F,
                     1F,
                     alpha,
-                    SHOCK_SHIELD,
-                    SHELL_MESHES.get(SHOCK_PLANE),
-                    0F);
+                    SHOCK_SHIELD);
         }
     }
 
@@ -1177,18 +1290,22 @@ public class SkyProviderCelestial {
         if (body.getTrait(CBT_COMPROMISED.class) == null) return;
         PoseStack pose = new PoseStack();
         pose.scale(194.5F, 70.5F, 94.5F);
-        pose.mulPose(Axis.ZP.rotationDegrees(90F));
+        pose.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(90F));
         float time = ((float) level.getDefaultClockTime() + partialTicks) * 0.2F;
-        draws.obj(
+        draws.mesh(
+                FLESH_SPHERE,
                 SkyPipelines.FLESH,
                 pose,
+                SkyDraws.IDENTITY,
                 1F,
                 1F,
                 1F,
                 1F,
                 NOISE,
-                SHELL_MESHES.get(FLESH_SPHERE),
-                time * 0.05F);
+                null,
+                null,
+                time * 0.05F,
+                0);
     }
 
     protected void render3DModel(SkyDraws draws) {}
@@ -1279,24 +1396,20 @@ public class SkyProviderCelestial {
         float renderAltitude = Math.max(1.0F, altitude);
 
         pose.pushPose();
-        pose.mulPose(Axis.XP.rotationDegrees(solarAngle * -360.0F));
-        pose.mulPose(Axis.ZP.rotationDegrees(inclination));
-        pose.mulPose(Axis.XP.rotationDegrees(orbitAngle));
+        pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees(solarAngle * -360.0F));
+        pose.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(inclination));
+        pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees(orbitAngle));
 
-        float size = 0.5F;
-        VertexConsumer quad =
-                draws.draw(
-                        SkyPipelines.TEXTURED_ADDITIVE,
-                        pose,
-                        r,
-                        g,
-                        b,
-                        SatelliteOrbit.blinkAlpha(blinking, blinkPeriod, ticks),
-                        SATELLITE);
-        quad.addVertex(-size, renderAltitude, -size).setUv(0.0F, 0.0F);
-        quad.addVertex(size, renderAltitude, -size).setUv(0.0F, 1.0F);
-        quad.addVertex(size, renderAltitude, size).setUv(1.0F, 1.0F);
-        quad.addVertex(-size, renderAltitude, size).setUv(1.0F, 0.0F);
+        draws.mesh(
+                SkyMesh.QUAD_TRANSPOSED,
+                SkyPipelines.TEXTURED_ADDITIVE,
+                pose,
+                SkyDraws.lifted(renderAltitude, 0.5F),
+                r,
+                g,
+                b,
+                SatelliteOrbit.blinkAlpha(blinking, blinkPeriod, ticks),
+                SATELLITE);
         pose.popPose();
     }
 
@@ -1304,26 +1417,18 @@ public class SkyProviderCelestial {
         float altitude = Math.max(1.0F, orbit.altitude());
         float alpha = 0.35F * orbit.blinkAlpha(GameTime.now() / 50.0D);
         pose.pushPose();
-        pose.mulPose(Axis.XP.rotationDegrees(solarAngle * -360.0F));
-        pose.mulPose(Axis.ZP.rotationDegrees(orbit.inclination()));
-        VertexConsumer line =
-                draws.draw(
-                        SkyPipelines.SATELLITE_ORBIT_LINE,
-                        pose,
-                        orbit.red(),
-                        orbit.green(),
-                        orbit.blue(),
-                        alpha,
-                        null);
-        for (int i = 0; i < 72; i++) {
-            double angle = Math.PI * 2.0D * i / 72.0D;
-            line.addVertex(
-                            0F,
-                            (float) (altitude * Math.cos(angle)),
-                            (float) (altitude * Math.sin(angle)))
-                    .setColor(1F, 1F, 1F, 1F);
-        }
-        line.addVertex(0F, altitude, 0F).setColor(1F, 1F, 1F, 1F);
+        pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees(solarAngle * -360.0F));
+        pose.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(orbit.inclination()));
+        draws.mesh(
+                ORBIT,
+                SkyPipelines.SATELLITE_ORBIT_LINE,
+                pose,
+                new Matrix4f().scaling(1.0F, altitude, altitude),
+                orbit.red(),
+                orbit.green(),
+                orbit.blue(),
+                alpha,
+                null);
         pose.popPose();
     }
 
@@ -1332,72 +1437,99 @@ public class SkyProviderCelestial {
         double ticks = (double) (GameTime.now() % (1600 * 50)) / 50;
 
         pose.pushPose();
-        pose.mulPose(Axis.XP.rotationDegrees(solarAngle * -360.0F));
-        pose.mulPose(Axis.XP.rotationDegrees(-40.0F + (float) (seed % 800) * 0.1F - 5.0F));
-        pose.mulPose(Axis.YP.rotationDegrees((float) (seed % 50) * 0.1F - 20.0F));
-        pose.mulPose(Axis.ZP.rotationDegrees((float) (seed % 80) * 0.1F - 2.5F));
-        pose.mulPose(Axis.XP.rotationDegrees((float) ((ticks / 1600.0D) * -360.0D)));
+        pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees(solarAngle * -360.0F));
+        pose.mulPose(
+                (Quaternionfc)
+                        Axis.XP.rotationDegrees(-40.0F + (float) (seed % 800) * 0.1F - 5.0F));
+        pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees((float) (seed % 50) * 0.1F - 20.0F));
+        pose.mulPose((Quaternionfc) Axis.ZP.rotationDegrees((float) (seed % 80) * 0.1F - 2.5F));
+        pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees((float) ((ticks / 1600.0D) * -360.0D)));
 
-        float size = 0.8F;
-        VertexConsumer quad =
-                draws.draw(SkyPipelines.TEXTURED_ADDITIVE, pose, 0.8F, 1, 1, 1, STATION);
-        quad.addVertex(-size, 100.0F, -size).setUv(0.0F, 0.0F);
-        quad.addVertex(size, 100.0F, -size).setUv(0.0F, 1.0F);
-        quad.addVertex(size, 100.0F, size).setUv(1.0F, 1.0F);
-        quad.addVertex(-size, 100.0F, size).setUv(1.0F, 0.0F);
+        draws.mesh(
+                SkyMesh.QUAD_TRANSPOSED,
+                SkyPipelines.TEXTURED_ADDITIVE,
+                pose,
+                SkyDraws.lifted(100.0F, 0.8F),
+                0.8F,
+                1,
+                1,
+                1,
+                STATION);
         pose.popPose();
     }
 
     private void renderMeteors(SkyDraws draws) {
+        if (Meteors.meteors.isEmpty()) return;
+        for (Meteors.Meteor meteor : Meteors.meteors) {
+            meteorShades
+                    .get(
+                            meteor.type == Meteors.MeteorType.SMOKE
+                                    ? (int) Math.min(meteor.age, SMOKE_SHADES - 1)
+                                    : SMOKE_SHADES)
+                    .add(meteor);
+        }
+
+        Matrix4f facing =
+                new Matrix4f()
+                        .rotate(Axis.YP.rotationDegrees(180.0F - cameraYaw))
+                        .rotate(Axis.XP.rotationDegrees(-cameraPitch));
+        Vector3f[] corners = new Vector3f[4];
+        for (int i = 0; i < corners.length; i++) {
+            corners[i] =
+                    facing.transformPosition(
+                            BILLBOARD[i * 4], BILLBOARD[i * 4 + 1], 0.0F, new Vector3f());
+        }
         int renderDistance = Minecraft.getInstance().options.getEffectiveRenderDistance();
 
-        for (Meteors.Meteor meteor : Meteors.meteors) {
-            PoseStack pose = new PoseStack();
+        renderMeteorShade(draws, SMOKE_SHADES, corners, renderDistance, SHOCK_FLARE, 1, 1, 1);
+        for (int age = 0; age < SMOKE_SHADES; age++) {
+            float dark = 1f - Math.min(((float) (age) / SMOKE_FADE), 1f);
+            renderMeteorShade(
+                    draws,
+                    age,
+                    corners,
+                    renderDistance,
+                    PARTICLE_BASE,
+                    0.6F * dark,
+                    0.6F * dark,
+                    dark);
+        }
+    }
 
+    private void renderMeteorShade(
+            SkyDraws draws,
+            int shade,
+            Vector3f[] corners,
+            int renderDistance,
+            Identifier texture,
+            float r,
+            float g,
+            float b) {
+        List<Meteors.Meteor> meteors = meteorShades.get(shade);
+        if (meteors.isEmpty()) return;
+
+        VertexConsumer quads =
+                draws.draw(SkyPipelines.TEXTURED_ADDITIVE, new PoseStack(), r, g, b, 1, texture);
+        for (Meteors.Meteor meteor : meteors) {
             Vec3 offset =
                     new Vec3(meteor.posX - feet.x, meteor.posY - feet.y, meteor.posZ - feet.z);
             double offsetLength = offset.length();
             double distance = Math.min(renderDistance * 16, offsetLength);
             Vec3 offsetNormal = offsetLength >= 1.0E-4D ? offset.scale(1 / offsetLength) : offset;
-            pose.translate(
-                    (float) (offsetNormal.x * distance),
-                    (float) (offsetNormal.y * distance),
-                    (float) (offsetNormal.z * distance));
+            float x = (float) (offsetNormal.x * distance);
+            float y = (float) (offsetNormal.y * distance);
+            float z = (float) (offsetNormal.z * distance);
 
             double descent = 2017d - meteor.posY;
             double quadratic = (-(descent * descent) + (1517 * descent)) / 41;
-
             float scalar = (float) (quadratic / offsetLength);
-            pose.scale(scalar, scalar, scalar);
 
-            if (meteor.type == Meteors.MeteorType.SMOKE) {
-                float dark = 1f - Math.min(((float) (meteor.age) / (100f * 0.35F)), 1f);
-                billboard(draws, pose, PARTICLE_BASE, 0.6F * dark, 0.6F * dark, dark, 1F);
-            } else {
-                billboard(draws, pose, SHOCK_FLARE, 1, 1, 1, 1);
+            for (int i = 0; i < corners.length; i++) {
+                Vector3f corner = corners[i];
+                quads.addVertex(x + corner.x * scalar, y + corner.y * scalar, z + corner.z * scalar)
+                        .setUv(BILLBOARD[i * 4 + 2], BILLBOARD[i * 4 + 3]);
             }
         }
-    }
-
-    private void billboard(
-            SkyDraws draws,
-            PoseStack pose,
-            Identifier texture,
-            float r,
-            float g,
-            float b,
-            float a) {
-        float f4 = 1.0F;
-        float f5 = 0.5F;
-        float f6 = 0.25F;
-
-        pose.mulPose(Axis.YP.rotationDegrees(180.0F - cameraYaw));
-        pose.mulPose(Axis.XP.rotationDegrees(-cameraPitch));
-
-        VertexConsumer quad = draws.draw(SkyPipelines.TEXTURED_ADDITIVE, pose, r, g, b, a, texture);
-        quad.addVertex(0.0F - f5, 0.0F - f6, 0.0F).setUv(1, 0);
-        quad.addVertex(f4 - f5, 0.0F - f6, 0.0F).setUv(0, 0);
-        quad.addVertex(f4 - f5, f4 - f6, 0.0F).setUv(0, 1);
-        quad.addVertex(0.0F - f5, f4 - f6, 0.0F).setUv(1, 1);
+        meteors.clear();
     }
 }
