@@ -29,7 +29,7 @@ import com.hbmspace.client.render.IndustryRenders;
 import com.hbmspace.integration.recipeviewer.CryoPage;
 import com.hbmspace.integration.recipeviewer.VacuumCircuitPage;
 import com.hbmspace.inventory.container.IndustryMenusSpace;
-import com.mojang.blaze3d.pipeline.RenderPipeline;
+import com.mojang.renderpearl.api.pipeline.RenderPipeline;
 import java.util.function.Consumer;
 
 final class IndustryClient {

@@ -84,7 +84,7 @@ public class XenonThrusterRenderer
 
         ps.pushPose();
         ps.translate(0.5, -1.0, 0.5);
-        ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(s.yaw));
+        ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(s.yaw));
         ps.translate(0, 0, -0.5);
 
         ps.translate(0, 0, -1F);

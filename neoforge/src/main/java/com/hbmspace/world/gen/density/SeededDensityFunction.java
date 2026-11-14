@@ -18,11 +18,3 @@
  */
 
 package com.hbmspace.world.gen.density;
-
-import net.minecraft.world.level.levelgen.DensityFunction;
-import net.minecraft.world.level.levelgen.PositionalRandomFactory;
-
-public interface SeededDensityFunction extends DensityFunction {
-
-    DensityFunction seeded(PositionalRandomFactory random);
-}

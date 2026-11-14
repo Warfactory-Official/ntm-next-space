@@ -66,7 +66,7 @@ public class MeltedFlesh extends Block {
         BlockState below = level.getBlockState(pos.below());
         if (below.is(Blocks.ICE) || below.is(Blocks.PACKED_ICE)) return false;
         if (below.is(BlockTags.LEAVES)) return true;
-        return below.isSolidRender() && below.blocksMotion();
+        return below.isSolidRender() && below.is(BlockTags.BLOCKS_MOTION);
     }
 
     @Override

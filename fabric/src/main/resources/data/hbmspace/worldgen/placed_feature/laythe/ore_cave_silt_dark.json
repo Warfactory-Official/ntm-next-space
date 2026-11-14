@@ -1,24 +1,22 @@
 {
   "feature": {
     "type": "hbm:ore_cave",
-    "config": {
-      "domain": "hbmspace:noise/laythe/ore_cave_silt_dark",
-      "exposed_by_fluid": true,
-      "max_range": 24,
-      "ore": {
-        "Name": "hbmspace:laythe_silt",
-        "Properties": {
-          "shade": "2"
-        }
-      },
-      "range_mult": 80,
-      "replaceable": {
-        "block": "hbmspace:laythe_silt",
-        "predicate_type": "minecraft:block_match"
-      },
-      "threshold": 0.25,
-      "y_level": 54
-    }
+    "domain": "hbmspace:noise/laythe/ore_cave_silt_dark",
+    "exposed_by_fluid": true,
+    "max_range": 24,
+    "ore": {
+      "id": "hbmspace:laythe_silt",
+      "properties": {
+        "shade": "2"
+      }
+    },
+    "range_mult": 80,
+    "replaceable": {
+      "block": "hbmspace:laythe_silt",
+      "predicate_type": "minecraft:block_match"
+    },
+    "threshold": 0.25,
+    "y_level": 54
   },
   "placement": [
     {

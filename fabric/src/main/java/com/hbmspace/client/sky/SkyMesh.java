@@ -22,10 +22,10 @@ package com.hbmspace.client.sky;
 import com.hbm.client.model.Meshes;
 import com.hbm.render.loader.GroupObject;
 import com.hbm.render.loader.HFRWavefrontObject;
-import com.mojang.blaze3d.PrimitiveTopology;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.blaze3d.vertex.VertexFormat;
+import com.mojang.renderpearl.api.pipeline.PrimitiveTopology;
+import com.mojang.renderpearl.api.vertex.VertexFormat;
 import java.util.function.Consumer;
 import net.minecraft.resources.Identifier;
 

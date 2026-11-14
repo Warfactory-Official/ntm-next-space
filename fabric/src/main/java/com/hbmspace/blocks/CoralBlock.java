@@ -19,14 +19,11 @@
 
 package com.hbmspace.blocks;
 
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;
 
 public class CoralBlock extends WaterPlantBlock {
-    public static final MapCodec<CoralBlock> CODEC = simpleCodec(CoralBlock::new);
-
     private static final Direction[] SEARCH = {
         Direction.NORTH,
         Direction.SOUTH,
@@ -38,11 +35,6 @@ public class CoralBlock extends WaterPlantBlock {
 
     public CoralBlock(Properties properties) {
         super(properties);
-    }
-
-    @Override
-    protected MapCodec<? extends CoralBlock> codec() {
-        return CODEC;
     }
 
     public static Direction attachment(BlockGetter level, BlockPos pos) {

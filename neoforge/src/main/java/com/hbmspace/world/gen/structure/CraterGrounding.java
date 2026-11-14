@@ -32,6 +32,7 @@ import java.util.List;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.chunk.PalettedContainerFactory;
 import net.minecraft.world.level.chunk.ProtoChunk;
@@ -139,7 +140,7 @@ public final class CraterGrounding {
         private void sample() {
             var generator = (NoiseBasedChunkGenerator) context.chunkGenerator();
             var fluid = generator.generatorSettings().value().defaultFluid();
-            if (!fluid.isAir() && !fluid.blocksMotion()) {
+            if (!fluid.isAir() && !fluid.is(BlockTags.BLOCKS_MOTION)) {
                 throw new IllegalStateException("Crater grounding requires an air or solid sea");
             }
             var palettes = PalettedContainerFactory.create(context.registryAccess());
@@ -230,6 +231,7 @@ public final class CraterGrounding {
                                         context.registryAccess(),
                                         generator,
                                         context.biomeSource(),
+                                        context.climateSampler(),
                                         context.randomState(),
                                         context.structureTemplateManager(),
                                         context.seed(),

@@ -37,81 +37,78 @@ package com.hbmspace.world.gen.feature;
 import com.hbm.world.NtmWorldgenFields;
 import com.hbm.world.feature.FractalSimplexNoise;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.Registry;
-import net.minecraft.core.RegistryCodecs;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.core.registries.codec.RegistryCodecs;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 
-public class PlateauFeature extends Feature<PlateauFeature.Config> {
+public record PlateauFeature(
+        Identifier domain,
+        double scale,
+        int maxAddition,
+        int step,
+        int topsoil,
+        BlockState stone,
+        BlockState surface,
+        BlockState fill,
+        HolderSet<Biome> biomes)
+        implements Feature {
 
-    public record Config(
-            Identifier domain,
-            double scale,
-            int maxAddition,
-            int step,
-            int topsoil,
-            BlockState stone,
-            BlockState surface,
-            BlockState fill,
-            HolderSet<Biome> biomes)
-            implements FeatureConfiguration {
+    public static final MapCodec<PlateauFeature> CODEC =
+            RecordCodecBuilder.mapCodec(
+                    i ->
+                            i.group(
+                                            Identifier.CODEC
+                                                    .fieldOf("domain")
+                                                    .forGetter(PlateauFeature::domain),
+                                            Codec.DOUBLE
+                                                    .fieldOf("scale")
+                                                    .forGetter(PlateauFeature::scale),
+                                            Codec.intRange(0, 64)
+                                                    .fieldOf("max_addition")
+                                                    .forGetter(PlateauFeature::maxAddition),
+                                            Codec.intRange(1, 64)
+                                                    .fieldOf("step")
+                                                    .forGetter(PlateauFeature::step),
+                                            Codec.intRange(0, 64)
+                                                    .fieldOf("topsoil")
+                                                    .forGetter(PlateauFeature::topsoil),
+                                            BlockState.CODEC
+                                                    .fieldOf("stone")
+                                                    .forGetter(PlateauFeature::stone),
+                                            BlockState.CODEC
+                                                    .fieldOf("surface")
+                                                    .forGetter(PlateauFeature::surface),
+                                            BlockState.CODEC
+                                                    .fieldOf("fill")
+                                                    .forGetter(PlateauFeature::fill),
+                                            RegistryCodecs.<Biome>holderSet(
+                                                            (ResourceKey<? extends Registry<Biome>>)
+                                                                    Registries.BIOME)
+                                                    .fieldOf("biomes")
+                                                    .forGetter(PlateauFeature::biomes))
+                                    .apply(i, PlateauFeature::new));
 
-        public static final Codec<Config> CODEC =
-                RecordCodecBuilder.create(
-                        i ->
-                                i.group(
-                                                Identifier.CODEC
-                                                        .fieldOf("domain")
-                                                        .forGetter(Config::domain),
-                                                Codec.DOUBLE
-                                                        .fieldOf("scale")
-                                                        .forGetter(Config::scale),
-                                                Codec.intRange(0, 64)
-                                                        .fieldOf("max_addition")
-                                                        .forGetter(Config::maxAddition),
-                                                Codec.intRange(1, 64)
-                                                        .fieldOf("step")
-                                                        .forGetter(Config::step),
-                                                Codec.intRange(0, 64)
-                                                        .fieldOf("topsoil")
-                                                        .forGetter(Config::topsoil),
-                                                BlockState.CODEC
-                                                        .fieldOf("stone")
-                                                        .forGetter(Config::stone),
-                                                BlockState.CODEC
-                                                        .fieldOf("surface")
-                                                        .forGetter(Config::surface),
-                                                BlockState.CODEC
-                                                        .fieldOf("fill")
-                                                        .forGetter(Config::fill),
-                                                RegistryCodecs.<Biome>homogeneousList(
-                                                                (ResourceKey<
-                                                                                ? extends
-                                                                                        Registry<
-                                                                                                Biome>>)
-                                                                        Registries.BIOME)
-                                                        .fieldOf("biomes")
-                                                        .forGetter(Config::biomes))
-                                        .apply(i, Config::new));
+    @Override
+    public MapCodec<PlateauFeature> codec() {
+        return CODEC;
     }
 
-    public PlateauFeature() {
-        super(Config.CODEC);
-    }
-
-    public static int top(Config config, FractalSimplexNoise field, int x, int z, int base) {
+    public static int top(
+            PlateauFeature config, FractalSimplexNoise field, int x, int z, int base) {
         int addition =
                 (int)
                         ((field.get(x * config.scale(), z * config.scale()) + 1.0D)
@@ -121,11 +118,10 @@ public class PlateauFeature extends Feature<PlateauFeature.Config> {
     }
 
     @Override
-    public boolean place(FeaturePlaceContext<Config> context) {
-        Config config = context.config();
-        WorldGenLevel level = context.level();
+    public boolean place(
+            WorldGenLevel level, ChunkGenerator generator, RandomSource random, BlockPos origin) {
+        PlateauFeature config = this;
         FractalSimplexNoise field = NtmWorldgenFields.get(level).fractal(config.domain(), 4);
-        BlockPos origin = context.origin();
         int[] bases = new int[256];
         int[] tops = new int[256];
 

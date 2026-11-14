@@ -76,7 +76,7 @@ public final class MaterialBlocksSpace {
                                     .strength(0.25F, 1.2F)
                                     .sound(SoundType.STONE)
                                     .noOcclusion()
-                                    .pushReaction(((PushReaction) (PushReaction.DESTROY))));
+                                    .pushReaction(((PushReaction) (PushReaction.POPPED))));
 
     public static final RegistryHandle<SoundEvent> FENCE_GATE_SOUND =
             Registrar.registerSound(HbmSpace.MOD_ID + ":block.fencegate");
@@ -107,7 +107,7 @@ public final class MaterialBlocksSpace {
                                     .strength(5.0F, 0.6F)
                                     .noOcclusion()
                                     .requiresCorrectToolForDrops()
-                                    .pushReaction(((PushReaction) (PushReaction.DESTROY))));
+                                    .pushReaction(((PushReaction) (PushReaction.POPPED))));
 
     static {
         after(Tab.BLOCKS, "block_niter", BLOCK_NICKEL);

@@ -34,52 +34,46 @@
 
 package com.hbmspace.world.gen.carver;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import java.util.function.Function;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
-import net.minecraft.core.RegistryCodecs;
 import net.minecraft.core.SectionPos;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.core.registries.codec.RegistryCodecs;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.chunk.CarvingMask;
 import net.minecraft.world.level.chunk.ChunkAccess;
-import net.minecraft.world.level.levelgen.Aquifer;
-import net.minecraft.world.level.levelgen.carver.CarverConfiguration;
-import net.minecraft.world.level.levelgen.carver.CarvingContext;
 import net.minecraft.world.level.levelgen.carver.WorldCarver;
-import org.apache.commons.lang3.mutable.MutableBoolean;
 
-public class RootCarver extends WorldCarver<RootCarver.Configuration> {
+public class RootCarver implements TerrainCarver {
 
-    private static final CarveSkipChecker ELLIPSOID =
-            (context, xd, yd, zd, y) -> yd <= -0.7D || xd * xd + yd * yd + zd * zd >= 1.0D;
+    private static final WorldCarver.CarveSkipChecker ELLIPSOID =
+            (xd, yd, zd, y) -> yd <= -0.7D || xd * xd + yd * yd + zd * zd >= 1.0D;
 
-    public static class Configuration extends CarverConfiguration {
+    public static class Configuration extends CarvingSettings {
 
-        public static final Codec<Configuration> CODEC =
-                RecordCodecBuilder.create(
+        public static final MapCodec<Configuration> CODEC =
+                RecordCodecBuilder.mapCodec(
                         i ->
                                 i.group(
-                                                CarverConfiguration.CODEC.forGetter(c -> c),
+                                                CarvingSettings.CODEC.forGetter(c -> c),
                                                 BlockState.CODEC
                                                         .fieldOf("fill")
                                                         .forGetter(c -> c.fill),
                                                 BlockState.CODEC
                                                         .fieldOf("lava_fill")
                                                         .forGetter(c -> c.lavaFill),
-                                                RegistryCodecs.homogeneousList(Registries.BLOCK)
+                                                RegistryCodecs.holderSet(Registries.BLOCK)
                                                         .fieldOf("top")
                                                         .forGetter(c -> c.top),
-                                                RegistryCodecs.homogeneousList(Registries.BLOCK)
+                                                RegistryCodecs.holderSet(Registries.BLOCK)
                                                         .fieldOf("filler")
                                                         .forGetter(c -> c.filler),
                                                 BlockState.CODEC
@@ -94,7 +88,7 @@ public class RootCarver extends WorldCarver<RootCarver.Configuration> {
         public final BlockState cover;
 
         public Configuration(
-                CarverConfiguration carver,
+                CarvingSettings carver,
                 BlockState fill,
                 BlockState lavaFill,
                 HolderSet<Block> top,
@@ -105,7 +99,6 @@ public class RootCarver extends WorldCarver<RootCarver.Configuration> {
                     carver.y,
                     carver.yScale,
                     carver.lavaLevel,
-                    carver.debugSettings,
                     carver.replaceable);
             this.fill = fill;
             this.lavaFill = lavaFill;
@@ -115,25 +108,29 @@ public class RootCarver extends WorldCarver<RootCarver.Configuration> {
         }
     }
 
-    public RootCarver() {
-        super(Configuration.CODEC);
+    public static final MapCodec<RootCarver> CODEC =
+            Configuration.CODEC.xmap(RootCarver::new, carver -> carver.configuration);
+    public final Configuration configuration;
+
+    public RootCarver(Configuration configuration) {
+        this.configuration = configuration;
     }
 
     @Override
-    public boolean isStartChunk(Configuration configuration, RandomSource random) {
+    public MapCodec<RootCarver> codec() {
+        return CODEC;
+    }
+
+    @Override
+    public boolean isStartChunk(RandomSource random) {
         return random.nextFloat() <= configuration.probability;
     }
 
     @Override
-    public boolean carve(
-            CarvingContext context,
-            Configuration configuration,
-            ChunkAccess chunk,
-            Function<BlockPos, Holder<Biome>> biomeGetter,
-            RandomSource random,
-            Aquifer aquifer,
-            ChunkPos sourceChunkPos,
-            CarvingMask mask) {
+    public boolean carve(TerrainCarving context, RandomSource random, ChunkPos sourceChunkPos) {
+        ChunkAccess chunk = context.chunk;
+        Function<BlockPos, Holder<Biome>> biomeGetter = context.biomeGetter;
+        TerrainCarving mask = context;
         int maxDistance = SectionPos.sectionToBlockCoord(getRange() * 2 - 1);
         int caves = random.nextInt(random.nextInt(random.nextInt(15) + 1) + 1);
 
@@ -146,18 +143,14 @@ public class RootCarver extends WorldCarver<RootCarver.Configuration> {
             if (random.nextInt(4) == 0) {
                 double radius =
                         1.5D + Mth.sin((float) (Math.PI / 2)) * (1.0F + random.nextFloat() * 6.0F);
-                carveEllipsoid(
-                        context,
+                context.carveEllipsoid(
                         configuration,
-                        chunk,
-                        biomeGetter,
-                        aquifer,
+                        chunk.getPos(),
                         x + 1.0D,
                         y,
                         z,
                         radius,
                         radius * configuration.yScale.sample(random),
-                        mask,
                         ELLIPSOID);
                 tunnels += random.nextInt(4);
             }
@@ -176,7 +169,6 @@ public class RootCarver extends WorldCarver<RootCarver.Configuration> {
                         chunk,
                         biomeGetter,
                         random.nextLong(),
-                        aquifer,
                         x,
                         y,
                         z,
@@ -193,12 +185,11 @@ public class RootCarver extends WorldCarver<RootCarver.Configuration> {
     }
 
     private void tunnel(
-            CarvingContext context,
+            TerrainCarving context,
             Configuration configuration,
             ChunkAccess chunk,
             Function<BlockPos, Holder<Biome>> biomeGetter,
             long seed,
-            Aquifer aquifer,
             double x,
             double y,
             double z,
@@ -208,7 +199,7 @@ public class RootCarver extends WorldCarver<RootCarver.Configuration> {
             int step,
             int distance,
             double heightFactor,
-            CarvingMask mask) {
+            TerrainCarving mask) {
         RandomSource random = RandomSource.create(seed);
         int branch = random.nextInt(distance / 2) + distance / 4;
         boolean steep = random.nextInt(6) == 0;
@@ -237,7 +228,6 @@ public class RootCarver extends WorldCarver<RootCarver.Configuration> {
                             chunk,
                             biomeGetter,
                             random.nextLong(),
-                            aquifer,
                             x,
                             y,
                             z,
@@ -253,48 +243,17 @@ public class RootCarver extends WorldCarver<RootCarver.Configuration> {
             }
 
             if (random.nextInt(4) != 0) {
-                if (!canReach(chunk.getPos(), x, z, step, distance, width)) return;
-                carveEllipsoid(
-                        context,
+                if (!WorldCarver.canReach(chunk.getPos(), x, z, step, distance, width)) return;
+                context.carveEllipsoid(
                         configuration,
-                        chunk,
-                        biomeGetter,
-                        aquifer,
+                        chunk.getPos(),
                         x,
                         y,
                         z,
                         radius,
                         radius * heightFactor,
-                        mask,
                         ELLIPSOID);
             }
         }
-    }
-
-    @Override
-    protected boolean carveBlock(
-            CarvingContext context,
-            Configuration configuration,
-            ChunkAccess chunk,
-            Function<BlockPos, Holder<Biome>> biomeGetter,
-            CarvingMask mask,
-            BlockPos.MutableBlockPos blockPos,
-            BlockPos.MutableBlockPos helperPos,
-            Aquifer aquifer,
-            MutableBoolean foundTop) {
-        BlockState state = chunk.getBlockState(blockPos);
-        if (state.is(configuration.top)) foundTop.setTrue();
-        if (!state.is(configuration.replaceable)) return false;
-
-        chunk.setBlockState(
-                blockPos,
-                blockPos.getY() <= configuration.lavaLevel.resolveY(context)
-                        ? configuration.lavaFill
-                        : configuration.fill);
-        helperPos.setWithOffset(blockPos, Direction.UP);
-        if (foundTop.isTrue() && chunk.getBlockState(helperPos).is(configuration.filler)) {
-            chunk.setBlockState(helperPos, configuration.cover);
-        }
-        return true;
     }
 }

@@ -342,7 +342,7 @@ public final class StationRenders {
 
     public static void launcherRocketOrigin(PoseStack pose, float yaw, RocketStruct rocket) {
         pose.translate(0.5F, 1.0F, 0.5F);
-        pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(yaw));
+        pose.rotate((Quaternionfc) Axis.YP.rotationDegrees(yaw));
         pose.translate(0, -rocket.getHeight() - 0.5, 0);
     }
 

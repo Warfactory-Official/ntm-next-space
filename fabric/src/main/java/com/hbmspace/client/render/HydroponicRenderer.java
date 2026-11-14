@@ -107,7 +107,7 @@ public class HydroponicRenderer
         if (!state.lit) return;
         ps.pushPose();
         ps.translate(0.5, 0.0, 0.5);
-        ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(yaw(state.facing)));
+        ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(yaw(state.facing)));
         collector.submitCustomGeometry(
                 ps,
                 type,

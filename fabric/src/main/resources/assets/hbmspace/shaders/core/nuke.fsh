@@ -1,11 +1,12 @@
 #version 330
+#extension GL_ARB_separate_shader_objects : require
 
-#moj_import <hbmspace:planet_info.glsl>
+#include <hbmspace:planet_info.glsl>
 
 
-in vec2 texCoord0;
+layout(location = 0) in vec2 texCoord0;
 
-out vec4 fragColor;
+layout(location = 0) out vec4 fragColor;
 
 const float FLASH_GRID = 16.0;
 const float FLASH_SUBGRID = FLASH_GRID * 4.0;

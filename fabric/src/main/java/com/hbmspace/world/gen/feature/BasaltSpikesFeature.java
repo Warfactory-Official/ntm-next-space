@@ -34,55 +34,48 @@
 
 package com.hbmspace.world.gen.feature;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.Registry;
-import net.minecraft.core.RegistryCodecs;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.core.registries.codec.RegistryCodecs;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.Noises;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
-import net.minecraft.world.level.levelgen.synth.NormalNoise;
+import net.minecraft.world.level.levelgen.synth.Noise;
 
-public class BasaltSpikesFeature extends Feature<BasaltSpikesFeature.Config> {
+public record BasaltSpikesFeature(BlockState block, HolderSet<Biome> biomes) implements Feature {
 
-    public record Config(BlockState block, HolderSet<Biome> biomes)
-            implements FeatureConfiguration {
+    public static final MapCodec<BasaltSpikesFeature> CODEC =
+            RecordCodecBuilder.mapCodec(
+                    i ->
+                            i.group(
+                                            BlockState.CODEC
+                                                    .fieldOf("block")
+                                                    .forGetter(BasaltSpikesFeature::block),
+                                            RegistryCodecs.<Biome>holderSet(
+                                                            (ResourceKey<? extends Registry<Biome>>)
+                                                                    Registries.BIOME)
+                                                    .fieldOf("biomes")
+                                                    .forGetter(BasaltSpikesFeature::biomes))
+                                    .apply(i, BasaltSpikesFeature::new));
 
-        public static final Codec<Config> CODEC =
-                RecordCodecBuilder.create(
-                        i ->
-                                i.group(
-                                                BlockState.CODEC
-                                                        .fieldOf("block")
-                                                        .forGetter(Config::block),
-                                                RegistryCodecs.<Biome>homogeneousList(
-                                                                (ResourceKey<
-                                                                                ? extends
-                                                                                        Registry<
-                                                                                                Biome>>)
-                                                                        Registries.BIOME)
-                                                        .fieldOf("biomes")
-                                                        .forGetter(Config::biomes))
-                                        .apply(i, Config::new));
+    @Override
+    public MapCodec<BasaltSpikesFeature> codec() {
+        return CODEC;
     }
 
-    public BasaltSpikesFeature() {
-        super(Config.CODEC);
-    }
-
-    public static boolean growsAt(NormalNoise surface, int x, int z) {
-        double noise = surface.getValue(x, 0.0D, z) * 8.25D;
+    public static boolean growsAt(Noise surface, int x, int z) {
+        double noise = surface.get(x, 0.0D, z) * 8.25D;
         return !(noise > -0.25D && noise < 1.0D
                 || noise > 1.5D && noise < 2.0D
                 || noise > 2.5D && noise < 3.0D);
@@ -93,13 +86,12 @@ public class BasaltSpikesFeature extends Feature<BasaltSpikesFeature.Config> {
     }
 
     @Override
-    public boolean place(FeaturePlaceContext<Config> context) {
-        Config config = context.config();
-        WorldGenLevel level = context.level();
-        RandomSource random = context.random();
-        NormalNoise surface =
+    public boolean place(
+            WorldGenLevel level, ChunkGenerator generator, RandomSource random, BlockPos origin) {
+        BasaltSpikesFeature config = this;
+        RandomSource rand = random;
+        Noise surface =
                 level.getLevel().getChunkSource().randomState().getOrCreateNoise(Noises.SURFACE);
-        BlockPos origin = context.origin();
         BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
         boolean placed = false;
 

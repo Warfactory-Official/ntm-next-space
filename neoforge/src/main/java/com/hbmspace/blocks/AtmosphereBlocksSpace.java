@@ -103,7 +103,7 @@ public final class AtmosphereBlocksSpace {
                 .noOcclusion()
                 .replaceable()
                 .randomTicks()
-                .pushReaction(((PushReaction) (PushReaction.DESTROY)));
+                .pushReaction(((PushReaction) (PushReaction.POPPED)));
     }
 
     public static final Reg.Handle<MeltedFlesh> FLESH_BLOCK =

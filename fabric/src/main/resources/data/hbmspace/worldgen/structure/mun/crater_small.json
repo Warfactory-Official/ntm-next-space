@@ -6,12 +6,8 @@
   "exponent": 4,
   "max_size": 32,
   "min_size": 8,
-  "regolith": {
-    "Name": "hbm:basalt"
-  },
-  "rock": {
-    "Name": "hbmspace:moon_rock"
-  },
+  "regolith": "hbm:basalt",
+  "rock": "hbmspace:moon_rock",
   "spawn_overrides": {},
   "step": "lakes",
   "terrain_adaptation": "none"

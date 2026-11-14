@@ -1,0 +1,28 @@
+{
+  "values": [
+    "hbmspace:salted_fallout",
+    "hbmspace:flesh_block",
+    "hbmspace:charred_flesh_block",
+    "hbmspace:carbonized_flesh_block",
+    "hbmspace:mercury_block",
+    "hbmspace:bromine_block",
+    "hbmspace:ccl_block",
+    "hbmspace:rubber_plant_grass",
+    "hbmspace:rubber_plant_fern",
+    "hbmspace:rubber_plant_shrub",
+    "hbmspace:plant_flower_strawberry",
+    "hbmspace:plant_flower_mint",
+    "hbmspace:crop_strawberry",
+    "hbmspace:crop_mint",
+    "hbmspace:crop_paraffin",
+    "hbmspace:crop_coffee",
+    "hbmspace:crop_tea",
+    "hbmspace:sapling_vinyl",
+    "hbmspace:sapling_pvc",
+    "hbmspace:rubber_tall_cact",
+    "hbmspace:rubber_tall_bush",
+    "hbmspace:rubber_tall_flower",
+    "hbmspace:vinyl_vine",
+    "hbmspace:hydrobay_end_cell"
+  ]
+}

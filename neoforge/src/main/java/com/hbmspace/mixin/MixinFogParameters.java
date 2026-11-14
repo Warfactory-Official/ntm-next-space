@@ -21,7 +21,7 @@ package com.hbmspace.mixin;
 
 import com.hbmspace.client.fog.BoundTerrainFog;
 import com.hbmspace.client.fog.TerrainFogWriter;
-import com.mojang.blaze3d.buffers.GpuBuffer;
+import com.mojang.renderpearl.api.buffers.GpuBuffer;
 import net.caffeinemc.mods.sodium.client.util.FogParameters;
 import org.joml.Vector4f;
 import org.spongepowered.asm.mixin.Final;

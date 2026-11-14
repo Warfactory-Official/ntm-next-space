@@ -74,11 +74,7 @@ public final class MartianBaseStructure extends Structure {
         if (terrace != null) {
             BiomeManager biomes =
                     new BiomeManager(
-                            (x, y, z) ->
-                                    context.biomeSource()
-                                            .getNoiseBiome(
-                                                    x, y, z, context.randomState().sampler()),
-                            BiomeManager.obfuscateSeed(context.seed()));
+                            context.biomeResolver(), BiomeManager.obfuscateSeed(context.seed()));
             height =
                     terrace.firstFreeHeight(
                             0,

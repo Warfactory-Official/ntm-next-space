@@ -103,10 +103,10 @@ public class VacuumCircuitRenderer
         if (state.item.isEmpty()) return;
         poseStack.pushPose();
         poseStack.translate(0.5, 0.0, 0.5);
-        poseStack.mulPose((Quaternionfc) Axis.YP.rotationDegrees(Facing.yaw(state.facing, 90)));
+        poseStack.rotate((Quaternionfc) Axis.YP.rotationDegrees(Facing.yaw(state.facing, 90)));
         poseStack.translate(0.625, 1.25, 0.5);
-        poseStack.mulPose((Quaternionfc) Axis.YP.rotationDegrees(90));
-        poseStack.mulPose((Quaternionfc) Axis.XP.rotationDegrees(-90));
+        poseStack.rotate((Quaternionfc) Axis.YP.rotationDegrees(90));
+        poseStack.rotate((Quaternionfc) Axis.XP.rotationDegrees(-90));
         poseStack.scale(1.5F, 1.5F, 1.5F);
         FramedItem.decoArm(poseStack, state.arm);
         state.item.submit(poseStack, collector, state.lightCoords, OverlayTexture.NO_OVERLAY, 0);

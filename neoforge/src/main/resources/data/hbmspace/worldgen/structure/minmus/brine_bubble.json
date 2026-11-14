@@ -4,9 +4,7 @@
     "hbmspace:minmus_hills",
     "hbmspace:minmus_basins"
   ],
-  "core": {
-    "Name": "hbmspace:ore_brine_minmus"
-  },
+  "core": "hbmspace:ore_brine_minmus",
   "fuzzy": false,
   "max_size": 16,
   "min_size": 8,

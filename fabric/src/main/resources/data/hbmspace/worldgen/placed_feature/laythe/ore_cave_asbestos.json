@@ -1,32 +1,18 @@
 {
   "feature": {
     "type": "hbm:ore_cave",
-    "config": {
-      "domain": "hbmspace:noise/laythe/ore_cave_asbestos",
-      "max_range": 20,
-      "ore": {
-        "Name": "hbm:stone_resource_asbestos"
-      },
-      "range_mult": 20,
-      "replaceable": {
-        "block": "minecraft:stone",
-        "predicate_type": "minecraft:block_match"
-      },
-      "stalactite": {
-        "Name": "hbm:stalactite_asbestos",
-        "Properties": {
-          "waterlogged": "false"
-        }
-      },
-      "stalagmite": {
-        "Name": "hbm:stalagmite_asbestos",
-        "Properties": {
-          "waterlogged": "false"
-        }
-      },
-      "threshold": 1.75,
-      "y_level": 25
-    }
+    "domain": "hbmspace:noise/laythe/ore_cave_asbestos",
+    "max_range": 20,
+    "ore": "hbm:stone_resource_asbestos",
+    "range_mult": 20,
+    "replaceable": {
+      "block": "minecraft:stone",
+      "predicate_type": "minecraft:block_match"
+    },
+    "stalactite": "hbm:stalactite_asbestos",
+    "stalagmite": "hbm:stalagmite_asbestos",
+    "threshold": 1.75,
+    "y_level": 25
   },
   "placement": [
     {

@@ -16,15 +16,8 @@
   "min_size": 2,
   "min_tilt": 0.2,
   "noise": "hbmspace:spires",
-  "regolith": {
-    "Name": "hbmspace:laythe_silt",
-    "Properties": {
-      "shade": "0"
-    }
-  },
-  "rock": {
-    "Name": "minecraft:stone"
-  },
+  "regolith": "hbmspace:laythe_silt",
+  "rock": "minecraft:stone",
   "spawn_overrides": {},
   "step": "lakes",
   "terrain_adaptation": "none",

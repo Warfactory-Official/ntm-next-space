@@ -7,12 +7,8 @@
   "exponent": 4,
   "max_size": 128,
   "min_size": 96,
-  "regolith": {
-    "Name": "hbmspace:dres_rock"
-  },
-  "rock": {
-    "Name": "hbmspace:dres_rock"
-  },
+  "regolith": "hbmspace:dres_rock",
+  "rock": "hbmspace:dres_rock",
   "spawn_overrides": {},
   "step": "lakes",
   "terrain_adaptation": "none"

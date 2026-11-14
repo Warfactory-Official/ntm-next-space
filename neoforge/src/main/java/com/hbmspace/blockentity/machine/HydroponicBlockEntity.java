@@ -68,6 +68,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.BonemealSource;
 import net.minecraft.world.level.block.CropBlock;
 import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.block.VegetationBlock;
@@ -236,10 +237,11 @@ public class HydroponicBlockEntity extends MachineBlockEntity
         state = server.getBlockState(spot);
         if (!(state.getBlock() instanceof CropBlock crop)) return;
         boolean grown = false;
-        if (crop.isValidBonemealTarget(server, spot, state)) {
+        if (crop.isValidBonemealTarget(server, spot, state, BonemealSource.INTERACTION)) {
             if (fertilizer > 0 && random.nextInt(60) == 0) {
-                if (crop.isBonemealSuccess(server, random, spot, state)) {
-                    crop.performBonemeal(server, random, spot, state);
+                if (crop.isBonemealSuccess(
+                        server, random, spot, state, BonemealSource.INTERACTION)) {
+                    crop.performBonemeal(server, random, spot, state, BonemealSource.INTERACTION);
                     server.levelEvent(LevelEvent.PARTICLES_AND_SOUND_PLANT_GROWTH, spot, 15);
                 }
                 fertilizer--;

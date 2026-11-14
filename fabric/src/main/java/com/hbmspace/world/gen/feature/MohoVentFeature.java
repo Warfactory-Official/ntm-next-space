@@ -21,26 +21,28 @@ package com.hbmspace.world.gen.feature;
 
 import com.hbm.blocks.ModBlocks;
 import com.hbmspace.blocks.ModBlocksSpace;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
-public class MohoVentFeature extends Feature<NoneFeatureConfiguration> {
+public record MohoVentFeature() implements Feature {
+    public static final MapCodec<MohoVentFeature> CODEC = MapCodec.unit(MohoVentFeature::new);
 
-    public MohoVentFeature() {
-        super(NoneFeatureConfiguration.CODEC);
+    @Override
+    public MapCodec<MohoVentFeature> codec() {
+        return CODEC;
     }
 
     @Override
-    public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> context) {
-        WorldGenLevel level = context.level();
-        BlockPos origin = context.origin();
+    public boolean place(
+            WorldGenLevel level, ChunkGenerator generator, RandomSource random, BlockPos origin) {
         BlockState geysir = ModBlocks.GEYSIR_NETHER.get().defaultBlockState();
         BlockState netherrack = Blocks.NETHERRACK.defaultBlockState();
         boolean placed = false;

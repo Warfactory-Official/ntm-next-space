@@ -21,7 +21,6 @@ package com.hbmspace.blocks;
 
 import com.hbm.blocks.TickingEntityBlock;
 import com.hbmspace.blockentity.deco.LightningVolcanoBlockEntity;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
@@ -32,15 +31,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jspecify.annotations.Nullable;
 
 public class VolcanoV2Block extends Block implements TickingEntityBlock {
-    public static final MapCodec<VolcanoV2Block> CODEC = simpleCodec(VolcanoV2Block::new);
-
     public VolcanoV2Block(Properties properties) {
         super(properties);
-    }
-
-    @Override
-    protected MapCodec<? extends VolcanoV2Block> codec() {
-        return CODEC;
     }
 
     @Override

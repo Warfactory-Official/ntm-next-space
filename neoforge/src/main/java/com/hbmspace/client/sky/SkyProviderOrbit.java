@@ -85,9 +85,9 @@ public class SkyProviderOrbit extends SkyProviderCelestial {
         renderStars(draws, starBrightness, solarAngle + siderealAngle, ORBITAL_TILT);
 
         PoseStack pose = new PoseStack();
-        pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees(ORBITAL_TILT));
-        pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(-90.0F));
-        pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees(solarAngle * 360.0F));
+        pose.rotate((Quaternionfc) Axis.XP.rotationDegrees(ORBITAL_TILT));
+        pose.rotate((Quaternionfc) Axis.YP.rotationDegrees(-90.0F));
+        pose.rotate((Quaternionfc) Axis.XP.rotationDegrees(solarAngle * 360.0F));
 
         double sunSize =
                 SolarSystem.calculateSunSize(station.orbiting) * SolarSystem.SUN_RENDER_SCALE;

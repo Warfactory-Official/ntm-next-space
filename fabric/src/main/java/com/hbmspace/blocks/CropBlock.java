@@ -21,7 +21,6 @@ package com.hbmspace.blocks;
 
 import com.hbmspace.dim.trait.CBT_Atmosphere;
 import com.hbmspace.handler.atmosphere.PlantBreathingHandler;
-import com.mojang.serialization.MapCodec;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
@@ -44,7 +43,6 @@ public class CropBlock extends net.minecraft.world.level.block.CropBlock
     private final Predicate<CBT_Atmosphere> atmosphere;
     private final Supplier<? extends ItemLike> seed;
     private final boolean canHydro;
-    private final MapCodec<CropBlock> ownCodec;
 
     public CropBlock(
             Properties properties,
@@ -57,16 +55,10 @@ public class CropBlock extends net.minecraft.world.level.block.CropBlock
         this.atmosphere = atmosphere;
         this.seed = seed;
         this.canHydro = canHydro;
-        this.ownCodec = simpleCodec(p -> new CropBlock(p, soil, atmosphere, seed, canHydro));
     }
 
     public boolean canHydro() {
         return canHydro;
-    }
-
-    @Override
-    public MapCodec<? extends net.minecraft.world.level.block.CropBlock> codec() {
-        return ownCodec;
     }
 
     @Override

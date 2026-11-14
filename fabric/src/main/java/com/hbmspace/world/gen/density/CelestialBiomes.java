@@ -25,15 +25,11 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.resources.Identifier;
-import net.minecraft.util.KeyDispatchDataCodec;
+import net.minecraft.util.Interval;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.levelgen.DensityFunction;
-import net.minecraft.world.level.levelgen.PositionalRandomFactory;
-import org.jspecify.annotations.Nullable;
+import net.minecraft.world.level.levelgen.densityfunction.*;
 
-public record CelestialBiomes(Identifier layers, boolean terrain, @Nullable Regions regions)
-        implements SeededDensityFunction {
-
+public record CelestialBiomes(Identifier layers, boolean terrain) implements DensityFunction {
     public static final MapCodec<CelestialBiomes> MAP_CODEC =
             RecordCodecBuilder.mapCodec(
                     i ->
@@ -44,52 +40,45 @@ public record CelestialBiomes(Identifier layers, boolean terrain, @Nullable Regi
                                             Codec.BOOL
                                                     .optionalFieldOf("terrain", false)
                                                     .forGetter(CelestialBiomes::terrain))
-                                    .apply(
-                                            i,
-                                            (layers, terrain) ->
-                                                    new CelestialBiomes(layers, terrain, null)));
-
-    private static final KeyDispatchDataCodec<CelestialBiomes> CODEC =
-            KeyDispatchDataCodec.of(MAP_CODEC);
+                                    .apply(i, CelestialBiomes::new));
 
     @Override
-    public DensityFunction seeded(PositionalRandomFactory random) {
+    public DensitySampler compileSampler(CompileContext context) {
         CelestialLayers.Stack stack =
-                CelestialLayers.build(layers, random.fromHashOf(layers).nextLong());
-        return new CelestialBiomes(
-                layers, terrain, new Regions(terrain ? stack.terrain() : stack.world()));
+                CelestialLayers.build(layers, context.createRandom(layers).nextLong());
+        Regions regions = new Regions(terrain ? stack.terrain() : stack.world());
+        return new DensitySampler() {
+            @Override
+            public float sampleValue(SamplerContext context, int x, int y, int z) {
+                return regions.at(x >> 2, z >> 2);
+            }
+
+            @Override
+            public void sampleVolume(
+                    SamplerContext context, DensityBuffer output, DensityVolume volume) {
+                DensitySampler.sampleVolumeNaive(context, output, volume, this);
+            }
+        };
     }
 
     @Override
-    public double compute(FunctionContext context) {
-        if (regions == null)
-            throw new IllegalStateException(layers + " biomes computed before a level wired them");
-        return regions.at(context.blockX() >> 2, context.blockZ() >> 2);
-    }
-
-    @Override
-    public void fillArray(double[] output, ContextProvider contextProvider) {
-        contextProvider.fillAllDirectly(output, this);
-    }
-
-    @Override
-    public DensityFunction mapChildren(Visitor visitor) {
+    public DensityFunction rewriteChildren(DfRewriteRule rule) {
         return this;
     }
 
     @Override
-    public double minValue() {
-        return 0.0D;
+    public Interval range() {
+        return Interval.of(0.0F, 255.0F);
     }
 
     @Override
-    public double maxValue() {
-        return 255.0D;
+    public int domainAxes() {
+        return AXIS_X | AXIS_Z;
     }
 
     @Override
-    public KeyDispatchDataCodec<? extends DensityFunction> codec() {
-        return CODEC;
+    public MapCodec<CelestialBiomes> codec() {
+        return MAP_CODEC;
     }
 
     public static final class Regions {

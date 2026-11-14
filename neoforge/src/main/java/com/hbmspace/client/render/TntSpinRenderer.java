@@ -52,18 +52,18 @@ public class TntSpinRenderer extends EntityRenderer<TntNtmEntity, TntSpinRendere
             CameraRenderState camera) {
         poseStack.pushPose();
         poseStack.translate(0.0F, 0.5F, 0.0F);
-        poseStack.mulPose((Quaternionfc) Axis.YP.rotationDegrees(state.spinYaw - 90.0F));
-        poseStack.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(state.spinPitch));
-        poseStack.mulPose((Quaternionfc) Axis.YP.rotationDegrees(90.0F));
+        poseStack.rotate((Quaternionfc) Axis.YP.rotationDegrees(state.spinYaw - 90.0F));
+        poseStack.rotate((Quaternionfc) Axis.ZP.rotationDegrees(state.spinPitch));
+        poseStack.rotate((Quaternionfc) Axis.YP.rotationDegrees(90.0F));
         float fuse = state.fuseRemainingInTicks;
         if (fuse < 10.0F) {
             float scale = 1.0F + TntRenderer.getSwellAmount(fuse);
             poseStack.scale(scale, scale, scale);
         }
 
-        poseStack.mulPose((Quaternionfc) Axis.YP.rotationDegrees(-90.0F));
+        poseStack.rotate((Quaternionfc) Axis.YP.rotationDegrees(-90.0F));
         poseStack.translate(-0.5F, -0.5F, 0.5F);
-        poseStack.mulPose((Quaternionfc) Axis.YP.rotationDegrees(90.0F));
+        poseStack.rotate((Quaternionfc) Axis.YP.rotationDegrees(90.0F));
         if (!state.blockState.isEmpty()) {
             TntMinecartRenderer.submitWhiteSolidBlock(
                     state.blockState,

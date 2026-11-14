@@ -6,15 +6,8 @@
     "hbmspace:moho_lava_sea",
     "hbmspace:moho_plateau"
   ],
-  "core": {
-    "Name": "hbm:volcano_core",
-    "Properties": {
-      "mode": "static_active"
-    }
-  },
-  "material": {
-    "Name": "hbm:basalt"
-  },
+  "core": "hbm:volcano_core",
+  "material": "hbm:basalt",
   "max_size": 128,
   "min_size": 64,
   "spawn_overrides": {},

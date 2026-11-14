@@ -34,39 +34,37 @@
 
 package com.hbmspace.world.gen.carver;
 
+import com.hbmspace.world.gen.density.TerrainNoise;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import java.util.Optional;
 import java.util.function.Function;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
-import net.minecraft.core.RegistryCodecs;
 import net.minecraft.core.SectionPos;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.core.registries.codec.RegistryCodecs;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.chunk.CarvingMask;
 import net.minecraft.world.level.chunk.ChunkAccess;
-import net.minecraft.world.level.levelgen.Aquifer;
-import net.minecraft.world.level.levelgen.carver.CarverConfiguration;
-import net.minecraft.world.level.levelgen.carver.CarvingContext;
 import net.minecraft.world.level.levelgen.carver.WorldCarver;
-import net.minecraft.world.level.levelgen.synth.ImprovedNoise;
 
-public class ExperimentalCaveCarver extends WorldCarver<ExperimentalCaveCarver.Configuration> {
+public class ExperimentalCaveCarver implements TerrainCarver {
 
-    public static class Configuration extends CarverConfiguration {
+    public static class Configuration extends CarvingSettings {
 
-        public static final Codec<Configuration> CODEC =
-                RecordCodecBuilder.create(
+        public static final MapCodec<Configuration> CODEC =
+                RecordCodecBuilder.mapCodec(
                         i ->
                                 i.group(
-                                                CarverConfiguration.CODEC.forGetter(c -> c),
+                                                CarvingSettings.CODEC.forGetter(c -> c),
                                                 Codec.FLOAT
                                                         .fieldOf("carving_scale")
                                                         .forGetter(c -> c.carvingScale),
@@ -82,13 +80,13 @@ public class ExperimentalCaveCarver extends WorldCarver<ExperimentalCaveCarver.C
                                                 BlockState.CODEC
                                                         .fieldOf("lava")
                                                         .forGetter(c -> c.lava),
-                                                RegistryCodecs.homogeneousList(Registries.BLOCK)
+                                                RegistryCodecs.holderSet(Registries.BLOCK)
                                                         .fieldOf("top")
                                                         .forGetter(c -> c.top),
-                                                RegistryCodecs.homogeneousList(Registries.BLOCK)
+                                                RegistryCodecs.holderSet(Registries.BLOCK)
                                                         .fieldOf("filler")
                                                         .forGetter(c -> c.filler),
-                                                RegistryCodecs.homogeneousList(Registries.BIOME)
+                                                RegistryCodecs.holderSet(Registries.BIOME)
                                                         .optionalFieldOf("biomes")
                                                         .forGetter(c -> c.biomes))
                                         .apply(i, Configuration::new));
@@ -103,7 +101,7 @@ public class ExperimentalCaveCarver extends WorldCarver<ExperimentalCaveCarver.C
         public final Optional<HolderSet<Biome>> biomes;
 
         public Configuration(
-                CarverConfiguration carver,
+                CarvingSettings carver,
                 float carvingScale,
                 int depthThreshold,
                 float largeCaveSize,
@@ -117,7 +115,6 @@ public class ExperimentalCaveCarver extends WorldCarver<ExperimentalCaveCarver.C
                     carver.y,
                     carver.yScale,
                     carver.lavaLevel,
-                    carver.debugSettings,
                     carver.replaceable);
             this.carvingScale = carvingScale;
             this.depthThreshold = depthThreshold;
@@ -130,25 +127,29 @@ public class ExperimentalCaveCarver extends WorldCarver<ExperimentalCaveCarver.C
         }
     }
 
-    public ExperimentalCaveCarver() {
-        super(Configuration.CODEC);
+    public static final MapCodec<ExperimentalCaveCarver> CODEC =
+            Configuration.CODEC.xmap(ExperimentalCaveCarver::new, carver -> carver.configuration);
+    public final Configuration configuration;
+
+    public ExperimentalCaveCarver(Configuration configuration) {
+        this.configuration = configuration;
     }
 
     @Override
-    public boolean isStartChunk(Configuration configuration, RandomSource random) {
+    public MapCodec<ExperimentalCaveCarver> codec() {
+        return CODEC;
+    }
+
+    @Override
+    public boolean isStartChunk(RandomSource random) {
         return random.nextFloat() <= configuration.probability;
     }
 
     @Override
-    public boolean carve(
-            CarvingContext context,
-            Configuration configuration,
-            ChunkAccess chunk,
-            Function<BlockPos, Holder<Biome>> biomeGetter,
-            RandomSource random,
-            Aquifer aquifer,
-            ChunkPos sourceChunkPos,
-            CarvingMask mask) {
+    public boolean carve(TerrainCarving context, RandomSource random, ChunkPos sourceChunkPos) {
+        ChunkAccess chunk = context.chunk;
+        Function<BlockPos, Holder<Biome>> biomeGetter = context.biomeGetter;
+        TerrainCarving mask = context;
         Cut cut = new Cut(context, configuration, chunk, biomeGetter, mask);
         int caves = random.nextInt(random.nextInt(random.nextInt(15) + 1) + 1);
 
@@ -193,19 +194,19 @@ public class ExperimentalCaveCarver extends WorldCarver<ExperimentalCaveCarver.C
 
     private final class Cut {
 
-        private final CarvingContext context;
+        private final TerrainCarving context;
         private final Configuration configuration;
         private final ChunkAccess chunk;
         private final Function<BlockPos, Holder<Biome>> biomeGetter;
-        private final CarvingMask mask;
+        private final TerrainCarving mask;
         private final BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
 
         Cut(
-                CarvingContext context,
+                TerrainCarving context,
                 Configuration configuration,
                 ChunkAccess chunk,
                 Function<BlockPos, Holder<Biome>> biomeGetter,
-                CarvingMask mask) {
+                TerrainCarving mask) {
             this.context = context;
             this.configuration = configuration;
             this.chunk = chunk;
@@ -231,7 +232,7 @@ public class ExperimentalCaveCarver extends WorldCarver<ExperimentalCaveCarver.C
                 int maxDistance = SectionPos.sectionToBlockCoord(getRange() * 2 - 1);
                 distance = maxDistance - random.nextInt(maxDistance / 4);
             }
-            ImprovedNoise noise = new ImprovedNoise(RandomSource.create(seed));
+            TerrainNoise noise = TerrainNoise.single(RandomSource.create(seed));
             float yawChange = 0.0F;
             float pitchChange = 0.0F;
             boolean room = step == -1;
@@ -283,11 +284,10 @@ public class ExperimentalCaveCarver extends WorldCarver<ExperimentalCaveCarver.C
                 }
 
                 if (!room && random.nextInt(4) == 0) continue;
-                if (!canReach(chunk.getPos(), x, z, step, distance, size)) return;
+                if (!WorldCarver.canReach(chunk.getPos(), x, z, step, distance, size)) return;
                 if (Math.abs(x - centreX) <= 16.0D + radius * 2.0D
                         && Math.abs(z - centreZ) <= 16.0D + radius * 2.0D
-                        && !CelestialCaveCarver.shellHolds(
-                                context, chunk, x, y, z, radius, height, true)) {
+                        && !context.shellHolds(x, y, z, radius, height, true)) {
                     ellipsoid(noise, x, y, z, radius, height, bend);
                     if (room) return;
                 }
@@ -295,7 +295,7 @@ public class ExperimentalCaveCarver extends WorldCarver<ExperimentalCaveCarver.C
         }
 
         private void ellipsoid(
-                ImprovedNoise noise,
+                TerrainNoise noise,
                 double x,
                 double y,
                 double z,
@@ -329,6 +329,7 @@ public class ExperimentalCaveCarver extends WorldCarver<ExperimentalCaveCarver.C
                         double dy = (by + 0.5D - y) / height;
                         if (dy <= -0.7D || (dx * dx + dy * dy + dz * dz) * (1.0D + bend) >= 1.0D)
                             continue;
+                        if (!context.accepts(bx, by, bz)) continue;
                         pos.set(worldX, by, worldZ);
                         if (chunk.getBlockState(pos).is(configuration.top)) foundTop = true;
                         dig(bx, bz, foundTop);
@@ -348,7 +349,7 @@ public class ExperimentalCaveCarver extends WorldCarver<ExperimentalCaveCarver.C
             BlockState cut =
                     pos.getY() <= configuration.lavaLevel.resolveY(context)
                             ? configuration.lava
-                            : AIR;
+                            : Blocks.AIR.defaultBlockState();
             chunk.setBlockState(pos, cut);
             mask.set(bx, pos.getY(), bz);
             if (!cut.getFluidState().isEmpty()) chunk.markPosForPostProcessing(pos);

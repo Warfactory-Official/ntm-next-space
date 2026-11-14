@@ -19,24 +19,16 @@
 
 package com.hbmspace.world.gen.carver;
 
-import java.util.function.Function;
 import net.minecraft.SharedConstants;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Holder;
 import net.minecraft.core.QuartPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.chunk.CarvingMask;
-import net.minecraft.world.level.chunk.ChunkAccess;
+import net.minecraft.world.level.chunk.CarverOutput;
 import net.minecraft.world.level.chunk.ProtoChunk;
-import net.minecraft.world.level.levelgen.Aquifer;
 import net.minecraft.world.level.levelgen.LegacyRandomSource;
 import net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator;
+import net.minecraft.world.level.levelgen.WorldGenerationContext;
 import net.minecraft.world.level.levelgen.WorldgenRandom;
-import net.minecraft.world.level.levelgen.carver.CarvingContext;
-import net.minecraft.world.level.levelgen.carver.CaveCarverConfiguration;
-import net.minecraft.world.level.levelgen.carver.CaveWorldCarver;
 import net.minecraft.world.level.levelgen.structure.Structure;
 
 public final class SurfaceCarving {
@@ -46,41 +38,30 @@ public final class SurfaceCarving {
             Structure.GenerationContext context, ProtoChunk chunk, int[] heights) {
         if (SharedConstants.DEBUG_DISABLE_CARVERS) return false;
         var generator = (NoiseBasedChunkGenerator) context.chunkGenerator();
-        var carving =
-                new CarvingContext(
-                        generator,
-                        context.registryAccess(),
-                        chunk.getHeightAccessorForGeneration(),
-                        null,
-                        context.randomState(),
-                        generator.generatorSettings().value().surfaceRule());
+        var carving = new WorldGenerationContext(generator, chunk.getHeightAccessorForGeneration());
+        var resolver = generator.getBiomeSource().createUncachedResolver(context.randomState());
         var random = new WorldgenRandom(new LegacyRandomSource(0));
-        var caves = new CaveBounds(heights);
+        var bounds = new CaveBounds(carving, chunk.isUpgrading(), heights);
         ChunkPos at = chunk.getPos();
-        for (int dx = -8; dx <= 8; dx++)
-            for (int dz = -8; dz <= 8; dz++) {
+        for (int dx = -8; dx <= 8; ++dx)
+            for (int dz = -8; dz <= 8; ++dz) {
                 ChunkPos from = new ChunkPos(at.x() + dx, at.z() + dz);
                 var biome =
-                        generator
-                                .getBiomeSource()
-                                .getNoiseBiome(
-                                        QuartPos.fromBlock(from.getMinBlockX()),
-                                        0,
-                                        QuartPos.fromBlock(from.getMinBlockZ()),
-                                        context.randomState().sampler());
+                        resolver.getNoiseBiome(
+                                QuartPos.fromBlock(from.getMinBlockX()),
+                                0,
+                                QuartPos.fromBlock(from.getMinBlockZ()));
                 int index = 0;
                 for (var holder : generator.getBiomeGenerationSettings(biome).getCarvers()) {
-                    var configured = holder.value();
+                    var carver = holder.value();
                     random.setLargeFeatureSeed(context.seed() + index++, from.x(), from.z());
-                    if (!configured.isStartChunk(random)) continue;
-                    if (configured.worldCarver().getClass() == CelestialCaveCarver.class
-                            && configured.config() instanceof CelestialCaveConfiguration config) {
-                        caves.carve(carving, config, chunk, null, random, null, from, null);
-                        if (caves.touches) return true;
-                    } else if (configured.worldCarver().getClass() == RavineCarver.class
-                            && configured.config() instanceof RavineCarver.Configuration config) {
-                        var ravine = (RavineCarver) configured.worldCarver();
-                        if (ravine.affectsSurface(carving, config, chunk, random, from, heights))
+                    if (!carver.isStartChunk(random)) continue;
+                    if (carver instanceof CelestialCaveCarver cave) {
+                        cave.configuration().geometry.carve(carving, random, at, from, bounds);
+                        if (bounds.touches) return true;
+                    } else if (carver instanceof RavineCarver ravine) {
+                        if (ravine.affectsSurface(
+                                carving, ravine.configuration, chunk, random, from, heights))
                             return true;
                     } else {
                         return true;
@@ -91,7 +72,7 @@ public final class SurfaceCarving {
     }
 
     static boolean mayCut(
-            CarvingContext context,
+            WorldGenerationContext context,
             ChunkPos chunk,
             double x,
             double y,
@@ -108,39 +89,40 @@ public final class SurfaceCarving {
                 Math.min(
                         Mth.floor(y + height) + 1,
                         context.getMinGenY() + context.getGenDepth() - 8);
-        for (int bz = minZ; bz <= maxZ; bz++)
-            for (int bx = minX; bx <= maxX; bx++) {
+        for (int bz = minZ; bz <= maxZ; ++bz)
+            for (int bx = minX; bx <= maxX; ++bx) {
                 int firstFree = heights[bz * 16 + bx];
                 if (firstFree > minY && firstFree <= maxY + 1) return true;
             }
         return false;
     }
 
-    private static final class CaveBounds extends CaveWorldCarver {
+    private static final class CaveBounds implements CarverOutput {
+        private final int minY;
+        private final int maxY;
         private final int[] heights;
         private boolean touches;
 
-        private CaveBounds(int[] heights) {
-            super(CaveCarverConfiguration.CODEC);
+        private CaveBounds(WorldGenerationContext context, boolean upgrading, int[] heights) {
+            this.minY = context.getMinGenY() + 1;
+            this.maxY = context.getMinGenY() + context.getGenDepth() - 1 - (upgrading ? 0 : 7);
             this.heights = heights;
         }
 
         @Override
-        protected boolean carveEllipsoid(
-                CarvingContext context,
-                CaveCarverConfiguration configuration,
-                ChunkAccess chunk,
-                Function<BlockPos, Holder<Biome>> biomeGetter,
-                Aquifer aquifer,
-                double x,
-                double y,
-                double z,
-                double radius,
-                double height,
-                CarvingMask mask,
-                CarveSkipChecker checker) {
-            touches |= mayCut(context, chunk.getPos(), x, y, z, radius, height, heights);
-            return false;
+        public int minY() {
+            return minY;
+        }
+
+        @Override
+        public int maxY() {
+            return maxY;
+        }
+
+        @Override
+        public void carve(int x, int y, int z) {
+            int firstFree = heights[z * 16 + x];
+            if (firstFree != Integer.MIN_VALUE && firstFree - 1 == y) touches = true;
         }
     }
 }

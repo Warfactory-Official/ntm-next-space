@@ -3,9 +3,7 @@
   "biomes": [
     "hbmspace:ike"
   ],
-  "core": {
-    "Name": "hbmspace:ore_brine_ike"
-  },
+  "core": "hbmspace:ore_brine_ike",
   "fuzzy": false,
   "max_size": 16,
   "min_size": 8,

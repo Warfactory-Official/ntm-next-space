@@ -19,7 +19,6 @@
 
 package com.hbmspace.world.gen.structure;
 
-import com.hbmspace.world.gen.SpaceWorldgen;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -29,7 +28,6 @@ import net.minecraft.world.level.levelgen.LegacyRandomSource;
 import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.world.level.levelgen.structure.placement.RandomSpreadStructurePlacement;
 import net.minecraft.world.level.levelgen.structure.placement.RandomSpreadType;
-import net.minecraft.world.level.levelgen.structure.placement.StructurePlacementType;
 
 public class ChunkOddsPlacement extends RandomSpreadStructurePlacement {
 
@@ -64,8 +62,9 @@ public class ChunkOddsPlacement extends RandomSpreadStructurePlacement {
         return random.nextFloat() < frequency();
     }
 
+    @SuppressWarnings("unchecked")
     @Override
-    public StructurePlacementType<?> type() {
-        return SpaceWorldgen.CHUNK_ODDS.get();
+    public MapCodec<RandomSpreadStructurePlacement> codec() {
+        return (MapCodec<RandomSpreadStructurePlacement>) (MapCodec<?>) CODEC;
     }
 }

@@ -20,7 +20,7 @@
 package com.hbmspace.client.gui;
 
 import com.hbmspace.client.sky.PlanetInfo;
-import com.mojang.blaze3d.pipeline.RenderPipeline;
+import com.mojang.renderpearl.api.pipeline.RenderPipeline;
 import java.util.List;
 import net.minecraft.client.gui.navigation.ScreenRectangle;
 import net.minecraft.client.renderer.state.gui.pip.PictureInPictureRenderState;

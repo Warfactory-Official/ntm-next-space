@@ -1,0 +1,5 @@
+{
+  "type": "hbm:flower_patch",
+  "flower": "hbmspace:plant_flower_strawberry",
+  "odds": 32
+}

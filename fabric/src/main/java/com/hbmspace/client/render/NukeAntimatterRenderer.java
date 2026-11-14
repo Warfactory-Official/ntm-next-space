@@ -107,7 +107,7 @@ public class NukeAntimatterRenderer
 
         ps.pushPose();
         ps.translate(0.5F, 0F, 0.5F);
-        ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(s.yaw));
+        ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(s.yaw));
 
         ps.pushPose();
         ps.translate(0, 2.4D + s.bob * 0.125D * SCALE, 0);

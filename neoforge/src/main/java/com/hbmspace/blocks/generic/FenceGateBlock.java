@@ -19,8 +19,6 @@
 
 package com.hbmspace.blocks.generic;
 
-import com.mojang.serialization.MapCodec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;
@@ -33,26 +31,11 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class FenceGateBlock extends DoorBlock {
-    public static final MapCodec<FenceGateBlock> CODEC =
-            RecordCodecBuilder.mapCodec(
-                    i ->
-                            i.group(
-                                            BlockSetType.CODEC
-                                                    .fieldOf("block_set_type")
-                                                    .forGetter(DoorBlock::type),
-                                            propertiesCodec())
-                                    .apply(i, FenceGateBlock::new));
-
     private static final VoxelShape ACROSS_X = Block.box(7.5, 0, 0, 8.5, 16, 16);
     private static final VoxelShape ACROSS_Z = Block.box(0, 0, 7.5, 16, 16, 8.5);
 
     public FenceGateBlock(BlockSetType type, Properties props) {
         super(type, props);
-    }
-
-    @Override
-    public MapCodec<? extends DoorBlock> codec() {
-        return CODEC;
     }
 
     @Override

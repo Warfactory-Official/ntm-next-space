@@ -41,27 +41,32 @@ import com.hbmspace.blocks.TerrainBlocksSpace;
 import com.hbmspace.blocks.WaterPlantBlock;
 import com.hbmspace.blocks.fluid.GenericFluidBlock;
 import com.hbmspace.blocks.generic.TallPlantWaterBlock;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 
-public class WaterCoralFeature extends Feature<SeaLevelConfig> {
+public record WaterCoralFeature(int seaLevel) implements Feature {
+    public static final MapCodec<WaterCoralFeature> CODEC =
+            Codec.INT
+                    .fieldOf("sea_level")
+                    .xmap(WaterCoralFeature::new, WaterCoralFeature::seaLevel);
 
-    public WaterCoralFeature() {
-        super(SeaLevelConfig.CODEC);
+    @Override
+    public MapCodec<WaterCoralFeature> codec() {
+        return CODEC;
     }
 
     @Override
-    public boolean place(FeaturePlaceContext<SeaLevelConfig> context) {
-        WorldGenLevel level = context.level();
-        RandomSource rand = context.random();
-        BlockPos origin = context.origin();
-        int seaLevel = context.config().seaLevel();
+    public boolean place(
+            WorldGenLevel level, ChunkGenerator generator, RandomSource random, BlockPos origin) {
+        RandomSource rand = random;
         int kinds = FloraBlocksSpace.Coral.values().length;
         boolean placed = false;
 

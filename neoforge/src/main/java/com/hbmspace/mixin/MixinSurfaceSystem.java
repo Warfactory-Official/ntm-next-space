@@ -23,13 +23,13 @@ import com.hbmspace.world.gen.surface.SolidSeaSurface;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.SurfaceSystem;
+import net.minecraft.world.level.levelgen.material.MaterialSystem;
 import org.jspecify.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 
-@Mixin(SurfaceSystem.class)
+@Mixin(MaterialSystem.class)
 public abstract class MixinSurfaceSystem implements SolidSeaSurface {
 
     @Unique private @Nullable BlockState hbmspace$sea;

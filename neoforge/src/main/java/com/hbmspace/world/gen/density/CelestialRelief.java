@@ -39,19 +39,12 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import java.util.Locale;
-import java.util.stream.IntStream;
 import net.minecraft.resources.Identifier;
-import net.minecraft.util.KeyDispatchDataCodec;
+import net.minecraft.util.Interval;
 import net.minecraft.util.StringRepresentable;
-import net.minecraft.world.level.levelgen.DensityFunction;
-import net.minecraft.world.level.levelgen.PositionalRandomFactory;
-import net.minecraft.world.level.levelgen.synth.PerlinNoise;
-import org.jspecify.annotations.Nullable;
+import net.minecraft.world.level.levelgen.densityfunction.*;
 
-public record CelestialRelief(
-        DensityFunction biome, Output output, @Nullable PerlinNoise depthNoise)
-        implements SeededDensityFunction {
-
+public record CelestialRelief(DensityFunction biome, Output output) implements DensityFunction {
     public static final MapCodec<CelestialRelief> MAP_CODEC =
             RecordCodecBuilder.mapCodec(
                     i ->
@@ -62,13 +55,7 @@ public record CelestialRelief(
                                             Output.CODEC
                                                     .fieldOf("output")
                                                     .forGetter(CelestialRelief::output))
-                                    .apply(
-                                            i,
-                                            (biome, output) ->
-                                                    new CelestialRelief(biome, output, null)));
-
-    private static final KeyDispatchDataCodec<CelestialRelief> CODEC =
-            KeyDispatchDataCodec.of(MAP_CODEC);
+                                    .apply(i, CelestialRelief::new));
     private static final Identifier DEPTH =
             Identifier.fromNamespaceAndPath("hbmspace", "relief_depth");
     private static final float[] PARABOLIC_FIELD = new float[25];
@@ -101,88 +88,96 @@ public record CelestialRelief(
     }
 
     @Override
-    public DensityFunction seeded(PositionalRandomFactory random) {
+    public DensitySampler compileSampler(CompileContext context) {
         BiomeGenBaseCelestial.buildDeclared();
-        return new CelestialRelief(
-                biome,
+        return new Sampler(
+                biome.compileSampler(context),
                 output,
-                PerlinNoise.createLegacyForBlendedNoise(
-                        random.fromHashOf(DEPTH), IntStream.rangeClosed(-15, 0)));
+                new TerrainNoise(context.createRandom(DEPTH)));
     }
 
-    @Override
-    public double compute(FunctionContext context) {
-        if (depthNoise == null)
-            throw new IllegalStateException("relief computed before a level wired it");
-        int quartX = context.blockX() >> 2;
-        int quartZ = context.blockZ() >> 2;
+    private record Sampler(DensitySampler biome, Output output, TerrainNoise depthNoise)
+            implements DensitySampler {
+        @Override
+        public float sampleValue(SamplerContext context, int x, int y, int z) {
+            int quartX = x >> 2;
+            int quartZ = z >> 2;
 
-        BiomeGenBaseCelestial centre = biomeAt(quartX, quartZ);
-        float scale = 0.0F;
-        float depth = 0.0F;
-        float weight = 0.0F;
-        float lowest = 0.0F;
-        for (int j = -2; j <= 2; ++j) {
-            for (int k = -2; k <= 2; ++k) {
-                BiomeGenBaseCelestial near = biomeAt(quartX + j, quartZ + k);
-                float w = PARABOLIC_FIELD[j + 2 + (k + 2) * 5] / (near.rootHeight + 2.0F);
-                if (near.rootHeight > centre.rootHeight) w /= 2.0F;
-                scale += near.heightVariation * w;
-                depth += near.rootHeight * w;
-                weight += w;
-                lowest = Math.min(lowest, near.rootHeight);
+            BiomeGenBaseCelestial centre = biomeAt(context, quartX, quartZ);
+            float scale = 0.0F;
+            float depth = 0.0F;
+            float weight = 0.0F;
+            float lowest = 0.0F;
+            for (int j = -2; j <= 2; ++j) {
+                for (int k = -2; k <= 2; ++k) {
+                    BiomeGenBaseCelestial near = biomeAt(context, quartX + j, quartZ + k);
+                    float w = PARABOLIC_FIELD[j + 2 + (k + 2) * 5] / (near.rootHeight + 2.0F);
+                    if (near.rootHeight > centre.rootHeight) w /= 2.0F;
+                    scale += near.heightVariation * w;
+                    depth += near.rootHeight * w;
+                    weight += w;
+                    lowest = Math.min(lowest, near.rootHeight);
+                }
             }
+
+            double value =
+                    switch (output) {
+                        case OFFSET -> {
+                            double scaledDepth =
+                                    ((depth / weight * 4.0F - 1.0F) / 8.0F
+                                                    + depthNoise(quartX, quartZ) * 0.2D)
+                                            * 8.5D
+                                            / 8.0D;
+                            yield (68.0D + scaledDepth * 32.0D) / 128.0D;
+                        }
+                        case FACTOR -> 0.75D / (scale / weight * 0.9F + 0.1F);
+                        case CAVE_CEILING -> 8 * (int) ((56.0D + lowest * 20.0D) / 8.0D);
+                        case CAVE_GUARD -> (20.0D - lowest * 30.0D) / 128.0D;
+                    };
+            return (float) value;
         }
 
-        return switch (output) {
-            case OFFSET -> {
-                double scaledDepth =
-                        ((depth / weight * 4.0F - 1.0F) / 8.0F + depthNoise(quartX, quartZ) * 0.2D)
-                                * 8.5D
-                                / 8.0D;
-                yield (68.0D + scaledDepth * 32.0D) / 128.0D;
-            }
-            case FACTOR -> 0.75D / (scale / weight * 0.9F + 0.1F);
-            case CAVE_CEILING -> 8 * (int) ((56.0D + lowest * 20.0D) / 8.0D);
-            case CAVE_GUARD -> (20.0D - lowest * 30.0D) / 128.0D;
-        };
-    }
+        private BiomeGenBaseCelestial biomeAt(SamplerContext context, int quartX, int quartZ) {
+            return BiomeGenBaseCelestial.getBiome(
+                    (int) biome.sampleValue(context, quartX << 2, 0, quartZ << 2));
+        }
 
-    private BiomeGenBaseCelestial biomeAt(int quartX, int quartZ) {
-        return BiomeGenBaseCelestial.getBiome(
-                (int) biome.compute(new SinglePointContext(quartX << 2, 0, quartZ << 2)));
-    }
+        private double depthNoise(int quartX, int quartZ) {
+            double noise =
+                    depthNoise.getValue(quartX * 200.0D, 10.0D, quartZ * 200.0D)
+                            * 65535.0D
+                            / 8000.0D;
+            if (noise < 0.0D) noise = -noise * 0.3D;
+            noise = noise * 3.0D - 2.0D;
+            return noise < 0.0D
+                    ? Math.max(noise / 2.0D, -1.0D) / 2.8D
+                    : Math.min(noise, 1.0D) / 8.0D;
+        }
 
-    private double depthNoise(int quartX, int quartZ) {
-        double noise =
-                depthNoise.getValue(quartX * 200.0D, 10.0D, quartZ * 200.0D) * 65535.0D / 8000.0D;
-        if (noise < 0.0D) noise = -noise * 0.3D;
-        noise = noise * 3.0D - 2.0D;
-        return noise < 0.0D ? Math.max(noise / 2.0D, -1.0D) / 2.8D : Math.min(noise, 1.0D) / 8.0D;
+        @Override
+        public void sampleVolume(
+                SamplerContext context, DensityBuffer output, DensityVolume volume) {
+            DensitySampler.sampleVolumeNaive(context, output, volume, this);
+        }
     }
 
     @Override
-    public void fillArray(double[] output, ContextProvider contextProvider) {
-        contextProvider.fillAllDirectly(output, this);
+    public DensityFunction rewriteChildren(DfRewriteRule rule) {
+        return new CelestialRelief(rule.rewrite(biome), output);
     }
 
     @Override
-    public DensityFunction mapChildren(Visitor visitor) {
-        return new CelestialRelief(visitor.apply(biome), output, depthNoise);
+    public Interval range() {
+        return Interval.ofSymmetric(1000000.0F);
     }
 
     @Override
-    public double minValue() {
-        return -1000000.0D;
+    public int domainAxes() {
+        return AXIS_X | AXIS_Z;
     }
 
     @Override
-    public double maxValue() {
-        return 1000000.0D;
-    }
-
-    @Override
-    public KeyDispatchDataCodec<? extends DensityFunction> codec() {
-        return CODEC;
+    public MapCodec<CelestialRelief> codec() {
+        return MAP_CODEC;
     }
 }

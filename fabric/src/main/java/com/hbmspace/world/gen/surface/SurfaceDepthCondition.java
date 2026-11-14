@@ -20,22 +20,23 @@
 package com.hbmspace.world.gen.surface;
 
 import com.mojang.serialization.MapCodec;
-import net.minecraft.world.level.levelgen.SurfaceRules.ConditionSource;
-import net.minecraft.world.level.levelgen.SurfaceRules;
+import net.minecraft.world.level.levelgen.material.MaterialRuleContext;
+import net.minecraft.world.level.levelgen.material.condition.ConditionEvaluator;
+import net.minecraft.world.level.levelgen.material.condition.MaterialCondition;
 
-public record SurfaceDepthCondition(SurfaceDepth depth) implements ConditionSource {
+public record SurfaceDepthCondition(SurfaceDepth depth) implements MaterialCondition {
 
     public static final MapCodec<SurfaceDepthCondition> CODEC =
             SurfaceDepth.MAP_CODEC.xmap(SurfaceDepthCondition::new, SurfaceDepthCondition::depth);
 
     @Override
-    public MapCodec<? extends ConditionSource> codec() {
+    public MapCodec<? extends MaterialCondition> codec() {
         return CODEC;
     }
 
     @Override
-    public SurfaceRules.Condition apply(SurfaceRules.Context context) {
+    public ConditionEvaluator compile(MaterialRuleContext context) {
         SurfaceDepth.Column column = depth.column(context);
-        return () -> context.stoneDepthAbove <= 1 + column.depth();
+        return () -> context.stoneDepthAbove() <= 1 + column.depth();
     }
 }

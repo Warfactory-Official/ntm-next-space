@@ -14,12 +14,8 @@
   "min_size": 2,
   "min_tilt": 0.2,
   "noise": "hbmspace:spires",
-  "regolith": {
-    "Name": "minecraft:snow_block"
-  },
-  "rock": {
-    "Name": "minecraft:packed_ice"
-  },
+  "regolith": "minecraft:snow_block",
+  "rock": "minecraft:packed_ice",
   "spawn_overrides": {},
   "step": "lakes",
   "terrain_adaptation": "none",

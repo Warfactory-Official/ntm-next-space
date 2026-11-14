@@ -19,7 +19,7 @@
 
 package com.hbmspace.client.fog;
 
-import com.mojang.blaze3d.buffers.GpuBuffer;
+import com.mojang.renderpearl.api.buffers.GpuBuffer;
 
 public interface BoundTerrainFog extends TerrainFogPayload {
     TerrainFogWriter hbmspace$writer();

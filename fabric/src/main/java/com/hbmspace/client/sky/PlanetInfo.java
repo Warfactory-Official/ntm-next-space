@@ -22,9 +22,9 @@ package com.hbmspace.client.sky;
 import com.mojang.blaze3d.buffers.Std140Builder;
 import com.mojang.blaze3d.buffers.Std140SizeCalculator;
 import java.nio.ByteBuffer;
-import net.minecraft.client.renderer.DynamicUniformStorage.DynamicUniform;
+import net.minecraft.client.renderer.DynamicGpuDataStorage.DynamicGpuData;
 
-public final class PlanetInfo implements DynamicUniform {
+public final class PlanetInfo implements DynamicGpuData {
 
     public static final int MAX_SHOCKS = 4;
     public static final int SIZE =

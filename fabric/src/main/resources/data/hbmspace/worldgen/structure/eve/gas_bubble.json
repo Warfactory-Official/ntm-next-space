@@ -7,9 +7,7 @@
     "hbmspace:eve_seismic_plains",
     "hbmspace:eve_river"
   ],
-  "core": {
-    "Name": "hbmspace:ore_gas_eve"
-  },
+  "core": "hbmspace:ore_gas_eve",
   "fuzzy": false,
   "max_size": 16,
   "min_size": 8,

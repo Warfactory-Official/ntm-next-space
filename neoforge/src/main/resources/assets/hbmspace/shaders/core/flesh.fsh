@@ -1,6 +1,7 @@
 #version 330
+#extension GL_ARB_separate_shader_objects : require
 
-#moj_import <hbmspace:shader_time.glsl>
+#include <hbmspace:shader_time.glsl>
 
 
 #define ITERATIONS 28.
@@ -32,8 +33,8 @@
 
 uniform sampler2D Sampler0;
 #define iChannel0 Sampler0
-in vec3 vPosition;
-out vec4 fragColor;
+layout(location = 0) in vec3 vPosition;
+layout(location = 0) out vec4 fragColor;
 
 mat2 RM2D(float a)
 {
@@ -78,7 +79,7 @@ float CalculateDiffuseLight(vec3 normal, vec3 lightDirection)
 float CalculateSpecularLight(vec3 normal, vec3 lightDirection, vec3 currentPosition)
 {
     vec3 lightSource = vec3(0.9, 0.1, 1.0);
-    vec3 reflectedDirection = reflect(-lightDirection, normal);  
+    vec3 reflectedDirection = reflect(-lightDirection, normal);
     vec3 viewDirection = normalize(lightSource - currentPosition);
     return pow(max(dot(viewDirection, reflectedDirection), 0.0), SPECULAR_SHININESS);
 }
@@ -94,7 +95,7 @@ void main()
     float noise = FBM(uv);
     float originalNoise = noise;
     noise = clamp(noise, 0.0, 1.0);
-    
+
     
     float pulsate = sin(iTime * 0.5) * 0.5 + 0.5;  
     vec3 fleshColor = mix(vec3(0.8, 0.3, 0.2), vec3(1.0, 0.5, 0.4), pulsate);
@@ -103,7 +104,7 @@ void main()
 
     vec3 lightSource = vec3(0.76, 0.7, 0.);
     vec3 lightDirection = normalize(currentPosition - lightSource);
-    
+
     if (USE_FLUID)
     {
         float fluidViscosity = 681.72;
@@ -112,12 +113,12 @@ void main()
         float fluidNoise = pow(texture(iChannel0, uv * 0.12 + fluidOffset).x, 5.5 * FLUID_STRENGTH) * 0.27;
         noise += fluidNoise * (1.0 - smoothstep(0.0, 0.4, noise));
     }
-    
+
     
     vec3 normal = normalize(vec3(noise - FBM(uv + vec2(0.001, 0)), noise - FBM(uv + vec2(0, 0.001)), 1.0));
 
     float brightness = CalculateDiffuseLight(normal, lightDirection);
-    
+
     lightSource = vec3(0.9, 0.1, 1.0);
     vec3 viewDirection = normalize(lightSource - currentPosition);
     vec3 fresnelNormal = normalize(vec3(normal.x, normal.y, 1.0));

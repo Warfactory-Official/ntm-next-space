@@ -1,7 +1,6 @@
 {
   "feature": {
-    "type": "hbm:lantern_behemoth",
-    "config": {}
+    "type": "hbm:lantern_behemoth"
   },
   "placement": [
     {

@@ -43,6 +43,7 @@ import com.hbm.util.NumberFormatter;
 import com.hbmspace.blockentity.machine.DysonReceiverBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.Prediction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -96,7 +97,7 @@ public class DysonReceiverBlock extends MultiblockCoreBlock
         ItemStack chip = receiver.getItem(0);
         if (!chip.isEmpty()) {
             receiver.setItem(0, ItemStack.EMPTY);
-            player.getInventory().placeItemBackInInventory(chip);
+            player.getInventory().placeItemBackInInventory(chip, Prediction.SERVER_ONLY);
             DysonLauncherBlock.plug(level, hit.getBlockPos());
         }
         return InteractionResult.SUCCESS;

@@ -21,22 +21,14 @@ package com.hbmspace.blocks.generic;
 
 import com.hbm.blocks.generic.FalloutBlock;
 import com.hbm.handler.radiation.RadiationSystemNT;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class SaltedFalloutBlock extends FalloutBlock {
-    public static final MapCodec<SaltedFalloutBlock> CODEC = simpleCodec(SaltedFalloutBlock::new);
-
     public SaltedFalloutBlock(Properties props) {
         super(props);
-    }
-
-    @Override
-    protected MapCodec<SaltedFalloutBlock> codec() {
-        return CODEC;
     }
 
     @Override

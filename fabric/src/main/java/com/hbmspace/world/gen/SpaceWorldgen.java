@@ -50,10 +50,8 @@ import com.hbmspace.world.gen.surface.FloorAboveCondition;
 import com.hbmspace.world.gen.surface.SubstituteRule;
 import com.hbmspace.world.gen.surface.SurfaceDepthCondition;
 import com.mojang.serialization.MapCodec;
-import net.minecraft.world.level.levelgen.placement.PlacementModifierType;
 import net.minecraft.world.level.levelgen.structure.StructureType;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
-import net.minecraft.world.level.levelgen.structure.placement.StructurePlacementType;
 
 public final class SpaceWorldgen {
 
@@ -83,14 +81,14 @@ public final class SpaceWorldgen {
     public static final RegistryHandle<MapCodec<SubstituteRule>> SUBSTITUTE =
             Registrar.registerMaterialRule("hbmspace:substitute", SubstituteRule.CODEC);
 
-    public static final RegistryHandle<CelestialCaveCarver> CAVE =
-            Registrar.registerCarver("hbmspace:cave", new CelestialCaveCarver());
-    public static final RegistryHandle<ExperimentalCaveCarver> EXPERIMENTAL_CAVE =
-            Registrar.registerCarver("hbmspace:experimental_cave", new ExperimentalCaveCarver());
-    public static final RegistryHandle<RavineCarver> RAVINE =
-            Registrar.registerCarver("hbmspace:ravine", new RavineCarver());
-    public static final RegistryHandle<RootCarver> ROOTS =
-            Registrar.registerCarver("hbmspace:roots", new RootCarver());
+    public static final RegistryHandle<MapCodec<CelestialCaveCarver>> CAVE =
+            Registrar.registerCarver("hbmspace:cave", CelestialCaveCarver.CODEC);
+    public static final RegistryHandle<MapCodec<ExperimentalCaveCarver>> EXPERIMENTAL_CAVE =
+            Registrar.registerCarver("hbmspace:experimental_cave", ExperimentalCaveCarver.CODEC);
+    public static final RegistryHandle<MapCodec<RavineCarver>> RAVINE =
+            Registrar.registerCarver("hbmspace:ravine", RavineCarver.CODEC);
+    public static final RegistryHandle<MapCodec<RootCarver>> ROOTS =
+            Registrar.registerCarver("hbmspace:roots", RootCarver.CODEC);
 
     public static final RegistryHandle<StructureType<VolcanoStructure>> VOLCANO =
             Registrar.registerStructureType("hbmspace:volcano", VolcanoStructure.CODEC);
@@ -101,33 +99,32 @@ public final class SpaceWorldgen {
     public static final RegistryHandle<StructurePieceType> TILTED_SPIRE_PIECE =
             Registrar.registerStructurePieceType("hbmspace:tilted_spire", TiltedSpirePiece::new);
 
-    public static final RegistryHandle<StructurePlacementType<ChunkOddsPlacement>> CHUNK_ODDS =
+    public static final RegistryHandle<MapCodec<ChunkOddsPlacement>> CHUNK_ODDS =
             Registrar.registerStructurePlacementType(
                     "hbmspace:chunk_odds", ChunkOddsPlacement.CODEC);
 
-    public static final RegistryHandle<PlacementModifierType<DescendThroughAirPlacement>>
-            DESCEND_THROUGH_AIR =
-                    Registrar.registerPlacementModifierType(
-                            "hbmspace:descend_through_air", DescendThroughAirPlacement.CODEC);
+    public static final RegistryHandle<MapCodec<DescendThroughAirPlacement>> DESCEND_THROUGH_AIR =
+            Registrar.registerPlacementModifierType(
+                    "hbmspace:descend_through_air", DescendThroughAirPlacement.CODEC);
 
-    public static final RegistryHandle<WaterPlantFeature> WATER_PLANT =
-            Registrar.registerFeature("hbmspace:water_plant", new WaterPlantFeature());
-    public static final RegistryHandle<WaterCoralFeature> WATER_CORAL =
-            Registrar.registerFeature("hbmspace:water_coral", new WaterCoralFeature());
-    public static final RegistryHandle<RubberPlantFeature> RUBBER_PLANT =
-            Registrar.registerFeature("hbmspace:rubber_plant", new RubberPlantFeature());
-    public static final RegistryHandle<EveSpikeFeature> EVE_SPIKE =
-            Registrar.registerFeature("hbmspace:eve_spike", new EveSpikeFeature());
-    public static final RegistryHandle<MohoVentFeature> MOHO_VENT =
-            Registrar.registerFeature("hbmspace:moho_vent", new MohoVentFeature());
-    public static final RegistryHandle<VoronoiPlatesFeature> VORONOI_PLATES =
-            Registrar.registerFeature("hbmspace:voronoi_plates", new VoronoiPlatesFeature());
-    public static final RegistryHandle<SeismicCrackFeature> SEISMIC_CRACK =
-            Registrar.registerFeature("hbmspace:seismic_crack", new SeismicCrackFeature());
-    public static final RegistryHandle<PlateauFeature> PLATEAU =
-            Registrar.registerFeature("hbmspace:plateau", new PlateauFeature());
-    public static final RegistryHandle<BasaltSpikesFeature> BASALT_SPIKES =
-            Registrar.registerFeature("hbmspace:basalt_spikes", new BasaltSpikesFeature());
+    public static final RegistryHandle<MapCodec<WaterPlantFeature>> WATER_PLANT =
+            Registrar.registerFeature("hbmspace:water_plant", WaterPlantFeature.CODEC);
+    public static final RegistryHandle<MapCodec<WaterCoralFeature>> WATER_CORAL =
+            Registrar.registerFeature("hbmspace:water_coral", WaterCoralFeature.CODEC);
+    public static final RegistryHandle<MapCodec<RubberPlantFeature>> RUBBER_PLANT =
+            Registrar.registerFeature("hbmspace:rubber_plant", RubberPlantFeature.CODEC);
+    public static final RegistryHandle<MapCodec<EveSpikeFeature>> EVE_SPIKE =
+            Registrar.registerFeature("hbmspace:eve_spike", EveSpikeFeature.CODEC);
+    public static final RegistryHandle<MapCodec<MohoVentFeature>> MOHO_VENT =
+            Registrar.registerFeature("hbmspace:moho_vent", MohoVentFeature.CODEC);
+    public static final RegistryHandle<MapCodec<VoronoiPlatesFeature>> VORONOI_PLATES =
+            Registrar.registerFeature("hbmspace:voronoi_plates", VoronoiPlatesFeature.CODEC);
+    public static final RegistryHandle<MapCodec<SeismicCrackFeature>> SEISMIC_CRACK =
+            Registrar.registerFeature("hbmspace:seismic_crack", SeismicCrackFeature.CODEC);
+    public static final RegistryHandle<MapCodec<PlateauFeature>> PLATEAU =
+            Registrar.registerFeature("hbmspace:plateau", PlateauFeature.CODEC);
+    public static final RegistryHandle<MapCodec<BasaltSpikesFeature>> BASALT_SPIKES =
+            Registrar.registerFeature("hbmspace:basalt_spikes", BasaltSpikesFeature.CODEC);
 
     private SpaceWorldgen() {}
 }

@@ -197,7 +197,7 @@ public class SiegeCraftRenderer extends EntityRenderer<SiegeCraftEntity, SiegeCr
         }
         poseStack.pushPose();
         for (int i = 0; i < SPOKES; i++) {
-            poseStack.mulPose((Quaternionfc) Axis.YP.rotationDegrees(45F));
+            poseStack.rotate((Quaternionfc) Axis.YP.rotationDegrees(45F));
             if (!state.spokes[i]) continue;
             poseStack.pushPose();
             poseStack.translate(4F, 0F, 0F);

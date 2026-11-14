@@ -21,36 +21,35 @@ package com.hbmspace.world.gen.density;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.util.KeyDispatchDataCodec;
+import net.minecraft.util.Interval;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Aquifer;
-import net.minecraft.world.level.levelgen.DensityFunction;
+import net.minecraft.world.level.levelgen.densityfunction.*;
 import org.jspecify.annotations.Nullable;
 
-public record NoiseCaves(DensityFunction caves) implements DensityFunction {
-
+public record NoiseCaves(DensityFunction terrain, DensityFunction caves)
+        implements DensityFunction {
     public static final MapCodec<NoiseCaves> MAP_CODEC =
             RecordCodecBuilder.mapCodec(
                     i ->
                             i.group(
                                             DensityFunction.CODEC
+                                                    .fieldOf("terrain")
+                                                    .forGetter(NoiseCaves::terrain),
+                                            DensityFunction.CODEC
                                                     .fieldOf("caves")
                                                     .forGetter(NoiseCaves::caves))
                                     .apply(i, NoiseCaves::new));
 
-    private static final KeyDispatchDataCodec<NoiseCaves> CODEC =
-            KeyDispatchDataCodec.of(MAP_CODEC);
-
-    public static Aquifer aquifer(DensityFunction caves, Aquifer.FluidPicker fluids) {
+    public static Aquifer aquifer(DensitySampler.Bound caves, Aquifer.FluidPicker fluids) {
         BlockState air = Blocks.AIR.defaultBlockState();
         return new Aquifer() {
             @Override
-            public @Nullable BlockState computeSubstance(FunctionContext context, double density) {
+            public @Nullable BlockState computeSubstance(int x, int y, int z, double density) {
                 if (density > 0.0D) return null;
-                if (caves.compute(context) < 0.0D) return air;
-                return fluids.computeFluid(context.blockX(), context.blockY(), context.blockZ())
-                        .at(context.blockY());
+                if (caves.sampleValue(x, y, z) < 0.0F) return air;
+                return fluids.computeFluid(x, y, z).at(y);
             }
 
             @Override
@@ -61,32 +60,27 @@ public record NoiseCaves(DensityFunction caves) implements DensityFunction {
     }
 
     @Override
-    public double compute(FunctionContext context) {
-        return caves.compute(context);
+    public DensitySampler compileSampler(CompileContext context) {
+        return terrain.compileSampler(context);
     }
 
     @Override
-    public void fillArray(double[] output, ContextProvider contextProvider) {
-        caves.fillArray(output, contextProvider);
+    public DensityFunction rewriteChildren(DfRewriteRule rule) {
+        return new NoiseCaves(rule.rewrite(terrain), rule.rewrite(caves));
     }
 
     @Override
-    public DensityFunction mapChildren(Visitor visitor) {
-        return new NoiseCaves(visitor.apply(caves));
+    public Interval range() {
+        return terrain.range();
     }
 
     @Override
-    public double minValue() {
-        return caves.minValue();
+    public int domainAxes() {
+        return terrain.domainAxes();
     }
 
     @Override
-    public double maxValue() {
-        return caves.maxValue();
-    }
-
-    @Override
-    public KeyDispatchDataCodec<? extends DensityFunction> codec() {
-        return CODEC;
+    public MapCodec<NoiseCaves> codec() {
+        return MAP_CODEC;
     }
 }

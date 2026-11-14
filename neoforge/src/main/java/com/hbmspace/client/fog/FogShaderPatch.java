@@ -89,7 +89,7 @@ public final class FogShaderPatch {
 
     private static @Nullable String sodiumFog(String source) {
         String fog = wrapTotal(source, "SpaceTerrainFogDensity", "SpaceTerrainFogFlags");
-        return fog == null ? null : "#moj_import <sodium:globals.glsl>\n" + fog;
+        return fog;
     }
 
     private static @Nullable String appendMembers(String source, String block, String members) {

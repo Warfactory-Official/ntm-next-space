@@ -37,88 +37,83 @@ package com.hbmspace.world.gen.feature;
 import com.hbm.world.NtmWorldgenFields;
 import com.hbm.world.WorldgenHash;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.Registry;
-import net.minecraft.core.RegistryCodecs;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.core.registries.codec.RegistryCodecs;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 
-public class VoronoiPlatesFeature extends Feature<VoronoiPlatesFeature.Config> {
+public record VoronoiPlatesFeature(
+        int cellSize,
+        double crackSize,
+        int startY,
+        int thickness,
+        double shapeExponent,
+        BlockState rock,
+        BlockState surface,
+        BlockState fluid,
+        HolderSet<Biome> biomes)
+        implements Feature {
 
     private static final long CELLS =
             WorldgenHash.identifier(Identifier.fromNamespaceAndPath("hbmspace", "voronoi_plates"));
 
-    public record Config(
-            int cellSize,
-            double crackSize,
-            int startY,
-            int thickness,
-            double shapeExponent,
-            BlockState rock,
-            BlockState surface,
-            BlockState fluid,
-            HolderSet<Biome> biomes)
-            implements FeatureConfiguration {
+    public static final MapCodec<VoronoiPlatesFeature> CODEC =
+            RecordCodecBuilder.mapCodec(
+                    i ->
+                            i.group(
+                                            Codec.intRange(1, 256)
+                                                    .fieldOf("cell_size")
+                                                    .forGetter(VoronoiPlatesFeature::cellSize),
+                                            Codec.DOUBLE
+                                                    .fieldOf("crack_size")
+                                                    .forGetter(VoronoiPlatesFeature::crackSize),
+                                            Codec.INT
+                                                    .fieldOf("start_y")
+                                                    .forGetter(VoronoiPlatesFeature::startY),
+                                            Codec.intRange(0, 256)
+                                                    .fieldOf("thickness")
+                                                    .forGetter(VoronoiPlatesFeature::thickness),
+                                            Codec.DOUBLE
+                                                    .fieldOf("shape_exponent")
+                                                    .forGetter(VoronoiPlatesFeature::shapeExponent),
+                                            BlockState.CODEC
+                                                    .fieldOf("rock")
+                                                    .forGetter(VoronoiPlatesFeature::rock),
+                                            BlockState.CODEC
+                                                    .fieldOf("surface")
+                                                    .forGetter(VoronoiPlatesFeature::surface),
+                                            BlockState.CODEC
+                                                    .fieldOf("fluid")
+                                                    .forGetter(VoronoiPlatesFeature::fluid),
+                                            RegistryCodecs.<Biome>holderSet(
+                                                            (ResourceKey<? extends Registry<Biome>>)
+                                                                    Registries.BIOME)
+                                                    .fieldOf("biomes")
+                                                    .forGetter(VoronoiPlatesFeature::biomes))
+                                    .apply(i, VoronoiPlatesFeature::new));
 
-        public static final Codec<Config> CODEC =
-                RecordCodecBuilder.create(
-                        i ->
-                                i.group(
-                                                Codec.intRange(1, 256)
-                                                        .fieldOf("cell_size")
-                                                        .forGetter(Config::cellSize),
-                                                Codec.DOUBLE
-                                                        .fieldOf("crack_size")
-                                                        .forGetter(Config::crackSize),
-                                                Codec.INT
-                                                        .fieldOf("start_y")
-                                                        .forGetter(Config::startY),
-                                                Codec.intRange(0, 256)
-                                                        .fieldOf("thickness")
-                                                        .forGetter(Config::thickness),
-                                                Codec.DOUBLE
-                                                        .fieldOf("shape_exponent")
-                                                        .forGetter(Config::shapeExponent),
-                                                BlockState.CODEC
-                                                        .fieldOf("rock")
-                                                        .forGetter(Config::rock),
-                                                BlockState.CODEC
-                                                        .fieldOf("surface")
-                                                        .forGetter(Config::surface),
-                                                BlockState.CODEC
-                                                        .fieldOf("fluid")
-                                                        .forGetter(Config::fluid),
-                                                RegistryCodecs.<Biome>homogeneousList(
-                                                                (ResourceKey<
-                                                                                ? extends
-                                                                                        Registry<
-                                                                                                Biome>>)
-                                                                        Registries.BIOME)
-                                                        .fieldOf("biomes")
-                                                        .forGetter(Config::biomes))
-                                        .apply(i, Config::new));
-    }
-
-    public VoronoiPlatesFeature() {
-        super(Config.CODEC);
+    @Override
+    public MapCodec<VoronoiPlatesFeature> codec() {
+        return CODEC;
     }
 
     @Override
-    public boolean place(FeaturePlaceContext<Config> context) {
-        Config config = context.config();
-        WorldGenLevel level = context.level();
+    public boolean place(
+            WorldGenLevel level, ChunkGenerator generator, RandomSource random, BlockPos origin) {
+        VoronoiPlatesFeature config = this;
         long seed = NtmWorldgenFields.get(level).domainSeed(CELLS);
-        BlockPos origin = context.origin();
         BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
         boolean placed = false;
 
@@ -153,7 +148,7 @@ public class VoronoiPlatesFeature extends Feature<VoronoiPlatesFeature.Config> {
                 WorldgenHash.worldDimensionSeed(worldSeed, dimension), CELLS);
     }
 
-    public static int top(Config config, long seed, int x, int z) {
+    public static int top(VoronoiPlatesFeature config, long seed, int x, int z) {
         double nearest = Double.MAX_VALUE;
         double second = Double.MAX_VALUE;
         int cellX = x / config.cellSize();

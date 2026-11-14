@@ -20,10 +20,11 @@
 package com.hbmspace.client.sky;
 
 import com.hbmspace.HbmSpace;
-import com.mojang.blaze3d.PrimitiveTopology;
-import com.mojang.blaze3d.pipeline.BindGroupLayout;
-import com.mojang.blaze3d.pipeline.RenderPipeline;
-import com.mojang.blaze3d.shaders.UniformType;
+import com.mojang.renderpearl.api.pipeline.BindGroupLayout;
+import com.mojang.renderpearl.api.pipeline.ColorTargetState;
+import com.mojang.renderpearl.api.pipeline.PrimitiveTopology;
+import com.mojang.renderpearl.api.pipeline.RenderPipeline;
+import com.mojang.renderpearl.api.pipeline.UniformType;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.Identifier;
 
@@ -31,10 +32,11 @@ public final class CelestialLightmapTint {
     public static final BindGroupLayout INFO =
             BindGroupLayout.builder()
                     .withUniform("CelestialTint", UniformType.UNIFORM_BUFFER)
-                    .withSampler("LightmapRaw")
+                    .withUniform("LightmapRaw", UniformType.COMBINED_IMAGE_SAMPLER)
                     .build();
     public static final RenderPipeline PIPELINE =
             RenderPipeline.builder(RenderPipelines.GLOBALS_SNIPPET)
+                    .withColorTargetState(ColorTargetState.DEFAULT)
                     .withLocation(
                             Identifier.fromNamespaceAndPath(
                                     HbmSpace.MOD_ID, "pipeline/lightmap_tint"))

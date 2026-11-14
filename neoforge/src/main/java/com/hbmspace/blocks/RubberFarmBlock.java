@@ -19,7 +19,6 @@
 
 package com.hbmspace.blocks;
 
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -45,18 +44,12 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jspecify.annotations.Nullable;
 
 public class RubberFarmBlock extends Block {
-    public static final MapCodec<RubberFarmBlock> CODEC = simpleCodec(RubberFarmBlock::new);
     public static final BooleanProperty MOIST = BooleanProperty.create("moist");
     private static final VoxelShape SHAPE = Block.column(16.0, 0.0, 15.0);
 
     public RubberFarmBlock(Properties properties) {
         super(properties);
         registerDefaultState(stateDefinition.any().setValue(MOIST, false));
-    }
-
-    @Override
-    protected MapCodec<? extends RubberFarmBlock> codec() {
-        return CODEC;
     }
 
     @Override

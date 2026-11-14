@@ -73,7 +73,9 @@ public class CoralModel implements BlockStateModel {
         TextureSlots slots = resolved.getTopTextureSlots();
         particle = resolved.resolveParticleMaterial(slots, baker);
         Material.Baked coral = BlockModel.slot(baker, resolved, slots, "coral");
-        var info = BakedQuad.MaterialInfo.of(coral, Transparency.TRANSPARENT, -1, false, 0);
+        var info =
+                BakedQuad.MaterialInfo.of(
+                        coral, Transparency.TRANSPARENT, -1, false ? null : Direction.UP, 0);
         for (Direction attachment : Direction.values()) {
             parts[attachment.ordinal()] =
                     new SimpleModelWrapper(

@@ -18,3 +18,24 @@
  */
 
 package com.hbmspace.world.gen.carver;
+
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.chunk.CarverOutput;
+import net.minecraft.world.level.levelgen.WorldGenerationContext;
+import net.minecraft.world.level.levelgen.carver.WorldCarver;
+
+public interface TerrainCarver extends WorldCarver {
+    boolean carve(TerrainCarving context, RandomSource random, ChunkPos sourceChunkPos);
+
+    @Override
+    default boolean carve(
+            WorldGenerationContext context,
+            RandomSource random,
+            ChunkPos chunkPos,
+            ChunkPos sourceChunkPos,
+            CarverOutput output) {
+        throw new IllegalStateException(
+                "Space carver requires the terrain-aware generator pass: " + getClass().getName());
+    }
+}

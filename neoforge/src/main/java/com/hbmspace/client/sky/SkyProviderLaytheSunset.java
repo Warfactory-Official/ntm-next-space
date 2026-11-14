@@ -34,10 +34,10 @@
 
 package com.hbmspace.client.sky;
 
-import com.mojang.blaze3d.PrimitiveTopology;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
+import com.mojang.renderpearl.api.pipeline.PrimitiveTopology;
 import net.minecraft.client.renderer.SkyRenderer;
 import net.minecraft.client.renderer.state.level.SkyRenderState;
 import net.minecraft.util.Mth;
@@ -59,20 +59,20 @@ public class SkyProviderLaytheSunset extends SkyProviderCelestial {
         if (color == null) return;
 
         PoseStack pose = new PoseStack();
-        pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees(90.0F));
-        pose.mulPose(
+        pose.rotate((Quaternionfc) Axis.XP.rotationDegrees(90.0F));
+        pose.rotate(
                 (Quaternionfc)
                         Axis.ZP.rotationDegrees(Mth.sin(state.sunAngle) < 0.0F ? 180.0F : 0.0F));
-        pose.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(90.0F));
+        pose.rotate((Quaternionfc) Axis.ZP.rotationDegrees(90.0F));
         draw(draws, HIGH, pose, new Matrix4f().scaling(1.0F, 1.0F, color[3]), color);
 
         pose = new PoseStack();
-        pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees(135.0F));
+        pose.rotate((Quaternionfc) Axis.XP.rotationDegrees(135.0F));
         pose.translate(0.0F, -60.0F, 0.0F);
         draw(draws, LOW, pose, SkyDraws.IDENTITY, color);
 
         pose = new PoseStack();
-        pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees(135.0F));
+        pose.rotate((Quaternionfc) Axis.XP.rotationDegrees(135.0F));
         pose.translate(0.0F, -30.0F, 0.0F);
         draw(draws, INNER, pose, SkyDraws.IDENTITY, color);
     }

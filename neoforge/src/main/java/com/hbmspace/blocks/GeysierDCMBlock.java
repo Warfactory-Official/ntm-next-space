@@ -21,7 +21,6 @@ package com.hbmspace.blocks;
 
 import com.hbm.blocks.TickingEntityBlock;
 import com.hbmspace.blockentity.deco.GeysirDCMBlockEntity;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -29,15 +28,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jspecify.annotations.Nullable;
 
 public class GeysierDCMBlock extends Block implements TickingEntityBlock {
-    public static final MapCodec<GeysierDCMBlock> CODEC = simpleCodec(GeysierDCMBlock::new);
-
     public GeysierDCMBlock(Properties properties) {
         super(properties);
-    }
-
-    @Override
-    protected MapCodec<? extends GeysierDCMBlock> codec() {
-        return CODEC;
     }
 
     @Override

@@ -31,13 +31,14 @@ import org.spongepowered.asm.mixin.injection.At;
 @Mixin(ShaderManager.class)
 public abstract class MixinShaderManager {
     @ModifyExpressionValue(
-            method = "prepare",
+            method = "loadConfigs",
             at =
                     @At(
                             value = "INVOKE",
                             target =
-                                    "Lnet/minecraft/server/packs/resources/ResourceManager;listResources(Ljava/lang/String;Ljava/util/function/Predicate;)Ljava/util/Map;"))
-    private Map<Identifier, Resource> hbmspace$expFogIncludes(Map<Identifier, Resource> files) {
+                                    "Lnet/minecraft/server/packs/resources/ResourceManager;listResources(Ljava/lang/String;Lnet/minecraft/server/packs/resources/ResourceManager$Selector;)Ljava/util/Map;"))
+    private static Map<Identifier, Resource> hbmspace$expFogIncludes(
+            Map<Identifier, Resource> files) {
         return FogShaderPatch.patch(files);
     }
 }

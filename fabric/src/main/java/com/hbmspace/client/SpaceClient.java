@@ -70,7 +70,7 @@ import com.hbmspace.inventory.container.StationMenusSpace;
 import com.hbmspace.inventory.container.WarMenusSpace;
 import com.hbmspace.particle.SpaceParticles;
 import com.hbmspace.util.AstronomyUtil;
-import com.mojang.blaze3d.pipeline.RenderPipeline;
+import com.mojang.renderpearl.api.pipeline.RenderPipeline;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;

@@ -96,7 +96,8 @@ public class WorldProviderDuna extends WorldProviderCelestial {
                                 ? new BedRule(
                                         BedRule.Rule.ALWAYS,
                                         value.canSetSpawn(),
-                                        value.explodes(),
+                                        value.destroyOnUse(),
+                                        value.destroyOnLeave(),
                                         value.errorMessage())
                                 : value);
     }

@@ -1,4 +1,3 @@
-#version 330
 
 layout(std140) uniform PlanetInfo {
     vec4 PlanetNukeShockTime;

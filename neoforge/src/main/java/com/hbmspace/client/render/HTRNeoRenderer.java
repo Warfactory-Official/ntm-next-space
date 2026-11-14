@@ -127,11 +127,11 @@ public class HTRNeoRenderer
         int light = s.lightCoords;
         ps.pushPose();
         ps.translate(0.5, -2.0, 0.5);
-        ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(s.yaw));
+        ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(s.yaw));
 
         ps.pushPose();
         ps.translate(0, 2.5F, 0);
-        ps.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(s.rotor));
+        ps.rotate((Quaternionfc) Axis.ZP.rotationDegrees(s.rotor));
         ps.translate(0, -2.5F, 0);
         col.submitCustomGeometry(
                 ps,

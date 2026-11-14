@@ -41,8 +41,8 @@ import net.minecraft.world.level.storage.loot.functions.SetPotionFunction;
 import net.minecraft.world.level.storage.loot.predicates.AnyOfCondition;
 import net.minecraft.world.level.storage.loot.predicates.InvertedLootItemCondition;
 import net.minecraft.world.level.storage.loot.predicates.LocationCheck;
-import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
-import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
+import net.minecraft.world.level.storage.loot.providers.number.floats.ContextFloatProviders;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProviders;
 
 public final class CelestialFishing {
 
@@ -113,13 +113,15 @@ public final class CelestialFishing {
                                 .setWeight(2)
                                 .apply(
                                         SetItemDamageFunction.setDamage(
-                                                UniformGenerator.between(0.0F, 0.9F))))
+                                                ContextFloatProviders.between(0.0F, 0.9F))))
                 .add(LootItem.lootTableItem(Items.BOWL).setWeight(10))
                 .add(LootItem.lootTableItem(Items.STICK).setWeight(5))
                 .add(
                         LootItem.lootTableItem(Items.INK_SAC)
                                 .setWeight(1)
-                                .apply(SetItemCountFunction.setCount(ConstantValue.exactly(10.0F))))
+                                .apply(
+                                        SetItemCountFunction.setCount(
+                                                ContextIntProviders.exactly(10))))
                 .add(LootItem.lootTableItem(Blocks.TRIPWIRE_HOOK).setWeight(10));
     }
 

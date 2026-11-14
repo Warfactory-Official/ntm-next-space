@@ -23,22 +23,26 @@ import com.hbm.data.WorldData;
 import com.hbm.registration.Registrar;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.Holder;
 import net.minecraft.world.level.storage.loot.LootContext;
-import net.minecraft.world.level.storage.loot.providers.number.NumberProvider;
-import net.minecraft.world.level.storage.loot.providers.number.NumberProviders;
+import net.minecraft.world.level.storage.loot.Validatable;
+import net.minecraft.world.level.storage.loot.ValidationContext;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProvider;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProviders;
 
-public record WandLootScaledNumberProvider(NumberProvider value) implements NumberProvider {
+public record WandLootScaledNumberProvider(Holder<ContextIntProvider> value)
+        implements ContextIntProvider {
     public static final MapCodec<WandLootScaledNumberProvider> MAP_CODEC =
             RecordCodecBuilder.mapCodec(
                     i ->
                             i.group(
-                                            NumberProviders.CODEC
+                                            ContextIntProviders.CODEC
                                                     .fieldOf("value")
                                                     .forGetter(WandLootScaledNumberProvider::value))
                                     .apply(i, WandLootScaledNumberProvider::new));
 
     public static void register() {
-        Registrar.registerLootNumberProviderType("hbmspace:wand_loot_scaled", MAP_CODEC);
+        Registrar.registerContextIntProviderType("hbmspace:wand_loot_scaled", MAP_CODEC);
     }
 
     public static int scaledRolls(int drawn, double factor) {
@@ -51,12 +55,12 @@ public record WandLootScaledNumberProvider(NumberProvider value) implements Numb
     }
 
     @Override
-    public int getInt(LootContext context) {
-        return scaledRolls(value.getInt(context), WorldData.LOOT_AMOUNT_FACTOR.get());
+    public int getIntUnsafe(LootContext context) {
+        return scaledRolls(value.value().getIntUnsafe(context), WorldData.LOOT_AMOUNT_FACTOR.get());
     }
 
     @Override
-    public float getFloat(LootContext context) {
-        return getInt(context);
+    public void validate(ValidationContext context) {
+        Validatable.validateHolder(context, "value", value);
     }
 }

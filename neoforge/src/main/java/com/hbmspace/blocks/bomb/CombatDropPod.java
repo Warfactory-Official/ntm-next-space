@@ -22,7 +22,6 @@ package com.hbmspace.blocks.bomb;
 import com.hbm.blocks.TickingEntityBlock;
 import com.hbmspace.blockentity.bomb.CombatDropPodBlockEntity;
 import com.hbmspace.data.SpaceData;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
@@ -32,15 +31,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jspecify.annotations.Nullable;
 
 public class CombatDropPod extends Block implements TickingEntityBlock {
-    private static final MapCodec<CombatDropPod> CODEC = simpleCodec(CombatDropPod::new);
-
     public CombatDropPod(Properties properties) {
         super(properties);
-    }
-
-    @Override
-    protected MapCodec<? extends Block> codec() {
-        return CODEC;
     }
 
     @Override

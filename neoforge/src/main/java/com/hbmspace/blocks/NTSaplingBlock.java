@@ -23,8 +23,6 @@ import com.hbm.inventory.fluid.NTMFluids;
 import com.hbmspace.dim.trait.CBT_Atmosphere;
 import com.hbmspace.handler.atmosphere.PlantBreathingHandler;
 import com.hbmspace.inventory.fluid.FluidsSpace;
-import com.mojang.serialization.MapCodec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
@@ -32,6 +30,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.BonemealSource;
 import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.VegetationBlock;
 import net.minecraft.world.level.block.grower.TreeGrower;
@@ -42,15 +41,6 @@ import org.jspecify.annotations.Nullable;
 
 public class NTSaplingBlock extends VegetationBlock
         implements BonemealableBlock, PlantBreathingHandler {
-    public static final MapCodec<NTSaplingBlock> CODEC =
-            RecordCodecBuilder.mapCodec(
-                    i ->
-                            i.group(
-                                            TreeGrower.CODEC
-                                                    .fieldOf("tree")
-                                                    .forGetter(b -> b.treeGrower),
-                                            propertiesCodec())
-                                    .apply(i, NTSaplingBlock::new));
     private static final VoxelShape SHAPE = Block.column(12.8, 0.0, 12.8);
 
     private final TreeGrower treeGrower;
@@ -58,11 +48,6 @@ public class NTSaplingBlock extends VegetationBlock
     public NTSaplingBlock(TreeGrower treeGrower, Properties properties) {
         super(properties);
         this.treeGrower = treeGrower;
-    }
-
-    @Override
-    protected MapCodec<? extends NTSaplingBlock> codec() {
-        return CODEC;
     }
 
     @Override
@@ -105,19 +90,28 @@ public class NTSaplingBlock extends VegetationBlock
     }
 
     @Override
-    public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state) {
+    public boolean isValidBonemealTarget(
+            LevelReader level, BlockPos pos, BlockState state, BonemealSource source) {
         return true;
     }
 
     @Override
     public boolean isBonemealSuccess(
-            Level level, RandomSource random, BlockPos pos, BlockState state) {
+            Level level,
+            RandomSource random,
+            BlockPos pos,
+            BlockState state,
+            BonemealSource source) {
         return random.nextFloat() < 0.45F;
     }
 
     @Override
     public void performBonemeal(
-            ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
+            ServerLevel level,
+            RandomSource random,
+            BlockPos pos,
+            BlockState state,
+            BonemealSource source) {
         treeGrower.growTree(level, level.getChunkSource().getGenerator(), pos, state, random);
     }
 }

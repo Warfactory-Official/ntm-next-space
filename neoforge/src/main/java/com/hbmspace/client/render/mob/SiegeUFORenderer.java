@@ -73,11 +73,11 @@ public class SiegeUFORenderer extends EntityRenderer<SiegeUFOEntity, SiegeUFORen
                                     0.70710677F,
                                     0F,
                                     0.70710677F));
-        } else if (((LivingEntity) entity).invulnerableTime > 0) {
+        } else if (((LivingEntity) entity).damageCooldownTime > 0) {
             pose.rotateX(
                     (float)
                                     (Math.sin(GameTime.now() * 0.01D)
-                                            * (((LivingEntity) entity).invulnerableTime
+                                            * (((LivingEntity) entity).damageCooldownTime
                                                     - partialTick))
                             * Mth.DEG_TO_RAD);
         }

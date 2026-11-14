@@ -74,23 +74,20 @@ final class MohoGrounding {
         if (features.isEmpty()) return ground;
         var biomes =
                 new BiomeManager(
-                        (x2, y, z2) ->
-                                context.biomeSource()
-                                        .getNoiseBiome(x2, y, z2, context.randomState().sampler()),
-                        BiomeManager.obfuscateSeed(context.seed()));
+                        context.biomeResolver(), BiomeManager.obfuscateSeed(context.seed()));
         var pos = new BlockPos.MutableBlockPos();
         var raw = features.getFirst().features();
         for (int featureIndex = 0; featureIndex < raw.size(); featureIndex++) {
             var placed = raw.get(featureIndex);
-            var config = placed.feature().value().config();
-            if (!(config instanceof VoronoiPlatesFeature.Config
-                    || config instanceof PlateauFeature.Config
-                    || config instanceof BasaltSpikesFeature.Config)) continue;
+            var config = placed.feature().value();
+            if (!(config instanceof VoronoiPlatesFeature
+                    || config instanceof PlateauFeature
+                    || config instanceof BasaltSpikesFeature)) continue;
             if (!placed.placement().isEmpty())
                 throw new IllegalStateException(
                         "Moho grounding requires chunk-origin terrain: " + placed);
             switch (config) {
-                case VoronoiPlatesFeature.Config plates -> {
+                case VoronoiPlatesFeature plates -> {
                     long seed =
                             VoronoiPlatesFeature.domainSeed(
                                     context.seed(), SpaceDimensions.MOHO.identifier());
@@ -108,7 +105,7 @@ final class MohoGrounding {
                             index++;
                         }
                 }
-                case PlateauFeature.Config plateau -> {
+                case PlateauFeature plateau -> {
                     var field =
                             new FractalSimplexNoise(
                                     WorldgenHash.domainSeed(
@@ -136,7 +133,7 @@ final class MohoGrounding {
                             index++;
                         }
                 }
-                case BasaltSpikesFeature.Config spikes -> {
+                case BasaltSpikesFeature spikes -> {
                     var noise = context.randomState().getOrCreateNoise(Noises.SURFACE);
                     for (int cz = box.minZ() >> 4; cz <= box.maxZ() >> 4; cz++) {
                         for (int cx = box.minX() >> 4; cx <= box.maxX() >> 4; cx++) {
@@ -221,9 +218,7 @@ final class MohoGrounding {
                 for (int dz = 0; dz <= 1; dz++) {
                     final int x2 = qx + dx;
                     final int z2 = qz + dz;
-                    if (biomes.contains(
-                            context.biomeSource()
-                                    .getNoiseBiome(x2, qy, z2, context.randomState().sampler())))
+                    if (biomes.contains(context.biomeResolver().getNoiseBiome(x2, qy, z2)))
                         return true;
                 }
         }

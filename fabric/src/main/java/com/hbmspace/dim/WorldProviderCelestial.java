@@ -71,6 +71,10 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.portal.TeleportTransition;
 import net.minecraft.world.level.storage.LevelData;
 import net.minecraft.world.phys.Vec3;
+import org.joml.Vector3f;
+import org.joml.Vector3fc;
+import org.joml.Vector4f;
+import org.joml.Vector4fc;
 import org.jspecify.annotations.Nullable;
 
 public class WorldProviderCelestial {
@@ -537,6 +541,214 @@ public class WorldProviderCelestial {
                                 ARGB.greenFloat(vanilla),
                                 ARGB.blueFloat(vanilla)));
         return ARGB.color(ARGB.alpha(vanilla), rgb(tinted.x, tinted.y, tinted.z));
+    }
+
+    public Vector3fc getSkyColor(Level level, Vector3fc vanilla, Sky sky) {
+        CelestialBody body = body();
+        CBT_Atmosphere atmosphere = body.getTrait(CBT_Atmosphere.class);
+        if (atmosphere == null) return new Vector3f();
+
+        float sun = getSunBrightnessFactor(level, sky.solarAngle());
+        float totalPressure = (float) atmosphere.getPressure();
+        double r = 0, g = 0, b = 0;
+
+        for (FluidEntry entry : atmosphere.fluids) {
+            double fr, fg, fb;
+            if (entry.fluid == gas("EVEAIR")) {
+                fr = 53F / 255F * sun;
+                fg = 32F / 255F * sun;
+                fb = 74F / 255F * sun;
+            } else if (entry.fluid == gas("DUNAAIR") || entry.fluid == NTMFluids.CARBONDIOXIDE) {
+                fr = 212F / 255F * sun;
+                fg = 112F / 255F * sun;
+                fb = 78F / 255F * sun;
+            } else if (isEarthLike(entry.fluid)) {
+                fr = vanilla.x();
+                fg = vanilla.y();
+                fb = vanilla.z();
+            } else {
+                int hex = hex(entry.fluid);
+                fr = ARGB.redFloat(hex) * sun;
+                fg = ARGB.greenFloat(hex) * sun;
+                fb = ARGB.blueFloat(hex) * sun;
+            }
+
+            float percentage = (float) entry.pressure / totalPressure;
+            r += fr * percentage;
+            g += fg * percentage;
+            b += fb * percentage;
+        }
+
+        float flash = warFlash(body) * 0.5F;
+        r += flash;
+        g += flash;
+        b += flash;
+
+        float pressureFactor = Mth.clamp(totalPressure, 0.0F, 1.0F);
+        r *= pressureFactor;
+        g *= pressureFactor;
+        b *= pressureFactor;
+
+        if (sky.eclipse() > 0) {
+            r *= 1 - sky.eclipse() * 0.6;
+            g *= 1 - sky.eclipse() * 0.6;
+            b *= 1 - sky.eclipse() * 0.5;
+        }
+
+        float dust = sky.dust();
+        float fire = sky.fire();
+        if (dust > 0) {
+            if (fire > 0) {
+                r *= 1.3;
+                g *= Math.max(1 - dust * 1.4F, 0);
+                b *= Math.max(1 - dust * 4, 0);
+            } else {
+                g *= 1 - dust * 0.5F;
+                b *= Math.max(1 - dust * 4, 0);
+            }
+
+            r *= fire + (1 - dust);
+            g *= fire + (1 - dust);
+            b *= fire + (1 - dust);
+        }
+
+        return new Vector3f(
+                (float) Mth.clamp(r, 0.0D, 1.0D),
+                (float) Mth.clamp(g, 0.0D, 1.0D),
+                (float) Mth.clamp(b, 0.0D, 1.0D));
+    }
+
+    public Vector3fc getFogColorVector(Level level, Sky sky, double cameraY) {
+        CBT_Atmosphere atmosphere = body().getTrait(CBT_Atmosphere.class);
+        if (atmosphere == null) return new Vector3f();
+
+        float sun =
+                Mth.clamp(
+                        Mth.cos(sky.solarAngle() * (float) Math.PI * 2.0F) * 2.0F + 0.5F,
+                        0.0F,
+                        1.0F);
+        float sunR = sun;
+        float sunG = sun;
+        float sunB = sun;
+        if (!SpaceConfig.enableHardcoreDarkness) {
+            sunR *= 0.94F;
+            sunG *= 0.94F;
+            sunB *= 0.91F;
+        }
+
+        float totalPressure = (float) atmosphere.getPressure();
+        double r = 0, g = 0, b = 0;
+
+        for (FluidEntry entry : atmosphere.fluids) {
+            double fr, fg, fb;
+            if (entry.fluid == gas("EVEAIR")) {
+                fr = 53F / 255F * sunR;
+                fg = 32F / 255F * sunG;
+                fb = 74F / 255F * sunB;
+            } else if (entry.fluid == gas("DUNAAIR") || entry.fluid == NTMFluids.CARBONDIOXIDE) {
+                fr = 212F / 255F * sunR;
+                fg = 112F / 255F * sunG;
+                fb = 78F / 255F * sunB;
+            } else if (isEarthLike(entry.fluid)) {
+                fr = 0.7529412F * sunR;
+                fg = 0.84705883F * sunG;
+                fb = 1.0F * sunB;
+            } else {
+                int hex = hex(entry.fluid);
+                fr = ARGB.redFloat(hex) * (sunR * 1.4F);
+                fg = ARGB.greenFloat(hex) * (sunG * 1.4F);
+                fb = ARGB.blueFloat(hex) * (sunB * 1.4F);
+            }
+
+            float percentage = (float) entry.pressure / totalPressure;
+            r += fr * percentage;
+            g += fg * percentage;
+            b += fb * percentage;
+        }
+
+        if (!SpaceConfig.enableHardcoreDarkness) {
+            float nightDensity = Mth.clamp(totalPressure, 0.0F, 1.0F);
+            r += 0.06F * nightDensity;
+            g += 0.06F * nightDensity;
+            b += 0.09F * nightDensity;
+        }
+
+        float pressureFactor = Mth.clamp(totalPressure * 10.0F, 0.0F, 1.0F);
+        r *= pressureFactor;
+        g *= pressureFactor;
+        b *= pressureFactor;
+
+        if (cameraY > 600) {
+            double curvature = Mth.clamp((1000.0F - (float) cameraY) / 400.0F, 0.0F, 1.0F);
+            r *= curvature;
+            g *= curvature;
+            b *= curvature;
+        }
+
+        if (sky.eclipse() > 0) {
+            r *= 1 - sky.eclipse() * 0.3;
+            g *= 1 - sky.eclipse() * 0.3;
+            b *= 1 - sky.eclipse() * 0.3;
+
+            float[] sunsetFog = sunrise(atmosphere, legacySunrise(0.25F), 0.25F, sky.dust());
+            if (sunsetFog != null) {
+                double sunsetAmount = Mth.clamp(sky.eclipse() * 0.5 - (1 - sun), 0.0, 1.0);
+                r = r * (1.0F - sunsetAmount) + sunsetFog[0] * sunsetAmount;
+                g = g * (1.0F - sunsetAmount) + sunsetFog[1] * sunsetAmount;
+                b = b * (1.0F - sunsetAmount) + sunsetFog[2] * sunsetAmount;
+            }
+        }
+
+        float dust = sky.dust();
+        g *= 1 - (dust * 0.5F);
+        b *= 1 - dust;
+
+        if (sky.fire() > 0) {
+            float thinned = Math.max(1 - (dust * 2), 0);
+            r *= thinned;
+            g *= thinned;
+            b *= thinned;
+        } else {
+            r *= 1 - dust;
+            g *= 1 - dust;
+            b *= 1 - dust;
+        }
+
+        return new Vector3f(
+                (float) Mth.clamp(r, 0.0D, 1.0D),
+                (float) Mth.clamp(g, 0.0D, 1.0D),
+                (float) Mth.clamp(b, 0.0D, 1.0D));
+    }
+
+    public Vector4fc getSunriseColor(Level level, Vector4fc vanilla, Sky sky) {
+        CBT_Atmosphere atmosphere = body().getTrait(CBT_Atmosphere.class);
+        if (atmosphere == null || atmosphere.getPressure() < 0.05F || vanilla.w() == 0)
+            return new Vector4f(0F);
+
+        float[] colors = {vanilla.x(), vanilla.y(), vanilla.z(), vanilla.w()};
+        colors = sunrise(atmosphere, colors, sky.solarAngle(), sky.dust());
+        return colors == null
+                ? new Vector4f(0F)
+                : new Vector4f(
+                        Mth.clamp(colors[0], 0.0F, 1.0F),
+                        Mth.clamp(colors[1], 0.0F, 1.0F),
+                        Mth.clamp(colors[2], 0.0F, 1.0F),
+                        Mth.clamp(colors[3], 0.0F, 1.0F));
+    }
+
+    public Vector4fc getCloudColor(Vector4fc vanilla) {
+        CBT_Atmosphere atmosphere = body().getTrait(CBT_Atmosphere.class);
+        if (getCloudLayerCount(atmosphere) <= 0)
+            return new Vector4f(vanilla.x(), vanilla.y(), vanilla.z(), 0F);
+
+        Vec3 tinted =
+                CloudProviderCelestial.getTintedCloudColor(
+                        atmosphere, new Vec3(vanilla.x(), vanilla.y(), vanilla.z()));
+        return new Vector4f(
+                (float) Mth.clamp(tinted.x, 0.0D, 1.0D),
+                (float) Mth.clamp(tinted.y, 0.0D, 1.0D),
+                (float) Mth.clamp(tinted.z, 0.0D, 1.0D),
+                vanilla.w());
     }
 
     public MoonPhase getMoonPhase(Level level) {

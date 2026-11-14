@@ -25,12 +25,12 @@ import com.hbmspace.world.gen.structure.TerrainAvoidance;
 import java.util.List;
 import java.util.function.Supplier;
 import net.minecraft.core.RegistryAccess;
-import net.minecraft.core.SectionPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.StructureManager;
+import net.minecraft.world.level.biome.Climate;
 import net.minecraft.world.level.biome.FeatureSorter;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.ChunkGenerator;
@@ -62,7 +62,19 @@ public abstract class MixinChunkGenerator implements StructureGrounding {
         return CraterGrounding.groundAverages(context, pieces);
     }
 
-    @Inject(method = "tryGenerateStructure", at = @At("HEAD"), cancellable = true)
+    @Inject(
+            method =
+                    "tryGenerateStructure(Lnet/minecraft/world/level/levelgen/structure/StructureSet$StructureSelectionEntry;"
+                            + "Lnet/minecraft/world/level/StructureManager;Lnet/minecraft/core/RegistryAccess;"
+                            + "Lnet/minecraft/world/level/levelgen/RandomState;"
+                            + "Lnet/minecraft/world/level/levelgen/structure/templatesystem/StructureTemplateManager;J"
+                            + "Lnet/minecraft/world/level/chunk/ChunkAccess;Lnet/minecraft/world/level/ChunkPos;"
+                            + "Lnet/minecraft/resources/ResourceKey;Lnet/minecraft/world/level/biome/Climate$Sampler;)Z",
+            at = @At("HEAD"),
+            cancellable = true,
+            require = 1,
+            expect = 1,
+            allow = 1)
     private void hbmspace$avoidTerrain(
             StructureSet.StructureSelectionEntry selected,
             StructureManager manager,
@@ -72,8 +84,8 @@ public abstract class MixinChunkGenerator implements StructureGrounding {
             long seed,
             ChunkAccess chunk,
             ChunkPos pos,
-            SectionPos section,
             ResourceKey<Level> dimension,
+            Climate.Sampler sampler,
             CallbackInfoReturnable<Boolean> cir) {
         if (!TerrainAvoidance.applies(selected.structure())) return;
         ChunkGenerator generator = (ChunkGenerator) (Object) this;
@@ -83,6 +95,7 @@ public abstract class MixinChunkGenerator implements StructureGrounding {
                         registries,
                         generator,
                         generator.getBiomeSource(),
+                        sampler,
                         random,
                         templates,
                         seed,
@@ -90,7 +103,7 @@ public abstract class MixinChunkGenerator implements StructureGrounding {
                         chunk,
                         structure.biomes()::contains);
         if (CraterGrounding.applies(structure, context)) return;
-        StructureStart previous = manager.getStartForStructure(section, structure, chunk);
+        StructureStart previous = manager.getStartForStructure(structure, chunk);
         int references = previous == null ? 0 : previous.getReferences();
         StructureStart start =
                 structure.generate(
@@ -99,6 +112,7 @@ public abstract class MixinChunkGenerator implements StructureGrounding {
                         registries,
                         generator,
                         generator.getBiomeSource(),
+                        sampler,
                         random,
                         templates,
                         seed,
@@ -115,7 +129,7 @@ public abstract class MixinChunkGenerator implements StructureGrounding {
                         registries.lookupOrThrow(Registries.STRUCTURE_SET), random, seed);
         if (!TerrainAvoidance.intersectsTerrain(
                 context, state, selected.structure(), start.getPieces(), featuresPerStep.get())) {
-            manager.setStartForStructure(section, structure, start, chunk);
+            manager.setStartForStructure(structure, start, chunk);
         }
         cir.setReturnValue(true);
     }

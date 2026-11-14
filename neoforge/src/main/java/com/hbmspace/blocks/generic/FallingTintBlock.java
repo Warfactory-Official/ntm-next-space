@@ -19,7 +19,6 @@
 
 package com.hbmspace.blocks.generic;
 
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
@@ -29,17 +28,11 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 
 public class FallingTintBlock extends FallingBlock {
-    public static final MapCodec<FallingTintBlock> CODEC = simpleCodec(FallingTintBlock::new);
     public static final IntegerProperty SHADE = IntegerProperty.create("shade", 0, 2);
 
     public FallingTintBlock(Properties props) {
         super(props);
         registerDefaultState(stateDefinition.any().setValue(SHADE, 0));
-    }
-
-    @Override
-    protected MapCodec<? extends FallingTintBlock> codec() {
-        return CODEC;
     }
 
     @Override
