@@ -13,8 +13,8 @@
         "type": "hbmspace:wand_loot_scaled",
         "value": {
           "type": "minecraft:uniform",
-          "max": 16.0,
-          "min": 8.0
+          "max": 16,
+          "min": 8
         }
       }
     }

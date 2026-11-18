@@ -21,13 +21,10 @@ package com.hbmspace.world;
 
 import com.hbm.data.WorldData;
 import com.hbm.platform.BiomeInjection;
-import com.hbm.registration.Registrar;
 import com.hbm.world.BiomeTarget;
 import com.hbm.world.HbmFeatureAttachments.Attachment;
 import com.hbm.world.HbmPlacedFeatures;
-import com.hbm.world.feature.FlowerPatchFeature;
 import com.hbmspace.HbmSpace;
-import com.hbmspace.blocks.FloraBlocksSpace;
 import java.util.List;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
@@ -65,14 +62,6 @@ public final class OverworldFeaturesSpace {
                             List.of(WorldData.OVERWORLD_ORES)));
 
     static {
-        Registrar.registerFeature(
-                "hbmspace:strawberry",
-                new FlowerPatchFeature(
-                        () -> FloraBlocksSpace.PLANT_FLOWER_STRAWBERRY.get(), FLOWER_ODDS));
-        Registrar.registerFeature(
-                "hbmspace:mint",
-                new FlowerPatchFeature(
-                        () -> FloraBlocksSpace.PLANT_FLOWER_MINT.get(), FLOWER_ODDS));
         for (Attachment attachment : ALL) {
             BiomeInjection.addFeaturesToBiome(
                     attachment.biomes(), attachment.step(), attachment.feature());

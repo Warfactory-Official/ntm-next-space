@@ -29,7 +29,6 @@ import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import com.hbm.util.Blink;
 import com.hbmspace.blockentity.machine.AlgaeFilmBlockEntity;
 import com.hbmspace.blocks.TerrainBlockEntitiesSpace;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -45,16 +44,9 @@ import org.jspecify.annotations.Nullable;
 
 public class AlgaeFilmBlock extends HorizontalDirectionalBlock
         implements TickingEntityBlock, LookOverlayProvider, CapabilityBlock {
-    public static final MapCodec<AlgaeFilmBlock> CODEC = simpleCodec(AlgaeFilmBlock::new);
-
     public AlgaeFilmBlock(Properties properties) {
         super(properties);
         registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH));
-    }
-
-    @Override
-    protected MapCodec<? extends HorizontalDirectionalBlock> codec() {
-        return CODEC;
     }
 
     @Override

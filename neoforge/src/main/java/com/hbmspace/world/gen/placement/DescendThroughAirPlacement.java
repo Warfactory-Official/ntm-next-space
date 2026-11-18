@@ -19,19 +19,17 @@
 
 package com.hbmspace.world.gen.placement;
 
-import com.hbmspace.world.gen.SpaceWorldgen;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
-import java.util.stream.Stream;
+import java.util.function.Consumer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.levelgen.placement.PlacementContext;
 import net.minecraft.world.level.levelgen.placement.PlacementModifier;
-import net.minecraft.world.level.levelgen.placement.PlacementModifierType;
 
-public class DescendThroughAirPlacement extends PlacementModifier {
+public class DescendThroughAirPlacement implements PlacementModifier {
     public static final MapCodec<DescendThroughAirPlacement> CODEC =
             Codec.INT
                     .fieldOf("floor")
@@ -44,16 +42,19 @@ public class DescendThroughAirPlacement extends PlacementModifier {
     }
 
     @Override
-    public Stream<BlockPos> getPositions(
-            PlacementContext context, RandomSource random, BlockPos origin) {
+    public void modify(
+            PlacementContext context,
+            RandomSource random,
+            BlockPos origin,
+            Consumer<BlockPos> output) {
         WorldGenLevel level = context.getLevel();
         BlockPos.MutableBlockPos pos = origin.mutable();
         while (pos.getY() > floor && level.isEmptyBlock(pos)) pos.move(Direction.DOWN);
-        return Stream.of(pos.immutable());
+        output.accept(pos.immutable());
     }
 
     @Override
-    public PlacementModifierType<?> type() {
-        return SpaceWorldgen.DESCEND_THROUGH_AIR.get();
+    public MapCodec<DescendThroughAirPlacement> codec() {
+        return CODEC;
     }
 }

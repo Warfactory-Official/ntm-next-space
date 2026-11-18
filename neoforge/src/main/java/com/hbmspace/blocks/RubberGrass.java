@@ -19,7 +19,6 @@
 
 package com.hbmspace.blocks;
 
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
@@ -29,15 +28,8 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class RubberGrass extends Block {
-    public static final MapCodec<RubberGrass> CODEC = simpleCodec(RubberGrass::new);
-
     public RubberGrass(Properties properties) {
         super(properties);
-    }
-
-    @Override
-    protected MapCodec<? extends RubberGrass> codec() {
-        return CODEC;
     }
 
     @Override

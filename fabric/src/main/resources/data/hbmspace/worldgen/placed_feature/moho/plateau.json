@@ -1,26 +1,15 @@
 {
   "feature": {
     "type": "hbmspace:plateau",
-    "config": {
-      "biomes": "hbmspace:moho_plateau",
-      "domain": "hbmspace:moho/plateau",
-      "fill": {
-        "Name": "minecraft:lava",
-        "Properties": {
-          "level": "0"
-        }
-      },
-      "max_addition": 6,
-      "scale": 0.03,
-      "step": 2,
-      "stone": {
-        "Name": "hbmspace:moho_stone"
-      },
-      "surface": {
-        "Name": "hbmspace:moho_regolith"
-      },
-      "topsoil": 2
-    }
+    "biomes": "hbmspace:moho_plateau",
+    "domain": "hbmspace:moho/plateau",
+    "fill": "minecraft:lava",
+    "max_addition": 6,
+    "scale": 0.03,
+    "step": 2,
+    "stone": "hbmspace:moho_stone",
+    "surface": "hbmspace:moho_regolith",
+    "topsoil": 2
   },
   "placement": []
 }

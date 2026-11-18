@@ -1,9 +1,7 @@
 {
   "feature": {
     "type": "hbmspace:water_coral",
-    "config": {
-      "sea_level": 63
-    }
+    "sea_level": 63
   },
   "placement": [
     {

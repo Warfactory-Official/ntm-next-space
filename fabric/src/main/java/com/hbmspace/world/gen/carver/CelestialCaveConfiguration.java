@@ -19,25 +19,27 @@
 
 package com.hbmspace.world.gen.carver;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.HolderSet;
-import net.minecraft.core.RegistryCodecs;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.core.registries.codec.RegistryCodecs;
+import net.minecraft.util.valueproviders.ConstantFloat;
 import net.minecraft.util.valueproviders.FloatProvider;
 import net.minecraft.util.valueproviders.FloatProviders;
+import net.minecraft.util.valueproviders.TrapezoidFloat;
+import net.minecraft.util.valueproviders.VeryBiasedToBottomInt;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.carver.CarverConfiguration;
-import net.minecraft.world.level.levelgen.carver.CaveCarverConfiguration;
+import net.minecraft.world.level.levelgen.carver.CaveWorldCarver;
 
-public class CelestialCaveConfiguration extends CaveCarverConfiguration {
+public class CelestialCaveConfiguration extends CarvingSettings {
 
-    public static final Codec<CelestialCaveConfiguration> CODEC =
-            RecordCodecBuilder.create(
+    public static final MapCodec<CelestialCaveConfiguration> CODEC =
+            RecordCodecBuilder.mapCodec(
                     i ->
                             i.group(
-                                            CarverConfiguration.CODEC.forGetter(c -> c),
+                                            CarvingSettings.CODEC.forGetter(c -> c),
                                             FloatProviders.CODEC
                                                     .fieldOf("horizontal_radius_multiplier")
                                                     .forGetter(c -> c.horizontalRadiusMultiplier),
@@ -48,27 +50,46 @@ public class CelestialCaveConfiguration extends CaveCarverConfiguration {
                                                     .fieldOf("floor_level")
                                                     .forGetter(c -> c.floorLevel),
                                             BlockState.CODEC.fieldOf("lava").forGetter(c -> c.lava),
-                                            RegistryCodecs.homogeneousList(Registries.BLOCK)
+                                            RegistryCodecs.holderSet(Registries.BLOCK)
                                                     .fieldOf("top")
                                                     .forGetter(c -> c.top),
-                                            RegistryCodecs.homogeneousList(Registries.BLOCK)
+                                            RegistryCodecs.holderSet(Registries.BLOCK)
                                                     .fieldOf("filler")
                                                     .forGetter(c -> c.filler))
                                     .apply(i, CelestialCaveConfiguration::new));
 
+    final CaveWorldCarver geometry;
+    public final FloatProvider horizontalRadiusMultiplier;
+    public final FloatProvider verticalRadiusMultiplier;
+    public final FloatProvider floorLevel;
     public final BlockState lava;
     public final HolderSet<Block> top;
     public final HolderSet<Block> filler;
 
     public CelestialCaveConfiguration(
-            CarverConfiguration carver,
+            CarvingSettings carver,
             FloatProvider horizontalRadiusMultiplier,
             FloatProvider verticalRadiusMultiplier,
             FloatProvider floorLevel,
             BlockState lava,
             HolderSet<Block> top,
             HolderSet<Block> filler) {
-        super(carver, horizontalRadiusMultiplier, verticalRadiusMultiplier, floorLevel);
+        super(carver.probability, carver.y, carver.yScale, carver.lavaLevel, carver.replaceable);
+        this.horizontalRadiusMultiplier = horizontalRadiusMultiplier;
+        this.verticalRadiusMultiplier = verticalRadiusMultiplier;
+        this.floorLevel = floorLevel;
+        this.geometry =
+                new CaveWorldCarver(
+                        probability,
+                        y,
+                        VeryBiasedToBottomInt.of(0, 14),
+                        TrapezoidFloat.of(0.0F, 3.0F, 1.0F),
+                        true,
+                        yScale,
+                        horizontalRadiusMultiplier,
+                        verticalRadiusMultiplier,
+                        ConstantFloat.of(1.0F),
+                        floorLevel);
         this.lava = lava;
         this.top = top;
         this.filler = filler;

@@ -1,21 +1,17 @@
 {
   "feature": {
     "type": "hbm:stratum_3d",
-    "config": {
-      "domain_x": "hbmspace:noise/mun/stratum_conglomerate/x",
-      "domain_y": "hbmspace:noise/mun/stratum_conglomerate/y",
-      "domain_z": "hbmspace:noise/mun/stratum_conglomerate/z",
-      "replaceable": {
-        "block": "hbmspace:moon_rock",
-        "predicate_type": "minecraft:block_match"
-      },
-      "scale_h": 0.04,
-      "scale_v": 0.25,
-      "state": {
-        "Name": "hbmspace:stone_resource_conglomerate"
-      },
-      "threshold": 220.0
-    }
+    "domain_x": "hbmspace:noise/mun/stratum_conglomerate/x",
+    "domain_y": "hbmspace:noise/mun/stratum_conglomerate/y",
+    "domain_z": "hbmspace:noise/mun/stratum_conglomerate/z",
+    "replaceable": {
+      "block": "hbmspace:moon_rock",
+      "predicate_type": "minecraft:block_match"
+    },
+    "scale_h": 0.04,
+    "scale_v": 0.25,
+    "state": "hbmspace:stone_resource_conglomerate",
+    "threshold": 220.0
   },
   "placement": [
     {

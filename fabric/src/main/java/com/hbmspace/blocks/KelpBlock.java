@@ -19,7 +19,6 @@
 
 package com.hbmspace.blocks;
 
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
@@ -39,15 +38,8 @@ import net.minecraft.world.level.material.Fluids;
 import org.jspecify.annotations.Nullable;
 
 public class KelpBlock extends Block implements LiquidBlockContainer {
-    public static final MapCodec<KelpBlock> CODEC = simpleCodec(KelpBlock::new);
-
     public KelpBlock(Properties properties) {
         super(properties);
-    }
-
-    @Override
-    protected MapCodec<? extends KelpBlock> codec() {
-        return CODEC;
     }
 
     public static boolean isStem(BlockGetter level, BlockPos pos, BlockState state) {

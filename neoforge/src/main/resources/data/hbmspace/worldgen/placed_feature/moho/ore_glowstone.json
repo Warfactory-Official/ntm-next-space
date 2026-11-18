@@ -1,21 +1,17 @@
 {
   "feature": {
     "type": "minecraft:ore",
-    "config": {
-      "discard_chance_on_air_exposure": 0.0,
-      "size": 12,
-      "targets": [
-        {
-          "state": {
-            "Name": "hbmspace:ore_glowstone_moho"
-          },
-          "target": {
-            "block": "hbmspace:moho_stone",
-            "predicate_type": "minecraft:block_match"
-          }
+    "discard_chance_on_air_exposure": 0.0,
+    "size": 12,
+    "targets": [
+      {
+        "state": "hbmspace:ore_glowstone_moho",
+        "target": {
+          "block": "hbmspace:moho_stone",
+          "predicate_type": "minecraft:block_match"
         }
-      ]
-    }
+      }
+    ]
   },
   "placement": [
     {

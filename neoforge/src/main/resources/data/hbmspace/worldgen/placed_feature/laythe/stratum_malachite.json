@@ -1,21 +1,17 @@
 {
   "feature": {
     "type": "hbm:stratum_3d",
-    "config": {
-      "domain_x": "hbmspace:noise/laythe/stratum_malachite/x",
-      "domain_y": "hbmspace:noise/laythe/stratum_malachite/y",
-      "domain_z": "hbmspace:noise/laythe/stratum_malachite/z",
-      "replaceable": {
-        "block": "minecraft:stone",
-        "predicate_type": "minecraft:block_match"
-      },
-      "scale_h": 0.1,
-      "scale_v": 0.15,
-      "state": {
-        "Name": "hbm:stone_resource_malachite"
-      },
-      "threshold": 275.0
-    }
+    "domain_x": "hbmspace:noise/laythe/stratum_malachite/x",
+    "domain_y": "hbmspace:noise/laythe/stratum_malachite/y",
+    "domain_z": "hbmspace:noise/laythe/stratum_malachite/z",
+    "replaceable": {
+      "block": "minecraft:stone",
+      "predicate_type": "minecraft:block_match"
+    },
+    "scale_h": 0.1,
+    "scale_v": 0.15,
+    "state": "hbm:stone_resource_malachite",
+    "threshold": 275.0
   },
   "placement": [
     {

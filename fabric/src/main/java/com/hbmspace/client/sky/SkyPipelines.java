@@ -19,23 +19,25 @@
 
 package com.hbmspace.client.sky;
 
+import com.hbm.client.render.NativeOitPipelines;
 import com.hbm.client.render.WorldRenderPipeline;
 import com.hbmspace.HbmSpace;
-import com.mojang.blaze3d.PrimitiveTopology;
-import com.mojang.blaze3d.pipeline.BindGroupLayout;
-import com.mojang.blaze3d.pipeline.BlendFunction;
-import com.mojang.blaze3d.pipeline.ColorTargetState;
-import com.mojang.blaze3d.pipeline.DepthStencilState;
-import com.mojang.blaze3d.pipeline.RenderPipeline;
-import com.mojang.blaze3d.platform.BlendFactor;
-import com.mojang.blaze3d.platform.CompareOp;
-import com.mojang.blaze3d.shaders.UniformType;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
-import com.mojang.blaze3d.vertex.VertexFormat;
+import com.mojang.renderpearl.api.pipeline.BindGroupLayout;
+import com.mojang.renderpearl.api.pipeline.BlendFactor;
+import com.mojang.renderpearl.api.pipeline.BlendFunction;
+import com.mojang.renderpearl.api.pipeline.ColorTargetState;
+import com.mojang.renderpearl.api.pipeline.CompareOp;
+import com.mojang.renderpearl.api.pipeline.DepthStencilState;
+import com.mojang.renderpearl.api.pipeline.PrimitiveTopology;
+import com.mojang.renderpearl.api.pipeline.RenderPipeline;
+import com.mojang.renderpearl.api.pipeline.UniformType;
+import com.mojang.renderpearl.api.vertex.VertexFormat;
 import java.util.List;
 import java.util.function.Consumer;
 import net.minecraft.client.renderer.BindGroupLayouts;
 import net.minecraft.client.renderer.RenderPipelines;
+import net.minecraft.client.renderer.oit.OitPipelineSet;
 import net.minecraft.resources.Identifier;
 import org.jspecify.annotations.Nullable;
 
@@ -58,6 +60,7 @@ public final class SkyPipelines {
 
     public static final RenderPipeline SKY_DISC =
             RenderPipeline.builder(RenderPipelines.MATRICES_FOG_SNIPPET)
+                    .withColorTargetState(ColorTargetState.DEFAULT)
                     .withLocation(id("pipeline/sky_disc"))
                     .withVertexShader(Identifier.withDefaultNamespace("core/sky"))
                     .withFragmentShader(id("core/sky_disc"))
@@ -153,7 +156,8 @@ public final class SkyPipelines {
     public static final RenderPipeline SWARM =
             WorldRenderPipeline.nativeSky(
                     RenderPipeline.builder(RenderPipelines.GLOBALS_SNIPPET)
-                            .withBindGroupLayout(BindGroupLayouts.MATRICES_PROJECTION)
+                            .withBindGroupLayout(BindGroupLayouts.PROJECTION)
+                            .withBindGroupLayout(BindGroupLayouts.DYNAMIC_TRANSFORMS)
                             .withBindGroupLayout(SHADER_TIME)
                             .withLocation(id("pipeline/sky_swarm"))
                             .withVertexShader(id("core/swarm"))
@@ -167,7 +171,8 @@ public final class SkyPipelines {
     public static final RenderPipeline BLACK_HOLE =
             WorldRenderPipeline.nativeSky(
                     RenderPipeline.builder(RenderPipelines.GLOBALS_SNIPPET)
-                            .withBindGroupLayout(BindGroupLayouts.MATRICES_PROJECTION)
+                            .withBindGroupLayout(BindGroupLayouts.PROJECTION)
+                            .withBindGroupLayout(BindGroupLayouts.DYNAMIC_TRANSFORMS)
                             .withBindGroupLayout(SHADER_TIME)
                             .withBindGroupLayout(BindGroupLayouts.SAMPLER0)
                             .withLocation(id("pipeline/sky_black_hole"))
@@ -183,7 +188,8 @@ public final class SkyPipelines {
     public static final RenderPipeline FLESH =
             WorldRenderPipeline.nativeSky(
                     RenderPipeline.builder(RenderPipelines.GLOBALS_SNIPPET)
-                            .withBindGroupLayout(BindGroupLayouts.MATRICES_PROJECTION)
+                            .withBindGroupLayout(BindGroupLayouts.PROJECTION)
+                            .withBindGroupLayout(BindGroupLayouts.DYNAMIC_TRANSFORMS)
                             .withBindGroupLayout(SHADER_TIME)
                             .withBindGroupLayout(BindGroupLayouts.SAMPLER0)
                             .withLocation(id("pipeline/sky_flesh"))
@@ -212,13 +218,8 @@ public final class SkyPipelines {
                     .withLocation(id("pipeline/weather_tinted_depth_write"))
                     .withFragmentShader(id("core/weather_tinted"))
                     .build();
-    public static final RenderPipeline WEATHER_TINTED_NO_DEPTH_WRITE =
-            RenderPipeline.builder(RenderPipelines.WEATHER_SNIPPET)
-                    .withLocation(id("pipeline/weather_tinted_no_depth_write"))
-                    .withFragmentShader(id("core/weather_tinted"))
-                    .withDepthStencilState(
-                            new DepthStencilState(CompareOp.GREATER_THAN_OR_EQUAL, false))
-                    .build();
+    public static final OitPipelineSet WEATHER_TINTED_OIT =
+            NativeOitPipelines.create(WEATHER_TINTED, false);
 
     private static final List<RenderPipeline> ALL =
             List.of(
@@ -244,13 +245,15 @@ public final class SkyPipelines {
                     NIGHT_LIGHTS,
                     LIGHTNING,
                     NUKE,
-                    WEATHER_TINTED,
-                    WEATHER_TINTED_NO_DEPTH_WRITE);
+                    WEATHER_TINTED);
 
     private SkyPipelines() {}
 
     public static void forEach(Consumer<RenderPipeline> registrar) {
         ALL.forEach(registrar);
+        registrar.accept(WEATHER_TINTED_OIT.depthBoundsPipeline());
+        registrar.accept(WEATHER_TINTED_OIT.transmittancePipeline());
+        registrar.accept(WEATHER_TINTED_OIT.accumulatePipeline());
     }
 
     private static Identifier id(String path) {
@@ -264,7 +267,8 @@ public final class SkyPipelines {
             BlendFunction blend,
             boolean cull) {
         return RenderPipeline.builder(RenderPipelines.GLOBALS_SNIPPET)
-                .withBindGroupLayout(BindGroupLayouts.MATRICES_PROJECTION)
+                .withBindGroupLayout(BindGroupLayouts.PROJECTION)
+                .withBindGroupLayout(BindGroupLayouts.DYNAMIC_TRANSFORMS)
                 .withLocation(id("pipeline/sky_" + name))
                 .withVertexShader(id("core/sky"))
                 .withFragmentShader(id("core/sky"))
@@ -283,7 +287,8 @@ public final class SkyPipelines {
             String name, @Nullable BlendFunction blend, boolean cull) {
         RenderPipeline.Builder builder =
                 RenderPipeline.builder(RenderPipelines.GLOBALS_SNIPPET)
-                        .withBindGroupLayout(BindGroupLayouts.MATRICES_PROJECTION)
+                        .withBindGroupLayout(BindGroupLayouts.PROJECTION)
+                        .withBindGroupLayout(BindGroupLayouts.DYNAMIC_TRANSFORMS)
                         .withBindGroupLayout(BindGroupLayouts.SAMPLER0)
                         .withLocation(id("pipeline/sky_" + name))
                         .withVertexShader(id("core/sky"))
@@ -301,7 +306,8 @@ public final class SkyPipelines {
             String shader, BlendFunction blend, @Nullable BindGroupLayout samplers) {
         RenderPipeline.Builder builder =
                 RenderPipeline.builder(RenderPipelines.GLOBALS_SNIPPET)
-                        .withBindGroupLayout(BindGroupLayouts.MATRICES_PROJECTION)
+                        .withBindGroupLayout(BindGroupLayouts.PROJECTION)
+                        .withBindGroupLayout(BindGroupLayouts.DYNAMIC_TRANSFORMS)
                         .withBindGroupLayout(PLANET_INFO)
                         .withLocation(id("pipeline/sky_" + shader))
                         .withVertexShader(id("core/planet"))

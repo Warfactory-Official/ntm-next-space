@@ -52,6 +52,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Prediction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -151,7 +152,7 @@ public class DysonLauncherBlock extends MultiblockCoreBlock
         ItemStack chip = launcher.getItem(DysonLauncherBlockEntity.SLOT_CHIP);
         if (!chip.isEmpty()) {
             launcher.setItem(DysonLauncherBlockEntity.SLOT_CHIP, ItemStack.EMPTY);
-            player.getInventory().placeItemBackInInventory(chip);
+            player.getInventory().placeItemBackInInventory(chip, Prediction.SERVER_ONLY);
             plug(level, hit.getBlockPos());
         }
         return InteractionResult.SUCCESS;

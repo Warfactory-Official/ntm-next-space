@@ -97,7 +97,7 @@ public final class RocketryRenders {
                         PadSnapshot pad, RocketPronter pronter, PoseStack pose, PieceSink sink) {
                     pose.pushPose();
                     pose.translate(0.5F, 0F, 0.5F);
-                    pose.mulPose(
+                    pose.rotate(
                             (Quaternionfc) Axis.YP.rotationDegrees(Facing.yaw(pad.facing(), 90)));
 
                     if (pad.tower() >= 8) {

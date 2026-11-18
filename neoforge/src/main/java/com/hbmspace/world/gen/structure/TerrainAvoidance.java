@@ -29,6 +29,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.biome.FeatureSorter;
 import net.minecraft.world.level.chunk.ChunkGeneratorStructureState;
@@ -86,7 +87,10 @@ public final class TerrainAvoidance {
         boolean solidSurface =
                 context.chunkGenerator() instanceof NoiseBasedChunkGenerator noise
                         && (noise.generatorSettings().value().defaultFluid().isAir()
-                                || noise.generatorSettings().value().defaultFluid().blocksMotion());
+                                || noise.generatorSettings()
+                                        .value()
+                                        .defaultFluid()
+                                        .is(BlockTags.BLOCKS_MOTION));
         int[][] heights = new int[pieces.size()][];
         for (var holder : state.possibleStructureSets()) {
             StructureSet set = holder.value();
@@ -118,6 +122,7 @@ public final class TerrainAvoidance {
                                     context.registryAccess(),
                                     context.chunkGenerator(),
                                     context.biomeSource(),
+                                    context.climateSampler(),
                                     context.randomState(),
                                     context.structureTemplateManager(),
                                     context.seed(),

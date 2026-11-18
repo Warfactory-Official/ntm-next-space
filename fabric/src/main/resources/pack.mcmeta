@@ -1,7 +1,7 @@
 {
   "pack": {
     "description": "NTM: Space resources",
-    "min_format": 88,
-    "max_format": 107
+    "min_format": [97, 1],
+    "max_format": [121, 0]
   }
 }

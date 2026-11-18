@@ -1,0 +1,29 @@
+{
+  "type": "hbmspace:ravine",
+  "filler": "minecraft:snow_block",
+  "lava_level": {
+    "absolute": 9
+  },
+  "probability": 0.02,
+  "replaceable": [
+    "hbm:basalt",
+    "minecraft:snow_block"
+  ],
+  "strata_frequency": 3,
+  "strata_scale": 1.0,
+  "taper": 6.0,
+  "top": "minecraft:snow_block",
+  "underwater": false,
+  "width": 1.0,
+  "y": {
+    "type": "minecraft:biased_to_bottom",
+    "inner": 8,
+    "max_inclusive": {
+      "absolute": 67
+    },
+    "min_inclusive": {
+      "absolute": 20
+    }
+  },
+  "y_scale": 3.0
+}

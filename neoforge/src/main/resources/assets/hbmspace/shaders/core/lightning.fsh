@@ -1,15 +1,16 @@
 #version 330
+#extension GL_ARB_separate_shader_objects : require
 
-#moj_import <hbmspace:planet_info.glsl>
+#include <hbmspace:planet_info.glsl>
 
 uniform sampler2D Sampler0;
 uniform sampler2D Sampler1;
 #define bodyTex Sampler0
 #define cityMask Sampler1
 
-in vec2 texCoord0;
+layout(location = 0) in vec2 texCoord0;
 
-out vec4 fragColor;
+layout(location = 0) out vec4 fragColor;
 
 const float PIXEL_GRID = 16.0;
 const int MAX_NUKE_SHOCKS = 4;

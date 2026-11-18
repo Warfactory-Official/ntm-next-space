@@ -19,21 +19,8 @@
 
 package com.hbmspace.compat.c2me;
 
-import com.hbm.platform.Platform;
-
 public final class C2me {
-    private static final boolean DFC = loaded("c2me-opts-dfc");
-    private static final boolean OPENCL = loaded("c2me-opts-accel-opencl");
-
     private C2me() {}
 
-    public static void register() {
-        if (!DFC) return;
-        Dfc.register();
-        if (OPENCL) OpenCl.register();
-    }
-
-    private static boolean loaded(String fabricId) {
-        return Platform.isModLoaded(fabricId) || Platform.isModLoaded(fabricId.replace('-', '_'));
-    }
+    public static void register() {}
 }

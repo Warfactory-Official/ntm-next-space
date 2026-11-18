@@ -1,20 +1,14 @@
 {
   "feature": {
     "type": "hbm:depth_deposit",
-    "config": {
-      "core": {
-        "Name": "hbm:cluster_depth_titanium"
-      },
-      "fill": 0.6,
-      "filler": {
-        "Name": "hbm:stone_depth"
-      },
-      "replaceable": {
-        "block": "hbm:sellafield_slaked",
-        "predicate_type": "minecraft:block_match"
-      },
-      "size": 5
-    }
+    "core": "hbm:cluster_depth_titanium",
+    "fill": 0.6,
+    "filler": "hbm:stone_depth",
+    "replaceable": {
+      "block": "hbm:sellafield_slaked",
+      "predicate_type": "minecraft:block_match"
+    },
+    "size": 5
   },
   "placement": [
     {

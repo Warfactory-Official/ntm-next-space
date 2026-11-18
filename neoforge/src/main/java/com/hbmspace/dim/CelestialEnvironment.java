@@ -61,7 +61,7 @@ public final class CelestialEnvironment implements AtmosphereLayers.Provider {
                 (value, pos, biomes) -> provider.getSkyColor(level, value, inputs.sky(pos)));
         builder.addPositionalLayer(
                 EnvironmentAttributes.FOG_COLOR,
-                (value, pos, biomes) -> provider.getFogColor(level, inputs.sky(pos), pos.y));
+                (value, pos, biomes) -> provider.getFogColorVector(level, inputs.sky(pos), pos.y));
         builder.addPositionalLayer(
                 EnvironmentAttributes.SUNRISE_SUNSET_COLOR,
                 (value, pos, biomes) -> provider.getSunriseColor(level, value, inputs.sky(pos)));

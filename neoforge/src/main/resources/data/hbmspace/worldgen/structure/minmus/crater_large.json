@@ -7,12 +7,8 @@
   "exponent": 4,
   "max_size": 128,
   "min_size": 64,
-  "regolith": {
-    "Name": "hbmspace:minmus_regolith"
-  },
-  "rock": {
-    "Name": "hbmspace:minmus_stone"
-  },
+  "regolith": "hbmspace:minmus_regolith",
+  "rock": "hbmspace:minmus_stone",
   "spawn_overrides": {},
   "step": "lakes",
   "terrain_adaptation": "none"

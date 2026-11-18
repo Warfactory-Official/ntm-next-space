@@ -35,6 +35,8 @@ import net.minecraft.world.attribute.EnvironmentAttributeSystem;
 import net.minecraft.world.attribute.EnvironmentAttributes;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import org.joml.Vector3f;
+import org.joml.Vector3fc;
 
 public class WorldProviderEve extends WorldProviderCelestial {
 
@@ -65,6 +67,13 @@ public class WorldProviderEve extends WorldProviderCelestial {
 
     public static float flash(CelestialBody body, long gameTime) {
         return AtmosphereRenderUtil.getBodyEveFlashStrength(body, gameTime / 20.0F);
+    }
+
+    public static Vector3fc skyColor(Vector3fc color, float flash) {
+        return new Vector3f(
+                Math.min(color.x() + flash, 1.0F),
+                Math.min(color.y() + flash, 1.0F),
+                Math.min(color.z() + flash, 1.0F));
     }
 
     public static int skyColor(int color, float flash) {

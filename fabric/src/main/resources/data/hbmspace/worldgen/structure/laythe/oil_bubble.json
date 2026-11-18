@@ -6,9 +6,7 @@
     "hbmspace:laythe_polar",
     "hbmspace:laythe_coast"
   ],
-  "core": {
-    "Name": "hbmspace:ore_oil_laythe"
-  },
+  "core": "hbmspace:ore_oil_laythe",
   "fuzzy": false,
   "max_size": 16,
   "min_size": 8,

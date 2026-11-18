@@ -8,7 +8,7 @@
           "value": "minecraft:entities/squid"
         }
       ],
-      "rolls": 1.0
+      "rolls": 1
     }
   ],
   "random_sequence": "hbmspace:entities/entity_depthsquid"

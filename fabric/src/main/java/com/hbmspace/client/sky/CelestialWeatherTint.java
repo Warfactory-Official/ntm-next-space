@@ -41,15 +41,9 @@ public final class CelestialWeatherTint implements WeatherTints.Provider {
         int snow = provider.getSnowColor();
         if (ShaderPacks.inUse()) {
             return new WeatherTints.Tint(
-                    RenderPipelines.WEATHER_DEPTH_WRITE,
-                    RenderPipelines.WEATHER_NO_DEPTH_WRITE,
-                    rain,
-                    snow);
+                    RenderPipelines.WEATHER, RenderPipelines.OIT_WEATHER, rain, snow);
         }
         return new WeatherTints.Tint(
-                SkyPipelines.WEATHER_TINTED,
-                SkyPipelines.WEATHER_TINTED_NO_DEPTH_WRITE,
-                rain,
-                snow);
+                SkyPipelines.WEATHER_TINTED, SkyPipelines.WEATHER_TINTED_OIT, rain, snow);
     }
 }

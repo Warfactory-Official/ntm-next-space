@@ -24,10 +24,12 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.levelgen.PositionalRandomFactory;
-import net.minecraft.world.level.levelgen.SurfaceRules.ConditionSource;
-import net.minecraft.world.level.levelgen.SurfaceRules;
+import net.minecraft.world.level.levelgen.material.MaterialRuleContext;
+import net.minecraft.world.level.levelgen.material.condition.ConditionEvaluator;
+import net.minecraft.world.level.levelgen.material.condition.MaterialCondition;
 
-public record ChanceCondition(Identifier randomName, float probability) implements ConditionSource {
+public record ChanceCondition(Identifier randomName, float probability)
+        implements MaterialCondition {
 
     public static final MapCodec<ChanceCondition> CODEC =
             RecordCodecBuilder.mapCodec(
@@ -42,14 +44,15 @@ public record ChanceCondition(Identifier randomName, float probability) implemen
                                     .apply(i, ChanceCondition::new));
 
     @Override
-    public MapCodec<? extends ConditionSource> codec() {
+    public MapCodec<? extends MaterialCondition> codec() {
         return CODEC;
     }
 
     @Override
-    public SurfaceRules.Condition apply(SurfaceRules.Context context) {
-        PositionalRandomFactory random = context.randomState.getOrCreateRandomFactory(randomName);
+    public ConditionEvaluator compile(MaterialRuleContext context) {
+        PositionalRandomFactory random = context.getOrCreateRandomFactory(randomName);
         return () ->
-                random.at(context.blockX, context.blockY, context.blockZ).nextFloat() < probability;
+                random.at(context.blockX(), context.blockY(), context.blockZ()).nextFloat()
+                        < probability;
     }
 }

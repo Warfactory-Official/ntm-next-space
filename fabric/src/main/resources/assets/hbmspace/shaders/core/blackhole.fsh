@@ -1,13 +1,14 @@
 #version 330
+#extension GL_ARB_separate_shader_objects : require
 
-#moj_import <hbmspace:shader_time.glsl>
+#include <hbmspace:shader_time.glsl>
 
 uniform sampler2D Sampler0;
 #define iChannel1 Sampler0
 
-in vec2 texCoord0;
+layout(location = 0) in vec2 texCoord0;
 
-out vec4 fragColor;
+layout(location = 0) out vec4 fragColor;
 
 const float pi = 3.1415927;
 

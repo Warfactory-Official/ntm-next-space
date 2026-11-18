@@ -38,6 +38,7 @@ import com.google.common.collect.Iterables;
 import com.hbmspace.blocks.FloraBlocksSpace;
 import com.hbmspace.blocks.TerrainBlocksSpace;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import java.util.HashSet;
 import java.util.Set;
@@ -48,28 +49,61 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.VineBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.TreeFeature;
-import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 
-public class TTree extends Feature<TTree.Shape> {
+public record TTree(
+        int offset,
+        int smallest,
+        int tallest,
+        int xz,
+        int y,
+        boolean vines,
+        BlockState log,
+        BlockState leaves)
+        implements Feature {
+
+    public static final MapCodec<TTree> CODEC =
+            RecordCodecBuilder.mapCodec(
+                    i ->
+                            i.group(
+                                            Codec.INT.fieldOf("offset").forGetter(TTree::offset),
+                                            ExtraCodecs.POSITIVE_INT
+                                                    .fieldOf("smallest")
+                                                    .forGetter(TTree::smallest),
+                                            ExtraCodecs.NON_NEGATIVE_INT
+                                                    .fieldOf("tallest")
+                                                    .forGetter(TTree::tallest),
+                                            ExtraCodecs.POSITIVE_INT
+                                                    .fieldOf("xz")
+                                                    .forGetter(TTree::xz),
+                                            ExtraCodecs.POSITIVE_INT
+                                                    .fieldOf("y")
+                                                    .forGetter(TTree::y),
+                                            Codec.BOOL.fieldOf("vines").forGetter(TTree::vines),
+                                            BlockState.CODEC.fieldOf("log").forGetter(TTree::log),
+                                            BlockState.CODEC
+                                                    .fieldOf("leaves")
+                                                    .forGetter(TTree::leaves))
+                                    .apply(i, TTree::new));
+
     private static final int TREE_UPDATE = Block.UPDATE_ALL | Block.UPDATE_KNOWN_SHAPE;
 
-    public TTree() {
-        super(Shape.CODEC);
+    @Override
+    public MapCodec<TTree> codec() {
+        return CODEC;
     }
 
     @Override
-    public boolean place(FeaturePlaceContext<Shape> context) {
-        WorldGenLevel world = context.level();
-        RandomSource rand = context.random();
-        Shape shape = context.config();
-        int x = context.origin().getX();
-        int y = context.origin().getY();
-        int z = context.origin().getZ();
+    public boolean place(
+            WorldGenLevel world, ChunkGenerator generator, RandomSource rand, BlockPos origin) {
+        TTree shape = this;
+        int x = origin.getX();
+        int y = origin.getY();
+        int z = origin.getZ();
         int height = rand.nextInt(shape.smallest()) + shape.tallest();
 
         if (y < world.getMinY() + 1 || y + height + 1 > world.getMaxY() + 1) {
@@ -152,45 +186,5 @@ public class TTree extends Feature<TTree.Shape> {
                 }
             }
         }
-    }
-
-    public record Shape(
-            int offset,
-            int smallest,
-            int tallest,
-            int xz,
-            int y,
-            boolean vines,
-            BlockState log,
-            BlockState leaves)
-            implements FeatureConfiguration {
-
-        public static final Codec<Shape> CODEC =
-                RecordCodecBuilder.create(
-                        i ->
-                                i.group(
-                                                Codec.INT
-                                                        .fieldOf("offset")
-                                                        .forGetter(Shape::offset),
-                                                ExtraCodecs.POSITIVE_INT
-                                                        .fieldOf("smallest")
-                                                        .forGetter(Shape::smallest),
-                                                ExtraCodecs.NON_NEGATIVE_INT
-                                                        .fieldOf("tallest")
-                                                        .forGetter(Shape::tallest),
-                                                ExtraCodecs.POSITIVE_INT
-                                                        .fieldOf("xz")
-                                                        .forGetter(Shape::xz),
-                                                ExtraCodecs.POSITIVE_INT
-                                                        .fieldOf("y")
-                                                        .forGetter(Shape::y),
-                                                Codec.BOOL.fieldOf("vines").forGetter(Shape::vines),
-                                                BlockState.CODEC
-                                                        .fieldOf("log")
-                                                        .forGetter(Shape::log),
-                                                BlockState.CODEC
-                                                        .fieldOf("leaves")
-                                                        .forGetter(Shape::leaves))
-                                        .apply(i, Shape::new));
     }
 }

@@ -1,9 +1,7 @@
 {
   "feature": {
     "type": "hbmspace:rubber_plant",
-    "config": {
-      "forest": true
-    }
+    "forest": true
   },
   "placement": [
     {

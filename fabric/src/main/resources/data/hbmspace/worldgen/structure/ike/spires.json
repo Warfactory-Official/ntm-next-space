@@ -14,12 +14,8 @@
   "min_size": 6,
   "min_tilt": 0.2,
   "noise": "hbmspace:spires",
-  "regolith": {
-    "Name": "hbmspace:ike_regolith"
-  },
-  "rock": {
-    "Name": "hbmspace:ike_stone"
-  },
+  "regolith": "hbmspace:ike_regolith",
+  "rock": "hbmspace:ike_stone",
   "spawn_overrides": {},
   "step": "lakes",
   "terrain_adaptation": "none",

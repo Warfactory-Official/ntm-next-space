@@ -40,6 +40,7 @@ import com.hbmspace.blocks.FloraBlocksSpace.RubberTall;
 import com.hbmspace.blocks.FloraBlocksSpace;
 import com.hbmspace.blocks.TerrainBlocksSpace;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
@@ -47,30 +48,30 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 
-public class RubberPlantFeature extends Feature<RubberPlantFeature.Config> {
-    public record Config(boolean forest) implements FeatureConfiguration {
+public record RubberPlantFeature(boolean forest) implements Feature {
 
-        public static final Codec<Config> CODEC =
-                RecordCodecBuilder.create(
-                        i ->
-                                i.group(Codec.BOOL.fieldOf("forest").forGetter(Config::forest))
-                                        .apply(i, Config::new));
-    }
+    public static final MapCodec<RubberPlantFeature> CODEC =
+            RecordCodecBuilder.mapCodec(
+                    i ->
+                            i.group(
+                                            Codec.BOOL
+                                                    .fieldOf("forest")
+                                                    .forGetter(RubberPlantFeature::forest))
+                                    .apply(i, RubberPlantFeature::new));
 
-    public RubberPlantFeature() {
-        super(Config.CODEC);
+    @Override
+    public MapCodec<RubberPlantFeature> codec() {
+        return CODEC;
     }
 
     @Override
-    public boolean place(FeaturePlaceContext<Config> context) {
-        WorldGenLevel level = context.level();
-        RandomSource rand = context.random();
-        BlockPos origin = context.origin();
-        boolean forest = context.config().forest();
+    public boolean place(
+            WorldGenLevel level, ChunkGenerator generator, RandomSource random, BlockPos origin) {
+        RandomSource rand = random;
+        boolean forest = this.forest;
         Block grass = FloraBlocksSpace.RUBBER_GRASS.get();
         Block sand = TerrainBlocksSpace.VINYL_SAND.get();
         BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();

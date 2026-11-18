@@ -1,26 +1,15 @@
 {
   "feature": {
     "type": "hbmspace:voronoi_plates",
-    "config": {
-      "biomes": "hbmspace:moho_lava_sea",
-      "cell_size": 27,
-      "crack_size": 0.5,
-      "fluid": {
-        "Name": "minecraft:lava",
-        "Properties": {
-          "level": "0"
-        }
-      },
-      "rock": {
-        "Name": "hbmspace:moho_stone"
-      },
-      "shape_exponent": 2.0,
-      "start_y": 62,
-      "surface": {
-        "Name": "hbmspace:moho_stone"
-      },
-      "thickness": 25
-    }
+    "biomes": "hbmspace:moho_lava_sea",
+    "cell_size": 27,
+    "crack_size": 0.5,
+    "fluid": "minecraft:lava",
+    "rock": "hbmspace:moho_stone",
+    "shape_exponent": 2.0,
+    "start_y": 62,
+    "surface": "hbmspace:moho_stone",
+    "thickness": 25
   },
   "placement": []
 }

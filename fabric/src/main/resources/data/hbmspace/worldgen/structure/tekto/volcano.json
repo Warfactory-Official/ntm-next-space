@@ -3,12 +3,8 @@
   "biomes": [
     "hbmspace:tekto_vinyl_desert"
   ],
-  "core": {
-    "Name": "hbmspace:geysir_chloric"
-  },
-  "material": {
-    "Name": "hbmspace:vinyl_sand"
-  },
+  "core": "hbmspace:geysir_chloric",
+  "material": "hbmspace:vinyl_sand",
   "max_size": 16,
   "min_size": 8,
   "spawn_overrides": {},

@@ -1,19 +1,20 @@
 #version 330
+#extension GL_ARB_separate_shader_objects : require
 
-#moj_import <minecraft:dynamictransforms.glsl>
-#moj_import <minecraft:projection.glsl>
-#moj_import <hbmspace:shader_time.glsl>
+#include <minecraft:dynamictransforms.glsl>
+#include <minecraft:projection.glsl>
+#include <hbmspace:shader_time.glsl>
 
-in vec3 Position;
+layout(location = 0) in vec3 Position;
 
-out vec4 vColor;
+layout(location = 0) out vec4 vColor;
 
 float hash(float x){ return fract(cos(x*124.123)*412.0); }
 
 void main() {
 	vColor = ColorModulator;
 
-	float v = float(gl_VertexID - BaseVertex);
+	float v = float(gl_VertexIndex - BaseVertex);
 	float t = v + iTime;
 	float r = hash(v);
 	float r2 = hash(v + 0.5);

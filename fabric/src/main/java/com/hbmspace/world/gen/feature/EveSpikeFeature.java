@@ -35,30 +35,32 @@
 package com.hbmspace.world.gen.feature;
 
 import com.hbmspace.blocks.TerrainBlocksSpace;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
-public class EveSpikeFeature extends Feature<NoneFeatureConfiguration> {
+public record EveSpikeFeature() implements Feature {
+    public static final MapCodec<EveSpikeFeature> CODEC = MapCodec.unit(EveSpikeFeature::new);
 
-    public EveSpikeFeature() {
-        super(NoneFeatureConfiguration.CODEC);
+    @Override
+    public MapCodec<EveSpikeFeature> codec() {
+        return CODEC;
     }
 
     @Override
-    public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> context) {
-        WorldGenLevel level = context.level();
-        RandomSource rand = context.random();
+    public boolean place(
+            WorldGenLevel level, ChunkGenerator generator, RandomSource random, BlockPos origin) {
+        RandomSource rand = random;
         Block silt = TerrainBlocksSpace.EVE_SILT.get();
         Block rock = TerrainBlocksSpace.EVE_ROCK.get();
         BlockState rockState = rock.defaultBlockState();
-        BlockPos.MutableBlockPos pos = context.origin().mutable();
+        BlockPos.MutableBlockPos pos = origin.mutable();
         int x = pos.getX();
         int z = pos.getZ();
 

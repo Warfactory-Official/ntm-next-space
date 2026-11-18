@@ -58,7 +58,7 @@ public final class RailgunSky {
                 Math.min(Math.max(-rounded + 30 + x, -50), 50),
                 Math.min(Math.max(-rounded - 20 + y, -50), 50),
                 20);
-        pose.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(-90F));
+        pose.rotate((Quaternionfc) Axis.ZP.rotationDegrees(-90F));
         draws.mesh(BODY, SkyPipelines.RAILGUN_BODY, pose, SkyDraws.IDENTITY, 1, 1, 1, 1, TEXTURE);
         draws.clearDepth();
         pose.popPose();

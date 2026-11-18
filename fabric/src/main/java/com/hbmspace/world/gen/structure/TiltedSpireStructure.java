@@ -46,7 +46,6 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
-import net.minecraft.world.level.levelgen.synth.NormalNoise.NoiseParameters;
 import net.minecraft.world.level.levelgen.synth.NormalNoise;
 
 public class TiltedSpireStructure extends Structure {
@@ -93,7 +92,7 @@ public class TiltedSpireStructure extends Structure {
                     i ->
                             i.group(
                                             settingsCodec(i),
-                                            NoiseParameters.CODEC
+                                            NormalNoise.CODEC
                                                     .fieldOf("noise")
                                                     .forGetter(s -> s.noise),
                                             Codec.FLOAT
@@ -112,7 +111,7 @@ public class TiltedSpireStructure extends Structure {
                                                     .forGetter(s -> s.regolith))
                                     .apply(i, TiltedSpireStructure::new));
 
-    private final Holder<NoiseParameters> noise;
+    private final Holder<NormalNoise> noise;
     private final float threshold;
     private final int chanceHigh;
     private final int chanceLow;
@@ -122,7 +121,7 @@ public class TiltedSpireStructure extends Structure {
 
     public TiltedSpireStructure(
             StructureSettings settings,
-            Holder<NoiseParameters> noise,
+            Holder<NormalNoise> noise,
             float threshold,
             int chanceHigh,
             int chanceLow,
@@ -142,10 +141,10 @@ public class TiltedSpireStructure extends Structure {
     @Override
     protected Optional<GenerationStub> findGenerationPoint(GenerationContext context) {
         ChunkPos chunk = context.chunkPos();
-        final ResourceKey<NormalNoise.NoiseParameters> key = noise.unwrapKey().orElseThrow();
+        final ResourceKey<NormalNoise> key = noise.unwrapKey().orElseThrow();
         final double x = chunk.getMinBlockX();
         final double z = chunk.getMinBlockZ();
-        double field = context.randomState().getOrCreateNoise(key).getValue(x, 0.0D, z);
+        double field = context.randomState().getOrCreateNoise(key).get(x, 0.0D, z);
         int chance = field > threshold * 2.0F - 1.0F ? chanceHigh : chanceLow;
         RandomSource random = context.random();
         if (random.nextInt(chance) != 0 || random.nextInt(chance) != 0) return Optional.empty();

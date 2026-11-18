@@ -3,9 +3,7 @@
   "biomes": [
     "hbmspace:mun"
   ],
-  "core": {
-    "Name": "hbmspace:ore_brine_mun"
-  },
+  "core": "hbmspace:ore_brine_mun",
   "fuzzy": false,
   "max_size": 16,
   "min_size": 8,

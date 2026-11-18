@@ -6,18 +6,8 @@
   "exponent": 4,
   "max_size": 32,
   "min_size": 8,
-  "regolith": {
-    "Name": "hbm:sellafield_slaked",
-    "Properties": {
-      "shade": "0"
-    }
-  },
-  "rock": {
-    "Name": "hbm:sellafield_slaked",
-    "Properties": {
-      "shade": "0"
-    }
-  },
+  "regolith": "hbm:sellafield_slaked",
+  "rock": "hbm:sellafield_slaked",
   "spawn_overrides": {},
   "step": "lakes",
   "terrain_adaptation": "none"

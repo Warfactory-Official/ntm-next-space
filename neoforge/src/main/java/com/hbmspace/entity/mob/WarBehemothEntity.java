@@ -33,8 +33,10 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.InterpolationHandler;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.SteppedInterpolationHandler;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
@@ -98,8 +100,26 @@ public class WarBehemothEntity extends EggVulnerableEntity implements Suffocatio
     }
 
     @Override
+    protected InterpolationHandler createInterpolationHandler() {
+        return level().isClientSide()
+                ? new ClientInterpolation(this)
+                : super.createInterpolationHandler();
+    }
+
+    private static final class ClientInterpolation extends SteppedInterpolationHandler {
+        private ClientInterpolation(WarBehemothEntity entity) {
+            super(entity);
+        }
+
+        @Override
+        protected void doInterpolate() {
+            ((WarBehemothEntity) entity).aimBodyYaw();
+            super.doInterpolate();
+        }
+    }
+
+    @Override
     public void tick() {
-        if (level().isClientSide()) aimBodyYaw();
         super.tick();
         if (level().isClientSide()) {
             aimBody();
@@ -115,7 +135,7 @@ public class WarBehemothEntity extends EggVulnerableEntity implements Suffocatio
         double dx = target.getX() - getX();
         double dz = target.getZ() - getZ();
         double yaw = Math.atan2(dz, dx) * (180D / Math.PI) - 90D;
-        ((com.hbmspace.entity.mob.BehemothYawTarget) (getInterpolation())).hbmspace$pullYaw(yaw);
+        ((BehemothYawTarget) getInterpolation()).hbmspace$pullYaw(yaw);
     }
 
     private void aimBody() {

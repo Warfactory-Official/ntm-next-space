@@ -20,14 +20,15 @@
 package com.hbmspace.world.gen.carver;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import java.util.function.Function;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
-import net.minecraft.core.RegistryCodecs;
 import net.minecraft.core.SectionPos;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.core.registries.codec.RegistryCodecs;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
@@ -35,22 +36,20 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.chunk.CarvingMask;
 import net.minecraft.world.level.chunk.ChunkAccess;
-import net.minecraft.world.level.levelgen.Aquifer;
-import net.minecraft.world.level.levelgen.carver.CarverConfiguration;
-import net.minecraft.world.level.levelgen.carver.CarvingContext;
+import net.minecraft.world.level.levelgen.WorldGenerationContext;
 import net.minecraft.world.level.levelgen.carver.WorldCarver;
+import net.minecraft.world.level.material.Fluids;
 
-public class RavineCarver extends WorldCarver<RavineCarver.Configuration> {
+public class RavineCarver implements TerrainCarver {
 
-    public static class Configuration extends CarverConfiguration {
+    public static class Configuration extends CarvingSettings {
 
-        public static final Codec<Configuration> CODEC =
-                RecordCodecBuilder.create(
+        public static final MapCodec<Configuration> CODEC =
+                RecordCodecBuilder.mapCodec(
                         i ->
                                 i.group(
-                                                CarverConfiguration.CODEC.forGetter(c -> c),
+                                                CarvingSettings.CODEC.forGetter(c -> c),
                                                 Codec.intRange(1, 256)
                                                         .fieldOf("strata_frequency")
                                                         .forGetter(c -> c.strataFrequency),
@@ -66,10 +65,10 @@ public class RavineCarver extends WorldCarver<RavineCarver.Configuration> {
                                                 Codec.BOOL
                                                         .fieldOf("underwater")
                                                         .forGetter(c -> c.underwater),
-                                                RegistryCodecs.homogeneousList(Registries.BLOCK)
+                                                RegistryCodecs.holderSet(Registries.BLOCK)
                                                         .fieldOf("top")
                                                         .forGetter(c -> c.top),
-                                                RegistryCodecs.homogeneousList(Registries.BLOCK)
+                                                RegistryCodecs.holderSet(Registries.BLOCK)
                                                         .fieldOf("filler")
                                                         .forGetter(c -> c.filler))
                                         .apply(i, Configuration::new));
@@ -83,7 +82,7 @@ public class RavineCarver extends WorldCarver<RavineCarver.Configuration> {
         public final HolderSet<Block> filler;
 
         public Configuration(
-                CarverConfiguration carver,
+                CarvingSettings carver,
                 int strataFrequency,
                 float strataScale,
                 double taper,
@@ -96,7 +95,6 @@ public class RavineCarver extends WorldCarver<RavineCarver.Configuration> {
                     carver.y,
                     carver.yScale,
                     carver.lavaLevel,
-                    carver.debugSettings,
                     carver.replaceable);
             this.strataFrequency = strataFrequency;
             this.strataScale = strataScale;
@@ -108,58 +106,51 @@ public class RavineCarver extends WorldCarver<RavineCarver.Configuration> {
         }
     }
 
-    public RavineCarver() {
-        super(Configuration.CODEC);
+    public static final MapCodec<RavineCarver> CODEC =
+            Configuration.CODEC.xmap(RavineCarver::new, carver -> carver.configuration);
+    public final Configuration configuration;
+
+    public RavineCarver(Configuration configuration) {
+        this.configuration = configuration;
     }
 
     @Override
-    public boolean isStartChunk(Configuration configuration, RandomSource random) {
+    public MapCodec<RavineCarver> codec() {
+        return CODEC;
+    }
+
+    @Override
+    public boolean isStartChunk(RandomSource random) {
         return random.nextFloat() <= configuration.probability;
     }
 
     @Override
-    public boolean carve(
-            CarvingContext context,
-            Configuration configuration,
-            ChunkAccess chunk,
-            Function<BlockPos, Holder<Biome>> biomeGetter,
-            RandomSource random,
-            Aquifer aquifer,
-            ChunkPos sourceChunkPos,
-            CarvingMask mask) {
-        trace(
-                context,
-                configuration,
-                chunk,
-                biomeGetter,
-                random,
-                aquifer,
-                sourceChunkPos,
-                mask,
-                null);
+    public boolean carve(TerrainCarving context, RandomSource random, ChunkPos sourceChunkPos) {
+        ChunkAccess chunk = context.chunk;
+        Function<BlockPos, Holder<Biome>> biomeGetter = context.biomeGetter;
+        TerrainCarving mask = context;
+        trace(context, configuration, chunk, biomeGetter, random, sourceChunkPos, mask, null);
         return true;
     }
 
     public boolean affectsSurface(
-            CarvingContext context,
+            WorldGenerationContext context,
             Configuration configuration,
             ChunkAccess chunk,
             RandomSource random,
             ChunkPos sourceChunkPos,
             int[] heights) {
-        return trace(
-                context, configuration, chunk, null, random, null, sourceChunkPos, null, heights);
+        return trace(context, configuration, chunk, null, random, sourceChunkPos, null, heights);
     }
 
     private boolean trace(
-            CarvingContext context,
+            WorldGenerationContext context,
             Configuration configuration,
             ChunkAccess chunk,
             Function<BlockPos, Holder<Biome>> biomeGetter,
             RandomSource random,
-            Aquifer aquifer,
             ChunkPos sourceChunkPos,
-            CarvingMask mask,
+            TerrainCarving mask,
             int[] heights) {
         double x = sourceChunkPos.getBlockX(random.nextInt(16));
         double y = configuration.y.sample(random, context);
@@ -186,7 +177,7 @@ public class RavineCarver extends WorldCarver<RavineCarver.Configuration> {
     }
 
     private boolean ravine(
-            CarvingContext context,
+            WorldGenerationContext context,
             Configuration configuration,
             ChunkAccess chunk,
             Function<BlockPos, Holder<Biome>> biomeGetter,
@@ -198,7 +189,7 @@ public class RavineCarver extends WorldCarver<RavineCarver.Configuration> {
             float yaw,
             float pitch,
             double heightFactor,
-            CarvingMask mask,
+            TerrainCarving mask,
             int[] heights) {
         RandomSource random = RandomSource.create(seed);
         int maxDistance = SectionPos.sectionToBlockCoord(getRange() * 2 - 1);
@@ -235,7 +226,7 @@ public class RavineCarver extends WorldCarver<RavineCarver.Configuration> {
             yawChange += (random.nextFloat() - random.nextFloat()) * random.nextFloat() * 4.0F;
 
             if (random.nextInt(4) == 0) continue;
-            if (!canReach(chunkPos, x, z, step, distance, thickness)) return false;
+            if (!WorldCarver.canReach(chunkPos, x, z, step, distance, thickness)) return false;
             if (Math.abs(x - chunkPos.getMiddleBlockX()) > 16.0D + radius * 2.0D
                     || Math.abs(z - chunkPos.getMiddleBlockZ()) > 16.0D + radius * 2.0D) continue;
 
@@ -245,11 +236,10 @@ public class RavineCarver extends WorldCarver<RavineCarver.Configuration> {
                 continue;
             }
 
-            boolean flooded =
-                    CelestialCaveCarver.shellHolds(context, chunk, x, y, z, radius, height, false);
+            boolean flooded = ((TerrainCarving) context).shellHolds(x, y, z, radius, height, false);
             if (flooded && !configuration.underwater) continue;
             cut(
-                    context,
+                    (TerrainCarving) context,
                     configuration,
                     chunk,
                     biomeGetter,
@@ -266,7 +256,7 @@ public class RavineCarver extends WorldCarver<RavineCarver.Configuration> {
     }
 
     private void cut(
-            CarvingContext context,
+            TerrainCarving context,
             Configuration configuration,
             ChunkAccess chunk,
             Function<BlockPos, Holder<Biome>> biomeGetter,
@@ -277,7 +267,7 @@ public class RavineCarver extends WorldCarver<RavineCarver.Configuration> {
             double height,
             float[] strata,
             boolean flooded,
-            CarvingMask mask) {
+            TerrainCarving mask) {
         ChunkPos chunkPos = chunk.getPos();
         int minX = Math.max(Mth.floor(x - radius) - chunkPos.getMinBlockX() - 1, 0);
         int maxX = Math.min(Mth.floor(x + radius) - chunkPos.getMinBlockX() + 1, 16);
@@ -304,6 +294,7 @@ public class RavineCarver extends WorldCarver<RavineCarver.Configuration> {
                             >= configuration.width) {
                         continue;
                     }
+                    if (!context.accepts(bx, by, bz)) continue;
                     pos.set(chunkPos.getBlockX(bx), by, chunkPos.getBlockZ(bz));
                     BlockState state = chunk.getBlockState(pos);
                     if (state.is(configuration.top)) foundTop = true;
@@ -314,9 +305,12 @@ public class RavineCarver extends WorldCarver<RavineCarver.Configuration> {
                         carved =
                                 flooded
                                         ? Blocks.OBSIDIAN.defaultBlockState()
-                                        : LAVA.createLegacyBlock();
+                                        : Fluids.LAVA.defaultFluidState().createLegacyBlock();
                     } else {
-                        carved = flooded && by < 62 ? WATER.createLegacyBlock() : AIR;
+                        carved =
+                                flooded && by < 62
+                                        ? Fluids.WATER.defaultFluidState().createLegacyBlock()
+                                        : Blocks.AIR.defaultBlockState();
                     }
                     chunk.setBlockState(pos, carved);
                     mask.set(bx, by, bz);

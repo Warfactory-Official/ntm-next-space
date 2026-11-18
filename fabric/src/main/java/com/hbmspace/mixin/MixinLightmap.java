@@ -22,13 +22,13 @@ package com.hbmspace.mixin;
 import com.hbmspace.client.sky.CelestialLightmapTint;
 import com.hbmspace.dim.SpaceDimensions;
 import com.llamalad7.mixinextras.sugar.Local;
-import com.mojang.blaze3d.GpuFormat;
-import com.mojang.blaze3d.buffers.GpuBuffer;
-import com.mojang.blaze3d.systems.CommandEncoder;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.textures.FilterMode;
-import com.mojang.blaze3d.textures.GpuTexture;
-import com.mojang.blaze3d.textures.GpuTextureView;
+import com.mojang.renderpearl.api.GpuFormat;
+import com.mojang.renderpearl.api.buffers.GpuBuffer;
+import com.mojang.renderpearl.api.commands.CommandEncoder;
+import com.mojang.renderpearl.api.textures.FilterMode;
+import com.mojang.renderpearl.api.textures.GpuTexture;
+import com.mojang.renderpearl.api.textures.GpuTextureView;
 import java.nio.ByteOrder;
 import java.util.Optional;
 import net.minecraft.client.Minecraft;
@@ -65,8 +65,8 @@ public abstract class MixinLightmap {
                     @At(
                             value = "INVOKE",
                             target =
-                                    "Lcom/mojang/blaze3d/systems/CommandEncoder;"
-                                            + "createRenderPass(Ljava/util/function/Supplier;Lcom/mojang/blaze3d/textures/GpuTextureView;Ljava/util/Optional;)Lcom/mojang/blaze3d/systems/RenderPass;"),
+                                    "Lcom/mojang/renderpearl/api/commands/CommandEncoder;"
+                                            + "createRenderPass(Ljava/util/function/Supplier;Lcom/mojang/renderpearl/api/textures/GpuTextureView;Ljava/util/Optional;)Lcom/mojang/renderpearl/api/commands/RenderPass;"),
             index = 1)
     private GpuTextureView hbmspace$rawUpdate(GpuTextureView original) {
         var level = Minecraft.getInstance().level;
@@ -127,10 +127,10 @@ public abstract class MixinLightmap {
         try (var pass =
                 encoder.createRenderPass(
                         () -> "Space lightmap tint", textureView, Optional.empty())) {
-            pass.setPipeline(CelestialLightmapTint.PIPELINE);
+            pass.setPipeline(RenderSystem.getCompiledPipeline(CelestialLightmapTint.PIPELINE));
             RenderSystem.bindDefaultUniforms(pass);
             pass.setUniform("CelestialTint", hbmspace$tintInfo.currentBuffer());
-            pass.bindTexture(
+            pass.setUniform(
                     "LightmapRaw",
                     hbmspace$rawView,
                     RenderSystem.getSamplerCache().getRepeat(FilterMode.NEAREST));

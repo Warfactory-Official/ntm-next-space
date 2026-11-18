@@ -22,11 +22,11 @@ package com.hbmspace.world.gen.surface;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import java.util.function.DoubleSupplier;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.levelgen.Noises;
 import net.minecraft.world.level.levelgen.PositionalRandomFactory;
-import net.minecraft.world.level.levelgen.SurfaceRules;
-import net.minecraft.world.level.levelgen.synth.NormalNoise;
+import net.minecraft.world.level.levelgen.material.MaterialRuleContext;
 
 public record SurfaceDepth(double divisor, double jitter) {
 
@@ -45,35 +45,35 @@ public record SurfaceDepth(double divisor, double jitter) {
     private static final Identifier JITTER =
             Identifier.fromNamespaceAndPath("hbmspace", "surface_depth");
 
-    Column column(SurfaceRules.Context context) {
+    Column column(MaterialRuleContext context) {
         return new Column(
                 context,
-                context.randomState.getOrCreateNoise(Noises.SURFACE),
-                context.randomState.getOrCreateRandomFactory(JITTER));
+                context.getNoiseSampler(Noises.SURFACE, false),
+                context.getOrCreateRandomFactory(JITTER));
     }
 
     final class Column {
-        private final SurfaceRules.Context context;
-        private final NormalNoise noise;
+        private final MaterialRuleContext context;
+        private final DoubleSupplier noise;
         private final PositionalRandomFactory random;
         private int x = Integer.MIN_VALUE;
         private int z = Integer.MIN_VALUE;
         private int depth;
 
         private Column(
-                SurfaceRules.Context context, NormalNoise noise, PositionalRandomFactory random) {
+                MaterialRuleContext context, DoubleSupplier noise, PositionalRandomFactory random) {
             this.context = context;
             this.noise = noise;
             this.random = random;
         }
 
         int depth() {
-            if (context.blockX != x || context.blockZ != z) {
-                x = context.blockX;
-                z = context.blockZ;
+            if (context.blockX() != x || context.blockZ() != z) {
+                x = context.blockX();
+                z = context.blockZ();
                 depth =
                         (int)
-                                (noise.getValue(x, 0.0D, z) * 8.25D / divisor
+                                (noise.getAsDouble() * 8.25D / divisor
                                         + divisor
                                         + random.at(x, 0, z).nextDouble() * jitter);
             }

@@ -1,5 +1,51 @@
 {
   "attributes": {
+    "minecraft:gameplay/creature_world_gen_spawn_probability": 0.1,
+    "minecraft:gameplay/natural_mob_spawns": {
+      "argument": {
+        "spawn_costs": {},
+        "spawns_by_category": {
+          "ambient": [],
+          "axolotls": [],
+          "creature": [],
+          "misc": [],
+          "monster": [
+            {
+              "type": "hbmspace:entity_mob_flesh_creeper",
+              "count": {
+                "type": "minecraft:uniform",
+                "max_inclusive": 4,
+                "min_inclusive": 4
+              },
+              "weight": 10
+            }
+          ],
+          "underground_water_creature": [],
+          "water_ambient": [],
+          "water_creature": [
+            {
+              "type": "hbmspace:entity_scutterfish",
+              "count": {
+                "type": "minecraft:uniform",
+                "max_inclusive": 4,
+                "min_inclusive": 4
+              },
+              "weight": 10
+            },
+            {
+              "type": "hbmspace:entity_siftereel",
+              "count": {
+                "type": "minecraft:uniform",
+                "max_inclusive": 3,
+                "min_inclusive": 1
+              },
+              "weight": 10
+            }
+          ]
+        }
+      },
+      "modifier": "overlay"
+    },
     "minecraft:visual/sky_color": "#7da2ff"
   },
   "carvers": [
@@ -7,7 +53,6 @@
     "hbmspace:laythe/caves",
     "hbmspace:laythe/ravine"
   ],
-  "creature_spawn_probability": 0.1,
   "downfall": 0.2,
   "effects": {
     "water_color": "#160f8a"
@@ -79,36 +124,5 @@
     []
   ],
   "has_precipitation": true,
-  "spawn_costs": {},
-  "spawners": {
-    "ambient": [],
-    "axolotls": [],
-    "creature": [],
-    "misc": [],
-    "monster": [
-      {
-        "type": "hbmspace:entity_mob_flesh_creeper",
-        "maxCount": 4,
-        "minCount": 4,
-        "weight": 10
-      }
-    ],
-    "underground_water_creature": [],
-    "water_ambient": [],
-    "water_creature": [
-      {
-        "type": "hbmspace:entity_scutterfish",
-        "maxCount": 4,
-        "minCount": 4,
-        "weight": 10
-      },
-      {
-        "type": "hbmspace:entity_siftereel",
-        "maxCount": 3,
-        "minCount": 1,
-        "weight": 10
-      }
-    ]
-  },
   "temperature": 0.2
 }

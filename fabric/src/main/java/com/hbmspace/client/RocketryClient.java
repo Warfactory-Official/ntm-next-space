@@ -31,7 +31,7 @@ import com.hbmspace.client.render.CombatDropPodRenderer;
 import com.hbmspace.client.render.RocketCustomRenderer;
 import com.hbmspace.entity.RocketryEntitiesSpace;
 import com.hbmspace.inventory.container.RocketryMenusSpace;
-import com.mojang.blaze3d.pipeline.RenderPipeline;
+import com.mojang.renderpearl.api.pipeline.RenderPipeline;
 import java.util.function.Consumer;
 import net.minecraft.client.renderer.entity.NoopRenderer;
 

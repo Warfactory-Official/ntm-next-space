@@ -22,14 +22,14 @@ package com.hbmspace.client.gui;
 import com.hbmspace.HbmSpace;
 import com.hbmspace.client.sky.SkyDraws;
 import com.hbmspace.client.sky.SkyPipelines;
-import com.mojang.blaze3d.PrimitiveTopology;
-import com.mojang.blaze3d.pipeline.BlendFunction;
-import com.mojang.blaze3d.pipeline.ColorTargetState;
-import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
+import com.mojang.renderpearl.api.pipeline.BlendFunction;
+import com.mojang.renderpearl.api.pipeline.ColorTargetState;
+import com.mojang.renderpearl.api.pipeline.PrimitiveTopology;
+import com.mojang.renderpearl.api.pipeline.RenderPipeline;
 import java.util.List;
 import java.util.function.Consumer;
 import net.minecraft.client.gui.render.pip.PictureInPictureRenderer;
@@ -51,7 +51,8 @@ public final class StardarMapRenderer extends PictureInPictureRenderer<StardarMa
 
     private static RenderPipeline masked(String shader) {
         return RenderPipeline.builder(RenderPipelines.GLOBALS_SNIPPET)
-                .withBindGroupLayout(BindGroupLayouts.MATRICES_PROJECTION)
+                .withBindGroupLayout(BindGroupLayouts.PROJECTION)
+                .withBindGroupLayout(BindGroupLayouts.DYNAMIC_TRANSFORMS)
                 .withBindGroupLayout(SkyPipelines.PLANET_INFO)
                 .withLocation(id("pipeline/stardar_" + shader))
                 .withVertexShader(id("core/planet"))
@@ -93,7 +94,7 @@ public final class StardarMapRenderer extends PictureInPictureRenderer<StardarMa
                 case StardarMapRenderState.Colored quads -> colored(quads, pose);
             }
         }
-        draws.flush();
+        draws.flush(textureView, depthTextureView);
         draws.endFrame();
     }
 
@@ -101,7 +102,7 @@ public final class StardarMapRenderer extends PictureInPictureRenderer<StardarMa
         pose.pushPose();
         if (quad.angle() != 0) {
             pose.translate(quad.pivotX(), quad.pivotY(), 0F);
-            pose.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(quad.angle()));
+            pose.rotate((Quaternionfc) Axis.ZP.rotationDegrees(quad.angle()));
             pose.translate(-quad.pivotX(), -quad.pivotY(), 0F);
         }
         VertexConsumer buffer =

@@ -19,76 +19,75 @@
 
 package com.hbmspace.mixin;
 
-import com.hbmspace.world.gen.density.SeededDensityFunction;
-import java.util.HashMap;
-import java.util.Map;
+import com.hbmspace.world.gen.density.BedrockFloor;
+import com.hbmspace.world.gen.density.CelestialBiomes;
+import com.hbmspace.world.gen.density.CelestialRelief;
+import com.hbmspace.world.gen.density.LimitNoise;
+import java.util.ArrayDeque;
+import java.util.Collections;
+import java.util.IdentityHashMap;
+import java.util.Set;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.DensityFunction;
 import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
-import net.minecraft.world.level.levelgen.PositionalRandomFactory;
+import net.minecraft.world.level.levelgen.NoiseRouter;
 import net.minecraft.world.level.levelgen.RandomState;
-import net.minecraft.world.level.levelgen.SurfaceSystem;
+import net.minecraft.world.level.levelgen.densityfunction.DensityFunction;
+import net.minecraft.world.level.levelgen.densityfunction.DfRewriteRule;
 import net.minecraft.world.level.levelgen.synth.NormalNoise;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyArg;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(RandomState.class)
 public abstract class MixinRandomState {
-
-    @Shadow @Final private PositionalRandomFactory random;
-
-    @Shadow @Final private SurfaceSystem surfaceSystem;
-
-    @Unique private boolean hbmspace$celestial;
-
-    @ModifyArg(
-            method = "<init>",
-            at =
-                    @At(
-                            value = "INVOKE",
-                            target =
-                                    "Lnet/minecraft/world/level/levelgen/NoiseRouter;"
-                                            + "mapAll(Lnet/minecraft/world/level/levelgen/DensityFunction$Visitor;)"
-                                            + "Lnet/minecraft/world/level/levelgen/NoiseRouter;"))
-    private DensityFunction.Visitor hbmspace$seedCelestialFunctions(
-            DensityFunction.Visitor wiring) {
-        Map<DensityFunction, DensityFunction> seeded = new HashMap<>();
-        return new DensityFunction.Visitor() {
-            @Override
-            public DensityFunction apply(DensityFunction input) {
-                if (!(input instanceof SeededDensityFunction function)) return wiring.apply(input);
-                hbmspace$celestial = true;
-                return wiring.apply(
-                        seeded.computeIfAbsent(function, unwired -> function.seeded(random)));
-            }
-
-            @Override
-            public DensityFunction.NoiseHolder visitNoise(DensityFunction.NoiseHolder noise) {
-                return wiring.visitNoise(noise);
-            }
-        };
-    }
-
-    @Inject(method = "<init>", at = @At("RETURN"))
-    private void hbmspace$solidSea(
-            NoiseGeneratorSettings settings,
-            HolderGetter<NormalNoise.NoiseParameters> noises,
+    @Inject(
+            method =
+                    "create(Lnet/minecraft/core/HolderGetter;JLnet/minecraft/world/level/levelgen/NoiseGeneratorSettings;)Lnet/minecraft/world/level/levelgen/RandomState;",
+            at = @At("RETURN"))
+    private static void hbmspace$solidSea(
+            HolderGetter<NormalNoise> noises,
             long seed,
-            CallbackInfo ci) {
+            NoiseGeneratorSettings settings,
+            CallbackInfoReturnable<RandomState> ci) {
         BlockState sea = settings.defaultFluid();
-        if (hbmspace$celestial
-                && !sea.isAir()
+        if (!sea.isAir()
                 && sea.getFluidState().isEmpty()
-                && sea != settings.defaultBlock()) {
-            ((com.hbmspace.world.gen.surface.SolidSeaSurface) (surfaceSystem))
+                && sea != settings.defaultBlock()
+                && hbmspace$celestial(settings.noiseRouter())) {
+            ((com.hbmspace.world.gen.surface.SolidSeaSurface) (ci.getReturnValue().surfaceSystem()))
                     .hbmspace$readSeaAsFluid(sea);
         }
+    }
+
+    @Unique
+    private static boolean hbmspace$celestial(NoiseRouter router) {
+        ArrayDeque<DensityFunction> pending = new ArrayDeque<>();
+        pending.add(router.temperature());
+        pending.add(router.vegetation());
+        pending.add(router.continents());
+        pending.add(router.erosion());
+        pending.add(router.depth());
+        pending.add(router.ridges());
+        pending.add(router.chunkSurfaceLevel());
+        pending.add(router.finalDensity());
+        Set<DensityFunction> visited = Collections.newSetFromMap(new IdentityHashMap<>());
+        DfRewriteRule children =
+                child -> {
+                    pending.addLast(child);
+                    return child;
+                };
+        while (!pending.isEmpty()) {
+            DensityFunction function = pending.removeFirst();
+            if (!visited.add(function)) continue;
+            if (function instanceof BedrockFloor
+                    || function instanceof CelestialBiomes
+                    || function instanceof CelestialRelief
+                    || function instanceof LimitNoise) return true;
+            function.rewriteChildren(children);
+        }
+        return false;
     }
 }

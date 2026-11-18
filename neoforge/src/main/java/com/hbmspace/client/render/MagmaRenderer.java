@@ -137,16 +137,16 @@ public class MagmaRenderer
         int light = s.lightCoords;
         ps.pushPose();
         ps.translate(0.5, 0.0, 0.5);
-        ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(yaw(s.facing)));
+        ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(yaw(s.facing)));
         ps.translate(0.0, -3.0, 0.0);
 
         ps.pushPose();
-        ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(s.rotation));
+        ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(s.rotation));
         col.submitCustomGeometry(
                 ps, partType, (pose, buf) -> mesh.renderPart(pose, buf, light, -1, drillHead));
         ps.popPose();
         ps.pushPose();
-        ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(-s.rotation));
+        ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(-s.rotation));
         col.submitCustomGeometry(
                 ps, partType, (pose, buf) -> mesh.renderPart(pose, buf, light, -1, blades));
         ps.popPose();

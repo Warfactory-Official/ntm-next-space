@@ -1,11 +1,27 @@
 {
   "attributes": {
+    "minecraft:gameplay/creature_world_gen_spawn_probability": 0.1,
+    "minecraft:gameplay/natural_mob_spawns": {
+      "argument": {
+        "spawn_costs": {},
+        "spawns_by_category": {
+          "ambient": [],
+          "axolotls": [],
+          "creature": [],
+          "misc": [],
+          "monster": [],
+          "underground_water_creature": [],
+          "water_ambient": [],
+          "water_creature": []
+        }
+      },
+      "modifier": "overlay"
+    },
     "minecraft:visual/sky_color": "#76a8ff"
   },
   "carvers": [
     "hbmspace:tekto/caves"
   ],
-  "creature_spawn_probability": 0.1,
   "downfall": 0.5,
   "effects": {
     "water_color": "#16008a"
@@ -69,16 +85,5 @@
     []
   ],
   "has_precipitation": true,
-  "spawn_costs": {},
-  "spawners": {
-    "ambient": [],
-    "axolotls": [],
-    "creature": [],
-    "misc": [],
-    "monster": [],
-    "underground_water_creature": [],
-    "water_ambient": [],
-    "water_creature": []
-  },
   "temperature": 1.0
 }

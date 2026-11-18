@@ -276,7 +276,7 @@ public final class TerrainBlocksSpace {
                                 .replaceable()
                                 .noCollision()
                                 .strength(0.0F, 300.0F)
-                                .pushReaction(((PushReaction) (PushReaction.DESTROY)))
+                                .pushReaction(((PushReaction) (PushReaction.POPPED)))
                                 .noLootTable()
                                 .liquid()
                                 .sound(SoundType.EMPTY));

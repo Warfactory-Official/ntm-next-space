@@ -42,6 +42,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
@@ -121,7 +122,7 @@ public class VolcanoPiece extends StructurePiece {
         int raise = (int) height(Math.sqrt((double) dx * dx + (double) dz * dz));
         if (x == centreX
                 && z == centreZ
-                && core.blocksMotion()
+                && core.is(BlockTags.BLOCKS_MOTION)
                 && SpaceData.ENABLE_VOLCANO_GEN.get()) return raise + 1;
         return Math.max(0, raise - 1);
     }

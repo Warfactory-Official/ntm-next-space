@@ -88,6 +88,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
+import net.minecraft.util.Prediction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -870,8 +871,9 @@ public class RideableRocketEntity extends Missile implements EntityLookOverlayPr
         ItemStack drive = navDrive;
         navDrive = ItemStack.EMPTY;
         discard();
-        player.getInventory().placeItemBackInInventory(rocket);
-        if (!drive.isEmpty()) player.getInventory().placeItemBackInInventory(drive);
+        player.getInventory().placeItemBackInInventory(rocket, Prediction.SERVER_ONLY);
+        if (!drive.isEmpty())
+            player.getInventory().placeItemBackInInventory(drive, Prediction.SERVER_ONLY);
     }
 
     public void dropNDie() {

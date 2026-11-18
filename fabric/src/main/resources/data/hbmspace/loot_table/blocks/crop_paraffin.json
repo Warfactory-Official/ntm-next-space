@@ -3,25 +3,28 @@
   "pools": [
     {
       "bonus_rolls": 0.0,
-      "conditions": [
-        {
-          "condition": "minecraft:survives_explosion"
-        },
-        {
-          "block": "hbmspace:crop_paraffin",
-          "condition": "minecraft:block_state_property",
-          "properties": {
-            "age": "2"
+      "condition": {
+        "type": "minecraft:all_of",
+        "terms": [
+          {
+            "type": "minecraft:survives_explosion"
+          },
+          {
+            "type": "minecraft:match_block",
+            "blocks": "hbmspace:crop_paraffin",
+            "state": {
+              "age": "2"
+            }
           }
-        }
-      ],
+        ]
+      },
       "entries": [
         {
           "type": "minecraft:item",
-          "functions": [
+          "modifier": [
             {
-              "count": 1,
-              "function": "minecraft:set_count"
+              "type": "minecraft:set_count",
+              "count": 1
             }
           ],
           "name": "hbmspace:paraffin_seeds"
@@ -31,25 +34,28 @@
     },
     {
       "bonus_rolls": 0.0,
-      "conditions": [
-        {
-          "condition": "minecraft:survives_explosion"
-        },
-        {
-          "block": "hbmspace:crop_paraffin",
-          "condition": "minecraft:block_state_property",
-          "properties": {
-            "age": "3"
+      "condition": {
+        "type": "minecraft:all_of",
+        "terms": [
+          {
+            "type": "minecraft:survives_explosion"
+          },
+          {
+            "type": "minecraft:match_block",
+            "blocks": "hbmspace:crop_paraffin",
+            "state": {
+              "age": "3"
+            }
           }
-        }
-      ],
+        ]
+      },
       "entries": [
         {
           "type": "minecraft:item",
-          "functions": [
+          "modifier": [
             {
-              "count": 1,
-              "function": "minecraft:set_count"
+              "type": "minecraft:set_count",
+              "count": 1
             }
           ],
           "name": "hbmspace:paraffin_seeds"
@@ -59,25 +65,28 @@
     },
     {
       "bonus_rolls": 0.0,
-      "conditions": [
-        {
-          "condition": "minecraft:survives_explosion"
-        },
-        {
-          "block": "hbmspace:crop_paraffin",
-          "condition": "minecraft:block_state_property",
-          "properties": {
-            "age": "4"
+      "condition": {
+        "type": "minecraft:all_of",
+        "terms": [
+          {
+            "type": "minecraft:survives_explosion"
+          },
+          {
+            "type": "minecraft:match_block",
+            "blocks": "hbmspace:crop_paraffin",
+            "state": {
+              "age": "4"
+            }
           }
-        }
-      ],
+        ]
+      },
       "entries": [
         {
           "type": "minecraft:item",
-          "functions": [
+          "modifier": [
             {
-              "count": 2,
-              "function": "minecraft:set_count"
+              "type": "minecraft:set_count",
+              "count": 2
             }
           ],
           "name": "hbmspace:paraffin_seeds"
@@ -87,25 +96,28 @@
     },
     {
       "bonus_rolls": 0.0,
-      "conditions": [
-        {
-          "condition": "minecraft:survives_explosion"
-        },
-        {
-          "block": "hbmspace:crop_paraffin",
-          "condition": "minecraft:block_state_property",
-          "properties": {
-            "age": "5"
+      "condition": {
+        "type": "minecraft:all_of",
+        "terms": [
+          {
+            "type": "minecraft:survives_explosion"
+          },
+          {
+            "type": "minecraft:match_block",
+            "blocks": "hbmspace:crop_paraffin",
+            "state": {
+              "age": "5"
+            }
           }
-        }
-      ],
+        ]
+      },
       "entries": [
         {
           "type": "minecraft:item",
-          "functions": [
+          "modifier": [
             {
-              "count": 2,
-              "function": "minecraft:set_count"
+              "type": "minecraft:set_count",
+              "count": 2
             }
           ],
           "name": "hbmspace:paraffin_seeds"
@@ -115,25 +127,28 @@
     },
     {
       "bonus_rolls": 0.0,
-      "conditions": [
-        {
-          "condition": "minecraft:survives_explosion"
-        },
-        {
-          "block": "hbmspace:crop_paraffin",
-          "condition": "minecraft:block_state_property",
-          "properties": {
-            "age": "6"
+      "condition": {
+        "type": "minecraft:all_of",
+        "terms": [
+          {
+            "type": "minecraft:survives_explosion"
+          },
+          {
+            "type": "minecraft:match_block",
+            "blocks": "hbmspace:crop_paraffin",
+            "state": {
+              "age": "6"
+            }
           }
-        }
-      ],
+        ]
+      },
       "entries": [
         {
           "type": "minecraft:item",
-          "functions": [
+          "modifier": [
             {
-              "count": 3,
-              "function": "minecraft:set_count"
+              "type": "minecraft:set_count",
+              "count": 3
             }
           ],
           "name": "hbmspace:paraffin_seeds"
@@ -143,25 +158,28 @@
     },
     {
       "bonus_rolls": 0.0,
-      "conditions": [
-        {
-          "condition": "minecraft:survives_explosion"
-        },
-        {
-          "block": "hbmspace:crop_paraffin",
-          "condition": "minecraft:block_state_property",
-          "properties": {
-            "age": "7"
+      "condition": {
+        "type": "minecraft:all_of",
+        "terms": [
+          {
+            "type": "minecraft:survives_explosion"
+          },
+          {
+            "type": "minecraft:match_block",
+            "blocks": "hbmspace:crop_paraffin",
+            "state": {
+              "age": "7"
+            }
           }
-        }
-      ],
+        ]
+      },
       "entries": [
         {
           "type": "minecraft:item",
-          "functions": [
+          "modifier": [
             {
-              "count": 4,
-              "function": "minecraft:set_count"
+              "type": "minecraft:set_count",
+              "count": 4
             }
           ],
           "name": "hbmspace:paraffin_seeds"
@@ -171,19 +189,22 @@
     },
     {
       "bonus_rolls": 0.0,
-      "conditions": [
-        {
-          "block": "hbmspace:crop_paraffin",
-          "condition": "minecraft:block_state_property",
-          "properties": {
-            "age": "7"
+      "condition": {
+        "type": "minecraft:all_of",
+        "terms": [
+          {
+            "type": "minecraft:match_block",
+            "blocks": "hbmspace:crop_paraffin",
+            "state": {
+              "age": "7"
+            }
+          },
+          {
+            "type": "minecraft:random_chance",
+            "chance": 0.5333333333333333
           }
-        },
-        {
-          "chance": 0.5333333333333333,
-          "condition": "minecraft:random_chance"
-        }
-      ],
+        ]
+      },
       "entries": [
         {
           "type": "minecraft:loot_table",
@@ -217,19 +238,22 @@
     },
     {
       "bonus_rolls": 0.0,
-      "conditions": [
-        {
-          "block": "hbmspace:crop_paraffin",
-          "condition": "minecraft:block_state_property",
-          "properties": {
-            "age": "7"
+      "condition": {
+        "type": "minecraft:all_of",
+        "terms": [
+          {
+            "type": "minecraft:match_block",
+            "blocks": "hbmspace:crop_paraffin",
+            "state": {
+              "age": "7"
+            }
+          },
+          {
+            "type": "minecraft:random_chance",
+            "chance": 0.5333333333333333
           }
-        },
-        {
-          "chance": 0.5333333333333333,
-          "condition": "minecraft:random_chance"
-        }
-      ],
+        ]
+      },
       "entries": [
         {
           "type": "minecraft:loot_table",
@@ -263,19 +287,22 @@
     },
     {
       "bonus_rolls": 0.0,
-      "conditions": [
-        {
-          "block": "hbmspace:crop_paraffin",
-          "condition": "minecraft:block_state_property",
-          "properties": {
-            "age": "7"
+      "condition": {
+        "type": "minecraft:all_of",
+        "terms": [
+          {
+            "type": "minecraft:match_block",
+            "blocks": "hbmspace:crop_paraffin",
+            "state": {
+              "age": "7"
+            }
+          },
+          {
+            "type": "minecraft:random_chance",
+            "chance": 0.5333333333333333
           }
-        },
-        {
-          "chance": 0.5333333333333333,
-          "condition": "minecraft:random_chance"
-        }
-      ],
+        ]
+      },
       "entries": [
         {
           "type": "minecraft:loot_table",
@@ -309,34 +336,37 @@
     },
     {
       "bonus_rolls": 0.0,
-      "conditions": [
-        {
-          "block": "hbmspace:crop_paraffin",
-          "condition": "minecraft:block_state_property",
-          "properties": {
-            "age": "7"
-          }
-        },
-        {
-          "chance": 0.5333333333333333,
-          "condition": "minecraft:random_chance"
-        },
-        {
-          "condition": "minecraft:match_tool",
-          "predicate": {
-            "predicates": {
-              "minecraft:enchantments": [
-                {
-                  "enchantments": "minecraft:fortune",
-                  "levels": {
-                    "min": 1
+      "condition": {
+        "type": "minecraft:all_of",
+        "terms": [
+          {
+            "type": "minecraft:match_block",
+            "blocks": "hbmspace:crop_paraffin",
+            "state": {
+              "age": "7"
+            }
+          },
+          {
+            "type": "minecraft:random_chance",
+            "chance": 0.5333333333333333
+          },
+          {
+            "type": "minecraft:match_tool",
+            "predicate": {
+              "predicates": {
+                "minecraft:enchantments": [
+                  {
+                    "enchantments": "minecraft:fortune",
+                    "levels": {
+                      "min": 1
+                    }
                   }
-                }
-              ]
+                ]
+              }
             }
           }
-        }
-      ],
+        ]
+      },
       "entries": [
         {
           "type": "minecraft:loot_table",
@@ -370,34 +400,37 @@
     },
     {
       "bonus_rolls": 0.0,
-      "conditions": [
-        {
-          "block": "hbmspace:crop_paraffin",
-          "condition": "minecraft:block_state_property",
-          "properties": {
-            "age": "7"
-          }
-        },
-        {
-          "chance": 0.5333333333333333,
-          "condition": "minecraft:random_chance"
-        },
-        {
-          "condition": "minecraft:match_tool",
-          "predicate": {
-            "predicates": {
-              "minecraft:enchantments": [
-                {
-                  "enchantments": "minecraft:fortune",
-                  "levels": {
-                    "min": 2
+      "condition": {
+        "type": "minecraft:all_of",
+        "terms": [
+          {
+            "type": "minecraft:match_block",
+            "blocks": "hbmspace:crop_paraffin",
+            "state": {
+              "age": "7"
+            }
+          },
+          {
+            "type": "minecraft:random_chance",
+            "chance": 0.5333333333333333
+          },
+          {
+            "type": "minecraft:match_tool",
+            "predicate": {
+              "predicates": {
+                "minecraft:enchantments": [
+                  {
+                    "enchantments": "minecraft:fortune",
+                    "levels": {
+                      "min": 2
+                    }
                   }
-                }
-              ]
+                ]
+              }
             }
           }
-        }
-      ],
+        ]
+      },
       "entries": [
         {
           "type": "minecraft:loot_table",
@@ -431,34 +464,37 @@
     },
     {
       "bonus_rolls": 0.0,
-      "conditions": [
-        {
-          "block": "hbmspace:crop_paraffin",
-          "condition": "minecraft:block_state_property",
-          "properties": {
-            "age": "7"
-          }
-        },
-        {
-          "chance": 0.5333333333333333,
-          "condition": "minecraft:random_chance"
-        },
-        {
-          "condition": "minecraft:match_tool",
-          "predicate": {
-            "predicates": {
-              "minecraft:enchantments": [
-                {
-                  "enchantments": "minecraft:fortune",
-                  "levels": {
-                    "min": 3
+      "condition": {
+        "type": "minecraft:all_of",
+        "terms": [
+          {
+            "type": "minecraft:match_block",
+            "blocks": "hbmspace:crop_paraffin",
+            "state": {
+              "age": "7"
+            }
+          },
+          {
+            "type": "minecraft:random_chance",
+            "chance": 0.5333333333333333
+          },
+          {
+            "type": "minecraft:match_tool",
+            "predicate": {
+              "predicates": {
+                "minecraft:enchantments": [
+                  {
+                    "enchantments": "minecraft:fortune",
+                    "levels": {
+                      "min": 3
+                    }
                   }
-                }
-              ]
+                ]
+              }
             }
           }
-        }
-      ],
+        ]
+      },
       "entries": [
         {
           "type": "minecraft:loot_table",

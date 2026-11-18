@@ -36,6 +36,8 @@ package com.hbmspace.world.gen.feature;
 
 import com.hbmspace.blocks.FloraBlocksSpace;
 import com.hbmspace.blocks.TerrainBlocksSpace;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
@@ -44,21 +46,24 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DoublePlantBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 
-public class WaterPlantFeature extends Feature<SeaLevelConfig> {
+public record WaterPlantFeature(int seaLevel) implements Feature {
+    public static final MapCodec<WaterPlantFeature> CODEC =
+            Codec.INT
+                    .fieldOf("sea_level")
+                    .xmap(WaterPlantFeature::new, WaterPlantFeature::seaLevel);
 
-    public WaterPlantFeature() {
-        super(SeaLevelConfig.CODEC);
+    @Override
+    public MapCodec<WaterPlantFeature> codec() {
+        return CODEC;
     }
 
     @Override
-    public boolean place(FeaturePlaceContext<SeaLevelConfig> context) {
-        WorldGenLevel level = context.level();
-        RandomSource rand = context.random();
-        BlockPos origin = context.origin();
-        int seaLevel = context.config().seaLevel();
+    public boolean place(
+            WorldGenLevel level, ChunkGenerator generator, RandomSource random, BlockPos origin) {
+        RandomSource rand = random;
         BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
         boolean placed = false;
 

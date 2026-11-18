@@ -23,19 +23,13 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.resources.Identifier;
-import net.minecraft.util.KeyDispatchDataCodec;
+import net.minecraft.util.Interval;
 import net.minecraft.util.Mth;
-import net.minecraft.world.level.levelgen.DensityFunction;
 import net.minecraft.world.level.levelgen.PositionalRandomFactory;
-import org.jspecify.annotations.Nullable;
+import net.minecraft.world.level.levelgen.densityfunction.*;
 
-public record BedrockFloor(
-        Identifier randomName,
-        int trueAtAndBelow,
-        int falseAtAndAbove,
-        @Nullable PositionalRandomFactory random)
-        implements SeededDensityFunction {
-
+public record BedrockFloor(Identifier randomName, int trueAtAndBelow, int falseAtAndAbove)
+        implements DensityFunction {
     public static final MapCodec<BedrockFloor> MAP_CODEC =
             RecordCodecBuilder.mapCodec(
                     i ->
@@ -49,59 +43,49 @@ public record BedrockFloor(
                                             Codec.INT
                                                     .fieldOf("false_at_and_above")
                                                     .forGetter(BedrockFloor::falseAtAndAbove))
-                                    .apply(
-                                            i,
-                                            (name, below, above) ->
-                                                    new BedrockFloor(name, below, above, null)));
-
-    private static final KeyDispatchDataCodec<BedrockFloor> CODEC =
-            KeyDispatchDataCodec.of(MAP_CODEC);
-    private static final double OPEN = -1000000.0D;
+                                    .apply(i, BedrockFloor::new));
+    private static final float OPEN = -1000000.0F;
 
     @Override
-    public DensityFunction seeded(PositionalRandomFactory random) {
-        return new BedrockFloor(
-                randomName,
-                trueAtAndBelow,
-                falseAtAndAbove,
-                random.fromHashOf(randomName).forkPositional());
+    public DensitySampler compileSampler(CompileContext context) {
+        return new Sampler(
+                trueAtAndBelow, falseAtAndAbove, context.createRandom(randomName).forkPositional());
+    }
+
+    private record Sampler(int below, int above, PositionalRandomFactory random)
+            implements DensitySampler {
+        @Override
+        public float sampleValue(SamplerContext context, int x, int y, int z) {
+            if (y <= below) return 1.0F;
+            if (y >= above) return OPEN;
+            double probability = Mth.map(y, below, above, 1.0D, 0.0D);
+            return random.at(x, y, z).nextFloat() < probability ? 1.0F : OPEN;
+        }
+
+        @Override
+        public void sampleVolume(
+                SamplerContext context, DensityBuffer output, DensityVolume volume) {
+            DensitySampler.sampleVolumeNaive(context, output, volume, this);
+        }
     }
 
     @Override
-    public double compute(FunctionContext context) {
-        if (random == null)
-            throw new IllegalStateException("bedrock floor computed before a level wired it");
-        int y = context.blockY();
-        if (y <= trueAtAndBelow) return 1.0D;
-        if (y >= falseAtAndAbove) return OPEN;
-        double probability = Mth.map(y, trueAtAndBelow, falseAtAndAbove, 1.0D, 0.0D);
-        return random.at(context.blockX(), y, context.blockZ()).nextFloat() < probability
-                ? 1.0D
-                : OPEN;
-    }
-
-    @Override
-    public void fillArray(double[] output, ContextProvider contextProvider) {
-        contextProvider.fillAllDirectly(output, this);
-    }
-
-    @Override
-    public DensityFunction mapChildren(Visitor visitor) {
+    public DensityFunction rewriteChildren(DfRewriteRule rule) {
         return this;
     }
 
     @Override
-    public double minValue() {
-        return OPEN;
+    public Interval range() {
+        return Interval.of(OPEN, 1.0F);
     }
 
     @Override
-    public double maxValue() {
-        return 1.0D;
+    public int domainAxes() {
+        return ALL_AXES;
     }
 
     @Override
-    public KeyDispatchDataCodec<? extends DensityFunction> codec() {
-        return CODEC;
+    public MapCodec<BedrockFloor> codec() {
+        return MAP_CODEC;
     }
 }

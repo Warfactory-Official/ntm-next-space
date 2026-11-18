@@ -20,7 +20,6 @@
 package com.hbmspace.blocks.generic;
 
 import com.hbmspace.blocks.TerrainBlocksSpace;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.entity.LivingEntity;
@@ -38,15 +37,8 @@ import net.minecraft.world.level.material.Fluids;
 import org.jspecify.annotations.Nullable;
 
 public class TallPlantWaterBlock extends DoublePlantBlock implements LiquidBlockContainer {
-    public static final MapCodec<TallPlantWaterBlock> CODEC = simpleCodec(TallPlantWaterBlock::new);
-
     public TallPlantWaterBlock(Properties properties) {
         super(properties);
-    }
-
-    @Override
-    public MapCodec<? extends TallPlantWaterBlock> codec() {
-        return CODEC;
     }
 
     @Override

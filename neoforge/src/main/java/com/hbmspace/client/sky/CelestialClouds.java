@@ -38,10 +38,14 @@ import com.hbm.api.client.CloudLayers;
 import com.hbmspace.dim.CelestialBody;
 import com.hbmspace.dim.WorldProviderCelestial;
 import com.hbmspace.dim.trait.CBT_Atmosphere;
+import com.mojang.renderpearl.api.commands.RenderPass;
+import com.mojang.renderpearl.api.textures.GpuTextureView;
 import net.minecraft.client.CloudStatus;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.CloudRenderer;
+import net.minecraft.client.renderer.oit.OitRenderPassProvider;
+import net.minecraft.client.renderer.oit.OitStage;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.profiling.Profiler;
@@ -58,12 +62,14 @@ public final class CelestialClouds implements CloudLayers.Renderer {
 
     private final @Nullable Layer[] layers = new Layer[LAYER_HEIGHT_OFFSETS.length];
 
+    private int preparedLayerCount;
+
     public static void register() {
         CloudLayers.register(new CelestialClouds());
     }
 
     @Override
-    public void render(
+    public void prepare(
             int color,
             CloudStatus status,
             float bottomY,
@@ -71,6 +77,7 @@ public final class CelestialClouds implements CloudLayers.Renderer {
             Vec3 camera,
             long gameTime,
             float partialTicks) {
+        preparedLayerCount = 0;
         ClientLevel level = Minecraft.getInstance().level;
         if (level == null || WorldProviderCelestial.of(level) == null) return;
 
@@ -89,7 +96,7 @@ public final class CelestialClouds implements CloudLayers.Renderer {
             double shiftZ = offset(dimension, i, 0x2C1B3C6D5E7F8103L);
             int alpha = Math.round(ARGB.alpha(color) * LAYER_ALPHA_MULTIPLIERS[i]);
 
-            layers[i].render(
+            layers[i].prepare(
                     ARGB.color(alpha, color),
                     status,
                     bottomY + LAYER_HEIGHT_OFFSETS[i],
@@ -97,7 +104,23 @@ public final class CelestialClouds implements CloudLayers.Renderer {
                     camera.add(shiftX, 0.0D, shiftZ),
                     gameTime,
                     partialTicks);
+            preparedLayerCount = i + 1;
         }
+    }
+
+    @Override
+    public void render(CloudStatus status, RenderPass pass) {
+        for (int i = 1; i < preparedLayerCount; i++) layers[i].render(status, pass);
+    }
+
+    @Override
+    public void renderOit(
+            CloudStatus status,
+            OitStage stage,
+            GpuTextureView mainDepth,
+            OitRenderPassProvider.Parameters parameters) {
+        for (int i = 1; i < preparedLayerCount; i++)
+            layers[i].renderOit(status, stage, mainDepth, parameters);
     }
 
     @Override

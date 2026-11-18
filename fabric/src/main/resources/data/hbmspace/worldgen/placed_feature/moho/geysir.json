@@ -1,7 +1,6 @@
 {
   "feature": {
-    "type": "hbmspace:moho_vent",
-    "config": {}
+    "type": "hbmspace:moho_vent"
   },
   "placement": [
     {

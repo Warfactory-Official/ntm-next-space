@@ -19,7 +19,6 @@
 
 package com.hbmspace.blocks.generic;
 
-import com.mojang.serialization.MapCodec;
 import java.util.function.Predicate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
@@ -29,17 +28,10 @@ import net.minecraft.world.level.block.state.BlockState;
 public class RubberPlantBlock extends VegetationBlock {
 
     private final Predicate<BlockState> soil;
-    private final MapCodec<RubberPlantBlock> ownCodec;
 
     public RubberPlantBlock(Properties properties, Predicate<BlockState> soil) {
         super(properties);
         this.soil = soil;
-        this.ownCodec = simpleCodec(p -> new RubberPlantBlock(p, soil));
-    }
-
-    @Override
-    protected MapCodec<? extends RubberPlantBlock> codec() {
-        return ownCodec;
     }
 
     @Override

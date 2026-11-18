@@ -38,9 +38,9 @@ package com.hbmspace.client.sky;
 
 import com.hbm.render.util.BeamPronter.EnumWaveType;
 import com.hbm.render.util.BeamPronter;
-import com.mojang.blaze3d.PrimitiveTopology;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.renderpearl.api.pipeline.PrimitiveTopology;
 import java.util.Random;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
@@ -79,7 +79,7 @@ public class SkyProviderThatmo extends SkyProviderCelestial {
     protected void renderSpecialEffects(SkyDraws draws) {
         for (Cluster cluster : CLUSTERS) {
             PoseStack pose = new PoseStack();
-            if (cluster.turn != null) pose.mulPose((Quaternionfc) cluster.turn);
+            if (cluster.turn != null) pose.rotate((Quaternionfc) cluster.turn);
             pose.translate(0.0F, partialTicks, 0.0F);
             draws.mesh(
                     cluster.streaks,

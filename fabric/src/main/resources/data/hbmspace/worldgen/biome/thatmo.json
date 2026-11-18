@@ -1,12 +1,56 @@
 {
   "attributes": {
+    "minecraft:gameplay/creature_world_gen_spawn_probability": 0.1,
+    "minecraft:gameplay/natural_mob_spawns": {
+      "argument": {
+        "spawn_costs": {},
+        "spawns_by_category": {
+          "ambient": [],
+          "axolotls": [],
+          "creature": [
+            {
+              "type": "hbmspace:entity_tankbot",
+              "count": {
+                "type": "minecraft:uniform",
+                "max_inclusive": 1,
+                "min_inclusive": 1
+              },
+              "weight": 6
+            },
+            {
+              "type": "hbmspace:entity_war_behemoth",
+              "count": {
+                "type": "minecraft:uniform",
+                "max_inclusive": 1,
+                "min_inclusive": 1
+              },
+              "weight": 2
+            },
+            {
+              "type": "hbmspace:entity_moon_cow",
+              "count": {
+                "type": "minecraft:uniform",
+                "max_inclusive": 1,
+                "min_inclusive": 1
+              },
+              "weight": 10
+            }
+          ],
+          "misc": [],
+          "monster": [],
+          "underground_water_creature": [],
+          "water_ambient": [],
+          "water_creature": []
+        }
+      },
+      "modifier": "overlay"
+    },
     "minecraft:visual/sky_color": "#879bff"
   },
   "carvers": [
     "hbmspace:thatmo/caves",
     "hbmspace:thatmo/ravine"
   ],
-  "creature_spawn_probability": 0.1,
   "downfall": 0.0,
   "effects": {
     "water_color": "#3f76e4"
@@ -66,35 +110,5 @@
     []
   ],
   "has_precipitation": false,
-  "spawn_costs": {},
-  "spawners": {
-    "ambient": [],
-    "axolotls": [],
-    "creature": [
-      {
-        "type": "hbmspace:entity_tankbot",
-        "maxCount": 1,
-        "minCount": 1,
-        "weight": 6
-      },
-      {
-        "type": "hbmspace:entity_war_behemoth",
-        "maxCount": 1,
-        "minCount": 1,
-        "weight": 2
-      },
-      {
-        "type": "hbmspace:entity_moon_cow",
-        "maxCount": 1,
-        "minCount": 1,
-        "weight": 10
-      }
-    ],
-    "misc": [],
-    "monster": [],
-    "underground_water_creature": [],
-    "water_ambient": [],
-    "water_creature": []
-  },
   "temperature": -1.0
 }

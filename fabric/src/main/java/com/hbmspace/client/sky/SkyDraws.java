@@ -20,21 +20,21 @@
 package com.hbmspace.client.sky;
 
 import com.hbm.api.client.ShaderPacks;
-import com.mojang.blaze3d.buffers.GpuBuffer;
-import com.mojang.blaze3d.buffers.GpuBufferSlice;
 import com.mojang.blaze3d.buffers.Std140Builder;
 import com.mojang.blaze3d.buffers.Std140SizeCalculator;
-import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.mojang.blaze3d.pipeline.RenderTarget;
-import com.mojang.blaze3d.systems.RenderPass;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.textures.FilterMode;
-import com.mojang.blaze3d.textures.GpuTextureView;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.ByteBufferBuilder;
 import com.mojang.blaze3d.vertex.MeshData;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.renderpearl.api.buffers.GpuBuffer;
+import com.mojang.renderpearl.api.buffers.GpuBufferSlice;
+import com.mojang.renderpearl.api.commands.RenderPass;
+import com.mojang.renderpearl.api.pipeline.RenderPipeline;
+import com.mojang.renderpearl.api.textures.FilterMode;
+import com.mojang.renderpearl.api.textures.GpuTextureView;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.IdentityHashMap;
@@ -44,8 +44,8 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.OptionalDouble;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.DynamicUniformStorage.DynamicUniform;
-import net.minecraft.client.renderer.DynamicUniformStorage;
+import net.minecraft.client.renderer.DynamicGpuDataStorage.DynamicGpuData;
+import net.minecraft.client.renderer.DynamicGpuDataStorageMapped;
 import net.minecraft.client.renderer.StagedVertexBuffer;
 import net.minecraft.client.renderer.texture.AbstractTexture;
 import net.minecraft.resources.Identifier;
@@ -65,10 +65,12 @@ public final class SkyDraws implements AutoCloseable {
 
     private final StagedVertexBuffer vertices = new StagedVertexBuffer(() -> "Space sky", 1 << 16);
     private final Map<SkyMesh, Uploaded> meshes = new IdentityHashMap<>();
-    private final DynamicUniformStorage<PlanetInfo> planetInfo =
-            new DynamicUniformStorage<>("Space sky planets", PlanetInfo.SIZE, 32);
-    private final DynamicUniformStorage<ShaderTime> shaderTime =
-            new DynamicUniformStorage<>("Space sky shader time", SHADER_TIME_SIZE, 4);
+    private final DynamicGpuDataStorageMapped<PlanetInfo> planetInfo =
+            new DynamicGpuDataStorageMapped<>(
+                    "Space sky planets", PlanetInfo.SIZE, GpuBuffer.USAGE_UNIFORM, 32);
+    private final DynamicGpuDataStorageMapped<ShaderTime> shaderTime =
+            new DynamicGpuDataStorageMapped<>(
+                    "Space sky shader time", SHADER_TIME_SIZE, GpuBuffer.USAGE_UNIFORM, 4);
     private final List<Step> steps = new ArrayList<>();
     private final List<Prepared> run = new ArrayList<>();
 
@@ -102,7 +104,7 @@ public final class SkyDraws implements AutoCloseable {
 
     private record Uploaded(GpuBuffer vertices, int indexCount) {}
 
-    private record ShaderTime(float time, int baseVertex) implements DynamicUniform {
+    private record ShaderTime(float time, int baseVertex) implements DynamicGpuData {
 
         @Override
         public void write(ByteBuffer buffer) {
@@ -228,18 +230,25 @@ public final class SkyDraws implements AutoCloseable {
         steps.add(new ClearDepth());
     }
 
+    public RenderPass beginPass() {
+        RenderTarget target = Minecraft.getInstance().gameRenderer.mainRenderTarget();
+        RenderPass pass =
+                RenderSystem.getDevice()
+                        .createCommandEncoder()
+                        .createRenderPass(
+                                () -> "Space sky",
+                                target.getColorTextureView(),
+                                Optional.empty(),
+                                target.getDepthTextureView(),
+                                OptionalDouble.empty());
+        RenderSystem.bindDefaultUniforms(pass);
+        return pass;
+    }
+
     public void flush() {
         if (steps.isEmpty()) return;
         RenderTarget target = Minecraft.getInstance().gameRenderer.mainRenderTarget();
-        GpuTextureView color =
-                RenderSystem.outputColorTextureOverride != null
-                        ? RenderSystem.outputColorTextureOverride
-                        : target.getColorTextureView();
-        GpuTextureView depth =
-                RenderSystem.outputDepthTextureOverride != null
-                        ? RenderSystem.outputDepthTextureOverride
-                        : target.getDepthTextureView();
-        flush(color, depth);
+        flush(target.getColorTextureView(), target.getDepthTextureView());
     }
 
     public void flush(GpuTextureView color, GpuTextureView depth) {
@@ -268,13 +277,13 @@ public final class SkyDraws implements AutoCloseable {
                                     draw.modelView, draw.color, NO_OFFSET, draw.uvTransform);
             GpuBufferSlice planet = null;
             if (draw.planet != null) {
-                planet = planetInfo.writeUniform(draw.planet);
+                planet = planetInfo.writeData(draw.planet);
             }
             GpuBufferSlice time = null;
             if (draw.pipeline == SkyPipelines.SWARM
                     || draw.pipeline == SkyPipelines.BLACK_HOLE
                     || draw.pipeline == SkyPipelines.FLESH) {
-                time = shaderTime.writeUniform(new ShaderTime(draw.time, info.baseVertex()));
+                time = shaderTime.writeData(new ShaderTime(draw.time, info.baseVertex()));
             }
             run.add(
                     new Prepared(
@@ -296,6 +305,9 @@ public final class SkyDraws implements AutoCloseable {
     private void drawRun(GpuTextureView color, GpuTextureView depth) {
         if (run.isEmpty()) return;
 
+        RenderTarget target = Minecraft.getInstance().gameRenderer.mainRenderTarget();
+        boolean privateTarget =
+                color != target.getColorTextureView() || depth != target.getDepthTextureView();
         boolean shared = !ShaderPacks.inUse();
         RenderPass pass = null;
         try {
@@ -312,7 +324,8 @@ public final class SkyDraws implements AutoCloseable {
                                             OptionalDouble.empty());
                     RenderSystem.bindDefaultUniforms(pass);
                 }
-                pass.setPipeline(draw.pipeline);
+                if (privateTarget) pass.setPipeline(ShaderPacks.nativePipeline(draw.pipeline));
+                else pass.setPipeline(RenderSystem.getCompiledPipeline(draw.pipeline));
                 pass.setUniform("DynamicTransforms", draw.transforms);
                 if (draw.planet != null) pass.setUniform("PlanetInfo", draw.planet);
                 if (draw.time != null) pass.setUniform("ShaderTime", draw.time);
@@ -348,7 +361,8 @@ public final class SkyDraws implements AutoCloseable {
                 indices.type(),
                 0,
                 0,
-                uploaded.indexCount);
+                uploaded.indexCount,
+                mesh.topology());
     }
 
     private static Uploaded upload(SkyMesh mesh) {
@@ -372,7 +386,7 @@ public final class SkyDraws implements AutoCloseable {
     }
 
     private static void bind(RenderPass pass, String sampler, AbstractTexture texture) {
-        pass.bindTexture(
+        pass.setUniform(
                 sampler,
                 texture.getTextureView(),
                 RenderSystem.getSamplerCache().getRepeat(FilterMode.NEAREST));

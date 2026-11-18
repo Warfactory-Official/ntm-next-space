@@ -1,28 +1,14 @@
 {
   "feature": {
     "type": "hbmspace:ttree",
-    "config": {
-      "leaves": {
-        "Name": "hbmspace:rubber_leaves",
-        "Properties": {
-          "distance": "7",
-          "persistent": "false",
-          "waterlogged": "false"
-        }
-      },
-      "log": {
-        "Name": "hbmspace:pvc_log",
-        "Properties": {
-          "axis": "y"
-        }
-      },
-      "offset": 4,
-      "smallest": 2,
-      "tallest": 10,
-      "vines": false,
-      "xz": 2,
-      "y": 4
-    }
+    "leaves": "hbmspace:rubber_leaves",
+    "log": "hbmspace:pvc_log",
+    "offset": 4,
+    "smallest": 2,
+    "tallest": 10,
+    "vines": false,
+    "xz": 2,
+    "y": 4
   },
   "placement": [
     {

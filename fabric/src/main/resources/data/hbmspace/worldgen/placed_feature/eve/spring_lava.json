@@ -1,15 +1,13 @@
 {
   "feature": {
     "type": "minecraft:spring_feature",
-    "config": {
-      "state": {
-        "Name": "minecraft:lava",
-        "Properties": {
-          "falling": "true"
-        }
-      },
-      "valid_blocks": "hbmspace:eve_rock"
-    }
+    "state": {
+      "id": "minecraft:lava",
+      "properties": {
+        "falling": "true"
+      }
+    },
+    "valid_blocks": "hbmspace:eve_rock"
   },
   "placement": [
     {

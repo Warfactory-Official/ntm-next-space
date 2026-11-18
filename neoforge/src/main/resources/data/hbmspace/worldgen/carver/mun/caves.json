@@ -1,0 +1,28 @@
+{
+  "type": "hbmspace:cave",
+  "filler": "hbmspace:moon_rock",
+  "floor_level": -0.7,
+  "horizontal_radius_multiplier": 1.0,
+  "lava": "minecraft:lava",
+  "lava_level": {
+    "absolute": 1
+  },
+  "probability": 0.14285715,
+  "replaceable": [
+    "hbmspace:moon_rock",
+    "hbm:moon_turf"
+  ],
+  "top": "hbm:moon_turf",
+  "vertical_radius_multiplier": 1.0,
+  "y": {
+    "type": "minecraft:biased_to_bottom",
+    "inner": 8,
+    "max_inclusive": {
+      "absolute": 127
+    },
+    "min_inclusive": {
+      "absolute": 0
+    }
+  },
+  "y_scale": 0.5
+}

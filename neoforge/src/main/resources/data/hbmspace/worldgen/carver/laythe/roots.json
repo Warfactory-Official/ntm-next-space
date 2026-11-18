@@ -1,0 +1,30 @@
+{
+  "type": "hbmspace:roots",
+  "cover": "minecraft:grass_block",
+  "fill": "hbmspace:laythe_root",
+  "filler": [
+    "hbmspace:laythe_silt",
+    "minecraft:ice"
+  ],
+  "lava_fill": "minecraft:obsidian",
+  "lava_level": {
+    "absolute": 9
+  },
+  "probability": 0.14285715,
+  "replaceable": "minecraft:stone",
+  "top": [
+    "hbmspace:laythe_silt",
+    "minecraft:snow_block"
+  ],
+  "y": {
+    "type": "minecraft:biased_to_bottom",
+    "inner": 8,
+    "max_inclusive": {
+      "absolute": 127
+    },
+    "min_inclusive": {
+      "absolute": 0
+    }
+  },
+  "y_scale": 0.5
+}

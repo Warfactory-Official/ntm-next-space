@@ -2,12 +2,12 @@
   "processors": [
     {
       "marker": {
-        "Name": "hbm:concrete_white"
+        "id": "hbm:concrete_white"
       },
       "options": [
         {
           "data": {
-            "Name": "hbm:concrete_ext_sand"
+            "id": "hbm:concrete_ext_sand"
           },
           "weight": 1
         }

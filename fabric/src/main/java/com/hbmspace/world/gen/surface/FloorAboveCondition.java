@@ -22,11 +22,12 @@ package com.hbmspace.world.gen.surface;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.world.level.levelgen.SurfaceRules.ConditionSource;
-import net.minecraft.world.level.levelgen.SurfaceRules;
+import net.minecraft.world.level.levelgen.material.MaterialRuleContext;
+import net.minecraft.world.level.levelgen.material.condition.ConditionEvaluator;
+import net.minecraft.world.level.levelgen.material.condition.MaterialCondition;
 
 public record FloorAboveCondition(int anchor, int multiplier, SurfaceDepth depth)
-        implements ConditionSource {
+        implements MaterialCondition {
 
     public static final MapCodec<FloorAboveCondition> CODEC =
             RecordCodecBuilder.mapCodec(
@@ -43,15 +44,15 @@ public record FloorAboveCondition(int anchor, int multiplier, SurfaceDepth depth
                                     .apply(i, FloorAboveCondition::new));
 
     @Override
-    public MapCodec<? extends ConditionSource> codec() {
+    public MapCodec<? extends MaterialCondition> codec() {
         return CODEC;
     }
 
     @Override
-    public SurfaceRules.Condition apply(SurfaceRules.Context context) {
+    public ConditionEvaluator compile(MaterialRuleContext context) {
         SurfaceDepth.Column column = depth.column(context);
         return () ->
-                context.blockY + context.stoneDepthAbove - 1
+                context.blockY() + context.stoneDepthAbove() - 1
                         >= anchor + multiplier * column.depth();
     }
 }

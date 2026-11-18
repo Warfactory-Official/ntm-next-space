@@ -37,74 +37,69 @@ package com.hbmspace.world.gen.feature;
 import com.hbm.world.NtmWorldgenFields;
 import com.hbm.world.feature.FractalSimplexNoise;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.Registry;
-import net.minecraft.core.RegistryCodecs;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.core.registries.codec.RegistryCodecs;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 
-public class SeismicCrackFeature extends Feature<SeismicCrackFeature.Config> {
+public record SeismicCrackFeature(
+        Identifier domain,
+        double scale,
+        double threshold,
+        int depth,
+        BlockState fill,
+        HolderSet<Biome> biomes)
+        implements Feature {
 
-    public record Config(
-            Identifier domain,
-            double scale,
-            double threshold,
-            int depth,
-            BlockState fill,
-            HolderSet<Biome> biomes)
-            implements FeatureConfiguration {
+    public static final MapCodec<SeismicCrackFeature> CODEC =
+            RecordCodecBuilder.mapCodec(
+                    i ->
+                            i.group(
+                                            Identifier.CODEC
+                                                    .fieldOf("domain")
+                                                    .forGetter(SeismicCrackFeature::domain),
+                                            Codec.DOUBLE
+                                                    .fieldOf("scale")
+                                                    .forGetter(SeismicCrackFeature::scale),
+                                            Codec.DOUBLE
+                                                    .fieldOf("threshold")
+                                                    .forGetter(SeismicCrackFeature::threshold),
+                                            Codec.intRange(0, 64)
+                                                    .fieldOf("depth")
+                                                    .forGetter(SeismicCrackFeature::depth),
+                                            BlockState.CODEC
+                                                    .fieldOf("fill")
+                                                    .forGetter(SeismicCrackFeature::fill),
+                                            RegistryCodecs.<Biome>holderSet(
+                                                            (ResourceKey<? extends Registry<Biome>>)
+                                                                    Registries.BIOME)
+                                                    .fieldOf("biomes")
+                                                    .forGetter(SeismicCrackFeature::biomes))
+                                    .apply(i, SeismicCrackFeature::new));
 
-        public static final Codec<Config> CODEC =
-                RecordCodecBuilder.create(
-                        i ->
-                                i.group(
-                                                Identifier.CODEC
-                                                        .fieldOf("domain")
-                                                        .forGetter(Config::domain),
-                                                Codec.DOUBLE
-                                                        .fieldOf("scale")
-                                                        .forGetter(Config::scale),
-                                                Codec.DOUBLE
-                                                        .fieldOf("threshold")
-                                                        .forGetter(Config::threshold),
-                                                Codec.intRange(0, 64)
-                                                        .fieldOf("depth")
-                                                        .forGetter(Config::depth),
-                                                BlockState.CODEC
-                                                        .fieldOf("fill")
-                                                        .forGetter(Config::fill),
-                                                RegistryCodecs.<Biome>homogeneousList(
-                                                                (ResourceKey<
-                                                                                ? extends
-                                                                                        Registry<
-                                                                                                Biome>>)
-                                                                        Registries.BIOME)
-                                                        .fieldOf("biomes")
-                                                        .forGetter(Config::biomes))
-                                        .apply(i, Config::new));
-    }
-
-    public SeismicCrackFeature() {
-        super(Config.CODEC);
+    @Override
+    public MapCodec<SeismicCrackFeature> codec() {
+        return CODEC;
     }
 
     @Override
-    public boolean place(FeaturePlaceContext<Config> context) {
-        Config config = context.config();
-        WorldGenLevel level = context.level();
+    public boolean place(
+            WorldGenLevel level, ChunkGenerator generator, RandomSource random, BlockPos origin) {
+        SeismicCrackFeature config = this;
         FractalSimplexNoise field = NtmWorldgenFields.get(level).fractal(config.domain(), 4);
-        BlockPos origin = context.origin();
         BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
         BlockState air = Blocks.AIR.defaultBlockState();
         boolean placed = false;

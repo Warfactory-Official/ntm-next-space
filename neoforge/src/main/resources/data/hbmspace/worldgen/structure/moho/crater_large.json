@@ -9,12 +9,8 @@
   "exponent": 4,
   "max_size": 128,
   "min_size": 96,
-  "regolith": {
-    "Name": "hbmspace:moho_regolith"
-  },
-  "rock": {
-    "Name": "hbmspace:moho_stone"
-  },
+  "regolith": "hbmspace:moho_regolith",
+  "rock": "hbmspace:moho_stone",
   "spawn_overrides": {},
   "step": "lakes",
   "terrain_adaptation": "none"

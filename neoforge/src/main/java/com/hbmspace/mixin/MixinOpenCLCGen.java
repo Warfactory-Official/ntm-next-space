@@ -18,22 +18,3 @@
  */
 
 package com.hbmspace.mixin;
-
-import com.hbmspace.compat.c2me.OpenCl;
-import com.hbmspace.world.gen.density.NoiseCaves;
-import com.ishland.c2me.opts.accel.opencl.common.compiler.GeneratedCLSource;
-import com.ishland.c2me.opts.accel.opencl.common.compiler.OpenCLCGen;
-import com.llamalad7.mixinextras.injector.ModifyReturnValue;
-import com.llamalad7.mixinextras.sugar.Local;
-import net.minecraft.world.level.levelgen.NoiseRouter;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-
-@Mixin(value = OpenCLCGen.class, remap = false)
-public abstract class MixinOpenCLCGen {
-    @ModifyReturnValue(method = "compile", at = @At("RETURN"), remap = false)
-    private static GeneratedCLSource hbmspace$noiseCaves(
-            GeneratedCLSource source, @Local(argsOnly = true) NoiseRouter router) {
-        return router.barrierNoise() instanceof NoiseCaves ? OpenCl.noiseCaves(source) : source;
-    }
-}

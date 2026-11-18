@@ -29,9 +29,9 @@ import net.minecraft.core.HolderSet;
 import net.minecraft.core.QuartPos;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.BiomeResolver;
 import net.minecraft.world.level.biome.BiomeSource;
 import net.minecraft.world.level.biome.Climate;
-import net.minecraft.world.level.levelgen.DensityFunction;
 
 public final class CelestialBiomeSource extends BiomeSource {
 
@@ -59,17 +59,15 @@ public final class CelestialBiomeSource extends BiomeSource {
     }
 
     @Override
-    public Holder<Biome> getNoiseBiome(
-            int quartX, int quartY, int quartZ, Climate.Sampler sampler) {
-        int id =
-                (int)
-                        sampler.temperature()
-                                .compute(
-                                        new DensityFunction.SinglePointContext(
+    public BiomeResolver createResolver(Climate.Sampler sampler) {
+        return (quartX, quartY, quartZ) ->
+                biome(
+                        (int)
+                                sampler.temperature()
+                                        .sampleValue(
                                                 QuartPos.toBlock(quartX),
                                                 QuartPos.toBlock(quartY),
                                                 QuartPos.toBlock(quartZ)));
-        return biome(id);
     }
 
     private Holder<Biome> biome(int id) {

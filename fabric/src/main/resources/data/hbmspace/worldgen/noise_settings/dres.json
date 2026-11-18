@@ -1,148 +1,9 @@
 {
-  "aquifers_enabled": false,
-  "default_block": {
-    "Name": "hbmspace:dres_rock"
-  },
-  "default_fluid": {
-    "Name": "minecraft:air"
-  },
+  "default_block": "hbmspace:dres_rock",
+  "default_fluid": "minecraft:air",
   "disable_mob_generation": false,
   "legacy_random_source": false,
-  "noise": {
-    "height": 320,
-    "min_y": 0,
-    "size_horizontal": 1,
-    "size_vertical": 2
-  },
-  "noise_router": {
-    "barrier": 0.0,
-    "continents": 0.0,
-    "depth": 0.0,
-    "erosion": 0.0,
-    "final_density": {
-      "type": "minecraft:squeeze",
-      "argument": {
-        "type": "minecraft:interpolated",
-        "argument": {
-          "type": "minecraft:mul",
-          "argument1": 0.64,
-          "argument2": {
-            "type": "minecraft:blend_density",
-            "argument": {
-              "type": "minecraft:add",
-              "argument1": -0.078125,
-              "argument2": {
-                "type": "minecraft:mul",
-                "argument1": {
-                  "type": "minecraft:y_clamped_gradient",
-                  "from_value": 1.0,
-                  "from_y": 232,
-                  "to_value": 0.0,
-                  "to_y": 256
-                },
-                "argument2": {
-                  "type": "minecraft:add",
-                  "argument1": 0.078125,
-                  "argument2": {
-                    "type": "minecraft:cache_once",
-                    "argument": {
-                      "type": "minecraft:add",
-                      "argument1": {
-                        "type": "minecraft:mul",
-                        "argument1": 4.0,
-                        "argument2": {
-                          "type": "minecraft:quarter_negative",
-                          "argument": {
-                            "type": "minecraft:mul",
-                            "argument1": {
-                              "type": "minecraft:add",
-                              "argument1": {
-                                "type": "minecraft:y_clamped_gradient",
-                                "from_value": 0.5,
-                                "from_y": -64,
-                                "to_value": -3.0,
-                                "to_y": 384
-                              },
-                              "argument2": {
-                                "type": "minecraft:flat_cache",
-                                "argument": {
-                                  "type": "minecraft:cache_2d",
-                                  "argument": {
-                                    "type": "hbmspace:celestial_relief",
-                                    "biome": {
-                                      "type": "hbmspace:celestial_biomes",
-                                      "layers": "hbmspace:dres",
-                                      "terrain": true
-                                    },
-                                    "output": "offset"
-                                  }
-                                }
-                              }
-                            },
-                            "argument2": {
-                              "type": "minecraft:flat_cache",
-                              "argument": {
-                                "type": "minecraft:cache_2d",
-                                "argument": {
-                                  "type": "hbmspace:celestial_relief",
-                                  "biome": {
-                                    "type": "hbmspace:celestial_biomes",
-                                    "layers": "hbmspace:dres",
-                                    "terrain": true
-                                  },
-                                  "output": "factor"
-                                }
-                              }
-                            }
-                          }
-                        }
-                      },
-                      "argument2": "minecraft:overworld/base_3d_noise"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "fluid_level_floodedness": 0.0,
-    "fluid_level_spread": 0.0,
-    "lava": 0.0,
-    "preliminary_surface_level": {
-      "type": "minecraft:mul",
-      "argument1": 128.0,
-      "argument2": {
-        "type": "minecraft:flat_cache",
-        "argument": {
-          "type": "minecraft:cache_2d",
-          "argument": {
-            "type": "hbmspace:celestial_relief",
-            "biome": {
-              "type": "hbmspace:celestial_biomes",
-              "layers": "hbmspace:dres",
-              "terrain": true
-            },
-            "output": "offset"
-          }
-        }
-      }
-    },
-    "ridges": 0.0,
-    "temperature": {
-      "type": "hbmspace:celestial_biomes",
-      "layers": "hbmspace:dres"
-    },
-    "vegetation": 0.0,
-    "vein_gap": 0.0,
-    "vein_ridged": 0.0,
-    "vein_toggle": 0.0
-  },
-  "ore_veins_enabled": false,
-  "sea_level": 63,
-  "spawn_target": [],
-  "surface_rule": {
+  "material_rule": {
     "type": "minecraft:sequence",
     "sequence": [
       {
@@ -159,9 +20,7 @@
         },
         "then_run": {
           "type": "minecraft:block",
-          "result_state": {
-            "Name": "minecraft:bedrock"
-          }
+          "result_state": "minecraft:bedrock"
         }
       },
       {
@@ -197,12 +56,7 @@
                     },
                     "then_run": {
                       "type": "minecraft:block",
-                      "result_state": {
-                        "Name": "hbm:sellafield_slaked",
-                        "Properties": {
-                          "shade": "0"
-                        }
-                      }
+                      "result_state": "hbm:sellafield_slaked"
                     }
                   },
                   {
@@ -234,8 +88,8 @@
                               "then_run": {
                                 "type": "minecraft:block",
                                 "result_state": {
-                                  "Name": "hbm:sellafield_slaked",
-                                  "Properties": {
+                                  "id": "hbm:sellafield_slaked",
+                                  "properties": {
                                     "shade": "8"
                                   }
                                 }
@@ -244,8 +98,8 @@
                             {
                               "type": "minecraft:block",
                               "result_state": {
-                                "Name": "hbm:sellafield_slaked",
-                                "Properties": {
+                                "id": "hbm:sellafield_slaked",
+                                "properties": {
                                   "shade": "7"
                                 }
                               }
@@ -255,12 +109,7 @@
                       },
                       {
                         "type": "minecraft:block",
-                        "result_state": {
-                          "Name": "hbm:sellafield_slaked",
-                          "Properties": {
-                            "shade": "0"
-                          }
-                        }
+                        "result_state": "hbm:sellafield_slaked"
                       }
                     ]
                   }
@@ -286,12 +135,7 @@
                 },
                 "then_run": {
                   "type": "minecraft:block",
-                  "result_state": {
-                    "Name": "hbm:sellafield_slaked",
-                    "Properties": {
-                      "shade": "0"
-                    }
-                  }
+                  "result_state": "hbm:sellafield_slaked"
                 }
               }
             }
@@ -331,12 +175,7 @@
                     },
                     "then_run": {
                       "type": "minecraft:block",
-                      "result_state": {
-                        "Name": "hbm:sellafield_slaked",
-                        "Properties": {
-                          "shade": "0"
-                        }
-                      }
+                      "result_state": "hbm:sellafield_slaked"
                     }
                   },
                   {
@@ -368,8 +207,8 @@
                               "then_run": {
                                 "type": "minecraft:block",
                                 "result_state": {
-                                  "Name": "hbm:sellafield_slaked",
-                                  "Properties": {
+                                  "id": "hbm:sellafield_slaked",
+                                  "properties": {
                                     "shade": "8"
                                   }
                                 }
@@ -378,8 +217,8 @@
                             {
                               "type": "minecraft:block",
                               "result_state": {
-                                "Name": "hbm:sellafield_slaked",
-                                "Properties": {
+                                "id": "hbm:sellafield_slaked",
+                                "properties": {
                                   "shade": "9"
                                 }
                               }
@@ -389,12 +228,7 @@
                       },
                       {
                         "type": "minecraft:block",
-                        "result_state": {
-                          "Name": "hbm:sellafield_slaked",
-                          "Properties": {
-                            "shade": "0"
-                          }
-                        }
+                        "result_state": "hbm:sellafield_slaked"
                       }
                     ]
                   }
@@ -420,12 +254,7 @@
                 },
                 "then_run": {
                   "type": "minecraft:block",
-                  "result_state": {
-                    "Name": "hbm:sellafield_slaked",
-                    "Properties": {
-                      "shade": "0"
-                    }
-                  }
+                  "result_state": "hbm:sellafield_slaked"
                 }
               }
             }
@@ -433,5 +262,117 @@
         }
       }
     ]
-  }
+  },
+  "noise": {
+    "height": 320,
+    "min_y": 0
+  },
+  "noise_router": {
+    "chunk_surface_level": {
+      "type": "minecraft:mul",
+      "left": 128.0,
+      "right": {
+        "type": "minecraft:cache",
+        "input": {
+          "type": "hbmspace:celestial_relief",
+          "biome": {
+            "type": "hbmspace:celestial_biomes",
+            "layers": "hbmspace:dres",
+            "terrain": true
+          },
+          "output": "offset"
+        }
+      }
+    },
+    "continents": 0.0,
+    "depth": 0.0,
+    "erosion": 0.0,
+    "final_density": {
+      "type": "minecraft:squeeze",
+      "input": {
+        "type": "minecraft:interpolated",
+        "cell_size_xz": 4,
+        "cell_size_y": 8,
+        "input": {
+          "type": "minecraft:mul",
+          "left": {
+            "type": "minecraft:blend_density",
+            "input": {
+              "type": "minecraft:lerp",
+              "alpha": {
+                "type": "minecraft:gradient",
+                "axis": "y",
+                "from_coordinate": 232,
+                "from_value": 1.0,
+                "to_coordinate": 256,
+                "to_value": 0.0
+              },
+              "first": -0.078125,
+              "second": {
+                "type": "minecraft:cache",
+                "input": {
+                  "type": "minecraft:add",
+                  "left": {
+                    "type": "minecraft:mul",
+                    "left": 4.0,
+                    "right": {
+                      "type": "minecraft:quarter_negative",
+                      "input": {
+                        "type": "minecraft:mul",
+                        "left": {
+                          "type": "minecraft:add",
+                          "left": {
+                            "type": "minecraft:gradient",
+                            "axis": "y",
+                            "from_coordinate": -64,
+                            "from_value": 0.5,
+                            "to_coordinate": 384,
+                            "to_value": -3.0
+                          },
+                          "right": {
+                            "type": "minecraft:cache",
+                            "input": {
+                              "type": "hbmspace:celestial_relief",
+                              "biome": {
+                                "type": "hbmspace:celestial_biomes",
+                                "layers": "hbmspace:dres",
+                                "terrain": true
+                              },
+                              "output": "offset"
+                            }
+                          }
+                        },
+                        "right": {
+                          "type": "minecraft:cache",
+                          "input": {
+                            "type": "hbmspace:celestial_relief",
+                            "biome": {
+                              "type": "hbmspace:celestial_biomes",
+                              "layers": "hbmspace:dres",
+                              "terrain": true
+                            },
+                            "output": "factor"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "right": "minecraft:overworld/base_3d_noise"
+                }
+              }
+            }
+          },
+          "right": 0.64
+        }
+      }
+    },
+    "ridges": 0.0,
+    "temperature": {
+      "type": "hbmspace:celestial_biomes",
+      "layers": "hbmspace:dres"
+    },
+    "vegetation": 0.0
+  },
+  "sea_level": 63,
+  "spawn_target": []
 }

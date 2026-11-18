@@ -26,11 +26,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.SurfaceRules.RuleSource;
-import net.minecraft.world.level.levelgen.SurfaceRules;
+import net.minecraft.world.level.levelgen.material.MaterialRuleContext;
+import net.minecraft.world.level.levelgen.material.rule.MaterialRule;
+import net.minecraft.world.level.levelgen.material.rule.RuleEvaluator;
 
-public record SubstituteRule(RuleSource rule, List<Replacement> replacements)
-        implements RuleSource {
+public record SubstituteRule(MaterialRule rule, List<Replacement> replacements)
+        implements MaterialRule {
 
     public record Replacement(BlockState from, BlockState to) {
 
@@ -51,7 +52,7 @@ public record SubstituteRule(RuleSource rule, List<Replacement> replacements)
             RecordCodecBuilder.mapCodec(
                     i ->
                             i.group(
-                                            RuleSource.CODEC
+                                            MaterialRule.CODEC
                                                     .fieldOf("rule")
                                                     .forGetter(SubstituteRule::rule),
                                             Replacement.CODEC
@@ -61,13 +62,13 @@ public record SubstituteRule(RuleSource rule, List<Replacement> replacements)
                                     .apply(i, SubstituteRule::new));
 
     @Override
-    public MapCodec<? extends RuleSource> codec() {
+    public MapCodec<? extends MaterialRule> codec() {
         return CODEC;
     }
 
     @Override
-    public SurfaceRules.SurfaceRule apply(SurfaceRules.Context context) {
-        SurfaceRules.SurfaceRule inner = rule.apply(context);
+    public RuleEvaluator compile(MaterialRuleContext context) {
+        RuleEvaluator inner = rule.compile(context);
         Map<BlockState, BlockState> map = new HashMap<>();
         for (Replacement replacement : replacements) map.put(replacement.from(), replacement.to());
         return (x, y, z) -> {

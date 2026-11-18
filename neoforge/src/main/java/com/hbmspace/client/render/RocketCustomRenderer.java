@@ -117,9 +117,9 @@ public class RocketCustomRenderer
             SubmitNodeCollector collector,
             CameraRenderState camera) {
         poseStack.pushPose();
-        poseStack.mulPose((Quaternionfc) Axis.YP.rotationDegrees(state.yaw - 90F));
-        poseStack.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(state.pitch));
-        poseStack.mulPose((Quaternionfc) Axis.YN.rotationDegrees(state.yaw - 90F));
+        poseStack.rotate((Quaternionfc) Axis.YP.rotationDegrees(state.yaw - 90F));
+        poseStack.rotate((Quaternionfc) Axis.ZP.rotationDegrees(state.pitch));
+        poseStack.rotate((Quaternionfc) Axis.YN.rotationDegrees(state.yaw - 90F));
         pronter.pront(
                 state.rocket,
                 state.pod,

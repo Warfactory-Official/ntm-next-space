@@ -2,24 +2,24 @@
   "processors": [
     {
       "marker": {
-        "Name": "hbm:tile_lab"
+        "id": "hbm:tile_lab"
       },
       "options": [
         {
           "data": {
-            "Name": "hbm:tile_lab"
+            "id": "hbm:tile_lab"
           },
           "weight": 8
         },
         {
           "data": {
-            "Name": "hbm:tile_lab_cracked"
+            "id": "hbm:tile_lab_cracked"
           },
           "weight": 1
         },
         {
           "data": {
-            "Name": "hbm:tile_lab_broken"
+            "id": "hbm:tile_lab_broken"
           },
           "weight": 1
         }

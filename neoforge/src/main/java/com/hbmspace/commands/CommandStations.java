@@ -57,6 +57,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Prediction;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
@@ -230,7 +231,7 @@ public final class CommandStations {
                                 "",
                                 false));
 
-                player.getInventory().placeItemBackInInventory(drive);
+                player.getInventory().placeItemBackInInventory(drive, Prediction.SERVER_ONLY);
 
                 message(source, "commands.station.drive_created", false);
                 return;

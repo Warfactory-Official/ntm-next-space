@@ -1,7 +1,6 @@
 {
   "feature": {
-    "type": "hbmspace:eve_spike",
-    "config": {}
+    "type": "hbmspace:eve_spike"
   },
   "placement": [
     {

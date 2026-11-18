@@ -30,7 +30,7 @@ import com.hbmspace.entity.MobsSpace;
 import com.hbmspace.entity.mob.MobWeaponsSpace;
 import com.hbmspace.entity.mob.siege.SiegeUFOEntity;
 import com.hbmspace.items.MobItemsSpace;
-import com.mojang.blaze3d.pipeline.RenderPipeline;
+import com.mojang.renderpearl.api.pipeline.RenderPipeline;
 import dev.engine_room.flywheel.api.material.CardinalLightingMode;
 import dev.engine_room.flywheel.api.material.Material;
 import dev.engine_room.flywheel.lib.material.CutoutShaders;

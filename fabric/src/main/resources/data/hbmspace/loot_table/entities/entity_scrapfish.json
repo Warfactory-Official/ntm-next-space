@@ -11,17 +11,20 @@
       "rolls": {
         "type": "minecraft:uniform",
         "max": {
-          "type": "minecraft:sum",
-          "summands": [
-            3.0,
+          "type": "minecraft:add",
+          "inputs": [
+            3,
             {
-              "type": "hbm:entity_enchantment_level",
-              "enchantment": "minecraft:looting",
-              "entity": "attacker"
+              "type": "minecraft:from_float",
+              "input": {
+                "type": "hbm:entity_enchantment_level",
+                "enchantment": "minecraft:looting",
+                "entity": "attacker"
+              }
             }
           ]
         },
-        "min": 1.0
+        "min": 1
       }
     }
   ],

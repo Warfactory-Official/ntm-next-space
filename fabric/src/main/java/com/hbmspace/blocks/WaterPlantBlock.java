@@ -19,7 +19,6 @@
 
 package com.hbmspace.blocks;
 
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
@@ -38,15 +37,8 @@ import net.minecraft.world.level.material.Fluids;
 import org.jspecify.annotations.Nullable;
 
 public class WaterPlantBlock extends VegetationBlock implements LiquidBlockContainer {
-    public static final MapCodec<WaterPlantBlock> CODEC = simpleCodec(WaterPlantBlock::new);
-
     public WaterPlantBlock(Properties properties) {
         super(properties);
-    }
-
-    @Override
-    protected MapCodec<? extends WaterPlantBlock> codec() {
-        return CODEC;
     }
 
     @Override

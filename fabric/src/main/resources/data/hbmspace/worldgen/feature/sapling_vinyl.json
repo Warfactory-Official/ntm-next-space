@@ -1,0 +1,11 @@
+{
+  "type": "hbmspace:ttree",
+  "leaves": "hbmspace:pet_leaves",
+  "log": "hbmspace:vinyl_log",
+  "offset": 2,
+  "smallest": 4,
+  "tallest": 5,
+  "vines": false,
+  "xz": 3,
+  "y": 2
+}

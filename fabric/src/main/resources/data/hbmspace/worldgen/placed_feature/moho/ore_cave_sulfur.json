@@ -1,32 +1,18 @@
 {
   "feature": {
     "type": "hbm:ore_cave",
-    "config": {
-      "domain": "hbmspace:noise/moho/ore_cave_sulfur",
-      "max_range": 20,
-      "ore": {
-        "Name": "hbm:stone_resource_sulfur"
-      },
-      "range_mult": 20,
-      "replaceable": {
-        "block": "hbmspace:moho_stone",
-        "predicate_type": "minecraft:block_match"
-      },
-      "stalactite": {
-        "Name": "hbm:stalactite_sulfur",
-        "Properties": {
-          "waterlogged": "false"
-        }
-      },
-      "stalagmite": {
-        "Name": "hbm:stalagmite_sulfur",
-        "Properties": {
-          "waterlogged": "false"
-        }
-      },
-      "threshold": 1.5,
-      "y_level": 30
-    }
+    "domain": "hbmspace:noise/moho/ore_cave_sulfur",
+    "max_range": 20,
+    "ore": "hbm:stone_resource_sulfur",
+    "range_mult": 20,
+    "replaceable": {
+      "block": "hbmspace:moho_stone",
+      "predicate_type": "minecraft:block_match"
+    },
+    "stalactite": "hbm:stalactite_sulfur",
+    "stalagmite": "hbm:stalagmite_sulfur",
+    "threshold": 1.5,
+    "y_level": 30
   },
   "placement": [
     {

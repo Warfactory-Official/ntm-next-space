@@ -19,7 +19,7 @@
 
 package com.hbmspace.client.fog;
 
-import com.mojang.blaze3d.buffers.GpuBufferSlice;
+import com.mojang.renderpearl.api.buffers.GpuBufferSlice;
 
 public interface TerrainFogWriter {
     boolean hbmspace$fogEnabled();

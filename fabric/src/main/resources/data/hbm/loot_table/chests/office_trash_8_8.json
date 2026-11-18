@@ -11,7 +11,7 @@
       ],
       "rolls": {
         "type": "hbmspace:wand_loot_scaled",
-        "value": 8.0
+        "value": 8
       }
     }
   ],

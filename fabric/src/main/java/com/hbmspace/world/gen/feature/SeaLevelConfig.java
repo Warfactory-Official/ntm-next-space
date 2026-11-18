@@ -18,19 +18,3 @@
  */
 
 package com.hbmspace.world.gen.feature;
-
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
-
-public record SeaLevelConfig(int seaLevel) implements FeatureConfiguration {
-
-    public static final Codec<SeaLevelConfig> CODEC =
-            RecordCodecBuilder.create(
-                    i ->
-                            i.group(
-                                            Codec.INT
-                                                    .fieldOf("sea_level")
-                                                    .forGetter(SeaLevelConfig::seaLevel))
-                                    .apply(i, SeaLevelConfig::new));
-}

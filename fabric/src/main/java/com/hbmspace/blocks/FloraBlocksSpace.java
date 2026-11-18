@@ -36,15 +36,16 @@ import com.hbmspace.dim.tekto.TTree;
 import com.hbmspace.dim.trait.CBT_Atmosphere;
 import com.hbmspace.inventory.fluid.FluidsSpace;
 import com.hbmspace.items.TerrainItemsSpace;
+import com.mojang.serialization.MapCodec;
 import java.util.List;
 import java.util.Locale;
-import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import net.fabricmc.fabric.api.creativetab.v1.CreativeModeTabEvents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.util.random.WeightedList;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -56,7 +57,7 @@ import net.minecraft.world.level.block.VineBlock;
 import net.minecraft.world.level.block.grower.TreeGrower;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 
@@ -131,7 +132,7 @@ public final class FloraBlocksSpace {
                                             .mapColor(MapColor.PLANT)
                                             .strength(0.5F, 0.5F)
                                             .sound(SoundType.GRASS)
-                                            .pushReaction(((PushReaction) (PushReaction.DESTROY))));
+                                            .pushReaction(((PushReaction) (PushReaction.POPPED))));
         }
     }
 
@@ -153,7 +154,7 @@ public final class FloraBlocksSpace {
                                             .noCollision()
                                             .instabreak()
                                             .sound(SoundType.GRASS)
-                                            .pushReaction(((PushReaction) (PushReaction.DESTROY))));
+                                            .pushReaction(((PushReaction) (PushReaction.POPPED))));
         }
     }
 
@@ -217,10 +218,10 @@ public final class FloraBlocksSpace {
         }
     }
 
-    public static final RegistryHandle<TTree> TTREE =
-            Registrar.registerFeature("hbmspace:ttree", new TTree());
-    public static final ResourceKey<ConfiguredFeature<?, ?>> VINYL_TREE = tree("sapling_vinyl");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> PVC_TREE = tree("sapling_pvc");
+    public static final RegistryHandle<MapCodec<TTree>> TTREE =
+            Registrar.registerFeature("hbmspace:ttree", TTree.CODEC);
+    public static final ResourceKey<Feature> VINYL_TREE = tree("sapling_vinyl");
+    public static final ResourceKey<Feature> PVC_TREE = tree("sapling_pvc");
 
     public static final Reg.Handle<NTSaplingBlock> SAPLING_VINYL =
             sapling("sapling_vinyl", 0, VINYL_TREE);
@@ -262,7 +263,7 @@ public final class FloraBlocksSpace {
                                             .noCollision()
                                             .instabreak()
                                             .sound(SoundType.GRASS)
-                                            .pushReaction(((PushReaction) (PushReaction.DESTROY))));
+                                            .pushReaction(((PushReaction) (PushReaction.POPPED))));
         }
     }
 
@@ -288,7 +289,7 @@ public final class FloraBlocksSpace {
                                     .strength(1.0F, 0.6F)
                                     .sound(SoundType.GRASS)
                                     .ignitedByLava()
-                                    .pushReaction(((PushReaction) (PushReaction.DESTROY))));
+                                    .pushReaction(((PushReaction) (PushReaction.POPPED))));
     public static final Reg.Handle<RotatedPillarBlock> VINYL_LOG = log("vinyl_log", "vinyl_log");
     public static final Reg.Handle<RubberLeavesBlock> PET_LEAVES =
             leaves("pet_leaves", "hbmspace:leaf_pet", "hbmspace:sapling_vinyl");
@@ -371,7 +372,7 @@ public final class FloraBlocksSpace {
                 .noCollision()
                 .instabreak()
                 .sound(SoundType.GRASS)
-                .pushReaction(((PushReaction) (PushReaction.DESTROY)));
+                .pushReaction(((PushReaction) (PushReaction.POPPED)));
     }
 
     private static Reg.Handle<WaterPlantBlock> waterGrass(String name, int light) {
@@ -418,7 +419,7 @@ public final class FloraBlocksSpace {
                                 .randomTicks()
                                 .instabreak()
                                 .sound(SoundType.GRASS)
-                                .pushReaction(((PushReaction) (PushReaction.DESTROY))));
+                                .pushReaction(((PushReaction) (PushReaction.POPPED))));
     }
 
     private static Reg.Handle<WildFlowerBlock> wildFlower(
@@ -435,24 +436,24 @@ public final class FloraBlocksSpace {
                                 .noOcclusion()
                                 .instabreak()
                                 .sound(SoundType.GRASS)
-                                .pushReaction(((PushReaction) (PushReaction.DESTROY))));
+                                .pushReaction(((PushReaction) (PushReaction.POPPED))));
     }
 
-    private static ResourceKey<ConfiguredFeature<?, ?>> tree(String name) {
+    private static ResourceKey<Feature> tree(String name) {
         return ResourceKey.create(
-                Registries.CONFIGURED_FEATURE,
-                Identifier.fromNamespaceAndPath(HbmSpace.MOD_ID, name));
+                Registries.FEATURE, Identifier.fromNamespaceAndPath(HbmSpace.MOD_ID, name));
     }
 
     private static Reg.Handle<NTSaplingBlock> sapling(
-            String name, int meta, ResourceKey<ConfiguredFeature<?, ?>> tree) {
+            String name, int meta, ResourceKey<Feature> tree) {
         String sheet = "block/" + name;
         TreeGrower grower =
                 new TreeGrower(
                         tree.identifier().toString(),
-                        Optional.empty(),
-                        Optional.of(tree),
-                        Optional.empty());
+                        WeightedList.of(tree),
+                        WeightedList.of(),
+                        WeightedList.of(),
+                        tree);
         return HbmSpace.REG.blockItem(
                 name,
                 props -> new NTSaplingBlock(grower, props),
@@ -463,7 +464,7 @@ public final class FloraBlocksSpace {
                                 .randomTicks()
                                 .instabreak()
                                 .sound(SoundType.GRASS)
-                                .pushReaction(((PushReaction) (PushReaction.DESTROY))));
+                                .pushReaction(((PushReaction) (PushReaction.POPPED))));
     }
 
     private static Reg.Handle<RotatedPillarBlock> log(String name, String sheets) {
@@ -491,9 +492,9 @@ public final class FloraBlocksSpace {
                                 .noOcclusion()
                                 .isValidSpawn(Blocks::ocelotOrParrot)
                                 .isSuffocating((state, level, pos) -> false)
-                                .isViewBlocking((state, level, pos) -> false)
+                                .isViewBlocking((state, level, pos, nearPlane) -> false)
                                 .isRedstoneConductor((state, level, pos) -> false)
                                 .ignitedByLava()
-                                .pushReaction(((PushReaction) (PushReaction.DESTROY))));
+                                .pushReaction(((PushReaction) (PushReaction.POPPED))));
     }
 }

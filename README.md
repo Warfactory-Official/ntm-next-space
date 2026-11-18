@@ -1,8 +1,8 @@
 # NTM NEXT: Space
 
-NTM NEXT: Space for Minecraft 26.2, with Fabric and NeoForge builds: an addon to NTM NEXT, built against the NTM
-release named by `hbm_version` in `gradle.properties`. The Minecraft 26.3 source is on the
-[`26.3`](https://github.com/Warfactory-Official/ntm-next-space/tree/26.3) branch.
+NTM NEXT: Space for Minecraft 26.3, with Fabric and NeoForge builds: an addon to NTM NEXT, built against the NTM
+release named by `hbm_version` in `gradle.properties`. The Minecraft 26.2 source is on the
+[`main`](https://github.com/Warfactory-Official/ntm-next-space/tree/main) branch.
 
 NTM: Space was created by JamesH_2 and Mellow; NTM NEXT: Space is movblock's port of it to Minecraft 26.2 and 26.3.
 

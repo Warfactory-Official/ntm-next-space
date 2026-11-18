@@ -124,12 +124,12 @@ public final class RocketPronter {
                 if (decoupleTimer > 0) {
                     float decoupleLerp = decoupleTimer + partialTick;
                     pose.translate(0, -decoupleLerp, 0);
-                    pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees(decoupleLerp));
+                    pose.rotate((Quaternionfc) Axis.XP.rotationDegrees(decoupleLerp));
                 }
 
                 if (c > 0) {
                     float spin = (float) c / (float) (cluster - 1);
-                    pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(360.0F * spin));
+                    pose.rotate((Quaternionfc) Axis.YP.rotationDegrees(360.0F * spin));
 
                     if (fuselage != null) {
                         pose.translate(RocketPart.radius(fuselage.bottom), 0, 0);
@@ -144,7 +144,7 @@ public final class RocketPronter {
                             float shroudLerp = shroudTimer + partialTick;
                             pose.pushPose();
                             pose.translate(0, -shroudLerp, 0);
-                            pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees(shroudLerp * 0.5F));
+                            pose.rotate((Quaternionfc) Axis.XP.rotationDegrees(shroudLerp * 0.5F));
                         }
 
                         Identifier shroud = shroudOf(fuselage);
@@ -208,18 +208,18 @@ public final class RocketPronter {
 
         pose.pushPose();
         pose.translate(0.69291F, 2.8333F, 0);
-        pose.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(pod.door()));
+        pose.rotate((Quaternionfc) Axis.ZP.rotationDegrees(pod.door()));
         pose.translate(-0.69291F, -2.8333F, 0);
         visitor.accept(new Piece(DROP_POD, mesh, mesh.partId("Door"), DROP_POD_TEX, Float.NaN));
         pose.popPose();
 
         for (int i = 0; i < 4; i++) {
             pose.pushPose();
-            pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(i * 90 - 45));
+            pose.rotate((Quaternionfc) Axis.YP.rotationDegrees(i * 90 - 45));
             pose.translate(0.46194, 3.5, 0);
-            pose.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(pod.airbrake()));
+            pose.rotate((Quaternionfc) Axis.ZP.rotationDegrees(pod.airbrake()));
             pose.translate(-0.46194, -3.5, 0);
-            pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(45));
+            pose.rotate((Quaternionfc) Axis.YP.rotationDegrees(45));
             visitor.accept(
                     new Piece(DROP_POD, mesh, mesh.partId("Airbrake0"), DROP_POD_TEX, Float.NaN));
             pose.popPose();

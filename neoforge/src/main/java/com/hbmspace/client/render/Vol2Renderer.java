@@ -96,9 +96,9 @@ public class Vol2Renderer
 
         ps.pushPose();
         ps.translate(0.5, 0.0, 0.5);
-        ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(90.0F));
+        ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(90.0F));
         ps.translate(0.0, 0.5, -0.5);
-        ps.mulPose((Quaternionfc) Axis.XP.rotationDegrees(90.0F));
+        ps.rotate((Quaternionfc) Axis.XP.rotationDegrees(90.0F));
         ps.translate(0.0, 0.5, 0.5);
 
         float scale = state.flash;

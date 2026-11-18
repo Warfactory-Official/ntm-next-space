@@ -28,7 +28,7 @@ import com.hbmspace.client.sky.CelestialFogTint;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import com.mojang.blaze3d.buffers.GpuBufferSlice;
+import com.mojang.renderpearl.api.buffers.GpuBufferSlice;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import net.minecraft.client.Camera;

@@ -52,8 +52,7 @@ public class ElectricVolcanoStructure extends Structure {
 
         final int x2 = QuartPos.fromBlock(x);
         final int z2 = QuartPos.fromBlock(z);
-        Holder<Biome> biome =
-                context.biomeSource().getNoiseBiome(x2, 0, z2, context.randomState().sampler());
+        Holder<Biome> biome = context.biomeResolver().getNoiseBiome(x2, 0, z2);
         if (!biome.is(BiomeGenBaseEve.evePlains.key)
                 && !biome.is(BiomeGenBaseEve.eveMountains.key)) {
             return Optional.empty();

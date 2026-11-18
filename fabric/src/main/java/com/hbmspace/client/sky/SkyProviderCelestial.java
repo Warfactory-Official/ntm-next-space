@@ -64,12 +64,13 @@ import com.hbmspace.render.util.AtmosphereRenderUtil;
 import com.hbmspace.saveddata.satellites.ClientSatellites;
 import com.hbmspace.saveddata.satellites.SatelliteOrbit;
 import com.hbmspace.saveddata.satellites.SatellitesSpace;
-import com.mojang.blaze3d.PrimitiveTopology;
 import com.mojang.blaze3d.platform.NativeImage;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
+import com.mojang.renderpearl.api.commands.RenderPass;
+import com.mojang.renderpearl.api.pipeline.PrimitiveTopology;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
@@ -98,6 +99,7 @@ import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 import org.joml.Quaternionfc;
 import org.joml.Vector3f;
+import org.joml.Vector4f;
 import org.jspecify.annotations.Nullable;
 
 public class SkyProviderCelestial {
@@ -265,7 +267,9 @@ public class SkyProviderCelestial {
         belowHorizon = belowHorizon(state, partialTicks);
         celestialFogDensity = CelestialFogTint.density(level, camera);
         celestialFogColor =
-                camera.attributeProbe().getValue(EnvironmentAttributes.FOG_COLOR, partialTicks);
+                ARGB.colorFromVector3f(
+                        camera.attributeProbe()
+                                .getValue(EnvironmentAttributes.FOG_COLOR, partialTicks));
     }
 
     private boolean belowHorizon(SkyRenderState state, float partialTicks) {
@@ -296,9 +300,9 @@ public class SkyProviderCelestial {
         float pressure = hasAtmosphere ? (float) atmosphere.getPressure() : 0.0F;
         float visibility = hasAtmosphere ? Mth.clamp(2.0F - pressure, 0.1F, 1.0F) : 1.0F;
 
-        float skyR = ARGB.redFloat(state.skyColor);
-        float skyG = ARGB.greenFloat(state.skyColor);
-        float skyB = ARGB.blueFloat(state.skyColor);
+        float skyR = state.skyColor.x();
+        float skyG = state.skyColor.y();
+        float skyB = state.skyColor.z();
 
         if (feetY > 300) {
             float curvature = Mth.clamp((800.0F - (float) feetY) / 500.0F, 0.0F, 1.0F);
@@ -321,9 +325,9 @@ public class SkyProviderCelestial {
 
         PoseStack pose = new PoseStack();
         pose.pushPose();
-        pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees(body.axialTilt));
-        pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(-90.0F));
-        pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees(solarAngle * 360.0F));
+        pose.rotate((Quaternionfc) Axis.XP.rotationDegrees(body.axialTilt));
+        pose.rotate((Quaternionfc) Axis.YP.rotationDegrees(-90.0F));
+        pose.rotate((Quaternionfc) Axis.XP.rotationDegrees(solarAngle * 360.0F));
 
         double sunSize = SolarSystem.calculateSunSize(body) * SolarSystem.SUN_RENDER_SCALE;
         double coronaSize = sunSize * (3 - Mth.clamp(pressure, 0.0F, 1.0F));
@@ -373,9 +377,9 @@ public class SkyProviderCelestial {
 
         if (body.hasRings) {
             pose.pushPose();
-            pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees(body.axialTilt - body.ringTilt));
+            pose.rotate((Quaternionfc) Axis.XP.rotationDegrees(body.axialTilt - body.ringTilt));
             pose.translate(0, -100, 0);
-            pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(-90.0F));
+            pose.rotate((Quaternionfc) Axis.YP.rotationDegrees(-90.0F));
 
             renderRings(draws, pose, body.ringColor, 200, visibility);
             pose.popPose();
@@ -387,7 +391,11 @@ public class SkyProviderCelestial {
 
         draws.flush();
 
-        if (belowHorizon) vanilla.renderDarkDisc();
+        if (belowHorizon) {
+            try (RenderPass pass = draws.beginPass()) {
+                vanilla.renderDarkDisc(pass);
+            }
+        }
 
         renderSurfaceFromAbove(draws);
         draws.flush();
@@ -396,7 +404,9 @@ public class SkyProviderCelestial {
     protected static void renderSkyDisc(
             SkyRenderer vanilla, SkyDraws draws, float r, float g, float b) {
         if (ShaderPacks.inUse()) {
-            vanilla.renderSkyDisc(ARGB.colorFromFloat(1.0F, r, g, b));
+            try (RenderPass pass = draws.beginPass()) {
+                vanilla.renderSkyDisc(pass, new Vector3f(r, g, b));
+            }
             return;
         }
         draws.mesh(
@@ -412,7 +422,7 @@ public class SkyProviderCelestial {
         double uvOffset = (feet.x / 1024) % 1;
 
         PoseStack pose = new PoseStack();
-        pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees(180));
+        pose.rotate((Quaternionfc) Axis.XP.rotationDegrees(180));
 
         draws.mesh(
                 SkyMesh.QUAD,
@@ -435,11 +445,13 @@ public class SkyProviderCelestial {
         float[] sunsetColor = calcSunriseSunsetColors(state, pressure);
         if (sunsetColor == null) return;
 
-        vanilla.renderSunriseAndSunset(
-                new PoseStack(),
-                state.sunAngle,
-                ARGB.colorFromFloat(
-                        sunsetColor[3], sunsetColor[0], sunsetColor[1], sunsetColor[2]));
+        try (RenderPass pass = draws.beginPass()) {
+            vanilla.renderSunriseAndSunset(
+                    pass,
+                    new PoseStack(),
+                    state.sunAngle,
+                    new Vector4f(sunsetColor[0], sunsetColor[1], sunsetColor[2], sunsetColor[3]));
+        }
 
         if (pressure < 0.05F) {
             Random rand = new Random(0);
@@ -447,9 +459,9 @@ public class SkyProviderCelestial {
             double time = ((double) level.getDefaultClockTime() + partialTicks) * 0.002;
 
             PoseStack pose = new PoseStack();
-            pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees(90.0F));
-            pose.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(sunsetDirection));
-            pose.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(90.0F));
+            pose.rotate((Quaternionfc) Axis.XP.rotationDegrees(90.0F));
+            pose.rotate((Quaternionfc) Axis.ZP.rotationDegrees(sunsetDirection));
+            pose.rotate((Quaternionfc) Axis.ZP.rotationDegrees(90.0F));
 
             int texel =
                     sheetTexels.computeIfAbsent(
@@ -503,14 +515,9 @@ public class SkyProviderCelestial {
             return new float[] {0.9F, 1.0F, 1.0F, alpha * 0.2F};
         }
 
-        int color = state.sunriseAndSunsetColor;
-        if (ARGB.alpha(color) == 0) return null;
-        return new float[] {
-            ARGB.redFloat(color),
-            ARGB.greenFloat(color),
-            ARGB.blueFloat(color),
-            ARGB.alphaFloat(color)
-        };
+        var color = state.sunriseAndSunsetColor;
+        if (color.w() == 0) return null;
+        return new float[] {color.x(), color.y(), color.z(), color.w()};
     }
 
     protected void renderStars(
@@ -520,8 +527,8 @@ public class SkyProviderCelestial {
             float lodeDist = 100F;
 
             PoseStack pose = new PoseStack();
-            pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees(-75.0F));
-            pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(10.0F));
+            pose.rotate((Quaternionfc) Axis.XP.rotationDegrees(-75.0F));
+            pose.rotate((Quaternionfc) Axis.YP.rotationDegrees(10.0F));
             draws.mesh(
                     SkyMesh.QUAD_TRANSPOSED,
                     SkyPipelines.TEXTURED_ADDITIVE,
@@ -535,10 +542,10 @@ public class SkyProviderCelestial {
         }
 
         PoseStack pose = new PoseStack();
-        pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees(axialTilt));
-        pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(-90.0F));
-        pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees(siderealAngle * 360.0F));
-        pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees(-90.0F));
+        pose.rotate((Quaternionfc) Axis.XP.rotationDegrees(axialTilt));
+        pose.rotate((Quaternionfc) Axis.YP.rotationDegrees(-90.0F));
+        pose.rotate((Quaternionfc) Axis.XP.rotationDegrees(siderealAngle * 360.0F));
+        pose.rotate((Quaternionfc) Axis.XP.rotationDegrees(-90.0F));
 
         if (starBrightness > 0.0F) {
             draws.mesh(
@@ -557,8 +564,8 @@ public class SkyProviderCelestial {
         float digmaSize = 1 + digamma * 0.25F;
         float digmaDist = 100F - digamma * 2.5F;
 
-        pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees(140.0F));
-        pose.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(-40.0F));
+        pose.rotate((Quaternionfc) Axis.XP.rotationDegrees(140.0F));
+        pose.rotate((Quaternionfc) Axis.ZP.rotationDegrees(-40.0F));
 
         draws.mesh(
                 SkyMesh.QUAD_TRANSPOSED,
@@ -597,7 +604,7 @@ public class SkyProviderCelestial {
             float time = ((float) level.getDefaultClockTime() + partialTicks) / 20.0F;
 
             pose.pushPose();
-            pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(-90.0F));
+            pose.rotate((Quaternionfc) Axis.YP.rotationDegrees(-90.0F));
             draws.mesh(
                     SkyMesh.QUAD,
                     SkyPipelines.BLACK_HOLE,
@@ -676,9 +683,9 @@ public class SkyProviderCelestial {
 
         for (int ring = 0; ring < 3; ring++) {
             pose.pushPose();
-            if (ring == 1) pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(60.0F));
-            if (ring == 2) pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(-60.0F));
-            pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees(80.0F));
+            if (ring == 1) pose.rotate((Quaternionfc) Axis.YP.rotationDegrees(60.0F));
+            if (ring == 2) pose.rotate((Quaternionfc) Axis.YP.rotationDegrees(-60.0F));
+            pose.rotate((Quaternionfc) Axis.XP.rotationDegrees(80.0F));
 
             VertexConsumer points =
                     draws.draw(SkyPipelines.SWARM, pose, 0, 0, 0, alpha, null, null, null, time);
@@ -724,9 +731,9 @@ public class SkyProviderCelestial {
             boolean renderPoint = size < transitionMaxSize;
             boolean renderBody = size > transitionMinSize;
 
-            pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees((float) metric.angle));
-            pose.mulPose((Quaternionfc) Axis.ZP.rotationDegrees((float) metric.inclination));
-            pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(axialTilt + 90.0F));
+            pose.rotate((Quaternionfc) Axis.XP.rotationDegrees((float) metric.angle));
+            pose.rotate((Quaternionfc) Axis.ZP.rotationDegrees((float) metric.inclination));
+            pose.rotate((Quaternionfc) Axis.YP.rotationDegrees(axialTilt + 90.0F));
 
             float s = (float) size;
             Matrix4f square = SkyDraws.lifted(100.0F, s);
@@ -1042,9 +1049,9 @@ public class SkyProviderCelestial {
 
         pose.pushPose();
         pose.translate(0.0F, 100.0F, 0.0F);
-        pose.mulPose((Quaternionfc) Axis.ZP.rotationDegrees((float) -metric.angle));
-        pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees(90.0F - other.ringTilt));
-        pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees((float) metric.angle));
+        pose.rotate((Quaternionfc) Axis.ZP.rotationDegrees((float) -metric.angle));
+        pose.rotate((Quaternionfc) Axis.XP.rotationDegrees(90.0F - other.ringTilt));
+        pose.rotate((Quaternionfc) Axis.YP.rotationDegrees((float) metric.angle));
 
         draws.mesh(
                 back ? RING_BACK : RING_FRONT,
@@ -1093,7 +1100,7 @@ public class SkyProviderCelestial {
             pose.pushPose();
             pose.translate(
                     (float) (randomX * -0.05), (float) (randomY * 0.00), (float) (randomZ * -0.05));
-            pose.mulPose(
+            pose.rotate(
                     (Quaternionfc) Axis.YP.rotationDegrees(randomRotation * destProgress * 0.05F));
             float qsize = (float) (size * random.nextDouble() * 0.1);
             VertexConsumer quad =
@@ -1107,7 +1114,7 @@ public class SkyProviderCelestial {
             pose.pushPose();
             pose.translate(
                     (float) (randomX * 0.04), (float) (randomY * 0.00), (float) (randomZ * 0.04));
-            pose.mulPose(
+            pose.rotate(
                     (Quaternionfc) Axis.YP.rotationDegrees(randomRotation * destProgress * 0.05F));
             qsize = (float) (size * random.nextDouble() * 0.07);
             quad = draws.draw(SkyPipelines.TEXTURED_ADDITIVE, pose, 1, 1, 1, 1, DESTROYED);
@@ -1242,10 +1249,10 @@ public class SkyProviderCelestial {
                     projectile.getTranslateY(),
                     projectile.getTranslateZ() + 50D);
             pose.scale(age, age, age);
-            pose.mulPose(
+            pose.rotate(
                     (Quaternionfc)
                             new Quaternionf().rotationAxis((float) (Math.PI / 2D), -10F, -1F, 50F));
-            pose.mulPose(
+            pose.rotate(
                     (Quaternionfc)
                             new Quaternionf()
                                     .rotationAxis((float) Math.toRadians(20D), 0F, -1F, 1F));
@@ -1266,10 +1273,10 @@ public class SkyProviderCelestial {
                     projectile.getTranslateZ() + 50D);
             float inner = age * 0.4F;
             pose.scale(inner, inner, inner);
-            pose.mulPose(
+            pose.rotate(
                     (Quaternionfc)
                             new Quaternionf().rotationAxis((float) (Math.PI / 2D), -10F, -1F, 50F));
-            pose.mulPose(
+            pose.rotate(
                     (Quaternionfc)
                             new Quaternionf()
                                     .rotationAxis((float) Math.toRadians(20D), 0F, -1F, 1F));
@@ -1290,7 +1297,7 @@ public class SkyProviderCelestial {
         if (body.getTrait(CBT_COMPROMISED.class) == null) return;
         PoseStack pose = new PoseStack();
         pose.scale(194.5F, 70.5F, 94.5F);
-        pose.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(90F));
+        pose.rotate((Quaternionfc) Axis.ZP.rotationDegrees(90F));
         float time = ((float) level.getDefaultClockTime() + partialTicks) * 0.2F;
         draws.mesh(
                 FLESH_SPHERE,
@@ -1396,9 +1403,9 @@ public class SkyProviderCelestial {
         float renderAltitude = Math.max(1.0F, altitude);
 
         pose.pushPose();
-        pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees(solarAngle * -360.0F));
-        pose.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(inclination));
-        pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees(orbitAngle));
+        pose.rotate((Quaternionfc) Axis.XP.rotationDegrees(solarAngle * -360.0F));
+        pose.rotate((Quaternionfc) Axis.ZP.rotationDegrees(inclination));
+        pose.rotate((Quaternionfc) Axis.XP.rotationDegrees(orbitAngle));
 
         draws.mesh(
                 SkyMesh.QUAD_TRANSPOSED,
@@ -1417,8 +1424,8 @@ public class SkyProviderCelestial {
         float altitude = Math.max(1.0F, orbit.altitude());
         float alpha = 0.35F * orbit.blinkAlpha(GameTime.now() / 50.0D);
         pose.pushPose();
-        pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees(solarAngle * -360.0F));
-        pose.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(orbit.inclination()));
+        pose.rotate((Quaternionfc) Axis.XP.rotationDegrees(solarAngle * -360.0F));
+        pose.rotate((Quaternionfc) Axis.ZP.rotationDegrees(orbit.inclination()));
         draws.mesh(
                 ORBIT,
                 SkyPipelines.SATELLITE_ORBIT_LINE,
@@ -1437,13 +1444,13 @@ public class SkyProviderCelestial {
         double ticks = (double) (GameTime.now() % (1600 * 50)) / 50;
 
         pose.pushPose();
-        pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees(solarAngle * -360.0F));
-        pose.mulPose(
+        pose.rotate((Quaternionfc) Axis.XP.rotationDegrees(solarAngle * -360.0F));
+        pose.rotate(
                 (Quaternionfc)
                         Axis.XP.rotationDegrees(-40.0F + (float) (seed % 800) * 0.1F - 5.0F));
-        pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees((float) (seed % 50) * 0.1F - 20.0F));
-        pose.mulPose((Quaternionfc) Axis.ZP.rotationDegrees((float) (seed % 80) * 0.1F - 2.5F));
-        pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees((float) ((ticks / 1600.0D) * -360.0D)));
+        pose.rotate((Quaternionfc) Axis.YP.rotationDegrees((float) (seed % 50) * 0.1F - 20.0F));
+        pose.rotate((Quaternionfc) Axis.ZP.rotationDegrees((float) (seed % 80) * 0.1F - 2.5F));
+        pose.rotate((Quaternionfc) Axis.XP.rotationDegrees((float) ((ticks / 1600.0D) * -360.0D)));
 
         draws.mesh(
                 SkyMesh.QUAD_TRANSPOSED,

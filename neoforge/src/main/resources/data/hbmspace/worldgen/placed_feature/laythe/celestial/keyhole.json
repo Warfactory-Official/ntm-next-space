@@ -1,19 +1,15 @@
 {
   "feature": {
     "type": "minecraft:replace_single_block",
-    "config": {
-      "targets": [
-        {
-          "state": {
-            "Name": "hbm:stone_keyhole"
-          },
-          "target": {
-            "block": "minecraft:stone",
-            "predicate_type": "minecraft:block_match"
-          }
+    "targets": [
+      {
+        "state": "hbm:stone_keyhole",
+        "target": {
+          "block": "minecraft:stone",
+          "predicate_type": "minecraft:block_match"
         }
-      ]
-    }
+      }
+    ]
   },
   "placement": [
     {

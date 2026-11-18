@@ -1,26 +1,15 @@
 {
   "feature": {
     "type": "hbmspace:voronoi_plates",
-    "config": {
-      "biomes": "hbmspace:eve_ocean",
-      "cell_size": 72,
-      "crack_size": 2.0,
-      "fluid": {
-        "Name": "hbmspace:mercury_block",
-        "Properties": {
-          "level": "0"
-        }
-      },
-      "rock": {
-        "Name": "hbmspace:eve_rock"
-      },
-      "shape_exponent": 2.0,
-      "start_y": 57,
-      "surface": {
-        "Name": "hbmspace:eve_silt"
-      },
-      "thickness": 35
-    }
+    "biomes": "hbmspace:eve_ocean",
+    "cell_size": 72,
+    "crack_size": 2.0,
+    "fluid": "hbmspace:mercury_block",
+    "rock": "hbmspace:eve_rock",
+    "shape_exponent": 2.0,
+    "start_y": 57,
+    "surface": "hbmspace:eve_silt",
+    "thickness": 35
   },
   "placement": []
 }
