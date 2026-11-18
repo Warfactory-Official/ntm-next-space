@@ -27,7 +27,6 @@ import com.hbmspace.blockentity.machine.HydroponicBlockEntity;
 import com.hbmspace.client.render.HydroponicRenderer;
 import dev.engine_room.flywheel.api.instance.Instance;
 import dev.engine_room.flywheel.api.material.CardinalLightingMode;
-import dev.engine_room.flywheel.api.material.Material;
 import dev.engine_room.flywheel.api.material.Transparency;
 import dev.engine_room.flywheel.api.material.WriteMask;
 import dev.engine_room.flywheel.api.visualization.VisualizationContext;
@@ -35,6 +34,7 @@ import dev.engine_room.flywheel.lib.instance.InstanceTypes;
 import dev.engine_room.flywheel.lib.instance.TransformedInstance;
 import dev.engine_room.flywheel.lib.material.CutoutShaders;
 import dev.engine_room.flywheel.lib.material.SimpleMaterial;
+import dev.engine_room.flywheel.lib.util.ShaderWarmupRegistry;
 import dev.engine_room.flywheel.lib.visual.AbstractBoundedBlockEntityVisual;
 import dev.engine_room.flywheel.lib.visual.CulledDynamicVisual;
 import java.util.function.Consumer;
@@ -75,21 +75,28 @@ public final class HydroponicVisual extends AbstractBoundedBlockEntityVisual<Hyd
     }
 
     public static MeshPart meshOf(HFRWavefrontObject mesh, Identifier texture) {
-        Material material =
-                SimpleMaterial.builder()
-                        .texture(texture)
-                        .mipmap(false)
-                        .cutout(CutoutShaders.ONE_TENTH)
-                        .useLight(false)
-                        .useOverlay(false)
-                        .ambientOcclusion(false)
-                        .cardinalLightingMode(CardinalLightingMode.CHUNK)
-                        .transparency(Transparency.ORDER_INDEPENDENT_ADDITIVE)
-                        .writeMask(WriteMask.COLOR)
-                        .backfaceCulling(false)
-                        .fog(EffectVisuals.FADE)
-                        .build();
-        return MeshPart.obj(mesh.groups[mesh.partId("Lights")], mesh.smoothing(), material);
+        return MeshPart.obj(
+                mesh.groups[mesh.partId("Lights")],
+                mesh.smoothing(),
+                material().texture(texture).build());
+    }
+
+    public static void registerWarmupVariants() {
+        ShaderWarmupRegistry.register(material().variant());
+    }
+
+    private static SimpleMaterial.Builder material() {
+        return SimpleMaterial.builder()
+                .mipmap(false)
+                .cutout(CutoutShaders.ONE_TENTH)
+                .useLight(false)
+                .useOverlay(false)
+                .ambientOcclusion(false)
+                .cardinalLightingMode(CardinalLightingMode.CHUNK)
+                .transparency(Transparency.ORDER_INDEPENDENT_ADDITIVE)
+                .writeMask(WriteMask.COLOR)
+                .backfaceCulling(false)
+                .fog(EffectVisuals.FADE);
     }
 
     @Override

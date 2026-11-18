@@ -58,6 +58,7 @@ public final class SiegeRenders {
         List<MobObjVisual.Prepared<SiegeUFOEntity>> ufo = new ArrayList<>(1);
         FlywheelResources.onInitialize(
                 () -> ufo.add(MobObjVisual.prepare(ufoSpec().instanced(ufoDrawn))));
+        FlywheelResources.onInitialize(SiegeCraftVisual::initModels);
         SimpleEntityVisualizer.builder(MobsSpace.SIEGE_UFO.get())
                 .factory(
                         (ctx, entity, partialTick) ->

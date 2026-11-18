@@ -135,6 +135,7 @@ public class CryoDistillBlockEntity extends MachineBlockEntity
 
     @Override
     public void tickServer() {
+        networkPackNT(15);
         long prevPower = power;
 
         hbm$syncSet$CryoDistillBlockEntity$power(
@@ -150,7 +151,6 @@ public class CryoDistillBlockEntity extends MachineBlockEntity
         if (changed || power != prevPower) setChanged();
 
         flush.provide((ServerLevel) level, this);
-        networkPackNT(15);
     }
 
     private boolean distill() {

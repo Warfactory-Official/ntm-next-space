@@ -129,6 +129,7 @@ public class MagmaBlockEntity extends MachineBlockEntity implements EnergyHandle
 
     @Override
     public void tickServer() {
+        networkPackNT(250);
         hbm$syncSet$MagmaBlockEntity$pourColor(-1);
 
         hbm$syncSet$MagmaBlockEntity$operating(canOperate());
@@ -168,7 +169,6 @@ public class MagmaBlockEntity extends MachineBlockEntity implements EnergyHandle
         }
 
         liquids.removeIf(stack -> stack.amount <= 0);
-        networkPackNT(250);
     }
 
     @Override

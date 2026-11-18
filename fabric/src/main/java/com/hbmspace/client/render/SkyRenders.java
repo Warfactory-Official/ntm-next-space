@@ -38,6 +38,7 @@ import com.google.common.base.Suppliers;
 import com.hbm.blocks.multiblock.MultiblockCoreBlock;
 import com.hbm.client.ClientRegistry;
 import com.hbm.client.model.Meshes;
+import com.hbm.client.render.flywheel.FlywheelResources;
 import com.hbm.client.render.flywheel.MeshPart;
 import com.hbm.render.loader.HFRWavefrontObject;
 import com.hbm.util.Facing;
@@ -297,6 +298,7 @@ public final class SkyRenders {
     }
 
     public static void registerVisualizers() {
+        FlywheelResources.onInitialize(OrreryVisual::initModels);
         SimpleBlockEntityVisualizer.builder(SkyBlockEntitiesSpace.ORRERY.get())
                 .factory(OrreryVisual::new)
                 .apply();

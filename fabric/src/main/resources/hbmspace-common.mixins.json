@@ -81,7 +81,11 @@
     "MixinArmorSuitEffects",
     "MixinSimpleRegionStorage",
     "MixinPlayerDataStorage",
-    "MixinSavedDataStorage"
+    "MixinSavedDataStorage",
+    "MixinLockedContents",
+    "MixinHbmDataFixers",
+    "MixinChunkPayloads",
+    "MixinStructureTemplate"
   ],
   "client": [
     "MixinShaderManager",

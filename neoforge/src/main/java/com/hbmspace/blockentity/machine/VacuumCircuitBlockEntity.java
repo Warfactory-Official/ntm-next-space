@@ -129,6 +129,7 @@ public class VacuumCircuitBlockEntity extends MachineBlockEntity
 
     @Override
     public void tickServer() {
+        networkPackNT(25);
         ServerLevel server = (ServerLevel) level;
         CBT_Atmosphere atmosphere =
                 ChunkAtmosphereManager.proxy.getAtmosphere(server, worldPosition);
@@ -192,7 +193,6 @@ public class VacuumCircuitBlockEntity extends MachineBlockEntity
         }
 
         hbm$syncSet$VacuumCircuitBlockEntity$maxPower(Math.max(intendedMaxPower, power));
-        networkPackNT(25);
     }
 
     private boolean canProcess(VacuumCircuitRecipe recipe) {

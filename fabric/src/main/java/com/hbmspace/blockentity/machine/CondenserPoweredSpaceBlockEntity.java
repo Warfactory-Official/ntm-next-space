@@ -65,8 +65,8 @@ public class CondenserPoweredSpaceBlockEntity extends PoweredCondenserBlockEntit
     @Override
     public void tickServer() {
         if (isDamaged()) {
-            hbm$syncSet$SteamCondenserBlockEntity$waterTimer(0);
             networkPackNT(150);
+            hbm$syncSet$SteamCondenserBlockEntity$waterTimer(0);
             return;
         }
         super.tickServer();

@@ -89,6 +89,7 @@ public class DysonLauncherBlockEntity extends MachineBlockEntity
 
     @Override
     public void tickServer() {
+        networkPackNT(250);
         ServerLevel level = (ServerLevel) this.level;
         Direction dir = MultiblockCoreBlock.coreFacing(getBlockState());
         tryLoad(level, dir);
@@ -134,7 +135,6 @@ public class DysonLauncherBlockEntity extends MachineBlockEntity
         }
 
         hbm$syncSet$DysonLauncherBlockEntity$satCount(getItem(SLOT_MEMBERS).getCount());
-        networkPackNT(250);
     }
 
     private void launch(ServerLevel level, Direction dir, ItemStack members) {

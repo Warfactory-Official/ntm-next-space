@@ -74,6 +74,7 @@ public class DriveProcessorBlockEntity extends MachineBlockEntity
 
     @Override
     public void tickServer() {
+        networkPackNT(15);
         long charge = ItemEnergyTransfer.extract(this, SLOT_BATTERY, MAX_POWER - power, false);
         if (charge > 0) hbm$syncSet$DriveProcessorBlockEntity$power((long) (power + (charge)));
 
@@ -117,8 +118,6 @@ public class DriveProcessorBlockEntity extends MachineBlockEntity
         if (status != next) hbm$syncSet$DriveProcessorBlockEntity$status(next);
         if (hasDrive != loaded) hbm$syncSet$DriveProcessorBlockEntity$hasDrive(loaded);
         lastTier = tier;
-
-        networkPackNT(15);
     }
 
     private int processingTier() {

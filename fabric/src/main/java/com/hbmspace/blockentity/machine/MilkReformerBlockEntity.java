@@ -122,6 +122,7 @@ public class MilkReformerBlockEntity extends MachineBlockEntity
 
     @Override
     public void tickServer() {
+        networkPackNT(150);
         long prevPower = power;
 
         hbm$syncSet$MilkReformerBlockEntity$power(
@@ -141,7 +142,6 @@ public class MilkReformerBlockEntity extends MachineBlockEntity
         if (changed || power != prevPower) setChanged();
 
         flush.provide((ServerLevel) level, this);
-        networkPackNT(150);
     }
 
     private boolean refine() {

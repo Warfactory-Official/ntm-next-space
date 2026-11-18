@@ -170,6 +170,7 @@ public class HydroponicBlockEntity extends MachineBlockEntity
 
     @Override
     public void tickServer() {
+        networkPackNT(15);
         ServerLevel server = (ServerLevel) level;
         Direction facing = getBlockState().getValue(MultiblockCoreBlock.FACING);
         Direction rot = facing.getClockWise();
@@ -207,7 +208,6 @@ public class HydroponicBlockEntity extends MachineBlockEntity
 
         if (power != prevPower || fertilizer != prevFertilizer || tanks[0].getFill() != prevCo2)
             setChanged();
-        networkPackNT(15);
     }
 
     private void grow(ServerLevel server, int i, BlockPos spot) {

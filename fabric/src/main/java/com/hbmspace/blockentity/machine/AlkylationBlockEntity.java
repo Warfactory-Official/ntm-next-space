@@ -121,9 +121,9 @@ public class AlkylationBlockEntity extends MachineBlockEntity
 
     @Override
     public void tickServer() {
+        networkPackNT(25);
         if (TickPhase.every(this, 2) && alkylate()) setChanged();
         if (TickPhase.every(this, 10)) flush.provide((ServerLevel) level, this);
-        networkPackNT(25);
     }
 
     private boolean alkylate() {

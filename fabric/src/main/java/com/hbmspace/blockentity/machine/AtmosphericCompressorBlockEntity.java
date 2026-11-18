@@ -81,6 +81,7 @@ public class AtmosphericCompressorBlockEntity extends MachineBlockEntity
 
     @Override
     public void tickServer() {
+        networkPackNT(50);
         ServerLevel server = (ServerLevel) level;
         Fluid typeBefore = tank.getTankType();
         int fillBefore = tank.getFill();
@@ -103,7 +104,6 @@ public class AtmosphericCompressorBlockEntity extends MachineBlockEntity
 
         if (tank.getTankType() != typeBefore || tank.getFill() != fillBefore) setChanged();
         flush.provide(server, this);
-        networkPackNT(50);
     }
 
     private @Nullable CBT_Atmosphere openSky(ServerLevel server) {

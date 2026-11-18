@@ -140,6 +140,7 @@ public final class IndustryRenders {
                         (context, be, pt) ->
                                 new MagmaVisual(context, be, pt, drillHead.get(), blades.get()))
                 .apply();
+        HydroponicVisual.registerWarmupVariants();
         Supplier<MeshPart> lamps =
                 Suppliers.memoize(
                         () -> HydroponicVisual.meshOf(Parts.HYDROPONIC, Parts.HYDROPONIC_TEX));

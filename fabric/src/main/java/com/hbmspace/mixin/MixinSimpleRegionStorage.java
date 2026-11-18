@@ -50,7 +50,7 @@ public abstract class MixinSimpleRegionStorage {
             at = @At("HEAD"),
             argsOnly = true)
     private Supplier<CompoundTag> hbmspace$stamp(Supplier<CompoundTag> supplier) {
-        if (!spaceData()) return supplier;
+        if (dataFixType != DataFixTypes.ENTITY_CHUNK) return supplier;
         return () -> {
             CompoundTag tag = supplier.get();
             if (tag != null) SpaceDataFixers.stamp(tag);

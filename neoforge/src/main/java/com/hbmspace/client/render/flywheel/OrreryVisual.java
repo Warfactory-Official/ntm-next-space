@@ -40,6 +40,7 @@ import dev.engine_room.flywheel.lib.material.SimpleMaterial;
 import dev.engine_room.flywheel.lib.material.StandardMaterialShaders;
 import dev.engine_room.flywheel.lib.model.LineModelBuilder;
 import dev.engine_room.flywheel.lib.model.SingleMeshModel;
+import dev.engine_room.flywheel.lib.util.ShaderWarmupRegistry;
 import dev.engine_room.flywheel.lib.visual.AbstractBoundedBlockEntityVisual;
 import dev.engine_room.flywheel.lib.visual.CulledDynamicVisual;
 import java.util.ArrayList;
@@ -83,6 +84,10 @@ public final class OrreryVisual extends AbstractBoundedBlockEntityVisual<OrreryB
     private final Matrix4f center = new Matrix4f();
     private final Matrix4f pose = new Matrix4f();
     private final AABB extent;
+
+    public static void initModels() {
+        ShaderWarmupRegistry.register(cubeMaterial().variant());
+    }
 
     public OrreryVisual(
             VisualizationContext context, OrreryBlockEntity blockEntity, float partialTick) {
@@ -134,21 +139,23 @@ public final class OrreryVisual extends AbstractBoundedBlockEntityVisual<OrreryB
                         System.arraycopy(vertex, 0, data, i * 8, 5);
                         data[i * 8 + 7] = 1.0F;
                     }
-                    Material material =
-                            SimpleMaterial.builder()
-                                    .texture(texture)
-                                    .mipmap(false)
-                                    .cutout(CutoutShaders.ONE_TENTH)
-                                    .useLight(false)
-                                    .useOverlay(false)
-                                    .ambientOcclusion(false)
-                                    .cardinalLightingMode(CardinalLightingMode.OFF)
-                                    .transparency(Transparency.ORDER_INDEPENDENT_ADDITIVE)
-                                    .writeMask(WriteMask.COLOR)
-                                    .fog(EffectVisuals.FADE)
-                                    .build();
-                    return new SingleMeshModel(PackedQuadMesh.of(data, null, null), material);
+                    return new SingleMeshModel(
+                            PackedQuadMesh.of(data, null, null),
+                            cubeMaterial().texture(texture).build());
                 });
+    }
+
+    private static SimpleMaterial.Builder cubeMaterial() {
+        return SimpleMaterial.builder()
+                .mipmap(false)
+                .cutout(CutoutShaders.ONE_TENTH)
+                .useLight(false)
+                .useOverlay(false)
+                .ambientOcclusion(false)
+                .cardinalLightingMode(CardinalLightingMode.OFF)
+                .transparency(Transparency.ORDER_INDEPENDENT_ADDITIVE)
+                .writeMask(WriteMask.COLOR)
+                .fog(EffectVisuals.FADE);
     }
 
     private static Model orbit(OrreryMetric metric) {

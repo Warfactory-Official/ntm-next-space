@@ -76,6 +76,10 @@ public final class SiegeCraftVisual extends HbmDynamicEntityVisual<SiegeCraftEnt
     private int shownTier = -1;
     private boolean glinting;
 
+    public static void initModels() {
+        MODELS.get();
+    }
+
     public SiegeCraftVisual(
             VisualizationContext context, SiegeCraftEntity entity, float partialTick) {
         super(context, entity, partialTick);
